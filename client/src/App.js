@@ -1,11 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
+import Index from './routes';
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      WhatsApp Message System
-    </h1>
+      <Index />
   )
 }
 
