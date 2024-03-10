@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className="bg-dark p-3 text-light">
       <span className="d-block text-center">
-        Copyright by Mehedi Hasan @2022
+      <p><a href="https://sib-2000.com.ar" target="_blank">Powered by SIB 2000</a></p>
       </span>
     </div>
   );

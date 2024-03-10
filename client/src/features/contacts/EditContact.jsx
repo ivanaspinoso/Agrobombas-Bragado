@@ -1,35 +1,33 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addContact } from "./ContactsSlice";
-import { useNavigate } from "react-router-dom";
-import { contactAdd } from "../../app/actions/contacts";
+import { useLocation, useNavigate } from "react-router-dom";
+import { contactUpdate } from "../../app/actions/contacts";
 
-const AddContact = () => {
+const EditContact = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
+  console.log(location.state);
+  const [id] = useState(location.state.id);
+  const [name, setName] = useState(location.state.name);
+  const [cellphone, setCellphone] = useState(location.state.cellphone);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [cellphone, setCellphone] = useState("");
-  const [country, setCountry] = useState("");
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const contact = { name, cellphone, country };
-    dispatch(contactAdd(contact));
+    dispatch(contactUpdate({ id, name, cellphone }));
     navigate("/show-contacts", { replace: true });
   };
-  
   return (
     <div className="container mt-5">
       <h2
         className="text-center text-uppercase m-5"
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
-        Add Contact
+        Editar Contacto
       </h2>
       <form
         onSubmit={handleSubmit}
-        className="border rounded p-4"
+        className="border rounded p-4 "
         style={{ maxWidth: "600px", margin: "auto" }}
       >
         <div className="mb-3">
@@ -58,30 +56,17 @@ const AddContact = () => {
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="author" className="form-label">
-            Country:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            required
-          />
-        </div>
 
         <button
           type="submit"
-          className="btn"
+          className="btn "
           style={{ background: "#006877", color: "white" }}
         >
-          Add Contact
+          Update Contact
         </button>
       </form>
     </div>
   );
 };
 
-export default AddContact;
+export default EditContact;

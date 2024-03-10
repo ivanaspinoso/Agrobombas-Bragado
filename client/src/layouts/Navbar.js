@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
     return (
-        <nav className="navbar navbar-expand-lg bg-danger">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-success">
             <div className="container">
                 <Link className="navbar-brand" to="/">
-                    BookList
+                    WhatsApp Message System
                 </Link>
                 <button
                     className="navbar-toggler"
@@ -28,13 +28,28 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-books">
-                                Show Books
+                            <Link className="nav-link" to="/show-contacts">
+                                Contactos
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/add-book">
-                                Add Book
+                            <Link className="nav-link" to="/show-books">
+                                Mensajes
+                            </Link>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <Link className="nav-link" to="/show-books">
+                                En espera
+                            </Link>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <Link className="nav-link" to="/show-books">
+                                Autorespuesta
+                            </Link>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <Link className="nav-link" to="/edit-book">
+                                Configuración
                             </Link>
                         </li>
                     </ul>

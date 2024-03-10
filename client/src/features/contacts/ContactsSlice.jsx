@@ -1,42 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
 const initialContacts = {
-  contacts: [
-    {
-      id: uuidv4(),
-      name: "Federico",
-      email: "",
-      cellphone: "2342513085",
-      address: "",
-      city: "",
-      zip: "",
-      province: "",
-      country: "549",
-    },
-    {
-      id: uuidv4(),
-      name: "Paula",
-      email: "pauitadedia@gmail.com",
-      cellphone: "2342463902",
-      address: "",
-      city: "",
-      zip: "",
-      province: "",
-      country: "549",
-    },
-    {
-      id: uuidv4(),
-      name: "Federico",
-      email: "fede@fede.com",
-      cellphone: "2342513085",
-      address: "Saavedra",
-      city: "Bragado",
-      zip: "",
-      province: "Bs As",
-      country: "549",
-    },
-  ],
+  loading: 'idle',
+  contacts: [],
 };
 
 export const contactsSlice = createSlice({
@@ -44,6 +10,9 @@ export const contactsSlice = createSlice({
   initialState: initialContacts,
   reducers: {
     showContacts: (state) => state,
+    allContact: (state, action) => {
+      state.contacts = action.payload
+    },
     addContact: (state, action) => {
       state.contacts.push(action.payload);
     },
@@ -63,7 +32,7 @@ export const contactsSlice = createSlice({
   },
 });
 
-export const { showContacts, addContact, updateContact, deleteContact } =
+export const { showContacts, addContact, updateContact, deleteContact, allContact } =
 contactsSlice.actions;
 
 export default contactsSlice.reducer;

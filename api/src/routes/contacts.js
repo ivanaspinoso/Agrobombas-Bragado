@@ -2,7 +2,7 @@ var express = require("express");
 
 
 // Defino el modelo user para utilizarlo en las rutas correspondientes
-const { Contacts } = require("../models/index");
+const { Contacts, Messages } = require("../models/index");
 
 const { generateToken, validateToken } = require("../utils/token");
 
@@ -25,17 +25,18 @@ router.get("/", async (req, res) => {
 
 // usernames para no chocar usuarios nuevos
 
-//Obtener todos las usuarios
-router.get("/usernames", async (req, res) => {
+//Obtener todos las celulares para evitar duplicado
+
+router.get("/allphones", async (req, res) => {
   try {
-    let getAllUserNames = await Contacts.findAll({
-      order: [["username", "ASC"]],
+    let getAllUserPhones = await Contacts.findAll({
+      order: [["cellphone", "ASC"]],
     });
-    let usernames = []
-    getAllUserNames.map((user) => {
-      usernames.push(Contacts.username)
+    let userphones = []
+    getAllUserPhones.map((phone) => {
+      userphones.push(phone.cellphone)
     })
-    return res.send(usernames);
+    return res.send(userphones);
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener usernames" + err,
@@ -96,65 +97,35 @@ router.post("/login", async (req, res) => {
 });
 
 
-// Actualizar datos de usuario
-router.put("/update", validateToken, async (req, res) => {
+// Actualizar datos de contacto
+router.put("/update", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
-  const { id, name, newpass, olduser, oldpass, email, token, address, cellphone, isAdmin } = req.body.user;
-  // console.log(req.body.user);
+  const { id, name, email, cellphone, address, city, zip, province, country} = req.body.user;
+  console.log("RESULTADO: ", id);
   // chequeo que estén completos los 3 campos requeridos
   if (!id || id === "") {
     return res.status(400).json({ message: "Falta ingresar id de usuario" });
-  }
-  if (!olduser || olduser === "") {
-    return res.status(400).json({ message: "Falta ingresar nombre usuario" });
-  }
-  if (!oldpass || oldpass === "") {
-    return res
-      .status(400)
-      .json({ message: "Falta ingresar contraseña actual" });
   }
   if (!name || name === "") {
     return res
       .status(400)
       .json({ message: "Falta ingresar nombre correspondiente" });
   }
-  if (!email || email === "") {
+  if (!cellphone || cellphone === "") {
     return res
       .status(400)
-      .json({ message: "Falta ingresar email correspondiente" });
+      .json({ message: "Falta ingresar numero correspondiente" });
   }
 
-  if (newpass) {
-    if (!oldpass || oldpass === "")
-      return res
-        .status(400)
-        .json({ message: "Falta ingresar password anterior" });
-  }
-
-  let existUser = await Contacts.findOne({
-    where: {
-      username: olduser,
-    },
-  });
-
-  if (!existUser)
-    return res
-      .status(400)
-      .json({ message: "No tiene permisos para actualizar usuario" });
-  // console.log("Objeto user modificar usuario creado")
-  // armo el objeto
-
-  const validPassword = await bcrypt.compare(oldpass, existContacts.password);
-  if (validPassword) {
     const objUser = {
-      username: existContacts.username,
       name,
-      password: newpass ? newpass : existContacts.password,
       email,
-      token,
       address,
       cellphone,
-      isAdmin,
+      city,
+      zip,
+      province,
+      country,
       id
     };
 
@@ -163,27 +134,21 @@ router.put("/update", validateToken, async (req, res) => {
       let newUser = await Contacts.update(objUser, {
         where: {
           id,
-/*           username: olduser,
-          password: oldpass, */
         },
       });
       // si todo sale bien devuelvo el objeto agregado
       // console.log("Objeto de usuario guardado")
       res
         .status(200)
-        .json({ message: "usuario modificado con éxito", user: objUser });
+        .json({ message: "contacto modificado con éxito", user: objUser });
     } catch (error) {
       // en caso de error lo devuelvo al frontend
       // console.log(error)
-      res.status(400).json({ message: "No se pudo actualizar usuario" + error });
+      res.status(400).json({ message: "No se pudo actualizar contacto" + error });
     }
-  } else {
-    res.status(400).json({ message: "Clave anterior errónea" });
-  }
 });
 
-//add user (quizás no se use)
-
+//add contact
 router.post("/add", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
   const {
@@ -228,7 +193,7 @@ router.post("/add", async (req, res) => {
     console.log("Objeto de usuario guardado");
     res
       .status(200)
-      .json({ message: "Usuario admin generado correctamente", user: objUser });
+      .json({ message: "Usuario admin generado correctamente", user: newUser });
   } catch (error) {
     // en caso de error lo devuelvo al frontend
     console.log(error);
@@ -236,54 +201,52 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Activar usuario
-router.post("/active", async (req, res) => {
-  // tomo del form de login el username y la contraseña (aquí por body)
-  const { username, password } = req.body;
-  console.log(username, password);
-  // reviso que lleguen bien
-  if (!username || username === "") {
-    return res.status(400).json({ message: "Por favor, ingrese username" });
-  }
-  if (!password || password === "") {
-    return res
-      .status(400)
-      .json({ message: "Por favor, ingrese la contraseña" });
-  }
-  let existUser = await Contacts.findOne({
+
+// Borrar Contacto
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  if (!id) return res.status(400).send({ message: "Debe seleccionar contacto" });
+
+  let producSocios = await Contacts.findAll({
+    where: { id: id },
+    include: { model: Messages },
+  }).then((s) => {
+    if (s[0] && s[0].messages.length > 0) {
+      return s[0].messages.length
+    } else return 0
+  });
+ 
+  const existCat = await Contacts.findOne({
     where: {
-      username,
-      password,
+      id,
     },
   });
-  if (!existUser)
-    return res
-      .status(400)
-      .json({ message: "No tiene permisos para actactivar usuario" });
-  // console.log("Objeto user modificar usuario creado")
-  // armo el objeto
-  const objUser = {
-    active: true,
-  };
-  try {
-    // envio los datos al modelo sequelize para que los guarde en la database
-    let newUser = await Contacts.update(objUser, {
-      where: {
-        username,
-        password,
-      },
-    });
-    // si todo sale bien devuelvo el objeto agregado
-    // console.log("Objeto de usuario guardado")
-    res
-      .status(200)
-      .json({ message: "usuario activado con éxito", user: objUser });
-  } catch (error) {
-    // en caso de error lo devuelvo al frontend
-    // console.log(error)
-    res.status(400).json({ message: "No se pudo activar usuario" + error });
-  }
-  // res.send("get user")
-});
+
+  if (producSocios > 0) {
+    return res.status(400).json({message:"No se puede contacto, mensajes asociados"})
+  } else {
+  if (existCat) {
+    try {
+      let delContact = await Contacts.destroy({
+        where: {
+          id,
+        },
+      });
+      console.log(delContact);
+      return res
+        .status(200)
+        .json({ message: "contacto eliminada correctamente" });
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ message: "No se pudo eliminar el contacto" + err });
+    }
+  } else {
+    return res.status(400).json({ message: "Contacto inexistente" });
+  } 
+}
+ });
+
 
 module.exports = router;
