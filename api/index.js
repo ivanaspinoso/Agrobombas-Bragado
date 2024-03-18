@@ -20,14 +20,16 @@ app.use("/", routes);
 
 const {
   conn,
-/*   Contacts,
-  Messages, */
+  Contacts,
+  Messages,
+  Category,
   Configs
 } = require("./src/models/index.js");
 
 
 const {
   initialConfigs,
+  initialGroups
 } = require("./src/seed.js");
 
 
@@ -42,6 +44,8 @@ conn
       console.log(`Listen on port ${PORT}`);
     });
   })
- .then(async () => {
+  .then(async () => {
     if (forzar === true) await Configs.bulkCreate(initialConfigs);
+  }).then(async () => {
+    if (forzar === true) await Category.bulkCreate(initialGroups);
   }) 

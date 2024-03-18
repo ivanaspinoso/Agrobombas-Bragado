@@ -14,6 +14,15 @@ const initialConfigs = [
   },
 ];
 
+const initialGroups = [
+  {
+    category: "Default",
+    description: "Categoria por defecto",
+    undelete: true
+  },
+];
+
 module.exports = {
   initialConfigs,
+  initialGroups
 };

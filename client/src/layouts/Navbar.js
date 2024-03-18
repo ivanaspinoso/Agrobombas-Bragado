@@ -28,6 +28,11 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
+                            <Link className="nav-link" to="/show-groups">
+                                Grupos
+                            </Link>
+                        </li>
+                        <li className="nav-item dropdown">
                             <Link className="nav-link" to="/show-contacts">
                                 Contactos
                             </Link>
@@ -48,7 +53,7 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/edit-book">
+                            <Link className="nav-link" to="/show-configs">
                                 Configuración
                             </Link>
                         </li>

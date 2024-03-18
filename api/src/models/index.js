@@ -9,13 +9,8 @@ const {
 const configsModel = require("./configs");
 const contactsModel = require("./contacts.js");
 const messagesModel = require("./messages.js");
-/*
-const orderModel = require("./orders");
-const productModel = require("./products");
-const orderLineModel = require("./orderline");
-const brandModel = require("./brands")
-const ipmodels = require("./payips")
- */
+const categoryModel = require("./categories.js");
+
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 let sequelize =
   process.env.NODE_ENV === "production"
@@ -49,42 +44,24 @@ let sequelize =
 const Configs = configsModel(sequelize);
 const Contacts = contactsModel(sequelize);
 const Messages = messagesModel(sequelize);
+const Category = categoryModel(sequelize);
 
 // Será necesario definir las relaciones segun necesite el sistema
 
 Contacts.hasMany(Messages)       // Una contacto puede tener varios mensages
-Messages.belongsTo(Contacts);    // Un producto puede tener una sola marca (fabrica)
+Messages.belongsTo(Contacts);    // Un mensaje puede tener un solo contacto/destinatario (fabrica)
 
-/* 
-Product.belongsToMany(Category, { through: 'prod_cat' });
-Category.belongsToMany(Product, { through: 'prod_cat' }); 
-
-Brand.hasMany(Product)       // Una marca puede tener varios productos
-Product.belongsTo(Brand);    // Un producto puede tener una sola marca (fabrica)
-
-Product.hasMany(OrderLine);
-OrderLine.belongsTo(Product);
-
-Order.hasMany(OrderLine);
-OrderLine.belongsTo(Order);
-
-User.hasMany(Order);
-Order.belongsTo(User);
-
-Product.belongsToMany(User, { through: 'favorites' });
-User.belongsToMany(Product, { through: 'favorites' }); 
-*/
-
-// console.log()
-// Exports models
+Contacts.belongsToMany(Category, { through: 'contact_cat' });
+Category.belongsToMany(Contacts, { through: 'contact_cat' }); 
 
 module.exports = {
   conn: sequelize,
   Contacts,
   Configs,
   Messages,
-/*   Product,
   Category,
+/*
+   Product,
   Brand,
   Order,
   OrderLine,

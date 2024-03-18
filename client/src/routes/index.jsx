@@ -11,6 +11,11 @@ import Error from "../pages/Error";
 import AddContact from "../features/contacts/AddContact";
 import Main from "../Components/Main";
 import EditContact from "../features/contacts/EditContact";
+import EditConfig from "../features/config/EditConfig";
+import ConfigsView from "../features/config/ConfigsView";
+import GroupsView from "../features/groups/GroupsView";
+import AddGroup from "../features/groups/AddGroup";
+import EditGroup from "../features/groups/EditGroup";
 
 const Index = () => {
   return (
@@ -21,10 +26,19 @@ const Index = () => {
         <Route path="/show-books" element={<BooksView />} />
         <Route path="/add-book" element={<AddBook />} />
         <Route path="/edit-book" element={<EditBook />} />
-        <Route path="*" element={<Error />} />
+
+        <Route path="/show-groups" element={<GroupsView />} />
+        <Route path="/add-group" element={<AddGroup />} />
+        <Route path="/edit-group" element={<EditGroup />} />
+
         <Route path="/show-contacts" element={<ContactsView />} />
         <Route path="/add-contact" element={<AddContact />} />
         <Route path="/edit-contact" element={<EditContact />} />
+        
+        <Route path="/show-configs" element={<ConfigsView />} />       
+        <Route path="/edit-config" element={<EditConfig />} />
+        
+        <Route path="*" element={<Error />} />
       </Routes>
        <Footer />
     </BrowserRouter>

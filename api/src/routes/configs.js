@@ -8,14 +8,15 @@ var router = express.Router();
 
 // Datos de configuracion de la app
 
-router.put("/configs", (req, res) => {
+router.put("/update", (req, res) => {
   const {
     id,
     business,
     slogan,
-    messagewaenvio,
-    messagewaretira,
-    messagewareject,
+    messagewauno,
+    messagewados,
+    messagewatres,
+    messagewacuatro,
     horario,
     deliveryprice,
     address,
@@ -31,9 +32,10 @@ router.put("/configs", (req, res) => {
     .then((config) => {
       (config.business = business),
         (config.slogan = slogan),
-        (config.messagewaenvio = messagewaenvio),
-        (config.messagewaretira = messagewaretira),
-        (config.messagewareject = messagewareject),
+        (config.messagewauno = messagewauno),
+        (config.messagewados = messagewados),
+        (config.messagewatres = messagewatres),
+        (config.messagewacuatro = messagewacuatro),
         (config.horario = horario),
         (config.deliveryprice = deliveryprice),
         (config.address = address),
@@ -59,7 +61,7 @@ router.put("/configs", (req, res) => {
     });
 });
 
-router.get("/configs/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
   // console.log(req.params);
   Configs.findByPk(id)

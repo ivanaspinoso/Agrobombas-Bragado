@@ -2,7 +2,7 @@ var express = require("express");
 
 
 // Defino el modelo user para utilizarlo en las rutas correspondientes
-const { Contacts, Messages } = require("../models/index");
+const { Contacts, Messages, Category } = require("../models/index");
 
 const { generateToken, validateToken } = require("../utils/token");
 
@@ -160,8 +160,10 @@ router.post("/add", async (req, res) => {
     zip,
     province,
     country,
+    groups
   } = req.body;
   let hash = "";
+  console.log("grupos", groups)
   // chequeo que estén completos los 3 campos requeridos
   if (!name || name === "") {
     return res
@@ -175,6 +177,10 @@ router.post("/add", async (req, res) => {
     return res
       .status(400)
       .json({ message: "Falta ingresar pais correspondiente" });
+  }  if (!groups || groups.length <= 0) {
+    return res
+      .status(400)
+      .json({ message: "Falta ingresar grupo para contacto" });
   }
   const objUser = {
     name,
@@ -190,6 +196,7 @@ router.post("/add", async (req, res) => {
     // envio los datos al modelo sequelize para que los guarde en la database
     let newUser = await Contacts.create(objUser);
     // si todo sale bien devuelvo el objeto agregado
+    await newUser.setCategories(groups);
     console.log("Objeto de usuario guardado");
     res
       .status(200)

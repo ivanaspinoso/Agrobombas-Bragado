@@ -4,20 +4,21 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 // import { deleteContact } from "./ContactsSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { contactDelete } from "../../app/actions/contacts";
+import { deleteCategory } from "../../app/actions/categories";
 import { Tooltip } from 'react-tooltip';
-import Swal from "sweetalert2";
+import swal from 'sweetalert2'
 
-const ContactsView = () => {
-  const contacts = useSelector((state) => state.contactsReducer.contacts);
+const GroupsView = () => {
+  const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
 
-  const handleDelete = (id, name) => {
-    Swal
+  const handleDelete = (id, category) => {
+
+    swal
     .fire({
-      title: "Desea eliminar el contacto " + name + "?",
+      title: "Desea eliminar el grupo " + category + "?",
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: `Sí`,
@@ -28,11 +29,12 @@ const ContactsView = () => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         
-        dispatch(contactDelete(id));
+        dispatch(deleteCategory(id));
       } else if (result.isDenied) {
         
       }
     });
+
 
   };
 
@@ -42,8 +44,8 @@ const ContactsView = () => {
         className="text-center text-uppercase m-5"
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
-        Listado de contactos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Add Contact" onClick={() => { navigate("/add-contact")}}><FcAddRow /></button>
+        Listado de grupos
+        <button data-tooltip-id="my-tooltip" data-tooltip-content="Add Group" onClick={() => { navigate("/add-group") }}><FcAddRow /></button>
       </h2>
       <table
         className="table mb-5"
@@ -52,30 +54,31 @@ const ContactsView = () => {
         <thead>
           <tr style={{ background: "#006877", color: "white" }}>
             <th>ID</th>
-            <th>Name</th>
-            <th>Cellphone</th>
+            <th>Group</th>
+            <th>Description</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {contacts &&
-            contacts.map((contact, index) => {
-              const { id, name, cellphone, country } = contact;
+          {groups &&
+            groups.map((group, index) => {
+              const { id, category, description, undelete } = group;
               return (
                 <tr key={id}>
                   <th>{index + 1}</th>
-                  <td>{name}</td>
-                  <td>{cellphone}</td>
+                  <td>{category}</td>
+                  <td>{description}</td>
                   <td className="d-flex gap-2">
-                    <Link to="/edit-contact" state={{ id, name, cellphone, country }}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Edit Contact">
+                    <Link to="/edit-group" state={{ id, category, description }}>
+                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Edit Group">
                         <FaEdit />
                       </button>
                     </Link>
-
-                    <button data-tooltip-id="my-tooltip" data-tooltip-content="Delete Contact" onClick={() => handleDelete(id, name)}>
-                      <FaTrashAlt />
-                    </button>
+                    { !undelete ?
+                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Delete Group" onClick={() => handleDelete(id, category)}>
+                        <FaTrashAlt />
+                      </button> : ""
+                    }
                   </td>
                 </tr>
               );
@@ -87,4 +90,4 @@ const ContactsView = () => {
   );
 };
 
-export default ContactsView;
+export default GroupsView;

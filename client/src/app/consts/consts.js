@@ -8,11 +8,13 @@ export const addContactsEndpoint = REACT_APP_API + 'contacts/add';
 export const delContactsEndpoint = REACT_APP_API + 'contacts/delete/';
 export const updContactsEndpoint = REACT_APP_API + 'contacts/update/';
 
-//messages
+//configs
 
-export const categoriesEndpoint= REACT_APP_API + 'categories/';
+export const allConfigsEndpoint = REACT_APP_API + 'configs/1';
+export const updConfigsEndpoint = REACT_APP_API + 'configs/update/';
 
-// configs y users
-
-export const usersEndpoint= REACT_APP_API + 'users/';
-export const configByIdEndpoint = REACT_APP_API + 'configs/';
+//groups
+export const allGroupsEndpoint = REACT_APP_API + 'categories/';
+export const addGroupsEndpoint = REACT_APP_API + 'categories/add';
+export const delGroupsEndpoint = REACT_APP_API + 'categories/delete/';
+export const updGroupsEndpoint = REACT_APP_API + 'categories/update/';

@@ -17,12 +17,18 @@ export const contactsSlice = createSlice({
       state.contacts.push(action.payload);
     },
     updateContact: (state, action) => {
-      const { id, name, cellphone } = action.payload;
+      const { id, name, email, cellphone, address, city, zip, province,  country, } = action.payload;
       const isContactExist = state.contacts.filter((contact) => contact.id === id);
 
       if (isContactExist) {
         isContactExist[0].name = name;
         isContactExist[0].cellphone = cellphone;
+        isContactExist[0].email = email;
+        isContactExist[0].address = address;
+        isContactExist[0].city = city;
+        isContactExist[0].zip = zip;
+        isContactExist[0].province = province;
+        isContactExist[0].country = country;
       }
     },
     deleteContact: (state, action) => {
