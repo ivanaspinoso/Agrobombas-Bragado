@@ -22,8 +22,8 @@ const Navbar = () => {
 
                 <div className="collapse navbar-collapse" id="navbarCentral">
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item active">
-                            <Link className="nav-link active" aria-current="page" to="/">
+                        <li className="nav-item">
+                            <Link className="nav-link" aria-current="page" to="/">
                                 Home
                             </Link>
                         </li>
@@ -38,17 +38,17 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-books">
+                            <Link className="nav-link" to="/show-messages">
                                 Mensajes
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-books">
+                            <Link className="nav-link" to="/building">
                                 En espera
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-books">
+                            <Link className="nav-link" to="/building">
                                 Autorespuesta
                             </Link>
                         </li>

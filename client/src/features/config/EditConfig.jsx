@@ -65,6 +65,9 @@ const EditConfig = () => {
           Update Config
         </button>
       </form>
+      <div>
+        <iframe src="http://localhost:3004/wapp/getqr" height={400} width={400}></iframe>
+      </div>
     </div>
   );
 };

@@ -43,7 +43,7 @@ const ContactsView = () => {
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
         Listado de contactos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Add Contact" onClick={() => { navigate("/add-contact")}}><FcAddRow /></button>
+        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Contacto" onClick={() => { navigate("/add-contact")}}><FcAddRow /></button>
       </h2>
       <table
         className="table mb-5"
@@ -51,10 +51,10 @@ const ContactsView = () => {
       >
         <thead>
           <tr style={{ background: "#006877", color: "white" }}>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Cellphone</th>
-            <th>Action</th>
+            <th>N</th>
+            <th>Nombre</th>
+            <th>Numero WA</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -68,12 +68,12 @@ const ContactsView = () => {
                   <td>{cellphone}</td>
                   <td className="d-flex gap-2">
                     <Link to="/edit-contact" state={{ id, name, cellphone, country }}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Edit Contact">
+                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Editar Contacto">
                         <FaEdit />
                       </button>
                     </Link>
 
-                    <button data-tooltip-id="my-tooltip" data-tooltip-content="Delete Contact" onClick={() => handleDelete(id, name)}>
+                    <button data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Contacto" onClick={() => handleDelete(id, name)}>
                       <FaTrashAlt />
                     </button>
                   </td>

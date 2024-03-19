@@ -16,6 +16,8 @@ import ConfigsView from "../features/config/ConfigsView";
 import GroupsView from "../features/groups/GroupsView";
 import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
+import MessagesView from "../features/messages/MessagesView";
+import Next from "../pages/Next";
 
 const Index = () => {
   return (
@@ -23,7 +25,9 @@ const Index = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/show-books" element={<BooksView />} />
+        <Route path="/building" element={<Next />} />
+
+        <Route path="/show-messages" element={<MessagesView />} />
         <Route path="/add-book" element={<AddBook />} />
         <Route path="/edit-book" element={<EditBook />} />
 

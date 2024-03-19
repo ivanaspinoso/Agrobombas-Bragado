@@ -11,8 +11,8 @@ const AddContact = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [cellphone, setCellphone] = useState("");
-  const [country, setCountry] = useState("");
+  const [cellphon, setCellphon] = useState("");
+  const [country, setCountry] = useState("Argentina 549");
   const [input, setInput] = useState({
     categories: [],
   });
@@ -25,7 +25,8 @@ const AddContact = () => {
     if (groups.length <= 0) {
       alert("Por favor asigne uno o mas grupos al contacto")
     } else {
-      const contact = { name, cellphone, country, groups };
+      const cellphone = "549" + cellphon
+      const contact = { name, cellphone , country, groups };
       dispatch(contactAdd(contact));
       navigate("/show-contacts", { replace: true });
     }
@@ -107,7 +108,7 @@ const AddContact = () => {
 
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
-            Name:
+            Nombre:
           </label>
           <input
             type="text"
@@ -120,20 +121,20 @@ const AddContact = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="author" className="form-label">
-            Cellphone:
+            Numero de celular sin 0 ni 15:
           </label>
           <input
             type="number"
             className="form-control"
-            id="cellphone"
-            value={cellphone}
-            onChange={(e) => setCellphone(e.target.value)}
+            id="cellphon"
+            value={cellphon}
+            onChange={(e) => setCellphon(e.target.value)}
             required
           />
         </div>
         <div className="mb-3">
           <label htmlFor="author" className="form-label">
-            Country:
+            Pais y prefijo:
           </label>
           <input
             type="text"

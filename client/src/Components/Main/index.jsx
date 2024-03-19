@@ -3,6 +3,7 @@ import mensaje from '../../assets/images/mensajes.jpg'
 import reloj from '../../assets/images/reloj.jpg'
 import autoreply from '../../assets/images/autoreply.jpg'
 import config from '../../assets/images/configuracion.webp'
+import grupos from '../../assets/images/grupos.jpg'
 import { useNavigate } from 'react-router-dom';
 import { getAllContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
@@ -43,7 +44,7 @@ const Main = () => {
                 </header>
                 <div className="row row-cols-1 row-cols-md-3">
                 <div className="card" /* style={{"width": "18rem;"}} */>
-                        <img src={contacto} className="card-img-top" alt="..." />
+                        <img src={grupos} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Grupos de Contacto</h5>
                             <p className="card-text">ABM de grupos. Ingrese aquí los grupos para asignar destinatarios.</p>
@@ -63,7 +64,7 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Mensajes</h5>
                             <p className="card-text">ABM de mensajes. Aquí puede cargar sus mensajes inmediatos o programados.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-books") }}>Ir</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/show-messages") }}>Ir</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
@@ -71,7 +72,7 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Cola de mensajes</h5>
                             <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-books") }}>Ir</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Ir</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
@@ -79,7 +80,7 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Autorespuestas</h5>
                             <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-books") }}>Ir</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Ir</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>

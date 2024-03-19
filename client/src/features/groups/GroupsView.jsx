@@ -45,7 +45,7 @@ const GroupsView = () => {
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
         Listado de grupos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Add Group" onClick={() => { navigate("/add-group") }}><FcAddRow /></button>
+        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Grupo" onClick={() => { navigate("/add-group") }}><FcAddRow /></button>
       </h2>
       <table
         className="table mb-5"
@@ -53,10 +53,10 @@ const GroupsView = () => {
       >
         <thead>
           <tr style={{ background: "#006877", color: "white" }}>
-            <th>ID</th>
-            <th>Group</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>N</th>
+            <th>Grupo</th>
+            <th>Descripción</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -70,12 +70,12 @@ const GroupsView = () => {
                   <td>{description}</td>
                   <td className="d-flex gap-2">
                     <Link to="/edit-group" state={{ id, category, description }}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Edit Group">
+                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Editar Grupo">
                         <FaEdit />
                       </button>
                     </Link>
                     { !undelete ?
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Delete Group" onClick={() => handleDelete(id, category)}>
+                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Grupo" onClick={() => handleDelete(id, category)}>
                         <FaTrashAlt />
                       </button> : ""
                     }

@@ -3,7 +3,7 @@ import React from "react";
 const Error = () => {
   return (
     <div>
-      <h1>Error page</h1>
+      <h1 className="d-flex center-flex aligns-items-center justify-content-center">Error page</h1>
     </div>
   );
 };
