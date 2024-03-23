@@ -1,2 +1,3 @@
-2024/03/19-11:05:26.779 5dd4 Creating DB F:\Repos\wapp-system\api\.wwebjs_auth\session\Default\File System\Origins since it was missing.
-2024/03/19-11:05:27.339 5dd4 Reusing MANIFEST F:\Repos\wapp-system\api\.wwebjs_auth\session\Default\File System\Origins/MANIFEST-000001
+2024/03/23-13:02:24.804 488c Reusing MANIFEST F:\Repos\wapp-system\api\.wwebjs_auth\session\Default\File System\Origins/MANIFEST-000001
+2024/03/23-13:02:24.804 488c Recovering log #3
+2024/03/23-13:02:24.805 488c Reusing old log F:\Repos\wapp-system\api\.wwebjs_auth\session\Default\File System\Origins/000003.log 

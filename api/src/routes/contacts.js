@@ -23,6 +23,42 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+//Obtener todos las usuarios de un grupo
+router.get("/group/:id", async (req, res) => {
+  let { id } = req.params;
+  if (!id || id <= 0)
+    return res.status(400).send("Por favor, ingrese categoría");
+  await Category.findAll({
+    where: { id: id },
+    include: { model: Contacts },
+  }).then((s) => {
+    if (s.length === 0)
+      return res.status(400).json({
+        message: "No se encontró contacto del grupo: " + id,
+      });
+    res.json(s);
+  });
+});
+
+//producto por categoria
+router.get("/bycat/:category", async (req, res) => {
+  let { category } = req.params;
+  if (!category || category === "")
+    return res.status(400).send("Por favor, ingrese categoría");
+  await Category.findAll({
+    where: { category: category },
+    include: { model: Product },
+  }).then((s) => {
+    if (s.length === 0)
+      return res.status(400).json({
+        message: "No se encontró producto con categoria: " + category,
+      });
+    res.json(s);
+  });
+});
+
+
 // usernames para no chocar usuarios nuevos
 
 //Obtener todos las celulares para evitar duplicado
@@ -100,7 +136,7 @@ router.post("/login", async (req, res) => {
 // Actualizar datos de contacto
 router.put("/update", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
-  const { id, name, email, cellphone, address, city, zip, province, country} = req.body.user;
+  const { id, name, email, cellphone, address, city, zip, province, country } = req.body.user;
   console.log("RESULTADO: ", id);
   // chequeo que estén completos los 3 campos requeridos
   if (!id || id === "") {
@@ -117,35 +153,35 @@ router.put("/update", async (req, res) => {
       .json({ message: "Falta ingresar numero correspondiente" });
   }
 
-    const objUser = {
-      name,
-      email,
-      address,
-      cellphone,
-      city,
-      zip,
-      province,
-      country,
-      id
-    };
+  const objUser = {
+    name,
+    email,
+    address,
+    cellphone,
+    city,
+    zip,
+    province,
+    country,
+    id
+  };
 
-    try {
-      // envio los datos al modelo sequelize para que los guarde en la database
-      let newUser = await Contacts.update(objUser, {
-        where: {
-          id,
-        },
-      });
-      // si todo sale bien devuelvo el objeto agregado
-      // console.log("Objeto de usuario guardado")
-      res
-        .status(200)
-        .json({ message: "contacto modificado con éxito", user: objUser });
-    } catch (error) {
-      // en caso de error lo devuelvo al frontend
-      // console.log(error)
-      res.status(400).json({ message: "No se pudo actualizar contacto" + error });
-    }
+  try {
+    // envio los datos al modelo sequelize para que los guarde en la database
+    let newUser = await Contacts.update(objUser, {
+      where: {
+        id,
+      },
+    });
+    // si todo sale bien devuelvo el objeto agregado
+    // console.log("Objeto de usuario guardado")
+    res
+      .status(200)
+      .json({ message: "contacto modificado con éxito", user: objUser });
+  } catch (error) {
+    // en caso de error lo devuelvo al frontend
+    // console.log(error)
+    res.status(400).json({ message: "No se pudo actualizar contacto" + error });
+  }
 });
 
 //add contact
@@ -169,15 +205,15 @@ router.post("/add", async (req, res) => {
     return res
       .status(400)
       .json({ message: "Falta ingresar nombre correspondiente" });
-  } else   if (!cellphone || cellphone === "") {
+  } else if (!cellphone || cellphone === "") {
     return res
       .status(400)
       .json({ message: "Falta ingresar numero correspondiente" });
-  } else   if (!country || country === "") {
+  } else if (!country || country === "") {
     return res
       .status(400)
       .json({ message: "Falta ingresar pais correspondiente" });
-  }  if (!groups || groups.length <= 0) {
+  } if (!groups || groups.length <= 0) {
     return res
       .status(400)
       .json({ message: "Falta ingresar grupo para contacto" });
@@ -223,7 +259,7 @@ router.delete("/delete/:id", async (req, res) => {
       return s[0].messages.length
     } else return 0
   });
- 
+
   const existCat = await Contacts.findOne({
     where: {
       id,
@@ -231,29 +267,29 @@ router.delete("/delete/:id", async (req, res) => {
   });
 
   if (producSocios > 0) {
-    return res.status(400).json({message:"No se puede contacto, mensajes asociados"})
+    return res.status(400).json({ message: "No se puede contacto, mensajes asociados" })
   } else {
-  if (existCat) {
-    try {
-      let delContact = await Contacts.destroy({
-        where: {
-          id,
-        },
-      });
-      console.log(delContact);
-      return res
-        .status(200)
-        .json({ message: "contacto eliminada correctamente" });
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ message: "No se pudo eliminar el contacto" + err });
+    if (existCat) {
+      try {
+        let delContact = await Contacts.destroy({
+          where: {
+            id,
+          },
+        });
+        console.log(delContact);
+        return res
+          .status(200)
+          .json({ message: "contacto eliminada correctamente" });
+      } catch (err) {
+        return res
+          .status(500)
+          .json({ message: "No se pudo eliminar el contacto" + err });
+      }
+    } else {
+      return res.status(400).json({ message: "Contacto inexistente" });
     }
-  } else {
-    return res.status(400).json({ message: "Contacto inexistente" });
-  } 
-}
- });
+  }
+});
 
 
 module.exports = router;

@@ -1,3 +1,22 @@
+const bcrypt = require("bcrypt");
+
+const initialUsers = [
+  {
+    name: "Fede OyB",
+    username: "fede",
+    password: bcrypt.hashSync("admin", 8),
+    isAdmin: true,
+    cellphone: "",
+    email: "",
+    address: "",
+    city: "",
+    zip: "",
+    province: "",
+    country: "",
+    active: true,
+    blocked: false,
+  }
+]
 
 const initialConfigs = [
   {
@@ -11,8 +30,10 @@ const initialConfigs = [
     deliveryprice: 0,
     address: "Tu Dire",
     city: "Tu Ciudad",
+    userId: 1
   },
 ];
+
 
 const initialGroups = [
   {
@@ -24,5 +45,6 @@ const initialGroups = [
 
 module.exports = {
   initialConfigs,
-  initialGroups
+  initialGroups,
+  initialUsers
 };

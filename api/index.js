@@ -23,7 +23,7 @@ app.use(morgan("dev"));
 app.use(errorHandler);
 app.use(setHeaders);
 
-app.use("/", routes);
+app.use("/wasystem", routes);
 
 
 (async () => {
@@ -32,6 +32,7 @@ app.use("/", routes);
     conn,
     Contacts,
     Messages,
+    Users,
     Category,
     Configs
   } = require("./src/models/index.js");
@@ -39,7 +40,8 @@ app.use("/", routes);
   
   const {
     initialConfigs,
-    initialGroups
+    initialGroups,
+    initialUsers
   } = require("./src/seed.js");
   
   
@@ -59,6 +61,9 @@ app.use("/", routes);
           console.log(`Listen on port ${PORT}`);
         });
       })
+      .then(async () => {
+        if (forzar === true) await Users.bulkCreate(initialUsers);
+      }) 
       .then(async () => {
         if (forzar === true) await Configs.bulkCreate(initialConfigs);
       }).then(async () => {

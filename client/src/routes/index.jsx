@@ -18,6 +18,7 @@ import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
 import MessagesView from "../features/messages/MessagesView";
 import Next from "../pages/Next";
+import AddMessage from "../features/messages/AddMessage";
 
 const Index = () => {
   return (
@@ -28,7 +29,7 @@ const Index = () => {
         <Route path="/building" element={<Next />} />
 
         <Route path="/show-messages" element={<MessagesView />} />
-        <Route path="/add-book" element={<AddBook />} />
+        <Route path="/add-message" element={<AddMessage />} />
         <Route path="/edit-book" element={<EditBook />} />
 
         <Route path="/show-groups" element={<GroupsView />} />

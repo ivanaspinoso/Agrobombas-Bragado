@@ -10,6 +10,7 @@ const configsModel = require("./configs");
 const contactsModel = require("./contacts.js");
 const messagesModel = require("./messages.js");
 const categoryModel = require("./categories.js");
+const userModel = require("./users.js");
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 let sequelize =
@@ -45,6 +46,15 @@ const Configs = configsModel(sequelize);
 const Contacts = contactsModel(sequelize);
 const Messages = messagesModel(sequelize);
 const Category = categoryModel(sequelize);
+const Users = userModel(sequelize);
+
+
+Users.hasOne(Configs)       // Una usuario puede tener una config
+Configs.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
+
+Contacts.belongsToMany(Users, { through: 'contact_user' });
+Users.belongsToMany(Contacts, { through: 'contact_user' }); 
+
 
 // Será necesario definir las relaciones segun necesite el sistema
 
@@ -60,6 +70,7 @@ module.exports = {
   Configs,
   Messages,
   Category,
+  Users,
 /*
    Product,
   Brand,

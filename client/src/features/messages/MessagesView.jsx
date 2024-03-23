@@ -44,7 +44,7 @@ const MessagesView = () => {
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
         Listado de mensajes
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Grupo" onClick={() => { navigate("/add-group") }}><FcAddRow /></button>
+        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar mensaje" onClick={() => { navigate("/add-message") }}><FcAddRow /></button>
       </h2>
       <table
         className="table mb-5"
