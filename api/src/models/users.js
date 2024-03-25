@@ -57,6 +57,6 @@ module.exports = function (sequelize) {
     blocked: {
       type: DataTypes.BOOLEAN,
       allowNull: true,      
-    }
+    },
   });
 };

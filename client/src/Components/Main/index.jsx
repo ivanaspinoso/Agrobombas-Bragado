@@ -15,22 +15,27 @@ import { getAllCategories } from '../../app/actions/categories';
 const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const login = !localStorage.getItem("userInfo") ? {} : JSON.parse(localStorage.getItem("userInfo"))
     const configs = useSelector((state) => state.configsReducer.configs);
+
     const [isloading, setIsLoading] = useState(true)
 
     useEffect(() => {
         // Obtener todos los  datos del sistema
         async function fetchData() {
-            if (configs.length <= 0) {
-                await dispatch(getConfig())
+            if (login.id >= 1) {
+                await dispatch(getConfig(login.id))
                 await dispatch(getAllContacts());
                 await dispatch(getAllCategories());
+                // await dispatch(getUser(login.username, login.password))
+            } else {
+                navigate("/login")
             }
-            console.log(configs)
+            // console.log(configs)
             setIsLoading(false)
         }
         fetchData()
-    }, []
+    }, [login.id]
     );
 
 

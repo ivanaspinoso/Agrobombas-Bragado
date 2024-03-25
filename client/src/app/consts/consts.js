@@ -1,6 +1,11 @@
 // require('dotenv').config()
 export const REACT_APP_API = process.env.REACT_APP_API //endpoint
 
+// Users
+
+export const allUserssEndpoint = REACT_APP_API + 'users/'
+export const getUserEndpoint = REACT_APP_API + 'users/login'
+
 //contacts
 export const allContactsEndpoint = REACT_APP_API + 'contacts/';
 export const addContactsEndpoint = REACT_APP_API + 'contacts/add';
@@ -9,7 +14,7 @@ export const updContactsEndpoint = REACT_APP_API + 'contacts/update/';
 
 //configs
 
-export const allConfigsEndpoint = REACT_APP_API + 'configs/1';
+export const allConfigsEndpoint = REACT_APP_API + 'configs/';
 export const updConfigsEndpoint = REACT_APP_API + 'configs/update/';
 
 //groups

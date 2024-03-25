@@ -9,7 +9,7 @@ import Navbar from "../layouts/Navbar";
 import Error from "../pages/Error";
 // import Home from "../pages/Home";
 import AddContact from "../features/contacts/AddContact";
-import Main from "../Components/Main";
+import Main from "../components/Main";
 import EditContact from "../features/contacts/EditContact";
 import EditConfig from "../features/config/EditConfig";
 import ConfigsView from "../features/config/ConfigsView";
@@ -19,6 +19,7 @@ import EditGroup from "../features/groups/EditGroup";
 import MessagesView from "../features/messages/MessagesView";
 import Next from "../pages/Next";
 import AddMessage from "../features/messages/AddMessage";
+import LogIn from "../components/LogIn";
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/building" element={<Next />} />
 
         <Route path="/show-messages" element={<MessagesView />} />

@@ -1,7 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logOut } from "../app/actions/users";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
+
+const dispatch = useDispatch()
+const navigate = useNavigate()
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-success">
             <div className="container">
@@ -56,6 +62,15 @@ const Navbar = () => {
                             <Link className="nav-link" to="/show-configs">
                                 Configuración
                             </Link>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <button className="success" onClick={async () => { 
+                            await dispatch(logOut());
+                            navigate("/")
+
+                            }}>
+                                Cerrar Sesión
+                            </button>
                         </li>
                     </ul>
                 </div>

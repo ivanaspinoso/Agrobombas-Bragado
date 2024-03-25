@@ -1,7 +1,8 @@
 import axios from "axios";
-import { REACT_APP_API, configByIdEndpoint } from "../consts/consts";
+import { getUserEndpoint } from "../consts/consts";
+import { loginUser, logoutUser } from "../../features/users/usersSlice";
 
-export const userAdd = (userNew) => async (dispatch) => {
+/* export const userAdd = (userNew) => async (dispatch) => {
   console.log("agregando", userNew);
   try {
     const { data } = await axios.post(`${REACT_APP_API}users/add`, userNew);
@@ -15,17 +16,17 @@ export const userAdd = (userNew) => async (dispatch) => {
         : err.message
     );
   }
-};
+}; */
 
 export const getUser = (username, password) => async (dispatch) => {
   /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
   try {
     // console.log(username,password)
-    const { data } = await axios.post(`${REACT_APP_API}users/login`, {
+    const { data } = await axios.post(`${getUserEndpoint}`, {
       username,
       password,
     });
-    dispatch({ type: "GET_USER_DETAIL", payload: data.login });
+    dispatch({ type: loginUser, payload: data.login });
     localStorage.setItem("userInfo", JSON.stringify(data.login));
     localStorage.setItem("allowLogin", "si")
   } catch (err) {
@@ -37,14 +38,43 @@ export const getUser = (username, password) => async (dispatch) => {
   }
 };
 
-export const updateUser = (user) => async (dispatch) => {
-  /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
+
+export const logOut = () => async (dispatch) => {
   try {
-    // console.log(username,password)
-    // console.log(user)
+    localStorage.removeItem('userInfo')
+    /*     localStorage.removeItem("userInfo");
+        localStorage.removeItem("userUpdated")
+        localStorage.removeItem("allowLogin")
+        // Carteles de categoria admin
+        localStorage.removeItem("categoryDeleted")
+        localStorage.removeItem("categoryAdded")
+        localStorage.removeItem("categoryUpdated")
+        // Carteles de productadmin
+        localStorage.removeItem("productDeleted")
+        localStorage.removeItem("productAdded")
+        localStorage.removeItem("productUpdated")
+        // Configuración 
+        localStorage.removeItem("configUpdated")
+        localStorage.removeItem("userConfig")
+        localStorage.removeItem("appConfig")
+        // Carteles de marca admin
+        localStorage.removeItem("brandDeleted")
+        localStorage.removeItem("brandAdded")
+        localStorage.removeItem("brandUpdated") */
+    dispatch({ type: logoutUser, payload: {} });
+    console.log("saliendo")
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+
+
+/* export const updateUser = (user) => async (dispatch) => {
+  try {
     const { data } = await axios.put(`${REACT_APP_API}users/update`, { user }, {
       headers: {
-        /* 'Authorization': `x-access-token ${user.token}` */
+        // 'Authorization': `x-access-token ${user.token}`
         "x-access-token": user.token,
       }
     });
@@ -60,15 +90,15 @@ export const updateUser = (user) => async (dispatch) => {
         : err.message
     );
   }
-};
+}; */
 
-export const updateConfigs = (config, token) => async (dispatch) => {
-  /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
+/* export const updateConfigs = (config, token) => async (dispatch) => {
+  // dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) 
   try {
     // console.log(username,password)
     const { data } = await axios.put(`${REACT_APP_API}configs`, config, {
       headers: {
-        /* 'Authorization': `x-access-token ${user.token}` */
+        // 'Authorization': `x-access-token ${user.token}`
         "x-access-token": token,
       }
     });
@@ -83,10 +113,10 @@ export const updateConfigs = (config, token) => async (dispatch) => {
         : err.message
     );
   }
-};
+}; */
 
-export const getConfig = (id) => async (dispatch) => {
-  /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
+/* export const getConfig = (id) => async (dispatch) => {
+  // dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } })
   try {
     // console.log(username,password)
     // console.log(`${configByIdEndpoint}${id}`)
@@ -102,14 +132,14 @@ export const getConfig = (id) => async (dispatch) => {
         : err.message
     );
   }
-};
+}; */
 
-export const getAllUsers = (token) => async (dispatch) => {
+/* export const getAllUsers = (token) => async (dispatch) => {
   try {
     console.log("Token",token)
     const { data } = await axios.get(`${REACT_APP_API}users`, {
       headers: {
-        /* 'Authorization': `x-access-token ${user.token}` */
+        // 'Authorization': `x-access-token ${user.token}` 
         "x-access-token": token,
       }
     });
@@ -125,31 +155,4 @@ export const getAllUsers = (token) => async (dispatch) => {
         : err.message
     );
   }
-
-}
-
-export function logOut(arg) {
-  return function (dispatch) {
-    dispatch({ type: "LOGOUT_USER", payload: arg });
-
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("userUpdated")
-    localStorage.removeItem("allowLogin")
-    // Carteles de categoria admin
-    localStorage.removeItem("categoryDeleted")
-    localStorage.removeItem("categoryAdded")
-    localStorage.removeItem("categoryUpdated")
-    // Carteles de productadmin
-    localStorage.removeItem("productDeleted")
-    localStorage.removeItem("productAdded")
-    localStorage.removeItem("productUpdated")
-    // Configuración 
-    localStorage.removeItem("configUpdated")
-    localStorage.removeItem("userConfig")
-    localStorage.removeItem("appConfig")
-    // Carteles de marca admin
-    localStorage.removeItem("brandDeleted")
-    localStorage.removeItem("brandAdded")
-    localStorage.removeItem("brandUpdated")
-  };
-}
+} */

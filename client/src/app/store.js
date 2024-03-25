@@ -5,6 +5,7 @@ import booksReducer from "../features/books/BooksSlice"
 import configsReducer from "../features/config/ConfigSlice"
 import groupsReducer from "../features/groups/GroupsSlice"
 import messagesReducer from '../features/messages/MessagesSlice'
+import usersReducer from '../features/users/usersSlice'
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     configsReducer: configsReducer,
     groupsReducer: groupsReducer,
     messagesReducer: messagesReducer,
+    usersReducer: usersReducer
   },
 });
 

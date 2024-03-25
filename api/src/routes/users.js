@@ -5,7 +5,7 @@ var express = require("express");
 const bcrypt = require("bcrypt");
 
 // Defino el modelo user para utilizarlo en las rutas correspondientes
-const { User } = require("../models/index");
+const { Users } = require("../models/index");
 
 const { generateToken, validateToken } = require("../utils/token");
 
@@ -14,7 +14,7 @@ var router = express.Router();
 //Obtener todos las usuarios
 router.get("/", validateToken, async (req, res) => {
   try {
-    let getAllUsers = await User.findAll({
+    let getAllUsers = await Users.findAll({
       order: [["createdAt", "ASC"]],
     });
     console.log(getAllUsers)
@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
       .status(400)
       .json({ message: "Por favor, ingrese la contraseña" });
   }
-  const user = await User.findOne({
+  const user = await Users.findOne({
     where: {
       username: body.username,
     },
@@ -82,7 +82,7 @@ router.post("/login", async (req, res) => {
         active: user.active,
         blocked: user.blocked,
         birthdate: user.birthdate,
-
+        password: user.password,
         /*         password: body.password, */
         token: generateToken(user),
       };
@@ -94,7 +94,7 @@ router.post("/login", async (req, res) => {
       res.status(400).json({ error: "Contraseña incorrecta" });
     }
   } else {
-    res.status(401).json({ error: "Usuario inexistente" });
+    res.status(400).json({ error: "Usuario inexistente" });
   }
 });
 

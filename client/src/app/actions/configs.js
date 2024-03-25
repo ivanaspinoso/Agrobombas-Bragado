@@ -27,7 +27,7 @@ export const configUpdate = (config) => async (dispatch) => {
     try {
       // console.log(username,password)
       // console.log(`${configByIdEndpoint}${id}`)
-      const { data } = await axios.get(`${allConfigsEndpoint}`);
+      const { data } = await axios.get(`${allConfigsEndpoint}` + id);
       dispatch({ type: allConfig, payload: data.config });
       localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("userConfig", true);

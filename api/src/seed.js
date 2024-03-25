@@ -15,6 +15,21 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
+  },
+  {
+    name: "Franco M.",
+    username: "fran",
+    password: bcrypt.hashSync("admin", 8),
+    isAdmin: false,
+    cellphone: "",
+    email: "",
+    address: "",
+    city: "",
+    zip: "",
+    province: "",
+    country: "",
+    active: true,
+    blocked: false,
   }
 ]
 
@@ -32,6 +47,20 @@ const initialConfigs = [
     city: "Tu Ciudad",
     userId: 1
   },
+  {
+    business: "DFM Seguros",
+    slogan: "Servicios y Productos de Seguros",
+    horario: "",
+    messagewauno: "Mensaje 01",
+    messagewados: "Mensaje 02",
+    messagewatres: "Mensaje 03",
+    messagewacuatro: "Mensaje 04",
+    deliveryprice: 0,
+    address: "Tu Dire",
+    city: "Tu Ciudad",
+    userId: 2
+  },
+
 ];
 
 
