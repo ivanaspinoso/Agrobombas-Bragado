@@ -109,3 +109,28 @@ package-lock.json
 
 # txt prueba rutas
 pruebarutas.txt
+api/.wwebjs_auth/session/DevToolsActivePort
+api/.wwebjs_auth/session/Default/Cookies
+api/.wwebjs_auth/session/Default/QuotaManager
+api/.wwebjs_auth/session/Default/Cache/Cache_Data/f_000092
+api/.wwebjs_auth/session/Default/Cache/Cache_Data/f_000093
+api/.wwebjs_auth/session/Default/Code Cache/js/index-dir/the-real-index
+api/.wwebjs_auth/session/Default/File System/Origins/LOG
+api/.wwebjs_auth/session/Default/File System/Origins/LOG.old
+api/.wwebjs_auth/session/Default/GPUCache/data_1
+api/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/004182.ldb
+api/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/004231.ldb
+api/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/LOG
+api/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/LOG.old
+api/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+api/.wwebjs_auth/session/Default/Local Storage/leveldb/LOG
+api/.wwebjs_auth/session/Default/Local Storage/leveldb/LOG.old
+api/.wwebjs_auth/session/Default/Service Worker/CacheStorage/0bf6ab7f94a21cdc9c1649f884333ec20f40a544/f1f81d2a-eb32-485a-b83f-bb38761bd188/2a2b7cbbc61290b4_0
+api/.wwebjs_auth/session/Default/Service Worker/CacheStorage/0bf6ab7f94a21cdc9c1649f884333ec20f40a544/f1f81d2a-eb32-485a-b83f-bb38761bd188/6ea66fa5b36b4157_0
+api/.wwebjs_auth/session/Default/Service Worker/CacheStorage/0bf6ab7f94a21cdc9c1649f884333ec20f40a544/f1f81d2a-eb32-485a-b83f-bb38761bd188/92172a9e586cee2a_0
+api/.wwebjs_auth/session/Default/Service Worker/CacheStorage/0bf6ab7f94a21cdc9c1649f884333ec20f40a544/f1f81d2a-eb32-485a-b83f-bb38761bd188/e6039a61e4d2a504_0
+api/.wwebjs_auth/session/Default/Service Worker/CacheStorage/0bf6ab7f94a21cdc9c1649f884333ec20f40a544/f1f81d2a-eb32-485a-b83f-bb38761bd188/index-dir/the-real-index
+api/.wwebjs_auth/session/Default/Service Worker/Database/LOG
+api/.wwebjs_auth/session/Default/Service Worker/Database/LOG.old
+api/.wwebjs_auth/session/Default/Session Storage/LOG
+api/.wwebjs_auth/session/Default/Session Storage/LOG.old
