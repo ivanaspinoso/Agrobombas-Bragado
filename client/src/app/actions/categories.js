@@ -1,5 +1,5 @@
 import axios from "axios";
-import { allGroupsEndpoint, addGroupsEndpoint, delGroupsEndpoint, updGroupsEndpoint } from "../consts/consts";
+import { allGroupsEndpoint, addGroupsEndpoint, delGroupsEndpoint, updGroupsEndpoint, userGroupsEndpoint } from "../consts/consts";
 import { allgroups, addgroup, deletegroup, updategroup } from "../../features/groups/GroupsSlice";
 
 export const getAllCategories = () => async (dispatch) => {
@@ -7,6 +7,22 @@ export const getAllCategories = () => async (dispatch) => {
     try {
       // console.log(username,password)
       const { data } = await axios.get(`${allGroupsEndpoint}`);
+      dispatch({ type: allgroups, payload: data });
+      // localStorage.setItem("userInfo", JSON.stringify(data.login));
+    } catch (err) {
+      alert(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      );
+    }
+  };
+
+  export const getUserCategories = (id) => async (dispatch) => {
+    /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
+    try {
+      // console.log(username,password)
+      const { data } = await axios.get(`${userGroupsEndpoint}` + id);
       dispatch({ type: allgroups, payload: data });
       // localStorage.setItem("userInfo", JSON.stringify(data.login));
     } catch (err) {
@@ -69,7 +85,6 @@ export const getAllCategories = () => async (dispatch) => {
   export const updateCategory = (cate) => async (dispatch) => {
     /* console.log(cate) */
     try {
-
         const { data } = await axios.put(`${updGroupsEndpoint}`, {cate});
         dispatch({ type: updategroup, payload: data });
         localStorage.setItem("categoryUpdated",true)

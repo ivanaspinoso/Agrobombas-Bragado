@@ -1,5 +1,5 @@
 import axios from "axios";
-import { allContactsEndpoint, addContactsEndpoint, delContactsEndpoint, updContactsEndpoint } from "../consts/consts";
+import { allContactsEndpoint, addContactsEndpoint, delContactsEndpoint, updContactsEndpoint, userContactsEndpoint } from "../consts/consts";
 import { showContacts, addContact, deleteContact, updateContact, allContact } from "../../features/contacts/ContactsSlice";
 
 export const contactAdd = (userNew) => async (dispatch) => {
@@ -35,8 +35,25 @@ export const getAllContacts = () => async (dispatch) => {
         : err.message
     );
   }
-
 }
+
+export const getUserContacts = (id) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`${userContactsEndpoint}` + id);
+    console.log("ejecutando action getallusers", data)
+    dispatch({ type: allContact, payload: data });
+    //  localStorage.setItem("appConfig", JSON.stringify(data.config));
+    localStorage.setItem("gettingContacts", true)
+  } catch (err) {
+    localStorage.setItem("gettingContacts", err.response.data.message)
+    console.log(
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message
+    );
+  }
+}
+
 
 
 export const contactDelete = (id) => async (dispatch) => {

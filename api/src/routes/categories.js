@@ -95,6 +95,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Obtener todas las categorías de un usuario
+router.get("/byuser/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    let getAllCategories = await Category.findAll({
+      order: [["category", "ASC"]],
+      where: {
+        userId: id,
+      },
+    });
+    return res.send(getAllCategories);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener las categorías" + err,
+    });
+  }
+});
+
 //Obtener categoría por id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;

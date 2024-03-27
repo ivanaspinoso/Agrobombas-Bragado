@@ -1,22 +1,34 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { cateAdd } from "../../app/actions/categories";
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup'
+import Swal from 'sweetalert2';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
 
+  const login = useSelector((state) => state.usersReducer.login)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const group = { category, description };
-    dispatch(cateAdd(group));
-    navigate("/show-groups", { replace: true });
-  };
-  
+  //  const [category, setCategory] = useState("");
+  //  const [description, setDescription] = useState("");
+
+  const schema = Yup.object().shape({
+    category: Yup.string().required("El grupo es requerido"),
+    //.username("Invalid email format"),
+    description: Yup.string()
+      .required("Descripcion es requerida").min(4, "Al menos 4"),
+  });
+
+  /*   const handleSubmit = (e) => {
+      e.preventDefault();
+      const group = { category, description };
+      dispatch(cateAdd(group));
+      navigate("/show-groups", { replace: true });
+    };
+   */
   return (
     <div className="container mt-5">
       <h2
@@ -25,45 +37,99 @@ const AddGroup = () => {
       >
         Add Group
       </h2>
-      <form
-        onSubmit={handleSubmit}
-        className="border rounded p-4"
-        style={{ maxWidth: "600px", margin: "auto" }}
+      <Formik
+        validationSchema={schema}
+        initialValues={{ category: "", description: "" }}
+        onSubmit={async (values, { setSubmitting, resetForm },) => {
+          const category = {
+            category: values.category,
+            description: values.description,
+            userid: login.id
+          }
+          await dispatch(cateAdd(category))
+          const success = JSON.parse(localStorage.categoryAdded)
+          console.log("objeto", success)
+          if (success === true) {
+            Swal.fire({
+              title: "Genial!",
+              text: "Grupo de contactos agregado! \n Desea seguir agregando?",
+              icon: "question",
+              showDenyButton: true,
+              confirmButtonText: 'Yes',
+              denyButtonText: 'No',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                resetForm({ categrory: "", description: "" })
+              } else if (result.isDenied) {
+                navigate("/show-groups")
+              }
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: localStorage.getItem("userInfo"),
+              icon: "error"
+            });
+          }
+          setSubmitting(false);
+        }}
       >
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            Group:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="author" className="form-label">
-            Description:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="btn"
-          style={{ background: "#006877", color: "white" }}
-        >
-          Add Group
-        </button>
-      </form>
+        {
+          props => {
+            const {
+              values,
+              touched,
+              errors,
+              isSubmitting,
+              handleChange,
+              handleBlur,
+              handleSubmit
+            } = props;
+
+            return (
+              <Form onSubmit={handleSubmit}>
+                <label htmlFor="title" className="form-label">
+                  Group:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="category"
+                  name="category"
+                  value={values.category}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <p className="error">
+                  {errors.category && touched.category && errors.category}
+                </p>
+                <label htmlFor="author" className="form-label">
+                  Description:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="description"
+                  name="description"
+                  value={values.description}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <p className="error">
+                  {errors.description && touched.description && errors.description}
+                </p>
+                <button
+                  type="submit"
+                  className="btn"
+                  style={{ background: "#006877", color: "white" }}
+                >
+                  Add Group
+                </button>
+              </Form>
+            )
+          }
+        }
+      </Formik>
     </div>
   );
 };

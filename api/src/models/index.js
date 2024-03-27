@@ -55,8 +55,13 @@ Configs.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
 Users.hasOne(Category)       // Una usuario puede tener una config
 Category.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
 
+Users.hasOne(Contacts)       // Una usuario puede tener un contacto
+Contacts.belongsTo(Users);    // Una contacto tener un solo usuario (fabrica)
+
+/* 
 Contacts.belongsToMany(Users, { through: 'contact_user' });
-Users.belongsToMany(Contacts, { through: 'contact_user' }); 
+Users.belongsToMany(Contacts, { through: 'contact_user' });  
+*/
 
 
 // Será necesario definir las relaciones segun necesite el sistema

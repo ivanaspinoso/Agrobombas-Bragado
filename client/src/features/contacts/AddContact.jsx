@@ -7,6 +7,7 @@ import { contactAdd } from "../../app/actions/contacts";
 let data = []
 
 const AddContact = () => {
+  const login = useSelector((state) => (state.usersReducer.login))
   const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +27,8 @@ const AddContact = () => {
       alert("Por favor asigne uno o mas grupos al contacto")
     } else {
       const cellphone = "549" + cellphon
-      const contact = { name, cellphone , country, groups };
+      const userid = login.id
+      const contact = { name, cellphone , country, groups, userid };
       dispatch(contactAdd(contact));
       navigate("/show-contacts", { replace: true });
     }

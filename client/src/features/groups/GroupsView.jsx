@@ -9,6 +9,7 @@ import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2'
 
 const GroupsView = () => {
+
   const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate()

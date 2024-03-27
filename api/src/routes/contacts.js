@@ -8,7 +8,7 @@ const { generateToken, validateToken } = require("../utils/token");
 
 var router = express.Router();
 
-//Obtener todos las usuarios
+//Obtener todos los contactos
 router.get("/", async (req, res) => {
   try {
     let getAllContacts = await Contacts.findAll({
@@ -23,6 +23,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Obtener todos las contactos de un usuario
+router.get("/byuser/:id", async (req, res) => {
+  let { id } = req.params;
+  try {
+    let getAllContacts = await Contacts.findAll({
+      order: [["name", "ASC"]],
+      where: { userId: id }
+    });
+    console.log(getAllContacts)
+    return res.send(getAllContacts);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener usuarios \n" + err,
+    });
+  }
+});
 
 //Obtener todos las usuarios de un grupo
 router.get("/group/:id", async (req, res) => {
@@ -196,7 +212,8 @@ router.post("/add", async (req, res) => {
     zip,
     province,
     country,
-    groups
+    groups,
+    userid
   } = req.body;
   let hash = "";
   console.log("grupos", groups)
@@ -227,6 +244,7 @@ router.post("/add", async (req, res) => {
     zip,
     province,
     country,
+    userId: userid
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database

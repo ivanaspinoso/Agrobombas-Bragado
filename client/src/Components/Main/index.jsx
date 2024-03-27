@@ -5,12 +5,12 @@ import autoreply from '../../assets/images/autoreply.jpg'
 import config from '../../assets/images/configuracion.webp'
 import grupos from '../../assets/images/grupos.jpg'
 import { useNavigate } from 'react-router-dom';
-import { getAllContacts } from '../../app/actions/contacts';
+import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Spinner from '../spinner';
-import { getAllCategories } from '../../app/actions/categories';
+import { getUserCategories } from '../../app/actions/categories';
 
 const Main = () => {
     const navigate = useNavigate()
@@ -25,8 +25,8 @@ const Main = () => {
         async function fetchData() {
             if (login.id) {
                 await dispatch(getConfig(login.id))
-                await dispatch(getAllContacts());
-                await dispatch(getAllCategories());
+                await dispatch(getUserContacts(login.id));
+                await dispatch(getUserCategories(login.id));
                 // await dispatch(getUser(login.username, login.password))
             } else {
                 navigate("/login")
@@ -36,7 +36,7 @@ const Main = () => {
         }
         console.log("id de usuario" + login.id)
         fetchData()
-    }, [login.id]
+    }, []
     );
 
 
