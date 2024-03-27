@@ -12,7 +12,7 @@ const { generateToken, validateToken } = require("../utils/token");
 var router = express.Router();
 
 //Obtener todos las usuarios
-router.get("/", validateToken, async (req, res) => {
+router.get("/", /* validateToken, */ async (req, res) => {
   try {
     let getAllUsers = await Users.findAll({
       order: [["createdAt", "ASC"]],
@@ -205,6 +205,26 @@ router.post("/add", async (req, res) => {
   } = req.body;
   let hash = "";
   // chequeo que estén completos los 3 campos requeridos
+  const checkUser = await Users.findOne({
+    where: {
+      username: username,
+    },
+  });
+  if (checkUser) {
+    return res
+      .status(400)
+      .json({ message: "Usuario repetido, por favor elija otro" });
+  }
+  const checkPhone = await Users.findOne({
+    where: {
+      cellphone: cellphone,
+    },
+  });
+  if (checkPhone) {
+    return res
+      .status(400)
+      .json({ message: "Numero whatsapp repetido, por favor elija otro" });
+  }
   if (!name || name === "") {
     return res
       .status(400)
@@ -215,6 +235,11 @@ router.post("/add", async (req, res) => {
       .status(400)
       .json({ message: "Falta ingresar username correspondiente" });
   }
+  if (!cellphone || cellphone === "") {
+    return res
+      .status(400)
+      .json({ message: "Falta ingresar numero de celular correspondiente" });
+  }
   if (!password || password === "") {
     return res
       .status(400)
@@ -223,6 +248,7 @@ router.post("/add", async (req, res) => {
     // hasheo password
     hash = await bcrypt.hashSync(password, 8);
   }
+
   const objUser = {
     name,
     birthdate,
@@ -241,12 +267,12 @@ router.post("/add", async (req, res) => {
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
-    let newUser = await User.create(objUser);
+    let newUser = await Users.create(objUser);
     // si todo sale bien devuelvo el objeto agregado
     console.log("Objeto de usuario guardado");
     res
       .status(200)
-      .json({ message: "Usuario admin generado correctamente", user: objUser });
+      .json({ message: "Usuario admin generado correctamente", user: newUser });
   } catch (error) {
     // en caso de error lo devuelvo al frontend
     console.log(error);

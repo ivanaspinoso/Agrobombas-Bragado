@@ -5,10 +5,12 @@ import { useDispatch } from "react-redux";
 
 const Navbar = () => {
 
-const dispatch = useDispatch()
-const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    return (
+
+    return (<>
+
         <nav className="navbar navbar-expand-lg navbar-dark bg-success">
             <div className="container">
                 <Link className="navbar-brand" to="/">
@@ -25,57 +27,60 @@ const navigate = useNavigate()
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
+                {!localStorage.getItem("userInfo") ? "" :
+                    <div className="collapse navbar-collapse" id="navbarCentral">
+                        <ul className="navbar-nav ms-auto">
+                            <li className="nav-item">
+                                <Link className="nav-link" aria-current="page" to="/">
+                                    Home
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/show-groups">
+                                    Grupos
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/show-contacts">
+                                    Contactos
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/show-messages">
+                                    Mensajes
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/building">
+                                    En espera
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/building">
+                                    Autorespuesta
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/show-configs">
+                                    Configuración
+                                </Link>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <button className="success" onClick={async () => {
+                                    await dispatch(logOut());
+                                    navigate("/login")
 
-                <div className="collapse navbar-collapse" id="navbarCentral">
-                    <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to="/">
-                                Home
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-groups">
-                                Grupos
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-contacts">
-                                Contactos
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-messages">
-                                Mensajes
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/building">
-                                En espera
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/building">
-                                Autorespuesta
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <Link className="nav-link" to="/show-configs">
-                                Configuración
-                            </Link>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <button className="success" onClick={async () => { 
-                            await dispatch(logOut());
-                            navigate("/")
-
-                            }}>
-                                Cerrar Sesión
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                                }}>
+                                    Cerrar Sesión
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
         </nav>
+
+    </>
     );
 };
 

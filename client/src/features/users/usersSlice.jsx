@@ -18,7 +18,7 @@ export const usersSlice = createSlice({
       state.login = action.payload
     },
     logoutUser: (state, action) => {
-      state.login = {}
+      state.login = action.payload 
     },
     addUser: (state, action) => {
       state.users.push(action.payload);
@@ -44,12 +44,11 @@ export const usersSlice = createSlice({
     },
     deleteUser: (state, action) => {
       const id = action.payload;
-      state.userss = state.userss.filter((user) => user.id !== id);
+      state.users = state.users.filter((user) => user.id !== id);
     },
   },
 });
 
-export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser } =
-usersSlice.actions;
+export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser } = usersSlice.actions;
 
 export default usersSlice.reducer;

@@ -24,31 +24,31 @@ module.exports = function (sequelize) {
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
+      allowNull: false,
     },
     cellphone: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     zip: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     province: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     active: {
       type: DataTypes.BOOLEAN,

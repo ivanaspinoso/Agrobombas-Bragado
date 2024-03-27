@@ -68,8 +68,16 @@ const initialGroups = [
   {
     category: "Default",
     description: "Categoria por defecto",
-    undelete: true
+    undelete: true,
+    userId: 1
   },
+  {
+    category: "Default",
+    description: "Categoria por defecto",
+    undelete: true,
+    userId: 2
+  },
+
 ];
 
 module.exports = {

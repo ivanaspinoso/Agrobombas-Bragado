@@ -12,6 +12,9 @@ export const configsSlice = createSlice({
     allConfig: (state, action) => {
       state.configs = action.payload
     },
+    addConfig: (state, action) => {
+      state.configs.push(action.payload);
+    },
     updateConfig: (state, action) => {
       const { id, business, slogan, messagewauno, messagewados, messagewatres, messagewacuatro, horario, deliveryprice, address,
         zip, city, province, country, longitude, latitude } = action.payload;
@@ -32,9 +35,12 @@ export const configsSlice = createSlice({
       state.configs.longitude = longitude;
       state.configs.latitude = latitude;
     },
+    logoutConfig: (state, action) => {
+      state.configs = action.payload
+    }
   },
 });
 
-export const { showConfig, allConfig, updateConfig } = configsSlice.actions;
+export const { showConfig, allConfig, updateConfig, logoutConfig, addConfig } = configsSlice.actions;
 
 export default configsSlice.reducer;

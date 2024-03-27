@@ -3,33 +3,46 @@ import { Formik, Form } from 'formik';
 import { getUser } from '../../app/actions/users';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-/* import * as Yup from 'yup';
- */
+import * as Yup from 'yup'
+import Swal from 'sweetalert2';
 
 const LogIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    /*       const validationSchema={Yup.object().shape({
-            username: Yup.string().required('Required'),
-            password: Yup.string().required('Required').min(8, "La contraseña es muy corta - minimo 8 caracteres").matches(/(?=.*[0-9])/, "La contraseña debe contener un numero") 
-        })}   */
+    const schema = Yup.object().shape({
+        username: Yup.string().required("Usuario es requerido"),
+        //.username("Invalid email format"),
+        password: Yup.string()
+            .required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
+    });
 
     return (
-        <div className='container sm'>
+        <div className="container mt-5">
+        <h2
+          className="text-center text-uppercase m-5"
+          style={{ letterSpacing: "5px", fontWeight: "ligher" }}
+        >
+          Ingreso al sistema
+        </h2>
             <Formik
+                validationSchema={schema}
                 initialValues={{ username: "", password: "" }}
                 onSubmit={async (values, { setSubmitting }) => {
                     console.log('Logging in', values);
                     await dispatch(getUser(values.username, values.password))
                     const idUser = JSON.parse(localStorage.userInfo)
-                    console.log("objeto",idUser)
-                    if (idUser.id > 0 ) {
-                        alert(idUser.id)
+                    console.log("objeto", idUser.id)
+                    if (idUser.id > 0) {
                         navigate("/")
-                        setSubmitting(false);
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: localStorage.getItem("userInfo"),
+                            icon: "error"
+                          });
                     }
+                    setSubmitting(false);
                 }}
             >
                 {
@@ -57,6 +70,11 @@ const LogIn = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
+                                {/* If validation is not passed show errors */}
+                                <p className="error">
+                                    {errors.username && touched.username && errors.username}
+                                </p>
+                                {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
                                 <label className='form-label' htmlFor='password'>Password</label>
                                 <input
                                     className='form-control'
@@ -68,7 +86,15 @@ const LogIn = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <button type='sumit' disabled={isSubmitting}>LogIn</button>
+                                {/* If validation is not passed show errors */}
+                                <p className="error">
+                                    {errors.password && touched.password && errors.password}
+                                </p>
+                                {/* Click on submit button to submit the form */}
+                                <div className='d-flex justify-content-around'>
+                                    <div><button type='sumit' disabled={isSubmitting}>LogIn</button></div>
+                                    <div>Si no tienes cuenta<button onClick={() => {navigate("/register")}}>Register</button></div>
+                                </div>
                             </Form>
                         );
                     }

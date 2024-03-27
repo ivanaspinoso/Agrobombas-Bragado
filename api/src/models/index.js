@@ -52,6 +52,9 @@ const Users = userModel(sequelize);
 Users.hasOne(Configs)       // Una usuario puede tener una config
 Configs.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
 
+Users.hasOne(Category)       // Una usuario puede tener una config
+Category.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
+
 Contacts.belongsToMany(Users, { through: 'contact_user' });
 Users.belongsToMany(Contacts, { through: 'contact_user' }); 
 

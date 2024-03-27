@@ -74,4 +74,45 @@ router.get("/:id", (req, res) => {
     });
 });
 
+//Obtener todas las categorías
+router.get("/", async (req, res) => {
+  try {
+    let getAllConfigs = await Configs.findAll({
+      order: [["business", "ASC"]],
+    });
+    return res.send(getAllConfigs);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener las configuraciones" + err,
+    });
+  }
+});
+
+router.post("/add", async (req, res) => {
+  const { business, userid } = req.body;
+  console.log(req.body);
+  const objConAdd = {
+    business,
+    userId: userid,
+  };
+  const existCon = await Configs.findOne({
+    where: {
+      business,
+    },
+  });
+  if (!existCon) {
+    try {
+      let newConfig = await Configs.create(objConAdd); // envio los datos al modelo sequelize para que los guarde en la database
+      return res.status(200).json(newConfig);
+    } catch (err) {
+      // en caso de error lo devuelvo al frontend
+      return res.send({
+        message: "No se pudo guardar la config" + err,
+      });
+    }
+  } else {
+    return res.status(400).send({ message: "Config existente" });
+  }
+});
+
 module.exports = router;

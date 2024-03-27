@@ -23,7 +23,7 @@ const Main = () => {
     useEffect(() => {
         // Obtener todos los  datos del sistema
         async function fetchData() {
-            if (login.id >= 1) {
+            if (login.id) {
                 await dispatch(getConfig(login.id))
                 await dispatch(getAllContacts());
                 await dispatch(getAllCategories());
@@ -34,6 +34,7 @@ const Main = () => {
             // console.log(configs)
             setIsLoading(false)
         }
+        console.log("id de usuario" + login.id)
         fetchData()
     }, [login.id]
     );

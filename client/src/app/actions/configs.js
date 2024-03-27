@@ -1,6 +1,23 @@
 import axios from "axios";
-import { allConfigsEndpoint, updConfigsEndpoint } from "../consts/consts";
-import { allConfig, updateConfig } from "../../features/config/ConfigSlice"; 
+import { allConfigsEndpoint, updConfigsEndpoint, addConfigsEndpoint } from "../consts/consts";
+import { allConfig, updateConfig, addConfig } from "../../features/config/ConfigSlice"; 
+
+
+export const configAdd = (configNew) => async (dispatch) => {
+  console.log("agregando", configNew);
+  try {
+    const { data } = await axios.post(`${addConfigsEndpoint}`, configNew);
+    dispatch({ type: addConfig, payload: data });
+    localStorage.setItem("configAdded", true)
+  } catch (err) {
+    localStorage.setItem("configAdded", err.response.data.message)
+    console.log(
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message
+    );
+  }
+};
 
 export const configUpdate = (config) => async (dispatch) => {
     console.log(updConfigsEndpoint)

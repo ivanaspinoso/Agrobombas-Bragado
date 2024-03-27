@@ -10,12 +10,15 @@ const { validateToken } = require("../utils/token")
 var router = express.Router();
 
 router.post("/add", async (req, res) => {
-  const { category, description } = req.body;
+  const { category, description, undelete, userid } = req.body;
   console.log(req.body);
   const objCatAdd = {
     category,
     description,
+    undelete,
+    userId: userid
   };
+
   const existCat = await Category.findOne({
     where: {
       category,
@@ -32,6 +35,18 @@ router.post("/add", async (req, res) => {
       });
     }
   } else {
+    if (undelete) {
+      try {
+        let newCategory = await Category.create(objCatAdd); // envio los datos al modelo sequelize para que los guarde en la database
+        return res.status(200).json(newCategory);
+      } catch (err) {
+        // en caso de error lo devuelvo al frontend
+        return res.send({
+          message: "No se pudo guardar la categoría" + err,
+        });
+      }
+ 
+    } else 
     return res.status(400).send({ message: "Categoría existente" });
   }
 });

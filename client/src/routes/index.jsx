@@ -20,6 +20,7 @@ import MessagesView from "../features/messages/MessagesView";
 import Next from "../pages/Next";
 import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../components/LogIn";
+import Register from "../components/Register";
 
 const Index = () => {
   return (
@@ -29,6 +30,7 @@ const Index = () => {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/building" element={<Next />} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="/show-messages" element={<MessagesView />} />
         <Route path="/add-message" element={<AddMessage />} />

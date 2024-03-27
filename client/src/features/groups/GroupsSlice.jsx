@@ -29,10 +29,13 @@ export const groupsSlice = createSlice({
       const id = action.payload;
       state.groups = state.groups.filter((group) => group.id !== id);
     },
+    logoutGroups: (state, action) => {
+      state.groups = action.payload
+    },
   },
 });
 
-export const { showgroups, addgroup, updategroup, deletegroup, allgroups } =
+export const { showgroups, addgroup, updategroup, deletegroup, allgroups, logoutGroups } =
 groupsSlice.actions;
 
 export default groupsSlice.reducer;

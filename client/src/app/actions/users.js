@@ -1,13 +1,15 @@
 import axios from "axios";
-import { getUserEndpoint } from "../consts/consts";
-import { loginUser, logoutUser } from "../../features/users/usersSlice";
+import { getUserEndpoint, addUserEndpoint } from "../consts/consts";
+import { addUser, loginUser, logoutUser } from "../../features/users/usersSlice";
+import { logoutGroups } from "../../features/groups/GroupsSlice";
+import { logoutConfig } from "../../features/config/ConfigSlice";
 
-/* export const userAdd = (userNew) => async (dispatch) => {
+export const userAdd = (userNew) => async (dispatch) => {
   console.log("agregando", userNew);
   try {
-    const { data } = await axios.post(`${REACT_APP_API}users/add`, userNew);
-    dispatch({ type: "USER_ADDED", payload: data });
-    localStorage.setItem("userAdded", true)
+    const { data } = await axios.post(`${addUserEndpoint}`, userNew);
+    dispatch({ type: addUser, payload: data.user });
+    localStorage.setItem("userAdded", data.user.id)
   } catch (err) {
     localStorage.setItem("userAdded", err.response.data.message)
     console.log(
@@ -16,7 +18,7 @@ import { loginUser, logoutUser } from "../../features/users/usersSlice";
         : err.message
     );
   }
-}; */
+};
 
 export const getUser = (username, password) => async (dispatch) => {
   /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
@@ -41,7 +43,10 @@ export const getUser = (username, password) => async (dispatch) => {
 
 export const logOut = () => async (dispatch) => {
   try {
+    await dispatch({ type: logoutUser, payload: {} });
     localStorage.removeItem('userInfo')
+    localStorage.removeItem("allowLogin")
+    localStorage.removeItem("userAdded")
     /*     localStorage.removeItem("userInfo");
         localStorage.removeItem("userUpdated")
         localStorage.removeItem("allowLogin")
@@ -61,7 +66,10 @@ export const logOut = () => async (dispatch) => {
         localStorage.removeItem("brandDeleted")
         localStorage.removeItem("brandAdded")
         localStorage.removeItem("brandUpdated") */
-    dispatch({ type: logoutUser, payload: {} });
+
+    await dispatch({ type: logoutGroups, payload: [] })
+    await dispatch({ type: logoutConfig, payload: [] });
+
     console.log("saliendo")
   } catch (err) {
     console.log(err)

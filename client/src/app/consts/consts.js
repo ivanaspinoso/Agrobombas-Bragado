@@ -3,8 +3,9 @@ export const REACT_APP_API = process.env.REACT_APP_API //endpoint
 
 // Users
 
-export const allUserssEndpoint = REACT_APP_API + 'users/'
+export const allUsersEndpoint = REACT_APP_API + 'users/'
 export const getUserEndpoint = REACT_APP_API + 'users/login'
+export const addUserEndpoint = REACT_APP_API + 'users/add'
 
 //contacts
 export const allContactsEndpoint = REACT_APP_API + 'contacts/';
@@ -15,6 +16,7 @@ export const updContactsEndpoint = REACT_APP_API + 'contacts/update/';
 //configs
 
 export const allConfigsEndpoint = REACT_APP_API + 'configs/';
+export const addConfigsEndpoint = REACT_APP_API + 'configs/add/';
 export const updConfigsEndpoint = REACT_APP_API + 'configs/update/';
 
 //groups

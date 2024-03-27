@@ -134,3 +134,6 @@ api/.wwebjs_auth/session/Default/Service Worker/Database/LOG
 api/.wwebjs_auth/session/Default/Service Worker/Database/LOG.old
 api/.wwebjs_auth/session/Default/Session Storage/LOG
 api/.wwebjs_auth/session/Default/Session Storage/LOG.old
+
+#objetos de pruebas
+preobjetos.txt
