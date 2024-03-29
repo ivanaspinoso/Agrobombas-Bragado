@@ -5,6 +5,7 @@ import { cateAdd } from "../../app/actions/categories";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2';
+import "../../App.css"
 
 const AddGroup = () => {
   const dispatch = useDispatch();

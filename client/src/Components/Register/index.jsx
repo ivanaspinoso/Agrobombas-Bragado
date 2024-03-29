@@ -6,6 +6,7 @@ import { userAdd } from '../../app/actions/users';
 import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
+import "../../App.css"
 
 const Register = () => {
     const dispatch = useDispatch()
@@ -18,7 +19,7 @@ const Register = () => {
         name: Yup.string().required("Tu nombre es requerido"),
         username: Yup.string().required("Usuario es requerido"),
         password: Yup.string().required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
-        repassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+        repassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').min(4, "Re Password must be at least 4 characters").required("Re ingrese Contraseña"),
     });
 
     return (

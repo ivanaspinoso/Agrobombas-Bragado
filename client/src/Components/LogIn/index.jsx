@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2';
+import "../../App.css"
 
 const LogIn = () => {
     const dispatch = useDispatch()
