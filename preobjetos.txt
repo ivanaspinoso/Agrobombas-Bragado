@@ -1,0 +1,101 @@
+{
+  "users": [1],
+  "groups": [],
+  "text": "Buenas noches",
+  "inmediate": true,
+  "senddate": "2024-03-19",
+  "sendtime": "20:00",
+  "sended": false,
+  "sendeddate": "2024-03-19",
+  "sendedtime": "20:00"
+}
+
+{
+  "name":"El Fede",
+  "username":"elfede",
+  "password":"admin",
+  "cellphone":"5492342513085",
+  "isAdmin":false,
+  "active": false
+}
+
+{
+  "business":"Hola",
+  "userId":3
+}
+
+
+
+( async () => {
+      const client = new Client({
+        authStrategy: new LocalAuth(),
+        puppeteer: {
+          args: ['--no-sandbox'],
+        }
+      });
+  
+      // Add this after express code but before starting the server
+  
+      client.on('qr', (qr) => {
+        // NOTE: This event will not be fired if a session is specified.
+        console.log('QR RECEIVED', qr);
+  
+        //probando mio
+        app.get('/wapp/getqr', async (req, res) => {
+          try {
+            const qrCodeImage = await QRcode.toDataURL(qr, {
+              width: 320,
+              height: 320,
+            });
+            console.log(qrCodeImage)
+  
+            res.send(`<img src="${qrCodeImage}" alt="QR Code"/>`)
+  
+          } catch (err) {
+            console.error('Error generating QR code:', err);
+            res.status(500).send('Internal Server Error');
+          }
+        })
+  
+      });
+  
+      client.on('ready', () => {
+        console.log('READY');
+      });
+  
+      app.get('/wapp', (req, res) => {
+        res.status(200).json({ message: "BackEnd for WAPP - Reminder." })
+      })
+  
+  
+      //mensaje a todos segun canal
+      app.post('/wapp/send/', async (req, res) => {
+        const { message, canal } = req.body
+  
+        //generando envios masivo
+        try {
+          await envio_anuncio_all(client, message, canal);
+          return res.sendStatus(200).send("Enviando mensajes")
+        } catch (er) {
+          return res.sendStatus(400).send("No se pudo inciar masivo")
+        }
+     })
+  
+      //mensaje a todos los activos segun canal
+  
+     app.post('/wapp/sendacti/', async (req, res) => {
+      const { message, canal } = req.body
+  
+      //generando envios masivo
+      try {
+        await envio_anuncio_active(client, message, canal);
+        return res.sendStatus(200).send("Enviando mensajes")
+      } catch (er) {
+        return res.sendStatus(400).send("No se pudo inciar masivo")
+      }
+    })
+  
+     //init client whats-app web 
+      await client.initialize();
+	  
+	    })();

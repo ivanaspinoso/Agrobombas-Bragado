@@ -34,7 +34,7 @@ const {
 } = require("./src/seed.js");
 
 
-const forzar = true
+const forzar = false
 // false // true
 
 // clear console
