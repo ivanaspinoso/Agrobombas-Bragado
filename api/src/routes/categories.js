@@ -18,7 +18,11 @@ router.post("/add", async (req, res) => {
     undelete,
     userId: userid
   };
-
+  if (!userid) {
+    return res.send({
+      message: "Falta ide de usuario",
+    });
+  }
   const existCat = await Category.findOne({
     where: {
       category,
@@ -52,12 +56,16 @@ router.post("/add", async (req, res) => {
 });
 
 router.put("/update", async (req, res) => {
-  const { id, category, description } = req.body.cate;
-  console.log(req.body.cate);
+  const { id, category, description } = req.body;
+  console.log(req.body);
   if (!category || category === "") {
     return res
       .status(400)
       .json({ error: "Falta ingresar categoría correspondiente" });
+  } else if (!id || id <=0 ) {
+    return res
+      .status(400)
+      .json({ error: "Ingresar id" });
   }
   const objCatUpd = {
     id,

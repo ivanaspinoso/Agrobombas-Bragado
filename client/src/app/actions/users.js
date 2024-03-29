@@ -30,8 +30,10 @@ export const getUser = (username, password) => async (dispatch) => {
     });
     dispatch({ type: loginUser, payload: data.login });
     localStorage.setItem("userInfo", JSON.stringify(data.login));
-    localStorage.setItem("allowLogin", "si")
+    localStorage.setItem("allowLogin",true)
   } catch (err) {
+    localStorage.setItem("userInfo", err.response.data.error);
+    localStorage.setItem("allowLogin",false)
     console.log(
       err.response && err.response.data.message
         ? err.response.data.message

@@ -58,5 +58,9 @@ module.exports = function (sequelize) {
       type: DataTypes.BOOLEAN,
       allowNull: true,      
     },
+    qr: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   });
 };

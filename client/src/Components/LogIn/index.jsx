@@ -19,28 +19,26 @@ const LogIn = () => {
 
     return (
         <div className="container mt-5">
-        <h2
-          className="text-center text-uppercase m-5"
-          style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-        >
-          Ingreso al sistema
-        </h2>
+            <h2
+                className="text-center text-uppercase m-5"
+                style={{ letterSpacing: "5px", fontWeight: "ligher" }}
+            >
+                Ingreso al sistema
+            </h2>
             <Formik
                 validationSchema={schema}
                 initialValues={{ username: "", password: "" }}
                 onSubmit={async (values, { setSubmitting }) => {
-                    console.log('Logging in', values);
+                    console.log('Logging in', localStorage.getItem("allowLogin"));
                     await dispatch(getUser(values.username, values.password))
-                    const idUser = JSON.parse(localStorage.userInfo)
-                    console.log("objeto", idUser.id)
-                    if (idUser.id > 0) {
+                    if (localStorage.getItem("allowLogin") === 'true') {
                         navigate("/")
                     } else {
                         Swal.fire({
                             title: "Error",
                             text: localStorage.getItem("userInfo"),
                             icon: "error"
-                          });
+                        });
                     }
                     setSubmitting(false);
                 }}
@@ -58,7 +56,10 @@ const LogIn = () => {
                         } = props;
 
                         return (
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleSubmit}
+                                className="border rounded p-4"
+                                style={{ maxWidth: "600px", margin: "auto" }}
+                            >
                                 <label className='form-label' htmlFor='Usuario'>Usuario</label>
                                 <input
                                     className='form-control'
@@ -93,7 +94,7 @@ const LogIn = () => {
                                 {/* Click on submit button to submit the form */}
                                 <div className='d-flex justify-content-around'>
                                     <div><button type='sumit' disabled={isSubmitting}>LogIn</button></div>
-                                    <div>Si no tienes cuenta<button onClick={() => {navigate("/register")}}>Register</button></div>
+                                    <div>Si no tienes cuenta<button onClick={() => { navigate("/register") }}>Register</button></div>
                                 </div>
                             </Form>
                         );

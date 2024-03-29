@@ -32,7 +32,7 @@ const Register = () => {
             <Formik
                 validationSchema={schema}
                 initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
-                onSubmit={async (values, { setSubmitting }) => {
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
                     console.log('Logging in', values);
                     const userNew = {
                         name: values.name,
@@ -44,7 +44,7 @@ const Register = () => {
                     }
                     await dispatch(userAdd(userNew))
                     console.log("Usuario", localStorage.getItem("userAdded"))
-                    if (localStorage.getItem("userAdded") >= 0) {
+                    if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
                         console.log()
                         const objConf = {
                             business: values.name, 
@@ -60,8 +60,13 @@ const Register = () => {
                         await dispatch(cateAdd(objGroup))
                         Swal.fire({
                             title: "Genial!",
-                            text: "Usuario agregado con éxito!",
+                            text: "Usuario registrado con éxito!",
                             icon: "success"
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              resetForm({ values: "" })
+                              navigate("/", { replace: true });
+                            }
                           });
                     } else {
                         Swal.fire({
@@ -87,7 +92,10 @@ const Register = () => {
                         } = props;
 
                         return (
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleSubmit}
+                            className="border rounded p-4"
+                            style={{ maxWidth: "600px", margin: "auto" }}
+                            >
                                 <label className='form-label' htmlFor='Usuario'>Nombre</label>
                                 <input
                                     className='form-control'
@@ -162,6 +170,7 @@ const Register = () => {
 
                                 <div className='d-flex justify-content-around'>
                                     <button type='sumit' disabled={isSubmitting}>Registrarme</button>
+                                    <div>Si ya tienes cuenta<button onClick={() => { navigate("/login") }}>Login</button></div>
                                 </div>
                             </Form>
                         );

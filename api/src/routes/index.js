@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
- 
+// const routesqr = require("../wa/wainit") 
 const contactRoutes = require('./contacts')
 const configRoutes = require('./configs') 
 const messagesRoutes = require('./messages')
@@ -14,6 +14,8 @@ router.use('/configs', configRoutes)
 router.use('/messages', messagesRoutes)
 router.use('/categories', categoriesRoutes)
 router.use('/users', usersRoutes)
+// router.use('/qr', routesqr)
+
 
 
 router.get("/", (req,res) => {

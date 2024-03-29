@@ -85,7 +85,7 @@ export const getAllCategories = () => async (dispatch) => {
   export const updateCategory = (cate) => async (dispatch) => {
     /* console.log(cate) */
     try {
-        const { data } = await axios.put(`${updGroupsEndpoint}`, {cate});
+        const { data } = await axios.put(`${updGroupsEndpoint}`, cate);
         dispatch({ type: updategroup, payload: data });
         localStorage.setItem("categoryUpdated",true)
       }

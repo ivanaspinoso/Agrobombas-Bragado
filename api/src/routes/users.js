@@ -11,6 +11,8 @@ const { generateToken, validateToken } = require("../utils/token");
 
 var router = express.Router();
 
+const { Client, LocalAuth } = require('whatsapp-web.js');
+
 //Obtener todos las usuarios
 router.get("/", /* validateToken, */ async (req, res) => {
   try {
@@ -166,8 +168,8 @@ router.put("/update", validateToken, async (req, res) => {
       let newUser = await User.update(objUser, {
         where: {
           id,
-/*           username: olduser,
-          password: oldpass, */
+          /*           username: olduser,
+                    password: oldpass, */
         },
       });
       // si todo sale bien devuelvo el objeto agregado
@@ -185,8 +187,58 @@ router.put("/update", validateToken, async (req, res) => {
   }
 });
 
-//add user (quizás no se use)
+// Activar usuario
+router.post("/active", async (req, res) => {
+  // tomo del form de login el username y la contraseña (aquí por body)
+  const { username, password } = req.body;
+  console.log(username, password);
+  // reviso que lleguen bien
+  if (!username || username === "") {
+    return res.status(400).json({ message: "Por favor, ingrese username" });
+  }
+  if (!password || password === "") {
+    return res
+      .status(400)
+      .json({ message: "Por favor, ingrese la contraseña" });
+  }
+  let existUser = await User.findOne({
+    where: {
+      username,
+      password,
+    },
+  });
+  if (!existUser)
+    return res
+      .status(400)
+      .json({ message: "No tiene permisos para actactivar usuario" });
+  // console.log("Objeto user modificar usuario creado")
+  // armo el objeto
+  const objUser = {
+    active: true,
+  };
+  try {
+    // envio los datos al modelo sequelize para que los guarde en la database
+    let newUser = await User.update(objUser, {
+      where: {
+        username,
+        password,
+      },
+    });
+    // si todo sale bien devuelvo el objeto agregado
+    // console.log("Objeto de usuario guardado")
+    res
+      .status(200)
+      .json({ message: "usuario activado con éxito", user: objUser });
+  } catch (error) {
+    // en caso de error lo devuelvo al frontend
+    // console.log(error)
+    res.status(400).json({ message: "No se pudo activar usuario" + error });
+  }
+  // res.send("get user")
+});
 
+
+//add user (quizás no se use)
 router.post("/add", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
   const {
@@ -270,6 +322,8 @@ router.post("/add", async (req, res) => {
     let newUser = await Users.create(objUser);
     // si todo sale bien devuelvo el objeto agregado
     console.log("Objeto de usuario guardado");
+    // await iniciar_wa(newUser.id)
+    // await iniciar_wa(newUser.cellphone)
     res
       .status(200)
       .json({ message: "Usuario admin generado correctamente", user: newUser });
@@ -280,54 +334,54 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Activar usuario
-router.post("/active", async (req, res) => {
-  // tomo del form de login el username y la contraseña (aquí por body)
-  const { username, password } = req.body;
-  console.log(username, password);
-  // reviso que lleguen bien
-  if (!username || username === "") {
-    return res.status(400).json({ message: "Por favor, ingrese username" });
+
+const iniciar_wa = async (waNumber) => {
+
+
+  const clientConfig = {
+    authStrategy: new LocalAuth({
+      clientId: waNumber
+    })
   }
-  if (!password || password === "") {
-    return res
-      .status(400)
-      .json({ message: "Por favor, ingrese la contraseña" });
-  }
-  let existUser = await User.findOne({
-    where: {
-      username,
-      password,
-    },
+
+  const client = new Client(clientConfig)
+
+  // Add this after express code but before starting the server
+
+  client.on('qr', (qr) => {
+    // NOTE: This event will not be fired if a session is specified.
+    console.log('QR RECEIVED', qr);
+
   });
-  if (!existUser)
-    return res
-      .status(400)
-      .json({ message: "No tiene permisos para actactivar usuario" });
-  // console.log("Objeto user modificar usuario creado")
-  // armo el objeto
-  const objUser = {
-    active: true,
-  };
+
+  client.on('ready', () => {
+    console.log('READY');
+  });
+
+  /*   clients[waNumber] = client
+    folders.push(waNumber, getqr) */
+  await client.initialize();
+
+}
+
+
+//probando mio
+router.get('/wapp/getqr', async (req, res) => {
   try {
-    // envio los datos al modelo sequelize para que los guarde en la database
-    let newUser = await User.update(objUser, {
-      where: {
-        username,
-        password,
-      },
+    const qrCodeImage = await QRcode.toDataURL(qr, {
+      width: 320,
+      height: 320,
     });
-    // si todo sale bien devuelvo el objeto agregado
-    // console.log("Objeto de usuario guardado")
-    res
-      .status(200)
-      .json({ message: "usuario activado con éxito", user: objUser });
-  } catch (error) {
-    // en caso de error lo devuelvo al frontend
-    // console.log(error)
-    res.status(400).json({ message: "No se pudo activar usuario" + error });
+    console.log(qrCodeImage)
+
+    res.send(`<img src="${qrCodeImage}" alt="QR Code"/>`)
+
+  } catch (err) {
+    console.error('Error generating QR code:', err);
+    res.status(500).send('Internal Server Error');
   }
-  // res.send("get user")
-});
+})
+
+
 
 module.exports = router;

@@ -12,23 +12,12 @@ const AddGroup = () => {
 
   const login = useSelector((state) => state.usersReducer.login)
 
-  //  const [category, setCategory] = useState("");
-  //  const [description, setDescription] = useState("");
-
   const schema = Yup.object().shape({
     category: Yup.string().required("El grupo es requerido"),
-    //.username("Invalid email format"),
-    description: Yup.string()
-      .required("Descripcion es requerida").min(4, "Al menos 4"),
+    description: Yup.string().required("Descripcion es requerida").min(4, "Al menos 4"),
   });
 
-  /*   const handleSubmit = (e) => {
-      e.preventDefault();
-      const group = { category, description };
-      dispatch(cateAdd(group));
-      navigate("/show-groups", { replace: true });
-    };
-   */
+
   return (
     <div className="container mt-5">
       <h2
@@ -49,13 +38,13 @@ const AddGroup = () => {
           await dispatch(cateAdd(category))
           const success = JSON.parse(localStorage.categoryAdded)
           console.log("objeto", success)
-          if (success === true) {
+          if (success && success === true) {
             Swal.fire({
               title: "Genial!",
               text: "Grupo de contactos agregado! \n Desea seguir agregando?",
-              icon: "question",
+              icon: "success",
               showDenyButton: true,
-              confirmButtonText: 'Yes',
+              confirmButtonText: 'Sí',
               denyButtonText: 'No',
             }).then((result) => {
               if (result.isConfirmed) {
@@ -87,7 +76,10 @@ const AddGroup = () => {
             } = props;
 
             return (
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} 
+              className="border rounded p-4"
+              style={{ maxWidth: "600px", margin: "auto" }}
+              >
                 <label htmlFor="title" className="form-label">
                   Group:
                 </label>
