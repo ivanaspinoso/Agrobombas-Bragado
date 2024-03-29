@@ -15,15 +15,24 @@ import { getUserCategories } from '../../app/actions/categories';
 const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const login = !localStorage.getItem("userInfo") ? {} : JSON.parse(localStorage.getItem("userInfo"))
+    // const login = useSelector((state) => (state.usersReducer.login))
     const configs = useSelector((state) => state.configsReducer.configs);
 
     const [isloading, setIsLoading] = useState(true)
 
+    var login = {}
+
+  
     useEffect(() => {
         // Obtener todos los  datos del sistema
+        if (!localStorage.getItem("userInfo") /* || typeof localStorage.getItem("userInfo") === "string" */) {
+            login = {id: 0}
+        } else {
+            login = JSON.parse(localStorage.getItem("userInfo"))
+        }
+        console.log("login", login)
         async function fetchData() {
-            if (login.id) {
+            if (login.id > 0) {
                 await dispatch(getConfig(login.id))
                 await dispatch(getUserContacts(login.id));
                 await dispatch(getUserCategories(login.id));
