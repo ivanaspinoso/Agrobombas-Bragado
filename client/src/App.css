@@ -29,7 +29,15 @@
 }
 
 .error {
-  color: red;
+  border: 1px solid;
+  margin: 10px 0px;
+  padding: 6px 10px 6px 50px;
+  color: #D8000C;
+  background-color: #FFBABA;
+  background-image: url('https://i.imgur.com/GnyDvKN.png');
+  background-repeat: no-repeat;
+  background-position: 10px center; 
+  border-radius: 20px 10px;
 }
 
 @keyframes App-logo-spin {

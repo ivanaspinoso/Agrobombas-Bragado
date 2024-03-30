@@ -73,9 +73,9 @@ const LogIn = () => {
                                     onBlur={handleBlur}
                                 />
                                 {/* If validation is not passed show errors */}
-                                <p className="error">
+                                {errors.username ? <p className="error">
                                     {errors.username && touched.username && errors.username}
-                                </p>
+                                </p> : "" }
                                 {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
                                 <label className='form-label' htmlFor='password'>Password</label>
                                 <input
@@ -89,9 +89,9 @@ const LogIn = () => {
                                     onBlur={handleBlur}
                                 />
                                 {/* If validation is not passed show errors */}
-                                <p className="error">
+                                {errors.password ? <p className="error">
                                     {errors.password && touched.password && errors.password}
-                                </p>
+                                </p> : "" }
                                 {/* Click on submit button to submit the form */}
                                 <div className='d-flex justify-content-around'>
                                     <div><button type='sumit' disabled={isSubmitting}>LogIn</button></div>

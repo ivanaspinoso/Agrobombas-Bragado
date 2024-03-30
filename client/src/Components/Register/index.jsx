@@ -108,9 +108,9 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p className="error">
+                                {errors.name ? <p className="error">
                                     {errors.name && touched.name && errors.name}
-                                </p>
+                                </p> : ""}
                                 <label className='form-label' htmlFor='Usuario'>Celular</label>
                                 <input
                                     className='form-control'
@@ -122,9 +122,9 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p className="error">
+                                { errors.phoneNumber ? <p className="error">
                                     {errors.phoneNumber && touched.phoneNumber && errors.phoneNumber}
-                                </p>
+                                </p> : "" }
                                 <label className='form-label' htmlFor='Usuario'>Usuario</label>
                                 <input
                                     className='form-control'
@@ -136,9 +136,9 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p className="error">
+                                {errors.username ? <p className="error">
                                     {errors.username && touched.username && errors.username}
-                                </p>
+                                </p> : "" }
                                 <label className='form-label' htmlFor='password'>Password</label>
                                 <input
                                     className='form-control'
@@ -150,9 +150,9 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p className="error">
+                                {errors.password ? <p className="error">
                                     {errors.password && touched.password && errors.password}
-                                </p>
+                                </p> : "" }
                                 <label className='form-label' htmlFor='reassword'>Confirm Password</label>
                                 <input
                                     className='form-control'
@@ -164,11 +164,9 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p className="error">
+                                {errors.repassword ? <p className="error">
                                     {errors.repassword && touched.repassword && errors.repassword}
-                                </p>
-
-
+                                </p>:"" }
                                 <div className='d-flex justify-content-around'>
                                     <button type='sumit' disabled={isSubmitting}>Registrarme</button>
                                     <div>Si ya tienes cuenta<button onClick={() => { navigate("/login") }}>Login</button></div>
