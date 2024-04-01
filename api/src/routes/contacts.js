@@ -96,58 +96,6 @@ router.get("/allphones", async (req, res) => {
   }
 });
 
-// login route
-router.post("/login", async (req, res) => {
-  const body = req.body;
-  // reviso que lleguen bien
-  if (!body.username || body.username === "") {
-    return res.status(400).json({ message: "Por favor, ingrese username" });
-  }
-  if (!body.password || body.password === "") {
-    return res
-      .status(400)
-      .json({ message: "Por favor, ingrese la contraseña" });
-  }
-  const user = await Contacts.findOne({
-    where: {
-      username: body.username,
-    },
-  });
-  if (user) {
-    // check user password with hashed password stored in the database
-    const validPassword = await bcrypt.compare(body.password, Contacts.password);
-    if (validPassword) {
-      let objLogin = {
-        username: Contacts.username,
-        id: Contacts.id,
-        name: Contacts.name,
-        email: Contacts.email,
-        isAdmin: Contacts.isAdmin,
-        cellphone: Contacts.cellphone,
-        address: Contacts.address,
-        city: Contacts.city,
-        zip: Contacts.zip,
-        province: Contacts.province,
-        country: Contacts.country,
-        active: Contacts.active,
-        blocked: Contacts.blocked,
-        birthdate: Contacts.birthdate,
-
-        /*         password: body.password, */
-        token: generateToken(user),
-      };
-      // token: generateToken(user)
-      return res
-        .status(200)
-        .json({ message: "Usuario logueado con éxito", login: objLogin });
-    } else {
-      res.status(400).json({ error: "Contraseña incorrecta" });
-    }
-  } else {
-    res.status(401).json({ error: "Usuario inexistente" });
-  }
-});
-
 
 // Actualizar datos de contacto
 router.put("/update", async (req, res) => {

@@ -58,9 +58,13 @@ module.exports = function (sequelize) {
       type: DataTypes.BOOLEAN,
       allowNull: true,      
     },
-    qr: {
+    backwa: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    vinculated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     }
   });
 };

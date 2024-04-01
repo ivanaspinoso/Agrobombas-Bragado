@@ -15,6 +15,8 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
+    backwa: "http://localhost:10001",
+    vinculated: false
   },
   {
     name: "Franco M.",
@@ -30,6 +32,8 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
+    backwa: "http://localhost:10002",
+    vinculated: false
   }
 ]
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { configUpdate } from "../../app/actions/configs";
 
@@ -7,6 +7,7 @@ const EditConfig = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   console.log(location.state);
+  const user = useSelector((state) => state.usersReducer.login)
   const [id] = useState(location.state.id);
   const [business, setBusiness] = useState(location.state.business);
   const [slogan, setSlogan] = useState(location.state.slogan);
@@ -65,8 +66,9 @@ const EditConfig = () => {
           Update Config
         </button>
       </form>
-      <div>
-        <iframe src="http://localhost:3004/wapp/getqr" height={400} width={400}></iframe>
+      <div className="d-flex center-flex aligns-items-center justify-content-center">
+        <label>Vincule su whatsapp</label>
+        <iframe src={ user.backwa + "/wapp/getqr"} height={400} width={400}></iframe>
       </div>
     </div>
   );

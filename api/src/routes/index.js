@@ -14,9 +14,6 @@ router.use('/configs', configRoutes)
 router.use('/messages', messagesRoutes)
 router.use('/categories', categoriesRoutes)
 router.use('/users', usersRoutes)
-// router.use('/qr', routesqr)
-
-
 
 router.get("/", (req,res) => {
     res.status(200).json({message:"BackEnd for WAPP Message System"})

@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 // const cors = require("cors"); // para poder hacer peticiones desde cualquier punto (tambien se puede configurar de donde recibir las peticiones)
 const routes = require("./src/routes/index");
-const { PORT } = require("./src/utils/config/index.js");
+const { PORT, FORZAR } = require("./src/utils/config/index.js");
 const errorHandler = require("./src/utils/middlewares/errorHandler.js");
 const setHeaders = require("./src/utils/middlewares/setHeaders.js");
 
@@ -34,28 +34,32 @@ const {
 } = require("./src/seed.js");
 
 
-const forzar = false
-// false // true
+
+
 
 // clear console
 console.clear()
+console.log(typeof FORZAR)
+
+fuerce = FORZAR === 'true' ? true : false
+
 
 // Listening for the server
 conn
-  .sync({ force: forzar })
+  .sync({ force: fuerce })
   .then(() => {
     console.log("Connect");
     app.listen(PORT, () => {
-      console.log(`Listen on port ${PORT}`);
+      console.log(`Listen on port ${PORT}, forzar es: ${fuerce}`);
     });
   })
   .then(async () => {
-    if (forzar === true) await Users.bulkCreate(initialUsers);
+    if (fuerce === true) await Users.bulkCreate(initialUsers);
   })
   .then(async () => {
-    if (forzar === true) await Configs.bulkCreate(initialConfigs);
+    if (fuerce === true) await Configs.bulkCreate(initialConfigs);
   }).then(async () => {
-    if (forzar === true) await Category.bulkCreate(initialGroups);
+    if (fuerce === true) await Category.bulkCreate(initialGroups);
   }).catch((error) => {
     console.log('Error en index', error);
   })

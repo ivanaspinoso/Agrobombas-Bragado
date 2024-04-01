@@ -11,32 +11,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Spinner from '../spinner';
 import { getUserCategories } from '../../app/actions/categories';
+import { getUserMessages } from '../../app/actions/messages';
 
 const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const login = useSelector((state) => (state.usersReducer.login))
     const configs = useSelector((state) => state.configsReducer.configs);
+    const [vincu, setVincu] = useState("")
 
     const [isloading, setIsLoading] = useState(true)
 
     var login = {}
 
-  
     useEffect(() => {
         // Obtener todos los  datos del sistema
         if (!localStorage.getItem("userInfo") /* || typeof localStorage.getItem("userInfo") === "string" */) {
-            login = {id: 0}
+            login = { id: 0 }
         } else {
             login = JSON.parse(localStorage.getItem("userInfo"))
+
         }
+
         console.log("login", login)
         async function fetchData() {
             if (login.id > 0) {
                 await dispatch(getConfig(login.id))
                 await dispatch(getUserContacts(login.id));
                 await dispatch(getUserCategories(login.id));
+                await dispatch(getUserMessages(login.id))
                 // await dispatch(getUser(login.username, login.password))
+
+                if (login.vinculated) setVincu("cuenta vinculada a WhatsApp")
+                else setVincu("Aun no se ha vinculado su WhatsApp")
+            
             } else {
                 navigate("/login")
             }
@@ -48,17 +55,17 @@ const Main = () => {
     }, []
     );
 
-
     return (<>
         {!isloading ?
             <div className="container my-12 mx-auto px-4 md:px-12">
                 <header>
                     <h1 className="d-flex center-flex aligns-items-center justify-content-center">
-                        Control Panel de { configs.business }
+                        Control Panel de {configs.business}
                     </h1>
+                    <div><h3 className="d-flex center-flex aligns-items-center justify-content-center">{vincu}</h3></div>
                 </header>
                 <div className="row row-cols-1 row-cols-md-3">
-                <div className="card" /* style={{"width": "18rem;"}} */>
+                    <div className="card" /* style={{"width": "18rem;"}} */>
                         <img src={grupos} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Grupos de Contacto</h5>

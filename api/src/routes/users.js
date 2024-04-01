@@ -85,6 +85,8 @@ router.post("/login", async (req, res) => {
         blocked: user.blocked,
         birthdate: user.birthdate,
         password: user.password,
+        backwa: user.backwa,
+        vinculated: user.vinculated,
         /*         password: body.password, */
         token: generateToken(user),
       };
@@ -100,6 +102,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// vincular usuario con WA
+router.put("/vinculate", async (req, res) => {
+  const {id, vinculated} = req.body
+  const objUser = {
+    id,
+    vinculated
+  }
+  try {
+    // envio los datos al modelo sequelize para que los guarde en la database
+    let newUser = await Users.update(objUser, {
+      where: {
+        id,
+      },
+    });
+    res.status(200).send("Usuario vinculated")
+ 
+  } catch (error) {
+    res.status(400).json({ message: "No se pudo actualizar usuario" + error });
+  }
+})
 
 // Actualizar datos de usuario
 router.put("/update", validateToken, async (req, res) => {
@@ -254,6 +276,7 @@ router.post("/add", async (req, res) => {
     zip,
     province,
     country,
+    backwa,
   } = req.body;
   let hash = "";
   // chequeo que estén completos los 3 campos requeridos
@@ -316,14 +339,14 @@ router.post("/add", async (req, res) => {
     country,
     active: false,
     blocked: false,
+    backwa,
+    vinculated: false
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
     let newUser = await Users.create(objUser);
     // si todo sale bien devuelvo el objeto agregado
     console.log("Objeto de usuario guardado");
-    // await iniciar_wa(newUser.id)
-    // await iniciar_wa(newUser.cellphone)
     res
       .status(200)
       .json({ message: "Usuario admin generado correctamente", user: newUser });
@@ -333,55 +356,6 @@ router.post("/add", async (req, res) => {
     res.status(500).json({ message: "No se pudo crear el admin" + error });
   }
 });
-
-
-const iniciar_wa = async (waNumber) => {
-
-
-  const clientConfig = {
-    authStrategy: new LocalAuth({
-      clientId: waNumber
-    })
-  }
-
-  const client = new Client(clientConfig)
-
-  // Add this after express code but before starting the server
-
-  client.on('qr', (qr) => {
-    // NOTE: This event will not be fired if a session is specified.
-    console.log('QR RECEIVED', qr);
-
-  });
-
-  client.on('ready', () => {
-    console.log('READY');
-  });
-
-  /*   clients[waNumber] = client
-    folders.push(waNumber, getqr) */
-  await client.initialize();
-
-}
-
-
-//probando mio
-router.get('/wapp/getqr', async (req, res) => {
-  try {
-    const qrCodeImage = await QRcode.toDataURL(qr, {
-      width: 320,
-      height: 320,
-    });
-    console.log(qrCodeImage)
-
-    res.send(`<img src="${qrCodeImage}" alt="QR Code"/>`)
-
-  } catch (err) {
-    console.error('Error generating QR code:', err);
-    res.status(500).send('Internal Server Error');
-  }
-})
-
 
 
 module.exports = router;

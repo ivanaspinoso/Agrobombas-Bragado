@@ -9,4 +9,5 @@ module.exports = {
     host: process.env.HOST || 3004,
     PORT: process.env.PORT,
     SALT: process.env.SALT,
+    FORZAR: process.env.FORZAR
 }

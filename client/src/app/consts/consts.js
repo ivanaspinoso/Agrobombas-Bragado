@@ -31,6 +31,7 @@ export const updGroupsEndpoint = REACT_APP_API + 'categories/update/';
 //messages
 
 export const allMessagesEndpoint = REACT_APP_API + 'messages/';
+export const userMessagesEndpoint = REACT_APP_API + 'messages/byuser/'
 export const addMessagesEndpoint = REACT_APP_API + 'messages/add';
 export const delMessagesEndpoint = REACT_APP_API + 'messages/delete/';
 export const updMessagesEndpoint = REACT_APP_API + 'messages/update/';

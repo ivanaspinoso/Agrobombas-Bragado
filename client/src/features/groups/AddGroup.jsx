@@ -25,7 +25,7 @@ const AddGroup = () => {
         className="text-center text-uppercase m-5"
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
-        Add Group
+        Agregar Grupo
       </h2>
       <Formik
         validationSchema={schema}
@@ -77,12 +77,12 @@ const AddGroup = () => {
             } = props;
 
             return (
-              <Form onSubmit={handleSubmit} 
-              className="border rounded p-4"
-              style={{ maxWidth: "600px", margin: "auto" }}
+              <Form onSubmit={handleSubmit}
+                className="border rounded p-4"
+                style={{ maxWidth: "600px", margin: "auto" }}
               >
                 <label htmlFor="title" className="form-label">
-                  Group:
+                  Grupo:
                 </label>
                 <input
                   type="text"
@@ -93,11 +93,11 @@ const AddGroup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <p className="error">
+                {errors.category ? <p className="error">
                   {errors.category && touched.category && errors.category}
-                </p>
+                </p> : ""}
                 <label htmlFor="author" className="form-label">
-                  Description:
+                  Descripción:
                 </label>
                 <input
                   type="text"
@@ -108,15 +108,15 @@ const AddGroup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <p className="error">
+                {errors.description ? <p className="error">
                   {errors.description && touched.description && errors.description}
-                </p>
+                </p> : ""}
                 <button
                   type="submit"
                   className="btn"
                   style={{ background: "#006877", color: "white" }}
                 >
-                  Add Group
+                  Agregar Grupo
                 </button>
               </Form>
             )

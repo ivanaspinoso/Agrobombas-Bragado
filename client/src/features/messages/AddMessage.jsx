@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { messageAdd } from "../../app/actions/messages";
+import { getUserMessages, messageAdd } from "../../app/actions/messages";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,10 +11,13 @@ import Swal from "sweetalert2";
 let data = []
 
 const AddMessage = () => {
+  const login = useSelector((state) => state.usersReducer.login)
   const groups = useSelector((state) => state.groupsReducer.groups);
   const destin = useSelector((state) => state.contactsReducer.contacts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+   
   // senddate, sendtime, sended, sendedate, sendedtime
 
   const hoy = new Date()/* .toLocaleDateString(); */
@@ -25,34 +28,45 @@ const AddMessage = () => {
   const [sendtime, setSendTime] = useState(ahora);
   const [todos, setTodos] = useState(false)
 
+  const allContacts = useSelector((state) => state.contactsReducer.contacts)
+
   const [input, setInput] = useState({
     categories: [],
     contacts: []
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data)
     const groups = input.categories
-    const users = input.contacts
+    const destins = input.contacts
 
-    if (users.length <= 0 && groups.length <= 0) {
-      alert("Por favor asigne uno contacto o grupo de contacto para enviar el mensaje")
+    if (todos) {
+      console.log("usuarios", allContacts)
+      allContacts && allContacts.map(async (contact) => {
+        console.log("dia: " + senddate)
+        var senddates = new Date(Date(senddate)).toISOString();
+        var sendtimes = new Date(Date(sendtime)).toISOString()
+        console.log("la arme?", senddates, sendtimes)
+                const message = { text, inmediate, senddates, sendtimes, contactid: contact.id };
+        console.log("MENSAJE A ENVIAR", message)
+        await dispatch(messageAdd(message));
+      })
     } else {
-      users && users.map((contact) => {
+      console.log("destinatario", destins)
+      destins && destins.map(async (contact) => {
         console.log("dia: " + senddate)
         var senddates = new Date()
         var sendtimes = new Date()
         const message = { text, inmediate, senddates, sendtimes, contactid: contact };
-
-        console.log(message)
-
-        dispatch(messageAdd(message));
-
+        console.log("MENSAJE A ENVIAR", message)
+        await dispatch(messageAdd(message));
       })
-      navigate("/show-messages", { replace: true });
     }
+    navigate("/show-messages", { replace: true });
   };
+
+
 
   function handleDestinChangeSelect(e) {
     var temperac = input.contacts.find((temp) => temp === e.target.value);
@@ -116,7 +130,7 @@ const AddMessage = () => {
   if (destin.length === 0) {
     Swal.fire({
       title: "Destinatarios",
-      html:"Debe ingresar, al menos, un destinatario<br/>Desea agregar?",
+      html: "Debe ingresar, al menos, un destinatario<br/>Desea agregar?",
       icon: "question",
       showDenyButton: true,
       confirmButtonText: 'Sí',
@@ -136,7 +150,7 @@ const AddMessage = () => {
         className="text-center text-uppercase m-5"
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
-        Add Message
+        Agregar mensaje
       </h2>
       <form
         onSubmit={handleSubmit}
@@ -266,7 +280,7 @@ const AddMessage = () => {
           className="btn"
           style={{ background: "#006877", color: "white" }}
         >
-          Add Message
+          Agregar Mensaje
         </button>
       </form>
     </div>
