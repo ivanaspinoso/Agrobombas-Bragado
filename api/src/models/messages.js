@@ -30,5 +30,9 @@ module.exports = function (sequelize) {
       type: DataTypes.TIME,
       allowNull: true,
     },
+    result: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   });
 };

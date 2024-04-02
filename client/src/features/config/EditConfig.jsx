@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { configUpdate } from "../../app/actions/configs";
+import { getQRUser } from "../../app/actions/users";
+import { QRCode } from 'react-qrcode-logo';
+
 
 const EditConfig = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   console.log(location.state);
-  const user = useSelector((state) => state.usersReducer.login)
+  const login = useSelector((state) => state.usersReducer.login)
   const [id] = useState(location.state.id);
   const [business, setBusiness] = useState(location.state.business);
   const [slogan, setSlogan] = useState(location.state.slogan);
   const navigate = useNavigate();
+
+  dispatch(getQRUser(login.username, login.password))
+  const userqr = useSelector((state) => state.usersReducer.qrCode)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,8 +73,12 @@ const EditConfig = () => {
         </button>
       </form>
       <div className="d-flex center-flex aligns-items-center justify-content-center">
-        <label>Vincule su whatsapp</label>
-        <iframe src={ user.backwa + "/wapp/getqr"} height={400} width={400}></iframe>
+        {
+          userqr.length != 0 ? 
+            <><label>Vincule su whatsapp {console.log(typeof userqr)}</label>
+            <QRCode className="form-control" value={userqr} size={325} /></>
+              : "Cuenta vinculada"
+        }
       </div>
     </div>
   );

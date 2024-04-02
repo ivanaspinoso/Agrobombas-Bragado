@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getUserEndpoint, addUserEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser } from "../../features/users/usersSlice";
+import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint } from "../consts/consts";
+import { addUser, loginUser, logoutUser, getQr } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 
@@ -41,6 +41,27 @@ export const getUser = (username, password) => async (dispatch) => {
     );
   }
 };
+
+export const getQRUser = (username, password) => async (dispatch) => {
+  /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
+  try {
+    console.log(username,password)
+    const { data } = await axios.post(`${getQRUserEndpoint}`, {
+      username,
+      password,
+    });
+    dispatch({ type: getQr, payload: data.qrcode });
+    localStorage.setItem("userQR", JSON.stringify(data.qrcode));
+  } catch (err) {
+    localStorage.setItem("userQR", err.response.data.error);
+    console.log(
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message
+    );
+  }
+};
+
 
 
 export const logOut = () => async (dispatch) => {

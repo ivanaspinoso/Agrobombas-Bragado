@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import Spinner from '../spinner';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
+import { getQRUser } from '../../app/actions/users';
 
 const Main = () => {
     const navigate = useNavigate()
@@ -39,6 +40,7 @@ const Main = () => {
                 await dispatch(getUserContacts(login.id));
                 await dispatch(getUserCategories(login.id));
                 await dispatch(getUserMessages(login.id))
+                await dispatch(getQRUser(login.username, login.password))
                 // await dispatch(getUser(login.username, login.password))
 
                 if (login.vinculated) setVincu("cuenta vinculada a WhatsApp")

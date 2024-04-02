@@ -65,6 +65,10 @@ module.exports = function (sequelize) {
     vinculated: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+    },
+    qrcode: {
+      type: DataTypes.STRING,
+      allowNull: true,
     }
   });
 };

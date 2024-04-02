@@ -6,6 +6,7 @@ export const REACT_APP_API = process.env.REACT_APP_API //endpoint
 export const allUsersEndpoint = REACT_APP_API + 'users/'
 export const getUserEndpoint = REACT_APP_API + 'users/login'
 export const addUserEndpoint = REACT_APP_API + 'users/add'
+export const getQRUserEndpoint = REACT_APP_API + 'users/qrcode'
 
 //contacts
 export const allContactsEndpoint = REACT_APP_API + 'contacts/';

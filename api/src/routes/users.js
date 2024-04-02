@@ -84,9 +84,10 @@ router.post("/login", async (req, res) => {
         active: user.active,
         blocked: user.blocked,
         birthdate: user.birthdate,
-        password: user.password,
+        password: body.password,
         backwa: user.backwa,
         vinculated: user.vinculated,
+        qrcode: user.qrcode,
         /*         password: body.password, */
         token: generateToken(user),
       };
@@ -102,12 +103,56 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+// login route
+router.post("/qrcode", async (req, res) => {
+  const body = req.body;
+  // reviso que lleguen bien
+  if (!body.username || body.username === "") {
+    return res.status(400).json({ message: "Por favor, ingrese username" });
+  }
+  if (!body.password || body.password === "") {
+    return res
+      .status(400)
+      .json({ message: "Por favor, ingrese la contraseña" });
+  }
+  const user = await Users.findOne({
+    where: {
+      username: body.username,
+    },
+  });
+  if (user) {
+    // check user password with hashed password stored in the database
+    const validPassword = await bcrypt.compare(body.password, user.password);
+    if (validPassword) {
+      let objLogin = {
+  
+        qrcode: user.qrcode,
+        /*         password: body.password, */
+      };
+      const userQR = objLogin.qrcode
+      // token: generateToken(user)
+      return res
+        .status(200)
+        .json({ message: "QR obtenido con éxito", qrcode: userQR });
+    } else {
+      res.status(400).json({ error: "Contraseña incorrecta" });
+    }
+  } else {
+    res.status(400).json({ error: "Usuario inexistente" });
+  }
+});
+
+
+
+
 // vincular usuario con WA
 router.put("/vinculate", async (req, res) => {
-  const {id, vinculated} = req.body
+  const {id, vinculated, qrcode} = req.body
   const objUser = {
     id,
-    vinculated
+    vinculated,
+    qrcode
   }
   try {
     // envio los datos al modelo sequelize para que los guarde en la database

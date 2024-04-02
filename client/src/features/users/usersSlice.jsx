@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialUsers = {
   loading: 'idle',
   users: [],
-  login: {}
+  login: {},
+  qrCode: ""
 };
 
 export const usersSlice = createSlice({
@@ -16,6 +17,9 @@ export const usersSlice = createSlice({
     },
     loginUser: (state, action) => {
       state.login = action.payload
+    },
+    getQr: (state, action) => {
+      state.qrCode = action.payload 
     },
     logoutUser: (state, action) => {
       state.login = action.payload 
@@ -49,6 +53,6 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser } = usersSlice.actions;
+export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr } = usersSlice.actions;
 
 export default usersSlice.reducer;
