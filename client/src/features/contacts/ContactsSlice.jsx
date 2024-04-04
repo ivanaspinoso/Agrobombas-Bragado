@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialContacts = {
   loading: 'idle',
   contacts: [],
+  aenviar: {},
 };
 
 export const contactsSlice = createSlice({
@@ -15,6 +16,9 @@ export const contactsSlice = createSlice({
     },
     addContact: (state, action) => {
       state.contacts.push(action.payload);
+    },
+    sendContact: (state, action) => {
+      state.aenviar = action.payload;
     },
     updateContact: (state, action) => {
       const { id, name, email, cellphone, address, city, zip, province,  country, } = action.payload;
@@ -38,7 +42,7 @@ export const contactsSlice = createSlice({
   },
 });
 
-export const { showContacts, addContact, updateContact, deleteContact, allContact } =
+export const { showContacts, addContact, updateContact, deleteContact, allContact, sendContact } =
 contactsSlice.actions;
 
 export default contactsSlice.reducer;

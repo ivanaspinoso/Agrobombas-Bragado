@@ -55,6 +55,7 @@ router.post("/add", async (req, res) => {
     senddates,
     sendtimes,
     sended,
+    backwa
   } = req.body;
 
 
@@ -81,6 +82,7 @@ router.post("/add", async (req, res) => {
       include: { 
         model: Contacts,
       }})
+
     res
       .status(200)
       .json({ message: "Mensaje guardado", mensaje: getUserMessage });

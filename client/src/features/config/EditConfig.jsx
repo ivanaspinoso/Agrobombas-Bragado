@@ -15,9 +15,13 @@ const EditConfig = () => {
   const [business, setBusiness] = useState(location.state.business);
   const [slogan, setSlogan] = useState(location.state.slogan);
   const navigate = useNavigate();
-
-  dispatch(getQRUser(login.username, login.password))
   const userqr = useSelector((state) => state.usersReducer.qrCode)
+
+  const verQR = async () => {
+    dispatch(getQRUser(login.username, login.password))
+  }
+
+  verQR()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,10 +78,11 @@ const EditConfig = () => {
       </form>
       <div className="d-flex center-flex aligns-items-center justify-content-center">
         {
-          userqr.length != 0 ? 
-            <><label>Vincule su whatsapp {console.log(typeof userqr)}</label>
-            <QRCode className="form-control" value={userqr} size={325} /></>
-              : "Cuenta vinculada"
+          userqr && userqr.length != 0 ?
+            <><label>Vincule su whatsapp</label>
+              <QRCode className="form-control" value={userqr} size={325} />
+              <button onClick={() => verQR()}>Refresh QR</button></>
+            : "Cuenta vinculada"
         }
       </div>
     </div>

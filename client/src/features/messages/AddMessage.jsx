@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUserMessages, messageAdd } from "../../app/actions/messages";
-
+import axios from 'axios'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
+import { getContactSend } from "../../app/actions/contacts";
 
 
 let data = []
@@ -16,8 +17,8 @@ const AddMessage = () => {
   const destin = useSelector((state) => state.contactsReducer.contacts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-   
+
+
   // senddate, sendtime, sended, sendedate, sendedtime
 
   const hoy = new Date()/* .toLocaleDateString(); */
@@ -46,21 +47,44 @@ const AddMessage = () => {
       allContacts && allContacts.map(async (contact) => {
         console.log("dia: " + senddate)
         var senddates = new Date(Date(senddate)).toISOString();
-        var sendtimes = new Date(Date(sendtime)).toISOString()
+        var sendtimes = sendtime
         console.log("la arme?", senddates, sendtimes)
-                const message = { text, inmediate, senddates, sendtimes, contactid: contact.id };
+        const message = { text, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
         console.log("MENSAJE A ENVIAR", message)
+
         await dispatch(messageAdd(message));
+
+        if (message.inmediate === true) {
+          console.log(contact.cellphone, login.backwa, text)
+          // para luego enviar mensaje
+          const result = await axios.post(`${login.backwa}/wapp/send/`, { contacto: contact.cellphone, message: text })
+          console.log(result)
+          // y luego modificar mensaje con el resultado obtenido
+
+        }
       })
     } else {
       console.log("destinatario", destins)
       destins && destins.map(async (contact) => {
         console.log("dia: " + senddate)
         var senddates = new Date()
-        var sendtimes = new Date()
+        var sendtimes = sendtime
         const message = { text, inmediate, senddates, sendtimes, contactid: contact };
         console.log("MENSAJE A ENVIAR", message)
-        await dispatch(messageAdd(message));
+
+        const addmessage = await dispatch(messageAdd(message));
+
+        if (message.inmediate === true) {
+          const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
+          // const cell = await dispatch(getContactSend(contact))
+          console.log("a enviar",isContactSend[0], contact, typeof contact)
+          // console.log(cell.cellphone, login.backwa, text)
+          // para luego enviar mensaje
+          const result = await axios.post(`${login.backwa}/wapp/send/`, { contacto: isContactSend[0].cellphone, message: text })
+          console.log(result)
+          // y luego modificar mensaje con el resultado obtenido
+
+        }
       })
     }
     navigate("/show-messages", { replace: true });

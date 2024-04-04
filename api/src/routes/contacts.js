@@ -23,6 +23,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Obtener todos los contactos
+router.get("/byid/:id", async (req, res) => {
+  const { id } = req.params
+  try {
+    let getContactbyId = await Contacts.findOne({
+      order: [["name", "ASC"]],
+      where: {id }
+    });
+    // console.log(getAllContacts)
+    return res.send(getContactbyId);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener usuarios \n" + err,
+    });
+  }
+});
+
+
 //Obtener todos las contactos de un usuario
 router.get("/byuser/:id", async (req, res) => {
   let { id } = req.params;

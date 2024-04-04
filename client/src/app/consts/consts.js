@@ -14,6 +14,7 @@ export const userContactsEndpoint = REACT_APP_API + 'contacts/byuser/'
 export const addContactsEndpoint = REACT_APP_API + 'contacts/add';
 export const delContactsEndpoint = REACT_APP_API + 'contacts/delete/';
 export const updContactsEndpoint = REACT_APP_API + 'contacts/update/';
+export const byidContactsEndpoint = REACT_APP_API + 'contacts/byid/';
 
 //configs
 
