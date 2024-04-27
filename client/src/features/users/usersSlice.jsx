@@ -12,7 +12,7 @@ export const usersSlice = createSlice({
   initialState: initialUsers,
   reducers: {
     showUsers: (state) => state,
-    allUser: (state, action) => {
+    allUsers: (state, action) => {
       state.users = action.payload
     },
     loginUser: (state, action) => {

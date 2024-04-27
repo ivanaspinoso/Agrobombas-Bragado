@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser, getQr } from "../../features/users/usersSlice";
+import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint } from "../consts/consts";
+import { addUser, loginUser, logoutUser, getQr, allUsers } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 
@@ -62,7 +62,22 @@ export const getQRUser = (username, password) => async (dispatch) => {
   }
 };
 
-
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`${allUsersEndpoint}`);
+    console.log("ejecutando action getallusers", data)
+    dispatch({ type: allUsers, payload: data });
+    //  localStorage.setItem("appConfig", JSON.stringify(data.config));
+    localStorage.setItem("gettingUsers", true)
+  } catch (err) {
+    localStorage.setItem("gettingUsers", false)
+    console.log(
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message
+    );
+  }
+}
 
 export const logOut = () => async (dispatch) => {
   try {

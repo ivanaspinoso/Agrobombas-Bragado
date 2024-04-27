@@ -17,7 +17,7 @@ export const messageSlice = createSlice({
       state.messages.push(action.payload);
     },
     updatemessage: (state, action) => {
-      const { id, text, inmediate, senddate, sendtime, sended, sendedate, sendedtime } = action.payload;
+      const { id, text, inmediate, senddate, sendtime, sended, sendedate, sendedtime, result } = action.payload;
       const ismessageExist = state.messages.filter((message) => message.id === id);
 
       if (ismessageExist) {
@@ -28,6 +28,7 @@ export const messageSlice = createSlice({
         ismessageExist[0].sended = sended;
         ismessageExist[0].sendedate = sendedate;
         ismessageExist[0].sendedtime = sendedtime;
+        ismessageExist[0].result = result
       }
     },
     deletemessage: (state, action) => {

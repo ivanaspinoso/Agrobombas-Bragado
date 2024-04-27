@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserMessages, messageAdd } from "../../app/actions/messages";
+import { getUserMessages, messageAdd, resultMessage } from "../../app/actions/messages";
 import axios from 'axios'
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { getContactSend } from "../../app/actions/contacts";
@@ -21,12 +20,12 @@ const AddMessage = () => {
 
   // senddate, sendtime, sended, sendedate, sendedtime
 
-  const hoy = new Date()/* .toLocaleDateString(); */
+  const hoy = new Date()/* .toLocaleDateString();  */
   const ahora = new Date().toLocaleTimeString();
   const [text, setText] = useState("");
   const [inmediate, setInmediate] = useState(true);
   const [senddate, setSendDate] = useState(hoy);
-  const [sendtime, setSendTime] = useState(ahora);
+  const [sendtime, setSendTime] = useState("09:00");
   const [todos, setTodos] = useState(false)
 
   const allContacts = useSelector((state) => state.contactsReducer.contacts)
@@ -38,55 +37,63 @@ const AddMessage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data)
+    // console.log(data)
     const groups = input.categories
     const destins = input.contacts
+    let alldestins = []
+    var senddates = senddate
+    var sendtimes = sendtime
 
     if (todos) {
-      console.log("usuarios", allContacts)
+      // console.log("usuarios", allContacts)
       allContacts && allContacts.map(async (contact) => {
-        console.log("dia: " + senddate)
-        var senddates = new Date(Date(senddate)).toISOString();
+        // console.log("dia: " + senddate)
+        var senddates = senddate
         var sendtimes = sendtime
-        console.log("la arme?", senddates, sendtimes)
+        alldestins.push(contact.id)
+        // console.log("la arme?", senddates, sendtimes)
+        console.log(contact.id)
         const message = { text, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
-        console.log("MENSAJE A ENVIAR", message)
+        // console.log("MENSAJE A ENVIAR", message)
 
         await dispatch(messageAdd(message));
 
         if (message.inmediate === true) {
-          console.log(contact.cellphone, login.backwa, text)
+          // console.log(contact.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const result = await axios.post(`${login.backwa}/wapp/send/`, { contacto: contact.cellphone, message: text })
-          console.log(result)
+          const { data } = await axios.post(`${login.backwa}/wapp/send/`, { contacto: contact.cellphone, message: text })
+          console.log(data)
           // y luego modificar mensaje con el resultado obtenido
-
+          // await dispatch(resultMessage())
         }
       })
     } else {
-      console.log("destinatario", destins)
+      // console.log("destinatario", destins)
       destins && destins.map(async (contact) => {
-        console.log("dia: " + senddate)
-        var senddates = new Date()
+        // console.log("dia: " + senddate)
+        var senddates = new Date(Date(senddate)).toISOString();
         var sendtimes = sendtime
         const message = { text, inmediate, senddates, sendtimes, contactid: contact };
-        console.log("MENSAJE A ENVIAR", message)
+        // console.log("MENSAJE A ENVIAR", message)
 
         const addmessage = await dispatch(messageAdd(message));
 
         if (message.inmediate === true) {
           const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
           // const cell = await dispatch(getContactSend(contact))
-          console.log("a enviar",isContactSend[0], contact, typeof contact)
-          // console.log(cell.cellphone, login.backwa, text)
+          // console.log("a enviar", isContactSend[0], contact, typeof contact)
+          // // console.log(cell.cellphone, login.backwa, text)
           // para luego enviar mensaje
           const result = await axios.post(`${login.backwa}/wapp/send/`, { contacto: isContactSend[0].cellphone, message: text })
-          console.log(result)
+          // console.log(result)
           // y luego modificar mensaje con el resultado obtenido
 
         }
       })
     }
+    //    const message = { text, inmediate, senddates, sendtimes, /* contactid: contact.id */ alldestins, backwa: login.bacwa };
+    //    await dispatch(messageAdd(message));
+
     navigate("/show-messages", { replace: true });
   };
 
@@ -94,62 +101,63 @@ const AddMessage = () => {
 
   function handleDestinChangeSelect(e) {
     var temperac = input.contacts.find((temp) => temp === e.target.value);
-    console.log(temperac);
+    // console.log(temperac);
     if (!temperac && e.target.value !== "0") {
       data = [...input.contacts];
       data.push(e.target.value);
       setInput({ ...input, contacts: data });
       var seltempec = document.getElementById("seleccontact");
-      console.log(seltempec);
+      // console.log(seltempec);
       var strtempec = seltempec.options[seltempec.selectedIndex].text;
       var artempesc = document.getElementById("areatempec");
       artempesc.value += artempesc.value.length > 0 ? ", " + strtempec : strtempec;
-      console.log("estas seleccionando:" + data);
+      // console.log("estas seleccionando:" + data);
     } else alert("El contacto ya fue agregado");
   }
 
   const handleCClick = () => {
-    console.log("DATA", data)
+    // console.log("DATA", data)
     let eliminado = data.pop()
-    console.log("Elimine", eliminado)
+    // console.log("Elimine", eliminado)
     var artempesc = document.getElementById("areatempec");
     // artempes.value -= artempes.value.length > 0 ? ", " - strtempe : strtempe;
     var textoenareac = artempesc.value.split(",");
     textoenareac.pop()
-    console.log("Text area", textoenareac)
+    // console.log("Text area", textoenareac)
     artempesc.value = textoenareac
+    // console.log(artempesc)
   }
 
   function handleChangeSelect(e) {
     var tempera = input.categories.find((temp) => temp === e.target.value);
-    console.log(tempera);
+    // console.log(tempera);
     if (!tempera && e.target.value !== "0") {
       data = [...input.categories];
       data.push(e.target.value);
       setInput({ ...input, categories: data });
       var seltempe = document.getElementById("seleccategory");
-      console.log(seltempe);
+      // console.log(seltempe);
       var strtempe = seltempe.options[seltempe.selectedIndex].text;
       var artempes = document.getElementById("areatempe");
       artempes.value += artempes.value.length > 0 ? ", " + strtempe : strtempe;
-      console.log("estas seleccionando:" + data);
+      // console.log("estas seleccionando:" + data);
     } else alert("La categoría ya fue agregada");
   }
 
 
   const handleClick = () => {
-    console.log("DATA", data)
+    // console.log("DATA", data)
     let eliminado = data.pop()
-    console.log("Elimine", eliminado)
+    // console.log("Elimine", eliminado)
     var artempes = document.getElementById("areatempe");
     // artempes.value -= artempes.value.length > 0 ? ", " - strtempe : strtempe;
     var textoenarea = artempes.value.split(",");
     textoenarea.pop()
-    console.log("Text area", textoenarea)
+    // console.log("Text area", textoenarea)
     artempes.value = textoenarea
   }
 
-  console.log("use estate ", hoy, "DEstinatarios ", destin)
+  // console.log("use estate ", hoy, "DEstinatarios ", destin)
 
   if (destin.length === 0) {
     Swal.fire({
@@ -187,7 +195,7 @@ const AddMessage = () => {
             Todos los destinatarios
           </label>
         </div>
-        {!todos ? <>
+        {!todos ? <div className="d-flex p-2 bd-highlight"><div className="border rounded">
           <label className="form-label">Seleccione Destinatario/s</label>
           <div className="mb-3">
             <select
@@ -198,7 +206,7 @@ const AddMessage = () => {
               id="seleccontact"
             >
               <option key="0" value="0">
-                Elija destinatario contact{" "}
+                Elija contacto{" "}
               </option>
               {destin &&
                 destin.map((elem) => (
@@ -209,48 +217,48 @@ const AddMessage = () => {
             </select>
           </div>
           <div className="mb-3">
-            <label className="mb-3">Selecteds groups:</label>
+            <label className="mb-3">Contactos Seleccionados:</label>
             <textarea
               className="form-control"
               id="areatempec"
               readOnly
               rows="1"
               cols="35"
-            /><div className="btn btn-outline-success searchbut" onClick={handleCClick}> borrar </div>
+            /><div className="btn btn-outline-success searchbut" onClick={handleCClick}> borrar contacto </div>
           </div>
 
-
-          {/* Seleccionar grupos destinatarios */}
-          <div className="mb-3">
-            <label className="form-label">Seleccione grupo/s</label>
-            <select
-              className="form-select"
-              name="categories"
-              value={input.categories}
-              onChange={handleChangeSelect}
-              id="seleccategory"
-            >
-              <option key="0" value="0">
-                Group of contact{" "}
-              </option>
-              {groups &&
-                groups.map((elem) => (
-                  <option key={elem.id} value={elem.id}>
-                    {elem.category}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="mb-3">
-            <label className="mb-3">Selecteds groups:</label>
-            <textarea
-              className="form-control"
-              id="areatempe"
-              readOnly
-              rows="1"
-              cols="35"
-            /><div className="btn btn-outline-success searchbut" onClick={handleClick}> borrar </div>
-          </div></>
+        </div><div className="border rounded">
+            {/* Seleccionar grupos destinatarios */}
+            <div className="mb-3">
+              <label className="form-label">Seleccione grupo/s</label>
+              <select
+                className="form-select"
+                name="categories"
+                value={input.categories}
+                onChange={handleChangeSelect}
+                id="seleccategory"
+              >
+                <option key="0" value="0">
+                  Grupo de contactos{" "}
+                </option>
+                {groups &&
+                  groups.map((elem) => (
+                    <option key={elem.id} value={elem.id}>
+                      {elem.category}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="mb-3">
+              <label className="mb-3">Grupos seleccionados:</label>
+              <textarea
+                className="form-control"
+                id="areatempe"
+                readOnly
+                rows="1"
+                cols="35"
+              /><div className="btn btn-outline-success searchbut" onClick={handleClick}> borrar grupo </div>
+            </div></div><hr /></div>
           : ""}
         <div class="mb-3 form-outline">
           <label class="form-label" for="textAreaExample">Message</label>
@@ -287,14 +295,53 @@ const AddMessage = () => {
             {!inmediate ?
               <div className="form-control">
                 <label>Programar envio:</label><br />
-                Fecha: <DatePicker selected={senddate} onChange={(senddate) => setSendDate(senddate)} /><br />
+                Fecha: <input
+                  type="date" 
+                  id="senddate"
+                  value={senddate}
+                  onChange={(e) => setSendDate(e.target.value)} />
+                <br />
                 Hora:   <input
                   type="time"
                   id="hora"
+                  list="times"
                   value={sendtime}
-                  step="900"
                   onChange={(e) => setSendTime(e.target.value)} />
+
+                <datalist id="times">
+                  <option value="08:00:00" />
+                  <option value="08:30:00" />
+                  <option value="09:00:00" />
+                  <option value="09:30:00" />
+                  <option value="10:00:00" />
+                  <option value="10:30:00" />
+                  <option value="11:00:00" />
+                  <option value="11:30:00" />
+                  <option value="12:00:00" />
+                  <option value="12:30:00" />
+                  <option value="13:00:00" />
+                  <option value="13:30:00" />
+                  <option value="14:00:00" />
+                  <option value="14:30:00" />
+                  <option value="15:00:00" />
+                  <option value="15:30:00" />
+                  <option value="16:00:00" />
+                  <option value="16:30:00" />
+                  <option value="17:00:00" />
+                  <option value="17:30:00" />
+                  <option value="18:00:00" />
+                  <option value="18:30:00" />
+                  <option value="19:00:00" />
+                  <option value="19:30:00" />
+                  <option value="20:00:00" />
+                  <option value="20:30:00" />
+                  <option value="21:00:00" />
+                  <option value="21:30:00" />
+                </datalist>
+
+
               </div>
+
               : ""}
           </div>
         </div>

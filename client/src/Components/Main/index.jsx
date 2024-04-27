@@ -1,7 +1,7 @@
 import contacto from '../../assets/images/contactos.jpg';
 import mensaje from '../../assets/images/mensajes.jpg'
 import reloj from '../../assets/images/reloj.jpg'
-import autoreply from '../../assets/images/autoreply.jpg'
+import receipts from '../../assets/images/recibidos.avif'
 import config from '../../assets/images/configuracion.webp'
 import grupos from '../../assets/images/grupos.jpg'
 import { useNavigate } from 'react-router-dom';
@@ -12,12 +12,13 @@ import { useEffect, useState } from 'react';
 import Spinner from '../spinner';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
-import { getQRUser } from '../../app/actions/users';
+import { getAllUsers, getQRUser } from '../../app/actions/users';
 
 const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const configs = useSelector((state) => state.configsReducer.configs);
+    const [isAdmin, setIsAdmin] = useState(false)
     const [vincu, setVincu] = useState("")
 
     const [isloading, setIsLoading] = useState(true)
@@ -26,14 +27,18 @@ const Main = () => {
 
     useEffect(() => {
         // Obtener todos los  datos del sistema
-        if (!localStorage.getItem("userInfo") /* || typeof localStorage.getItem("userInfo") === "string" */) {
+        if (!localStorage.getItem("userInfo")) {
             login = { id: 0 }
+            console.log("Not exist localStorage")
+        } else if (localStorage.getItem("userInfo") === undefined) {
+            login = { id: 0 }
+            console.log("Undefined localStorage")
         } else {
             login = JSON.parse(localStorage.getItem("userInfo"))
-
+            console.log("Obtenido userInfo", localStorage.getItem("userInfo"))
         }
 
-        console.log("login", login)
+        // ("login", login)
         async function fetchData() {
             if (login.id > 0) {
                 await dispatch(getConfig(login.id))
@@ -41,18 +46,27 @@ const Main = () => {
                 await dispatch(getUserCategories(login.id));
                 await dispatch(getUserMessages(login.id))
                 await dispatch(getQRUser(login.username, login.password))
-                // await dispatch(getUser(login.username, login.password))
+                if (login.isAdmin) {
+                    setIsAdmin(true)
+                    await dispatch(getAllUsers())
+                }
 
-                if (login.vinculated) setVincu("cuenta vinculada a WhatsApp")
-                else setVincu("Aun no se ha vinculado su WhatsApp")
-            
+                const QRobten = JSON.parse(localStorage.getItem("userQR"))
+
+                // await dispatch(getUser(login.username, login.password))
+                // «("QRobten",QRobten)
+                if (!QRobten && !login.vinculated)
+                setVincu("Aun no se ha vinculado su WhatsApp")
+                else
+                setVincu("cuenta vinculada a WhatsApp")
+
             } else {
                 navigate("/login")
             }
-            // console.log(configs)
+            // «(configs)
             setIsLoading(false)
         }
-        console.log("id de usuario" + login.id)
+        // «("id de usuario" + login.id)
         fetchData()
     }, []
     );
@@ -72,7 +86,7 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Grupos de Contacto</h5>
                             <p className="card-text">ABM de grupos. Ingrese aquí los grupos para asignar destinatarios.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-groups") }}>Ir</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/show-groups") }}>Grupos</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
@@ -80,7 +94,7 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Contactos</h5>
                             <p className="card-text">ABM de contactos. Ingrese aquí los destinatarios de su sistema.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-contacts") }}>Ir</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/show-contacts") }}>Contactos</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
@@ -88,33 +102,60 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Mensajes</h5>
                             <p className="card-text">ABM de mensajes. Aquí puede cargar sus mensajes inmediatos o programados.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-messages") }}>Ir</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/show-messages") }}>Mensajes</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
                         <img src={reloj} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Cola de mensajes</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Ir</button>
+                            <p className="card-text">Listado de mensajes que estén programados o aún no hayan sido enviados. Podrá editarlos antes de su envío</p>
+                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>En espera</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
-                        <img src={autoreply} className="card-img-top" alt="..." />
+                        <img src={receipts} className="card-img-top" alt="..." />
                         <div className="card-body">
-                            <h5 className="card-title">Autorespuestas</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Ir</button>
+                            <h5 className="card-title">Recibidos</h5>
+                            <p className="card-text">Aquí podrá ver los mensajes recibidos (aunque también los verá en celu asociado)</p>
+                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Recibidos</button>
                         </div>
                     </div>
                     <div className="card" /* style={{"width": "18rem;"}} */>
                         <img src={config} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Configuracion</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Ir</button>
+                            <p className="card-text">Edite datos de su empresa. Y además se usará para vincular el WhatsApp®</p>
+                            <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Configuraciones</button>
                         </div>
                     </div>
+                    {isAdmin === true ?
+                        <>
+                            <div className="card" /* style={{"width": "18rem;"}} */>
+                                <img src={contacto} className="card-img-top" alt="..." />
+                                <div className="card-body">
+                                    <h5 className="card-title">Usuarios</h5>
+                                    <p className="card-text">Control de usuarios del sistema.</p>
+                                    <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Usuarios</button>
+                                </div>
+                            </div>
+                            <div className="card" /* style={{"width": "18rem;"}} */>
+                                <img src={contacto} className="card-img-top" alt="..." />
+                                <div className="card-body">
+                                    <h5 className="card-title">Contactos</h5>
+                                    <p className="card-text">Contacto de los usuarios.</p>
+                                    <button className="btn btn-primary" onClick={() => { navigate("/show-allcontacts") }}>Contactos</button>
+                                </div>
+                            </div>
+                            <div className="card" /* style={{"width": "18rem;"}} */>
+                                <img src={contacto} className="card-img-top" alt="..." />
+                                <div className="card-body">
+                                    <h5 className="card-title">Grupos</h5>
+                                    <p className="card-text">Grupos de Contacto de los usuarios.</p>
+                                    <button className="btn btn-primary" onClick={() => { navigate("/show-allgroups") }}>Grupos</button>
+                                </div>
+                            </div>
+                        </> : ""}
                 </div>
             </div > : <Spinner />}</>)
 }

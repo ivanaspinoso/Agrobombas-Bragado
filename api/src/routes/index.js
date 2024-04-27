@@ -6,6 +6,7 @@ const configRoutes = require('./configs')
 const messagesRoutes = require('./messages')
 const categoriesRoutes = require('./categories')
 const usersRoutes = require('./users')
+const receiptsRoutes = require('./receipts')
 
 const router = Router();;
 
@@ -14,6 +15,7 @@ router.use('/configs', configRoutes)
 router.use('/messages', messagesRoutes)
 router.use('/categories', categoriesRoutes)
 router.use('/users', usersRoutes)
+router.use('/receipts', receiptsRoutes)
 
 router.get("/", (req,res) => {
     res.status(200).json({message:"BackEnd for WAPP Message System"})

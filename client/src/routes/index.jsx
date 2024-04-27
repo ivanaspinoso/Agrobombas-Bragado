@@ -1,9 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AddBook from "../features/books/AddBook";
-import BooksView from "../features/books/BooksView";
 import ContactsView from "../features/contacts/ContactsView";
-import EditBook from "../features/books/EditBook";
 import Footer from "../layouts/Footer";
 import Navbar from "../layouts/Navbar";
 import Error from "../pages/Error";
@@ -21,6 +18,8 @@ import Next from "../pages/Next";
 import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../components/LogIn";
 import Register from "../components/Register";
+import UsersView from "../features/users/UsersView";
+import EditUser from "../features/users/EditUser";
 
 const Index = () => {
   return (
@@ -34,7 +33,7 @@ const Index = () => {
 
         <Route path="/show-messages" element={<MessagesView />} />
         <Route path="/add-message" element={<AddMessage />} />
-        <Route path="/edit-book" element={<EditBook />} />
+
 
         <Route path="/show-groups" element={<GroupsView />} />
         <Route path="/add-group" element={<AddGroup />} />
@@ -46,7 +45,10 @@ const Index = () => {
         
         <Route path="/show-configs" element={<ConfigsView />} />       
         <Route path="/edit-config" element={<EditConfig />} />
-        
+
+        <Route path="/show-users" element={<UsersView />} />       
+        <Route path="/edit-user" element={<EditUser />} />
+
         <Route path="*" element={<Error />} />
       </Routes>
        <Footer />
