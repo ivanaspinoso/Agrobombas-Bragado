@@ -4,6 +4,7 @@ import reloj from '../../assets/images/reloj.jpg'
 import receipts from '../../assets/images/recibidos.avif'
 import config from '../../assets/images/configuracion.webp'
 import grupos from '../../assets/images/grupos.jpg'
+import enviados from "../../assets/images/whatsapp-enviado.webp"
 import { useNavigate } from 'react-router-dom';
 import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
@@ -81,39 +82,47 @@ const Main = () => {
                     <div><h3 className="d-flex center-flex aligns-items-center justify-content-center">{vincu}</h3></div>
                 </header>
                 <div className="row row-cols-1 row-cols-md-3">
-                    <div className="card" /* style={{"width": "18rem;"}} */>
-                        <img src={grupos} className="card-img-top" alt="..." />
+                    <div className="card" style={{"width": "18rem;"}}>
+                        <img src={grupos} className="card-img-top" alt="ABM de grupos" />
                         <div className="card-body">
                             <h5 className="card-title">Grupos de Contacto</h5>
                             <p className="card-text">ABM de grupos. Ingrese aquí los grupos para asignar destinatarios.</p>
                             <button className="btn btn-primary" onClick={() => { navigate("/show-groups") }}>Grupos</button>
                         </div>
                     </div>
-                    <div className="card" /* style={{"width": "18rem;"}} */>
-                        <img src={contacto} className="card-img-top" alt="..." />
+                    <div className="card" style={{"width": "18rem;"}}>
+                        <img src={contacto} className="card-img-top" alt="ABM de contactos" />
                         <div className="card-body">
                             <h5 className="card-title">Contactos</h5>
                             <p className="card-text">ABM de contactos. Ingrese aquí los destinatarios de su sistema.</p>
                             <button className="btn btn-primary" onClick={() => { navigate("/show-contacts") }}>Contactos</button>
                         </div>
                     </div>
-                    <div className="card" /* style={{"width": "18rem;"}} */>
-                        <img src={mensaje} className="card-img-top" alt="..." />
+                    <div className="card" style={{"width": "18rem;"}}>
+                        <img src={mensaje} className="card-img-top" alt="ABM de Mensajes" />
                         <div className="card-body">
                             <h5 className="card-title">Mensajes</h5>
                             <p className="card-text">ABM de mensajes. Aquí puede cargar sus mensajes inmediatos o programados.</p>
                             <button className="btn btn-primary" onClick={() => { navigate("/show-messages") }}>Mensajes</button>
                         </div>
                     </div>
-                    <div className="card" /* style={{"width": "18rem;"}} */>
-                        <img src={reloj} className="card-img-top" alt="..." />
+                    <div className="card" style={{"width": "18rem;"}}>
+                        <img src={reloj} className="card-img-top" alt="Mensajes en espera" />
                         <div className="card-body">
                             <h5 className="card-title">Cola de mensajes</h5>
                             <p className="card-text">Listado de mensajes que estén programados o aún no hayan sido enviados. Podrá editarlos antes de su envío</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>En espera</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/queue-messages") }}>En espera</button>
                         </div>
                     </div>
-                    <div className="card" /* style={{"width": "18rem;"}} */>
+                    <div className="card" style={{"width": "18rem;"}} >
+                        <img src={enviados} className="card-img-top" alt="Mensajes enviados" />
+                        <div className="card-body">
+                            <h5 className="card-title">Mensajes Enviados</h5>
+                            <p className="card-text">Listado de mensajes que ya han sido enviados.</p>
+                            <button className="btn btn-primary" onClick={() => { navigate("/sended-messages") }}>Enviados</button>
+                        </div>
+                    </div>
+                    <div className="card" style={{"width": "18rem;"}}>
                         <img src={receipts} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Recibidos</h5>
@@ -121,7 +130,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Recibidos</button>
                         </div>
                     </div>
-                    <div className="card" /* style={{"width": "18rem;"}} */>
+                    <div className="card" style={{"width": "18rem;"}} >
                         <img src={config} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Configuracion</h5>
@@ -131,7 +140,7 @@ const Main = () => {
                     </div>
                     {isAdmin === true ?
                         <>
-                            <div className="card" /* style={{"width": "18rem;"}} */>
+                            <div className="card" style={{"width": "18rem;"}} >
                                 <img src={contacto} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">Usuarios</h5>
@@ -139,7 +148,7 @@ const Main = () => {
                                     <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Usuarios</button>
                                 </div>
                             </div>
-                            <div className="card" /* style={{"width": "18rem;"}} */>
+                            <div className="card" style={{"width": "18rem;"}} >
                                 <img src={contacto} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">Contactos</h5>
@@ -147,7 +156,7 @@ const Main = () => {
                                     <button className="btn btn-primary" onClick={() => { navigate("/show-allcontacts") }}>Contactos</button>
                                 </div>
                             </div>
-                            <div className="card" /* style={{"width": "18rem;"}} */>
+                            <div className="card" style={{"width": "18rem;"}}>
                                 <img src={contacto} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">Grupos</h5>

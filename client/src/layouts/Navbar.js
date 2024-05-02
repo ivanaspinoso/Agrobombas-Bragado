@@ -51,15 +51,22 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li className="nav-item dropdown">
-                                <Link className="nav-link" to="/building">
+                                <Link className="nav-link" to="/queue-messages">
                                     En espera
                                 </Link>
                             </li>
                             <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/sended-messages">
+                                    Enviados
+                                </Link>
+                            </li>
+                            {/*  
+                                                       <li className="nav-item dropdown">
                                 <Link className="nav-link" to="/building">
                                     Autorespuesta
                                 </Link>
                             </li>
+ */}
                             <li className="nav-item dropdown">
                                 <Link className="nav-link" to="/show-configs">
                                     Configuración

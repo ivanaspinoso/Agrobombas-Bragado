@@ -38,3 +38,5 @@ export const addMessagesEndpoint = REACT_APP_API + 'messages/add';
 export const delMessagesEndpoint = REACT_APP_API + 'messages/delete/';
 export const updMessagesEndpoint = REACT_APP_API + 'messages/update/';
 export const resMessagesEndpoint = REACT_APP_API + 'messages/result/';
+export const senMessagesEndpoint = REACT_APP_API + 'messages/sended/';
+export const queMessagesEndpoint = REACT_APP_API + 'messages/queue/';

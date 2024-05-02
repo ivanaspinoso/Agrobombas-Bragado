@@ -7,8 +7,11 @@ import { deleteCategory } from "../../app/actions/categories";
 import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2'
 
-const MessagesView = () => {
+const SendedView = () => {
+  // sate.filter((goal) => goal.id !== goalId)
   const messages = useSelector((state) => state.messagesReducer.messages);
+  const sendedmess = messages.filter((message) => message.sended === true )
+  //const messages = useSelector((state) => state.messagesReducer.messages);
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -18,8 +21,8 @@ const MessagesView = () => {
   const itemsPPage = 15;
   const totalItems = pagBreeds * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
-  const cantPages = Math.ceil(messages.length / itemsPPage);
-  const view = messages.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
+  const cantPages = Math.ceil(sendedmess.length / itemsPPage);
+  const view = sendedmess.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
 
   const handleDelete = (id, text) => {
     swal
@@ -50,7 +53,7 @@ const MessagesView = () => {
         className="text-center text-uppercase m-5"
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
-        Listado de mensajes
+        Listado de mensajes enviados
         <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar mensaje" onClick={() => { navigate("/add-message") }}><FcAddRow /></button>
       </h2>
       <table
@@ -62,8 +65,8 @@ const MessagesView = () => {
             <th>N</th>
             <th>Texto</th>
             <th>Para</th>
-            <th>Enviar</th>
-            <th>Hora</th>
+            <th>Enviado</th>
+            <th>REsult</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -71,14 +74,14 @@ const MessagesView = () => {
           {view &&
             view.map((message, index) => {
               /* setNumItem(index + 1) */
-              const { id, text, sended, contact, senddate, sendtime } = message;
+              const { id, text, sended, contact, sendeddate, sendedtime, result } = message;
               return (
                 <tr key={id}>
                   <th>{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</th>
                   <td>{text}</td>
                   <td>{contact.name}</td>
-                  <td>{senddate}</td>
-                  <td>{sendtime}</td>
+                  <td>{sendeddate} - {sendedtime}</td>
+                  <td>{result}</td>
                   <td className="d-flex gap-2">
                     <Link to="/edit-group" state={{ id, text, sended }}>
                       <button disabled={sended} data-tooltip-id="my-tooltip" data-tooltip-content="Editar Mensaje">
@@ -127,4 +130,4 @@ const MessagesView = () => {
   );
 };
 
-export default MessagesView;
+export default SendedView;

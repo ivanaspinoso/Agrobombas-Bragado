@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialMessages = {
   loading: 'idle',
   messages: [],
+  queuemess: [],
+  sendedmess: [],
 };
 
 export const messageSlice = createSlice({
@@ -12,6 +14,12 @@ export const messageSlice = createSlice({
     showmessages: (state) => state,
     allmessages: (state, action) => {
       state.messages = action.payload
+    },
+    allmessqueued: (state, action) => {
+      state.queuemess = action.payload
+    },
+    allmesssended: (state, action) => {
+      state.sendedmess = action.payload
     },
     addmessage: (state, action) => {
       state.messages.push(action.payload);
@@ -38,7 +46,7 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { showmessages, addmessage, updatemessage, deletemessage, allmessages } =
+export const { showmessages, addmessage, updatemessage, deletemessage, allmessages, allmessqueued, allmesssended } =
 messageSlice.actions;
 
 export default messageSlice.reducer;

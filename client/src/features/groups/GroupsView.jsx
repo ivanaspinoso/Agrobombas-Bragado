@@ -50,7 +50,7 @@ const GroupsView = () => {
       </h2>
       <table
         className="table mb-5"
-        style={{ maxWidth: "600px", margin: "auto" }}
+        style={{ maxWidth: "80%", margin: "auto" }}
       >
         <thead>
           <tr style={{ background: "#006877", color: "white" }}>

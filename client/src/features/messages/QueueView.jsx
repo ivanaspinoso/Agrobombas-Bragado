@@ -7,8 +7,11 @@ import { deleteCategory } from "../../app/actions/categories";
 import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2'
 
-const MessagesView = () => {
+const QueuedView = () => {
+  // sate.filter((goal) => goal.id !== goalId)
   const messages = useSelector((state) => state.messagesReducer.messages);
+  const queuedmes = messages.filter((message) => message.sended === false )
+  //const messages = useSelector((state) => state.messagesReducer.messages);
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -18,8 +21,8 @@ const MessagesView = () => {
   const itemsPPage = 15;
   const totalItems = pagBreeds * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
-  const cantPages = Math.ceil(messages.length / itemsPPage);
-  const view = messages.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
+  const cantPages = Math.ceil(queuedmes.length / itemsPPage);
+  const view = queuedmes.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
 
   const handleDelete = (id, text) => {
     swal
@@ -50,7 +53,7 @@ const MessagesView = () => {
         className="text-center text-uppercase m-5"
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
-        Listado de mensajes
+        Listado de mensajes en espera
         <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar mensaje" onClick={() => { navigate("/add-message") }}><FcAddRow /></button>
       </h2>
       <table
@@ -127,4 +130,4 @@ const MessagesView = () => {
   );
 };
 
-export default MessagesView;
+export default QueuedView;

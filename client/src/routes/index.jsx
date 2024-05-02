@@ -20,6 +20,8 @@ import LogIn from "../components/LogIn";
 import Register from "../components/Register";
 import UsersView from "../features/users/UsersView";
 import EditUser from "../features/users/EditUser";
+import QueuedView from "../features/messages/QueueView";
+import SendedView from "../features/messages/SendedView";
 
 const Index = () => {
   return (
@@ -33,7 +35,8 @@ const Index = () => {
 
         <Route path="/show-messages" element={<MessagesView />} />
         <Route path="/add-message" element={<AddMessage />} />
-
+        <Route path="/queue-messages" element={<QueuedView />} />
+        <Route path="/sended-messages" element={<SendedView />} />
 
         <Route path="/show-groups" element={<GroupsView />} />
         <Route path="/add-group" element={<AddGroup />} />

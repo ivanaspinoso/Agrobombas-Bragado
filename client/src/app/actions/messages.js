@@ -1,6 +1,6 @@
 import axios from "axios";
-import { allMessagesEndpoint, userMessagesEndpoint, addMessagesEndpoint, resMessagesEndpoint, delMessagesEndpoint, updMessagesEndpoint } from "../consts/consts";
-import { allmessages, addmessage, deletemessage, updatemessage } from "../../features/messages/MessagesSlice";
+import { allMessagesEndpoint, userMessagesEndpoint, addMessagesEndpoint, resMessagesEndpoint, delMessagesEndpoint, updMessagesEndpoint, queMessagesEndpoint } from "../consts/consts";
+import { allmessages, addmessage, deletemessage, updatemessage, allmessqueued } from "../../features/messages/MessagesSlice";
 
 export const messageAdd = (messageNew) => async (dispatch) => {
     console.log("agregando mensaje", messageNew);
@@ -8,7 +8,7 @@ export const messageAdd = (messageNew) => async (dispatch) => {
       const { data } = await axios.post(`${addMessagesEndpoint}`, messageNew);
       dispatch({ type: addmessage, payload: data.mensaje });
       console.log("obtinido al añadir",data.mensaje)
-      localStorage.setItem("messAdded", true)
+      localStorage.setItem("messAdded", data.mensaje.id)
     } catch (err) {
       localStorage.setItem("messaAdded", err.response.data.message)
       console.log(
@@ -41,6 +41,9 @@ export const messageAdd = (messageNew) => async (dispatch) => {
       const { data } = await axios.get(`${userMessagesEndpoint}` + id);
       console.log("ejecutando action getusermessages", data)
       dispatch({ type: allmessages, payload: data });
+      const  messque  = await axios.get(`${queMessagesEndpoint}` + id);
+      console.log("ejecutando action getusermessages", messque)
+      dispatch({ type: allmessqueued, payload: messque.data})
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingUserMessages", true)
     } catch (err) {

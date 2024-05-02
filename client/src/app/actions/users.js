@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser, getQr, allUsers } from "../../features/users/usersSlice";
+import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 
@@ -107,6 +107,7 @@ export const logOut = () => async (dispatch) => {
 
     await dispatch({ type: logoutGroups, payload: [] })
     await dispatch({ type: logoutConfig, payload: [] });
+    await dispatch({type: logoutUsers, payload: [] })
 
     console.log("saliendo")
   } catch (err) {

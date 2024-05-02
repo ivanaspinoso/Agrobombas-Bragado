@@ -33,6 +33,10 @@ module.exports = function (sequelize) {
     result: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    attempts: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     }
   });
 };

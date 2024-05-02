@@ -14,6 +14,7 @@ const AddMessage = () => {
   const login = useSelector((state) => state.usersReducer.login)
   const groups = useSelector((state) => state.groupsReducer.groups);
   const destin = useSelector((state) => state.contactsReducer.contacts);
+  const configs = useSelector((state) => state.configsReducer.configs);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ const AddMessage = () => {
 
   const hoy = new Date()/* .toLocaleDateString();  */
   const ahora = new Date().toLocaleTimeString();
-  const [text, setText] = useState("");
+  const [textm, setTextM] = useState("");
   const [inmediate, setInmediate] = useState(true);
   const [senddate, setSendDate] = useState(hoy);
   const [sendtime, setSendTime] = useState("09:00");
@@ -53,15 +54,20 @@ const AddMessage = () => {
         alldestins.push(contact.id)
         // console.log("la arme?", senddates, sendtimes)
         console.log(contact.id)
-        const message = { text, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
+        let texttosend = textm.replaceAll("-NB-", contact.name)
+        texttosend = texttosend.replaceAll("-EM-", configs.business)
+        texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
+        console.log("Nuevo texto: " + texttosend)
+        const message = {text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
         // console.log("MENSAJE A ENVIAR", message)
 
         await dispatch(messageAdd(message));
+        const messid = Number(localStorage.getItem("messAdded"))
 
         if (message.inmediate === true) {
           // console.log(contact.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const { data } = await axios.post(`${login.backwa}/wapp/send/`, { contacto: contact.cellphone, message: text })
+          const { data } = await axios.post(`${login.backwa}/wapp/send/`, { idmess: messid, contacto: contact.cellphone, message: texttosend })
           console.log(data)
           // y luego modificar mensaje con el resultado obtenido
           // await dispatch(resultMessage())
@@ -71,21 +77,29 @@ const AddMessage = () => {
       // console.log("destinatario", destins)
       destins && destins.map(async (contact) => {
         // console.log("dia: " + senddate)
-        var senddates = new Date(Date(senddate)).toISOString();
+        var senddates = senddate
         var sendtimes = sendtime
-        const message = { text, inmediate, senddates, sendtimes, contactid: contact };
+        
+        const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
+        let texttosend = textm.replaceAll("-NB-", isContactSend[0].name)
+        texttosend = texttosend.replaceAll("-EM-", configs.business)
+        texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
+        console.log("Nuevo texto: " + texttosend)
+        const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
         // console.log("MENSAJE A ENVIAR", message)
 
-        const addmessage = await dispatch(messageAdd(message));
+        await dispatch(messageAdd(message));
+        const messid = Number(localStorage.getItem("messAdded"))
 
         if (message.inmediate === true) {
-          const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
+          
           // const cell = await dispatch(getContactSend(contact))
-          // console.log("a enviar", isContactSend[0], contact, typeof contact)
+          console.log("a enviar", isContactSend[0].cellphone)
           // // console.log(cell.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const result = await axios.post(`${login.backwa}/wapp/send/`, { contacto: isContactSend[0].cellphone, message: text })
-          // console.log(result)
+          const { data } = await axios.post(`${login.backwa}/wapp/send/`, { idmess: messid, contacto: isContactSend[0].cellphone, message: texttosend })
+          console.log(data)
+
           // y luego modificar mensaje con el resultado obtenido
 
         }
@@ -265,11 +279,16 @@ const AddMessage = () => {
           <textarea class="form-control"
             id="textAreaExample1"
             rows="4"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={textm}
+            onChange={(e) => setTextM(e.target.value)}
             required
           ></textarea>
-
+        <div>
+          Puede susar los comodines: <br/>
+          -NB- para insertar nombre de destinatario, <br/>
+          -EM- para insertar nombre de su empresa, <br/>
+          -EMS- para insertar slogan de su empresa. <br/>
+        </div>
         </div>{/* 
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
@@ -310,33 +329,61 @@ const AddMessage = () => {
 
                 <datalist id="times">
                   <option value="08:00:00" />
+                  <option value="08:15:00" />
                   <option value="08:30:00" />
+                  <option value="08:45:00" />
                   <option value="09:00:00" />
+                  <option value="09:15:00" />
                   <option value="09:30:00" />
+                  <option value="09:45:00" />
                   <option value="10:00:00" />
+                  <option value="10:15:00" />
                   <option value="10:30:00" />
+                  <option value="10:45:00" />
                   <option value="11:00:00" />
+                  <option value="10:15:00" />
                   <option value="11:30:00" />
+                  <option value="11:45:00" />
                   <option value="12:00:00" />
+                  <option value="12:15:00" />
                   <option value="12:30:00" />
+                  <option value="12:45:00" />
                   <option value="13:00:00" />
+                  <option value="13:15:00" />
                   <option value="13:30:00" />
+                  <option value="13:45:00" />
                   <option value="14:00:00" />
+                  <option value="14:15:00" />
                   <option value="14:30:00" />
+                  <option value="14:45:00" />
                   <option value="15:00:00" />
+                  <option value="15:15:00" />
                   <option value="15:30:00" />
+                  <option value="15:45:00" />
                   <option value="16:00:00" />
+                  <option value="16:15:00" />
                   <option value="16:30:00" />
+                  <option value="16:45:00" />
                   <option value="17:00:00" />
+                  <option value="17:15:00" />
                   <option value="17:30:00" />
+                  <option value="17:45:00" />
                   <option value="18:00:00" />
+                  <option value="18:15:00" />
                   <option value="18:30:00" />
+                  <option value="18:45:00" />
                   <option value="19:00:00" />
+                  <option value="19:15:00" />
                   <option value="19:30:00" />
+                  <option value="19:45:00" />
                   <option value="20:00:00" />
+                  <option value="20:15:00" />
                   <option value="20:30:00" />
+                  <option value="20:45:00" />
                   <option value="21:00:00" />
+                  <option value="21:15:00" />
                   <option value="21:30:00" />
+                  <option value="21:45:00" />
                 </datalist>
 
 

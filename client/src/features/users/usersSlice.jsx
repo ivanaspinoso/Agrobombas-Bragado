@@ -22,7 +22,10 @@ export const usersSlice = createSlice({
       state.qrCode = action.payload 
     },
     logoutUser: (state, action) => {
-      state.login = action.payload 
+      state.login = action.payload
+    },
+    logoutUsers: (state, action) => {
+      state.users = action.payload
     },
     addUser: (state, action) => {
       state.users.push(action.payload);
@@ -53,6 +56,6 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr } = usersSlice.actions;
+export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr , logoutUsers} = usersSlice.actions;
 
 export default usersSlice.reducer;

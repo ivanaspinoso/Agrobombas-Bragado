@@ -24,8 +24,9 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-    const { text, number, userid } = req.body
+    const { text, number, userid, type } = req.body
     const objReceipt = {
+        type,
         text,
         numwa: number,
         userId: userid
