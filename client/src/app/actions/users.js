@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers } from "../../features/users/usersSlice";
+import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, updUserssEndpoint, updadmUserssEndpoint } from "../consts/consts";
+import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 
@@ -78,6 +78,36 @@ export const getAllUsers = () => async (dispatch) => {
     );
   }
 }
+
+export const userUpdate = (user) => async (dispatch) => {
+  try {
+    const { data } = await axios.put(`${updUserssEndpoint}`, { user });
+    dispatch({ type: updateUser, payload: data.user });
+    localStorage.setItem("contactUpdated", true)
+  } catch (err) {
+    localStorage.setItem("contactUpdated", err.response.data.message)
+    console.log(
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message
+    );
+  }
+};
+
+export const userUpdateAdm = (user) => async (dispatch) => {
+  try {
+    const { data } = await axios.put(`${updadmUserssEndpoint}`, { user });
+    dispatch({ type: updateUserAdm, payload: data.user });
+    localStorage.setItem("contactUpdated", true)
+  } catch (err) {
+    localStorage.setItem("contactUpdated", err.response.data.message)
+    console.log(
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message
+    );
+  }
+};
 
 export const logOut = () => async (dispatch) => {
   try {

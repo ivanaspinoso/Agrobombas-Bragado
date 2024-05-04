@@ -126,7 +126,7 @@ router.post("/qrcode", async (req, res) => {
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (validPassword) {
       let objLogin = {
-  
+
         qrcode: user.qrcode,
         /*         password: body.password, */
       };
@@ -144,11 +144,9 @@ router.post("/qrcode", async (req, res) => {
 });
 
 
-
-
 // vincular usuario con WA
 router.put("/vinculate", async (req, res) => {
-  const {id, vinculated, qrcode} = req.body
+  const { id, vinculated, qrcode } = req.body
   const objUser = {
     id,
     vinculated,
@@ -162,16 +160,16 @@ router.put("/vinculate", async (req, res) => {
       },
     });
     res.status(200).send("Usuario vinculated")
- 
+
   } catch (error) {
     res.status(400).json({ message: "No se pudo actualizar usuario" + error });
   }
 })
 
 // Actualizar datos de usuario
-router.put("/update", validateToken, async (req, res) => {
+router.put("/update", /* validateToken, */ async (req, res) => {
   // tomo todos los campos del form de registro de usuario
-  const { id, name, newpass, olduser, oldpass, email, token, address, cellphone, isAdmin } = req.body.user;
+  const { id, name, newpass, olduser, oldpass, email, address, cellphone, isAdmin } = req.body.user;
   // console.log(req.body.user);
   // chequeo que estén completos los 3 campos requeridos
   if (!id || id === "") {
@@ -253,6 +251,60 @@ router.put("/update", validateToken, async (req, res) => {
     res.status(400).json({ message: "Clave anterior errónea" });
   }
 });
+
+
+// Actualizar datos de usuario por parte de admin
+router.put("/updateadm", /* validateToken, */ async (req, res) => {
+  // tomo todos los campos del form de registro de usuario
+  const { id, backwa } = req.body.user;
+  // console.log(req.body.user);
+  // chequeo que estén completos los 3 campos requeridos
+  if (!id || id === "") {
+    return res.status(400).json({ message: "Falta ingresar id de usuario" });
+  }
+
+  let existUser = await Users.findOne({
+    where: {
+      id,
+    },
+  });
+
+  if (!existUser)
+    return res
+      .status(400)
+      .json({ message: "No tiene permisos para actualizar usuario" });
+  else {
+    // const validPassword = await bcrypt.compare(oldpass, existUser.password);
+
+    const objUser = {
+      id,
+      backwa
+    };
+
+    try {
+      // envio los datos al modelo sequelize para que los guarde en la database
+      let newUser = await Users.update(objUser, {
+        where: {
+          id,
+        },
+      });
+      // si todo sale bien devuelvo el objeto agregado
+      // console.log("Objeto de usuario guardado")
+      res
+        .status(200)
+        .json({ message: "usuario modificado con éxito", user: objUser });
+    } catch (error) {
+      // en caso de error lo devuelvo al frontend
+      // console.log(error)
+      res.status(400).json({ message: "No se pudo actualizar usuario" + error });
+    }
+  }
+});
+
+
+
+
+
 
 // Activar usuario
 router.post("/active", async (req, res) => {

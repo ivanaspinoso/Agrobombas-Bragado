@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { contactUpdate } from "../../app/actions/contacts";
+import { userUpdateAdm } from "../../app/actions/users";
 
 const EditUser = () => {
   const location = useLocation();
@@ -16,9 +16,10 @@ const EditUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(contactUpdate({ id, name, cellphone }));
+    dispatch(userUpdateAdm({ id, backwa }));
     navigate("/show-users", { replace: true });
   };
+
   return (
     <div className="container mt-5">
       <h2
@@ -55,7 +56,7 @@ const EditUser = () => {
             id="cellphone"
             value={cellphone}
             onChange={(e) => setCellphone(e.target.value)}
-            required
+            // required
           />
         </div>
         <div className="mb-3">

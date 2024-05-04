@@ -7,6 +7,9 @@ export const allUsersEndpoint = REACT_APP_API + 'users/'
 export const getUserEndpoint = REACT_APP_API + 'users/login'
 export const addUserEndpoint = REACT_APP_API + 'users/add'
 export const getQRUserEndpoint = REACT_APP_API + 'users/qrcode'
+export const updUserssEndpoint = REACT_APP_API + 'users/update/';
+export const updadmUserssEndpoint = REACT_APP_API + 'users/updateadm/';
+
 
 //contacts
 export const allContactsEndpoint = REACT_APP_API + 'contacts/';

@@ -15,7 +15,7 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
-    backwa: "http://localhost:10001",
+    backwa: "http://localhost:10001/client-0001",
     vinculated: false
   },
   {
@@ -32,15 +32,15 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
-    backwa: "http://localhost:10002",
+    backwa: "http://localhost:10002/client-0002",
     vinculated: false
   }
 ]
 
 const initialConfigs = [
   {
-    business: "Tu Empresa",
-    slogan: "Servicios y Productos de Tu Empresa",
+    business: "SIB 2000",
+    slogan: "Servicios y Productos de Informática",
     horario: "",
     messagewauno: "Mensaje 01",
     messagewados: "Mensaje 02",

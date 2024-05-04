@@ -67,7 +67,7 @@ const AddMessage = () => {
         if (message.inmediate === true) {
           // console.log(contact.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const { data } = await axios.post(`${login.backwa}/wapp/send/`, { idmess: messid, contacto: contact.cellphone, message: texttosend })
+          const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: contact.cellphone, message: texttosend })
           console.log(data)
           // y luego modificar mensaje con el resultado obtenido
           // await dispatch(resultMessage())
@@ -97,7 +97,7 @@ const AddMessage = () => {
           console.log("a enviar", isContactSend[0].cellphone)
           // // console.log(cell.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const { data } = await axios.post(`${login.backwa}/wapp/send/`, { idmess: messid, contacto: isContactSend[0].cellphone, message: texttosend })
+          const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: isContactSend[0].cellphone, message: texttosend })
           console.log(data)
 
           // y luego modificar mensaje con el resultado obtenido
@@ -201,7 +201,7 @@ const AddMessage = () => {
       <form
         onSubmit={handleSubmit}
         className="border rounded p-4"
-        style={{ maxWidth: "600px", margin: "auto" }}
+        style={{ maxWidth: "80%", margin: "auto" }}
       >
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" checked={todos} onChange={() => setTodos(!todos)} />

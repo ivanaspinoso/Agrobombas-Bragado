@@ -51,6 +51,7 @@ const UsersView = () => {
         <thead>
           <tr style={{ background: "#006877", color: "white" }}>
             <th>N</th>
+            <th>Id</th>
             <th>Nombre</th>
             <th>Numero WA</th>
             <th>Usuario</th>            
@@ -65,6 +66,7 @@ const UsersView = () => {
               return (
                 <tr key={id}>
                   <th>{index + 1}</th>
+                  <th>{id}</th>
                   <td>{name}</td>
                   <td>{cellphone}</td>
                   <td>{username}</td>

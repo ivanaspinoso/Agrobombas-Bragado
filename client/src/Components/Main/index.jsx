@@ -57,9 +57,9 @@ const Main = () => {
                 // await dispatch(getUser(login.username, login.password))
                 // «("QRobten",QRobten)
                 if (!QRobten && !login.vinculated)
-                setVincu("Aun no se ha vinculado su WhatsApp")
+                    setVincu("Aun no se ha vinculado su WhatsApp")
                 else
-                setVincu("cuenta vinculada a WhatsApp")
+                    setVincu("cuenta vinculada a WhatsApp")
 
             } else {
                 navigate("/login")
@@ -79,10 +79,12 @@ const Main = () => {
                     <h1 className="d-flex center-flex aligns-items-center justify-content-center">
                         Control Panel de {configs.business}
                     </h1>
-                    <div><h3 className="d-flex center-flex aligns-items-center justify-content-center">{vincu}</h3></div>
+                    <div>
+                        <h3 className="d-flex center-flex aligns-items-center justify-content-center">{vincu}</h3>
+                    </div>
                 </header>
-                <div className="row row-cols-1 row-cols-md-3">
-                    <div className="card" style={{"width": "18rem;"}}>
+                <div className="row"> {/* row row-cols-1 row-cols-md-3 */}
+                    <div className="card" style={{ "width": "18rem" }}>
                         <img src={grupos} className="card-img-top" alt="ABM de grupos" />
                         <div className="card-body">
                             <h5 className="card-title">Grupos de Contacto</h5>
@@ -90,7 +92,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-groups") }}>Grupos</button>
                         </div>
                     </div>
-                    <div className="card" style={{"width": "18rem;"}}>
+                    <div className="card" style={{ "width": "18rem" }}>
                         <img src={contacto} className="card-img-top" alt="ABM de contactos" />
                         <div className="card-body">
                             <h5 className="card-title">Contactos</h5>
@@ -98,7 +100,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-contacts") }}>Contactos</button>
                         </div>
                     </div>
-                    <div className="card" style={{"width": "18rem;"}}>
+                    <div className="card" style={{ "width": "18rem" }}>
                         <img src={mensaje} className="card-img-top" alt="ABM de Mensajes" />
                         <div className="card-body">
                             <h5 className="card-title">Mensajes</h5>
@@ -106,7 +108,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-messages") }}>Mensajes</button>
                         </div>
                     </div>
-                    <div className="card" style={{"width": "18rem;"}}>
+                    <div className="card" style={{ "width": "18rem" }}>
                         <img src={reloj} className="card-img-top" alt="Mensajes en espera" />
                         <div className="card-body">
                             <h5 className="card-title">Cola de mensajes</h5>
@@ -114,7 +116,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/queue-messages") }}>En espera</button>
                         </div>
                     </div>
-                    <div className="card" style={{"width": "18rem;"}} >
+                    <div className="card" style={{ "width": "18rem" }} >
                         <img src={enviados} className="card-img-top" alt="Mensajes enviados" />
                         <div className="card-body">
                             <h5 className="card-title">Mensajes Enviados</h5>
@@ -122,7 +124,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/sended-messages") }}>Enviados</button>
                         </div>
                     </div>
-                    <div className="card" style={{"width": "18rem;"}}>
+                    <div className="card" style={{ "width": "18rem" }}>
                         <img src={receipts} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Recibidos</h5>
@@ -130,7 +132,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Recibidos</button>
                         </div>
                     </div>
-                    <div className="card" style={{"width": "18rem;"}} >
+                    <div className="card" style={{ "width": "18rem" }} >
                         <img src={config} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">Configuracion</h5>
@@ -138,9 +140,9 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Configuraciones</button>
                         </div>
                     </div>
-                    {isAdmin === true ?
+                                        {isAdmin === true ?
                         <>
-                            <div className="card" style={{"width": "18rem;"}} >
+                            <div className="card" style={{ "width": "18rem" }} >
                                 <img src={contacto} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">Usuarios</h5>
@@ -148,7 +150,7 @@ const Main = () => {
                                     <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Usuarios</button>
                                 </div>
                             </div>
-                            <div className="card" style={{"width": "18rem;"}} >
+                            <div className="card" style={{ "width": "18rem" }} >
                                 <img src={contacto} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">Contactos</h5>
@@ -156,7 +158,7 @@ const Main = () => {
                                     <button className="btn btn-primary" onClick={() => { navigate("/show-allcontacts") }}>Contactos</button>
                                 </div>
                             </div>
-                            <div className="card" style={{"width": "18rem;"}}>
+                            <div className="card" style={{ "width": "18rem" }}>
                                 <img src={contacto} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">Grupos</h5>
@@ -164,8 +166,7 @@ const Main = () => {
                                     <button className="btn btn-primary" onClick={() => { navigate("/show-allgroups") }}>Grupos</button>
                                 </div>
                             </div>
-                        </> : ""}
-                </div>
+                        </> : ""}                 </div>
             </div > : <Spinner />}</>)
 }
 

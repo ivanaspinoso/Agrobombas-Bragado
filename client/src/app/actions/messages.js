@@ -41,9 +41,6 @@ export const messageAdd = (messageNew) => async (dispatch) => {
       const { data } = await axios.get(`${userMessagesEndpoint}` + id);
       console.log("ejecutando action getusermessages", data)
       dispatch({ type: allmessages, payload: data });
-      const  messque  = await axios.get(`${queMessagesEndpoint}` + id);
-      console.log("ejecutando action getusermessages", messque)
-      dispatch({ type: allmessqueued, payload: messque.data})
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingUserMessages", true)
     } catch (err) {
