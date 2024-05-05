@@ -21,6 +21,7 @@ const Main = () => {
     const configs = useSelector((state) => state.configsReducer.configs);
     const [isAdmin, setIsAdmin] = useState(false)
     const [vincu, setVincu] = useState("")
+    const [count, setCount] = useState(0)
 
     const [isloading, setIsLoading] = useState(true)
 
@@ -41,34 +42,36 @@ const Main = () => {
 
         // ("login", login)
         async function fetchData() {
-            if (login.id > 0) {
-                await dispatch(getConfig(login.id))
-                await dispatch(getUserContacts(login.id));
-                await dispatch(getUserCategories(login.id));
-                await dispatch(getUserMessages(login.id))
-                await dispatch(getQRUser(login.username, login.password))
-                if (login.isAdmin) {
-                    setIsAdmin(true)
-                    await dispatch(getAllUsers())
+
+                if (login.id) {
+                    
+                    await dispatch(getConfig(login.id))
+                    await dispatch(getUserContacts(login.id));
+                    await dispatch(getUserCategories(login.id));
+                    await dispatch(getUserMessages(login.id))
+                    await dispatch(getQRUser(login.username, login.password))
+                    if (login.isAdmin) {
+                        setIsAdmin(true)
+                        await dispatch(getAllUsers())
+                    }
+
+                    const QRobten = JSON.parse(localStorage.getItem("userQR"))
+
+                    // await dispatch(getUser(login.username, login.password))
+                    // «("QRobten",QRobten)
+                    if (!QRobten && !login.vinculated)
+                        setVincu("Aun no se ha vinculado su WhatsApp")
+                    else
+                        setVincu("cuenta vinculada a WhatsApp")
+
+                } else {
+                    navigate("/login")
                 }
-
-                const QRobten = JSON.parse(localStorage.getItem("userQR"))
-
-                // await dispatch(getUser(login.username, login.password))
-                // «("QRobten",QRobten)
-                if (!QRobten && !login.vinculated)
-                    setVincu("Aun no se ha vinculado su WhatsApp")
-                else
-                    setVincu("cuenta vinculada a WhatsApp")
-
-            } else {
-                navigate("/login")
             }
             // «(configs)
             setIsLoading(false)
-        }
-        // «("id de usuario" + login.id)
-        fetchData()
+        // ("id de usuario" + login.id)
+        if (!localStorage.getItem("appConfig")) fetchData()
     }, []
     );
 
@@ -140,7 +143,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Configuraciones</button>
                         </div>
                     </div>
-                                        {isAdmin === true ?
+                    {isAdmin === true ?
                         <>
                             <div className="card" style={{ "width": "18rem" }} >
                                 <img src={contacto} className="card-img-top" alt="..." />

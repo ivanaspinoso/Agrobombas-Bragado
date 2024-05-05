@@ -3,6 +3,8 @@ import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, 
 import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
+import { logoutContacts } from "../../features/contacts/ContactsSlice";
+import { logoutMessages } from "../../features/messages/MessagesSlice";
 
 export const userAdd = (userNew) => async (dispatch) => {
   console.log("agregando", userNew);
@@ -30,10 +32,10 @@ export const getUser = (username, password) => async (dispatch) => {
     });
     dispatch({ type: loginUser, payload: data.login });
     localStorage.setItem("userInfo", JSON.stringify(data.login));
-    localStorage.setItem("allowLogin",true)
+    localStorage.setItem("allowLogin", true)
   } catch (err) {
     localStorage.setItem("userInfo", err.response.data.error);
-    localStorage.setItem("allowLogin",false)
+    localStorage.setItem("allowLogin", false)
     console.log(
       err.response && err.response.data.message
         ? err.response.data.message
@@ -45,7 +47,7 @@ export const getUser = (username, password) => async (dispatch) => {
 export const getQRUser = (username, password) => async (dispatch) => {
   /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
   try {
-    console.log(username,password)
+    console.log(username, password)
     const { data } = await axios.post(`${getQRUserEndpoint}`, {
       username,
       password,
@@ -115,6 +117,8 @@ export const logOut = () => async (dispatch) => {
     localStorage.removeItem('userInfo')
     localStorage.removeItem("allowLogin")
     localStorage.removeItem("userAdded")
+    localStorage.removeItem("userConfig");
+    localStorage.removeItem("appConfig");
     /*     localStorage.removeItem("userInfo");
         localStorage.removeItem("userUpdated")
         localStorage.removeItem("allowLogin")
@@ -137,8 +141,9 @@ export const logOut = () => async (dispatch) => {
 
     await dispatch({ type: logoutGroups, payload: [] })
     await dispatch({ type: logoutConfig, payload: [] });
-    await dispatch({type: logoutUsers, payload: [] })
-
+    await dispatch({ type: logoutUsers, payload: [] })
+    await dispatch({ type: logoutContacts, payload: [] })
+    await dispatch({ type: logoutMessages, payload: [] })
     console.log("saliendo")
   } catch (err) {
     console.log(err)

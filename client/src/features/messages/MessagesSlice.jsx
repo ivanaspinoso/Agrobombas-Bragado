@@ -43,10 +43,13 @@ export const messageSlice = createSlice({
       const id = action.payload;
       state.messages = state.messages.filter((message) => message.id !== id);
     },
+    logoutMessages: (state, action) => {
+      state.messages = action.payload
+    },
   },
 });
 
-export const { showmessages, addmessage, updatemessage, deletemessage, allmessages, allmessqueued, allmesssended } =
+export const { showmessages, addmessage, updatemessage, deletemessage, allmessages, allmessqueued, allmesssended, logoutMessages } =
 messageSlice.actions;
 
 export default messageSlice.reducer;
