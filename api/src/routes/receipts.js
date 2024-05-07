@@ -25,6 +25,7 @@ router.get("/", async (req, res) => {
 
 router.post("/add", async (req, res) => {
     const { text, number, userid, type } = req.body
+    console.log(req.body)
     const objReceipt = {
         type,
         text,
@@ -38,7 +39,7 @@ router.post("/add", async (req, res) => {
         .json({ message: "Recebido correctamente", receipt: newReceipt });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "No se pudo crear el admin" + error });
+        res.status(400).json({ message: "No se pudo guardar mensaje" + error });
     }
 })
 

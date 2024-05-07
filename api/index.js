@@ -33,10 +33,6 @@ const {
   initialUsers
 } = require("./src/seed.js");
 
-
-
-
-
 // clear console
 console.clear()
 console.log(typeof FORZAR)

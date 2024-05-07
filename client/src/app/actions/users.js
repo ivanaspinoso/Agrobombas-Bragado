@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, updUserssEndpoint, updadmUserssEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm } from "../../features/users/usersSlice";
+import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm, vinculaLogin } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 import { logoutContacts } from "../../features/contacts/ContactsSlice";
@@ -110,6 +110,7 @@ export const userUpdateAdm = (user) => async (dispatch) => {
     );
   }
 };
+
 
 export const logOut = () => async (dispatch) => {
   try {

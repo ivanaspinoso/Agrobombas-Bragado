@@ -19,59 +19,58 @@ const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const configs = useSelector((state) => state.configsReducer.configs);
-    const [isAdmin, setIsAdmin] = useState(false)
     const [vincu, setVincu] = useState("")
-    const [count, setCount] = useState(0)
 
     const [isloading, setIsLoading] = useState(true)
 
     var login = {}
 
-    useEffect(() => {
-        // Obtener todos los  datos del sistema
-        if (!localStorage.getItem("userInfo")) {
-            login = { id: 0 }
-            console.log("Not exist localStorage")
-        } else if (localStorage.getItem("userInfo") === undefined) {
-            login = { id: 0 }
-            console.log("Undefined localStorage")
+    // Obtener todos los  datos del sistema
+    if (!localStorage.getItem("userInfo")) {
+        login = { id: 0 }
+        console.log("Not exist localStorage")
+    } else if (localStorage.getItem("userInfo") === undefined) {
+        login = { id: 0 }
+        console.log("Undefined localStorage")
+    } else {
+        login = JSON.parse(localStorage.getItem("userInfo"))
+        console.log("Obtenido userInfo", localStorage.getItem("userInfo"))
+    }
+
+    // ("login", login)
+    async function fetchData() {
+        if (login.id) {
+
+            await dispatch(getConfig(login.id))
+            await dispatch(getUserContacts(login.id));
+            await dispatch(getUserCategories(login.id));
+            await dispatch(getUserMessages(login.id))
+            await dispatch(getQRUser(login.username, login.password))
+            if (login.isAdmin) {
+                await dispatch(getAllUsers())
+            }
+
+            
+
+            // await dispatch(getUser(login.username, login.password))
+            // «("QRobten",QRobten)
+
+
         } else {
-            login = JSON.parse(localStorage.getItem("userInfo"))
-            console.log("Obtenido userInfo", localStorage.getItem("userInfo"))
+            navigate("/login")
         }
 
-        // ("login", login)
-        async function fetchData() {
+    }
 
-                if (login.id) {
-                    
-                    await dispatch(getConfig(login.id))
-                    await dispatch(getUserContacts(login.id));
-                    await dispatch(getUserCategories(login.id));
-                    await dispatch(getUserMessages(login.id))
-                    await dispatch(getQRUser(login.username, login.password))
-                    if (login.isAdmin) {
-                        setIsAdmin(true)
-                        await dispatch(getAllUsers())
-                    }
 
-                    const QRobten = JSON.parse(localStorage.getItem("userQR"))
-
-                    // await dispatch(getUser(login.username, login.password))
-                    // «("QRobten",QRobten)
-                    if (!QRobten && !login.vinculated)
-                        setVincu("Aun no se ha vinculado su WhatsApp")
-                    else
-                        setVincu("cuenta vinculada a WhatsApp")
-
-                } else {
-                    navigate("/login")
-                }
-            }
-            // «(configs)
-            setIsLoading(false)
+    useEffect(() => {
         // ("id de usuario" + login.id)
         if (!localStorage.getItem("appConfig")) fetchData()
+        
+        const QRobten = login.vinculated
+        console.log(QRobten)
+        QRobten === false ? setVincu("Aun no se ha vinculado su WhatsApp") : setVincu("Su cuenta vinculada a WhatsApp")
+        setIsLoading(false)
     }, []
     );
 
@@ -143,7 +142,7 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Configuraciones</button>
                         </div>
                     </div>
-                    {isAdmin === true ?
+                    {login.isAdmin === true ?
                         <>
                             <div className="card" style={{ "width": "18rem" }} >
                                 <img src={contacto} className="card-img-top" alt="..." />

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { configUpdate } from "../../app/actions/configs";
-import { getQRUser } from "../../app/actions/users";
+import { getQRUser, getUser, loginUpdate } from "../../app/actions/users";
 import { QRCode } from 'react-qrcode-logo';
 
 
@@ -17,11 +17,14 @@ const EditConfig = () => {
   const navigate = useNavigate();
   const userqr = useSelector((state) => state.usersReducer.qrCode)
 
-  const verQR = async () => {
+  const verQR = () => {
     dispatch(getQRUser(login.username, login.password))
   }
 
-  verQR()
+  useEffect(() => {
+    verQR()
+
+  },[])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,9 +82,15 @@ const EditConfig = () => {
       <div className="d-flex center-flex aligns-items-center justify-content-center">
         {
           userqr && userqr.length != 0 ?
-            <><label>Vincule su whatsapp</label>
+            <>
+              <label>Vincule su whatsapp</label>
               <QRCode className="form-control" value={userqr} size={325} />
-              <button onClick={() => verQR()}>Refresh QR</button></>
+              <button onClick={() => verQR()}>Refresh QR</button>
+              <div>
+                Si en tu celu dice no se inicio sesión Refresca el qr <br />
+                Si inició sesión en celu, cierra sesion aqui y vuelve a entrar
+              </div>
+            </>
             : "Cuenta vinculada"
         }
       </div>

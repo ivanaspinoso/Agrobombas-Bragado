@@ -3,7 +3,7 @@ const { DataTypes } = require("sequelize");
 module.exports = function (sequelize) {
   return sequelize.define("messages", {
     text: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('large'),
       allowNull: false,
     },
     inmediate: {
