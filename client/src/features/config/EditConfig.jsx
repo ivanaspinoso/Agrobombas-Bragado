@@ -9,7 +9,7 @@ import { QRCode } from 'react-qrcode-logo';
 const EditConfig = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  console.log(location.state);
+  // console.log(location.state);
   const login = useSelector((state) => state.usersReducer.login)
   const [id] = useState(location.state.id);
   const [business, setBusiness] = useState(location.state.business);

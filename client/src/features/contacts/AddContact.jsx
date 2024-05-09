@@ -82,8 +82,10 @@ const AddContact = () => {
           <select
             className="form-select"
             name="categories"
-            value={input.categories}
+            // value={input.categories}
+            // onChange={handleChangeSelect}
             onChange={handleChangeSelect}
+            value={input.categories}
             id="seleccategory"
           >
             <option key="0" value="0">

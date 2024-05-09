@@ -5,6 +5,7 @@ import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 import { logoutContacts } from "../../features/contacts/ContactsSlice";
 import { logoutMessages } from "../../features/messages/MessagesSlice";
+import { logoutReceipts } from "../../features/receipts/receiptsSlice";
 
 export const userAdd = (userNew) => async (dispatch) => {
   console.log("agregando", userNew);
@@ -47,7 +48,7 @@ export const getUser = (username, password) => async (dispatch) => {
 export const getQRUser = (username, password) => async (dispatch) => {
   /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
   try {
-    console.log(username, password)
+    // console.log(username, password)
     const { data } = await axios.post(`${getQRUserEndpoint}`, {
       username,
       password,
@@ -67,9 +68,9 @@ export const getQRUser = (username, password) => async (dispatch) => {
 export const getAllUsers = () => async (dispatch) => {
   try {
     const { data } = await axios.get(`${allUsersEndpoint}`);
-    console.log("ejecutando action getallusers", data)
+    // console.log("ejecutando action getallusers", data)
     dispatch({ type: allUsers, payload: data });
-    //  localStorage.setItem("appConfig", JSON.stringify(data.config));
+    // localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingUsers", true)
   } catch (err) {
     localStorage.setItem("gettingUsers", false)
@@ -111,7 +112,6 @@ export const userUpdateAdm = (user) => async (dispatch) => {
   }
 };
 
-
 export const logOut = () => async (dispatch) => {
   try {
     await dispatch({ type: logoutUser, payload: {} });
@@ -145,6 +145,7 @@ export const logOut = () => async (dispatch) => {
     await dispatch({ type: logoutUsers, payload: [] })
     await dispatch({ type: logoutContacts, payload: [] })
     await dispatch({ type: logoutMessages, payload: [] })
+    await dispatch({ type: logoutReceipts, payload: [] })
     console.log("saliendo")
   } catch (err) {
     console.log(err)

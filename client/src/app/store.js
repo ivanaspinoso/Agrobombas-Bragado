@@ -7,6 +7,7 @@ import configsReducer from "../features/config/ConfigSlice"
 import groupsReducer from "../features/groups/GroupsSlice"
 import messagesReducer from '../features/messages/MessagesSlice'
 import usersReducer from '../features/users/usersSlice'
+import receiptsReducer from '../features/receipts/receiptsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ export const store = configureStore({
     configsReducer: configsReducer,
     groupsReducer: groupsReducer,
     messagesReducer: messagesReducer,
-    usersReducer: usersReducer
+    usersReducer: usersReducer,
+    receiptsReducer: receiptsReducer
   },
   composeWithDevTools
 });

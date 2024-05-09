@@ -19,7 +19,7 @@ router.get("/", /* validateToken, */ async (req, res) => {
     let getAllUsers = await Users.findAll({
       order: [["createdAt", "ASC"]],
     });
-    console.log(getAllUsers)
+    // console.log(getAllUsers)
     return res.send(getAllUsers);
   } catch (err) {
     return res.send({
@@ -310,7 +310,7 @@ router.put("/updateadm", /* validateToken, */ async (req, res) => {
 router.post("/active", async (req, res) => {
   // tomo del form de login el username y la contraseña (aquí por body)
   const { username, password } = req.body;
-  console.log(username, password);
+  // console.log(username, password);
   // reviso que lleguen bien
   if (!username || username === "") {
     return res.status(400).json({ message: "Por favor, ingrese username" });

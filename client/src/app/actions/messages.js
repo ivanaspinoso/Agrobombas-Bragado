@@ -39,7 +39,7 @@ export const messageAdd = (messageNew) => async (dispatch) => {
   export const getUserMessages = (id) => async (dispatch) => {
     try {
       const { data } = await axios.get(`${userMessagesEndpoint}` + id);
-      console.log("ejecutando action getusermessages", data)
+      // console.log("ejecutando action getusermessages", data)
       dispatch({ type: allmessages, payload: data });
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingUserMessages", true)
@@ -57,7 +57,7 @@ export const messageAdd = (messageNew) => async (dispatch) => {
   export const resultMessage = (id) => async (dispatch) => {
     try {
       const { data } = await axios.get(`${resMessagesEndpoint}` + id);
-      console.log("ejecutando action getusermessages", data)
+      // console.log("ejecutando action getusermessages", data)
       dispatch({ type: updatemessage, payload: data });
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingResultMessages", true)

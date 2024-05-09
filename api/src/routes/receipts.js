@@ -4,12 +4,31 @@ const { Receipts } = require("../models/index");
 
 var router = express.Router();
 
-
 //Obtener todos los recibidos
 router.get("/", async (req, res) => {
     try {
         let getAllReceipts = await Receipts.findAll({
             order: [["createdAt", "DESC"]],
+        });
+  /*       let usernames = []
+        getAllUserNames.map((user) => {
+          usernames.push(user.username)
+        })
+   */      return res.send(getAllReceipts);
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener mensajes recibidos \n " + err,
+        });
+    }
+});
+
+//Obtener todos los recibidos
+router.get("/byuser/:id", async (req, res) => {
+    const { id } = req.params
+    try {
+        let getAllReceipts = await Receipts.findAll({
+            order: [["createdAt", "DESC"]],
+            where: { userId: id }
         });
   /*       let usernames = []
         getAllUserNames.map((user) => {

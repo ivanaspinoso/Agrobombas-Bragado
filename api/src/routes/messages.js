@@ -113,7 +113,7 @@ router.put("/sended", async (req, res) => {
     sendeddate: datesended,
     sendedtime: timesended,
   };
-  console.log(objMessUpd)
+  // console.log(objMessUpd)
   //  console.log(req.body)
   if (result === "Mensaje enviado") {
     try {
@@ -189,7 +189,7 @@ router.post("/add", async (req, res) => {
     // envio los datos al modelo sequelize para que los guarde en la database
     const newMessage = await Messages.create(objMessage)
     // console.log(newMessage)
-    console.log(contacts)
+    // console.log(contacts)
     // await newMessage.setContacts(contacts);
 
     let getMessageContact = await Messages.findOne({

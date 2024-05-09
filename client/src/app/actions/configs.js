@@ -4,7 +4,7 @@ import { allConfig, updateConfig, addConfig } from "../../features/config/Config
 
 
 export const configAdd = (configNew) => async (dispatch) => {
-  console.log("agregando", configNew);
+  // console.log("agregando", configNew);
   try {
     const { data } = await axios.post(`${addConfigsEndpoint}`, configNew);
     dispatch({ type: addConfig, payload: data });

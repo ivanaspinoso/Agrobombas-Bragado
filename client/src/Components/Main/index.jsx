@@ -14,6 +14,7 @@ import Spinner from '../spinner';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
 import { getAllUsers, getQRUser } from '../../app/actions/users';
+import { getUserReceipts } from '../../app/actions/receipts';
 
 const Main = () => {
     const navigate = useNavigate()
@@ -28,30 +29,28 @@ const Main = () => {
     // Obtener todos los  datos del sistema
     if (!localStorage.getItem("userInfo")) {
         login = { id: 0 }
-        console.log("Not exist localStorage")
+        // console.log("Not exist localStorage")
     } else if (localStorage.getItem("userInfo") === undefined) {
         login = { id: 0 }
-        console.log("Undefined localStorage")
+        // console.log("Undefined localStorage")
     } else {
         login = JSON.parse(localStorage.getItem("userInfo"))
-        console.log("Obtenido userInfo", localStorage.getItem("userInfo"))
+        // console.log("Obtenido userInfo", localStorage.getItem("userInfo"))
     }
 
     // ("login", login)
     async function fetchData() {
         if (login.id) {
 
-            await dispatch(getConfig(login.id))
-            await dispatch(getUserContacts(login.id));
-            await dispatch(getUserCategories(login.id));
-            await dispatch(getUserMessages(login.id))
-            await dispatch(getQRUser(login.username, login.password))
+            dispatch(getConfig(login.id))
+            dispatch(getUserContacts(login.id));
+            dispatch(getUserCategories(login.id));
+            dispatch(getUserMessages(login.id))
+            dispatch(getQRUser(login.username, login.password))
             if (login.isAdmin) {
-                await dispatch(getAllUsers())
+                dispatch(getAllUsers())
             }
-
             
-
             // await dispatch(getUser(login.username, login.password))
             // «("QRobten",QRobten)
 
@@ -64,11 +63,13 @@ const Main = () => {
 
 
     useEffect(() => {
+        console.clear()
+        console.log("Iniciando sistema...")
         // ("id de usuario" + login.id)
         if (!localStorage.getItem("appConfig")) fetchData()
         
         const QRobten = login.vinculated
-        console.log(QRobten)
+        // console.log(QRobten)
         QRobten === false ? setVincu("Aun no se ha vinculado su WhatsApp") : setVincu("Su cuenta vinculada a WhatsApp")
         setIsLoading(false)
     }, []
@@ -131,7 +132,7 @@ const Main = () => {
                         <div className="card-body">
                             <h5 className="card-title">Recibidos</h5>
                             <p className="card-text">Aquí podrá ver los mensajes recibidos (aunque también los verá en celu asociado)</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/building") }}>Recibidos</button>
+                            <button className="btn btn-primary" onClick={() => { navigate("/show-receipts") }}>Recibidos</button>
                         </div>
                     </div>
                     <div className="card" style={{ "width": "18rem" }} >

@@ -22,6 +22,7 @@ import UsersView from "../features/users/UsersView";
 import EditUser from "../features/users/EditUser";
 import QueuedView from "../features/messages/QueueView";
 import SendedView from "../features/messages/SendedView";
+import ReceiptsView from "../features/receipts/ReceiptsView";
 
 const Index = () => {
   return (
@@ -51,6 +52,8 @@ const Index = () => {
 
         <Route path="/show-users" element={<UsersView />} />       
         <Route path="/edit-user" element={<EditUser />} />
+
+        <Route path="/show-receipts" element={<ReceiptsView />} />       
 
         <Route path="*" element={<Error />} />
       </Routes>

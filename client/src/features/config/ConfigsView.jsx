@@ -8,7 +8,7 @@ const ConfigsView = () => {
   const configs = useSelector((state) => state.configsReducer.configs);
 
 
-console.log("Figu", configs)
+// console.log("Figu", configs)
 
 let objConfig= {id: configs.id, business: configs.business, slogan: configs.slogan}
 

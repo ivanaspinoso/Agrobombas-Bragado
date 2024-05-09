@@ -43,3 +43,7 @@ export const updMessagesEndpoint = REACT_APP_API + 'messages/update/';
 export const resMessagesEndpoint = REACT_APP_API + 'messages/result/';
 export const senMessagesEndpoint = REACT_APP_API + 'messages/sended/';
 export const queMessagesEndpoint = REACT_APP_API + 'messages/queue/';
+
+// receipts
+
+export const userReceiptsEndpoint = REACT_APP_API + 'receipts/byuser/'
