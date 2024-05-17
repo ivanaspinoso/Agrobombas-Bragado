@@ -56,7 +56,7 @@ module.exports = function (sequelize) {
     },
     blocked: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,      
+      allowNull: true,
     },
     backwa: {
       type: DataTypes.STRING,
@@ -68,6 +68,18 @@ module.exports = function (sequelize) {
     },
     qrcode: {
       type: DataTypes.STRING,
+      allowNull: true,
+    },
+    autoreplys: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    autobots: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     }
   });

@@ -41,7 +41,9 @@ const Register = () => {
                         username: values.username,
                         cellphone: values.phoneNumber,
                         isAdmin: false,
-                        active: false
+                        active: false,
+                        autoreplys: false,
+                        autobots: false
                     }
                     await dispatch(userAdd(userNew))
                     console.log("Usuario", localStorage.getItem("userAdded"))

@@ -5,6 +5,8 @@ import receipts from '../../assets/images/recibidos.avif'
 import config from '../../assets/images/configuracion.webp'
 import grupos from '../../assets/images/grupos.jpg'
 import enviados from "../../assets/images/whatsapp-enviado.webp"
+import autoreplys from "../../assets/images/autoreply.jpg"
+import bots from "../../assets/images/botswapp.webp"
 import { useNavigate } from 'react-router-dom';
 import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
@@ -50,7 +52,7 @@ const Main = () => {
             if (login.isAdmin) {
                 dispatch(getAllUsers())
             }
-            
+
             // await dispatch(getUser(login.username, login.password))
             // «("QRobten",QRobten)
 
@@ -67,7 +69,7 @@ const Main = () => {
         console.log("Iniciando sistema...")
         // ("id de usuario" + login.id)
         if (!localStorage.getItem("appConfig")) fetchData()
-        
+
         const QRobten = login.vinculated
         // console.log(QRobten)
         QRobten === false ? setVincu("Aun no se ha vinculado su WhatsApp") : setVincu("Su cuenta vinculada a WhatsApp")
@@ -143,6 +145,32 @@ const Main = () => {
                             <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Configuraciones</button>
                         </div>
                     </div>
+
+
+                    <div className="card" style={{ "width": "18rem" }} >
+                        <img src={autoreplys} className="card-img-top" alt="..." />
+                        <div className="card-body">
+                            <h5 className="card-title">Autorespuestas</h5>
+                            <p className="card-text">Defina autorespuestas según disparador.</p>
+                            {login.autoreplys === true ? <>
+                                <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Autorespuestas</button></> :
+                                <><button className="btn btn-primary" onClick={() => { navigate("/opcional") }}>Opcional proximamente</button></>
+                            }
+                        </div>
+                    </div>
+
+                    <div className="card" style={{ "width": "18rem" }} >
+                        <img src={bots} className="card-img-top" alt="..." />
+                        <div className="card-body">
+                            <h5 className="card-title">Bots</h5>
+                            <p className="card-text">Genere bots personalizados</p>
+                            {login.autobots === true ?
+                                <>
+                                    <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Bots</button></> :
+                                <><button className="btn btn-primary" onClick={() => { navigate("/opcional") }}>Opcional Próximamente</button></>
+                            }
+                        </div>
+                    </div>
                     {login.isAdmin === true ?
                         <>
                             <div className="card" style={{ "width": "18rem" }} >
@@ -169,7 +197,8 @@ const Main = () => {
                                     <button className="btn btn-primary" onClick={() => { navigate("/show-allgroups") }}>Grupos</button>
                                 </div>
                             </div>
-                        </> : ""}                 </div>
+                        </> : ""}
+                </div>
             </div > : <Spinner />}</>)
 }
 

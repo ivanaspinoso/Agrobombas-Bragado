@@ -16,7 +16,10 @@ const initialUsers = [
     active: true,
     blocked: false,
     backwa: "http://localhost:10001/client-0001",
-    vinculated: false
+    vinculated: false,
+    autoreplys: true,
+    autobots: true,
+    price: 60
   },
   {
     name: "Franco M.",
@@ -33,7 +36,10 @@ const initialUsers = [
     active: true,
     blocked: false,
     backwa: "http://localhost:10002/client-0002",
-    vinculated: false
+    vinculated: false,
+    autoreplys: false,
+    autobots: false,
+    price: 30
   }
 ]
 

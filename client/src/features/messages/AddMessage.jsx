@@ -58,7 +58,7 @@ const AddMessage = () => {
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
         console.log("Nuevo texto: " + texttosend)
-        const message = {text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
+        const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
         // console.log("MENSAJE A ENVIAR", message)
 
         await dispatch(messageAdd(message));
@@ -79,7 +79,7 @@ const AddMessage = () => {
         // console.log("dia: " + senddate)
         var senddates = senddate
         var sendtimes = sendtime
-        
+
         const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
         let texttosend = textm.replaceAll("-NB-", isContactSend[0].name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
@@ -92,7 +92,7 @@ const AddMessage = () => {
         const messid = Number(localStorage.getItem("messAdded"))
 
         if (message.inmediate === true) {
-          
+
           // const cell = await dispatch(getContactSend(contact))
           console.log("a enviar", isContactSend[0].cellphone)
           // // console.log(cell.cellphone, login.backwa, text)
@@ -241,8 +241,9 @@ const AddMessage = () => {
             /><div className="btn btn-outline-success searchbut" onClick={handleCClick}> borrar contacto </div>
           </div>
 
-        </div><div className="border rounded">
-            {/* Seleccionar grupos destinatarios */}
+        </div>
+          {/* Seleccionar grupos destinatarios */}
+          {/* <div className="border rounded"> 
             <div className="mb-3">
               <label className="form-label">Seleccione grupo/s</label>
               <select
@@ -272,7 +273,9 @@ const AddMessage = () => {
                 rows="1"
                 cols="35"
               /><div className="btn btn-outline-success searchbut" onClick={handleClick}> borrar grupo </div>
-            </div></div><hr /></div>
+            </div>
+          </div> */}
+          <hr /></div>
           : ""}
         <div class="mb-3 form-outline">
           <label class="form-label" for="textAreaExample">Message</label>
@@ -283,12 +286,12 @@ const AddMessage = () => {
             onChange={(e) => setTextM(e.target.value)}
             required
           ></textarea>
-        <div>
-          Puede susar los comodines: <br/>
-          -NB- para insertar nombre de destinatario, <br/>
-          -EM- para insertar nombre de su empresa, <br/>
-          -EMS- para insertar slogan de su empresa. <br/>
-        </div>
+          <div>
+            Puede susar los comodines: <br />
+            -NB- para insertar nombre de destinatario, <br />
+            -EM- para insertar nombre de su empresa, <br />
+            -EMS- para insertar slogan de su empresa. <br />
+          </div>
         </div>{/* 
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
@@ -315,7 +318,7 @@ const AddMessage = () => {
               <div className="form-control">
                 <label>Programar envio:</label><br />
                 Fecha: <input
-                  type="date" 
+                  type="date"
                   id="senddate"
                   value={senddate}
                   onChange={(e) => setSendDate(e.target.value)} />

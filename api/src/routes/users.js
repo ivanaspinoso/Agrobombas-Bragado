@@ -90,6 +90,9 @@ router.post("/login", async (req, res) => {
         qrcode: user.qrcode,
         /*         password: body.password, */
         token: generateToken(user),
+        autoreplys: user.autoreplys,
+        autobots: user.autobots,
+        price: user.price,
       };
       // token: generateToken(user)
       return res
@@ -374,6 +377,8 @@ router.post("/add", async (req, res) => {
     province,
     country,
     backwa,
+    autoreplys,
+    autobots
   } = req.body;
   let hash = "";
   // chequeo que estén completos los 3 campos requeridos
@@ -437,7 +442,9 @@ router.post("/add", async (req, res) => {
     active: false,
     blocked: false,
     backwa,
-    vinculated: false
+    vinculated: false,
+    autobots,
+    autoreplys
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
