@@ -18,5 +18,6 @@ export const store = configureStore({
     usersReducer: usersReducer,
     receiptsReducer: receiptsReducer
   },
-  composeWithDevTools
+  composeWithDevTools,
+  
 });

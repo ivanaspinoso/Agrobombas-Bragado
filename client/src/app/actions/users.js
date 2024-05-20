@@ -45,7 +45,7 @@ export const getUser = (username, password) => async (dispatch) => {
   }
 };
 
-export const getQRUser = (username, password) => async (dispatch) => {
+export const getQRUser = (username, password, userid) => async (dispatch) => {
   /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
   try {
     // console.log(username, password)
@@ -64,6 +64,8 @@ export const getQRUser = (username, password) => async (dispatch) => {
     );
   }
 };
+
+
 
 export const getAllUsers = () => async (dispatch) => {
   try {

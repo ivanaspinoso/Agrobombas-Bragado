@@ -19,12 +19,16 @@ const EditConfig = () => {
 
   const verQR = () => {
     dispatch(getQRUser(login.username, login.password))
+    if (userqr === "")
+      console.log("QR Listo")
+    else
+      console.log("QR Sin asociar")
   }
 
   useEffect(() => {
     verQR()
 
-  },[])
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

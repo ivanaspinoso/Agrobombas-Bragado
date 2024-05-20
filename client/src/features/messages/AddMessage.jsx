@@ -25,9 +25,13 @@ const AddMessage = () => {
   const ahora = new Date().toLocaleTimeString();
   const [textm, setTextM] = useState("");
   const [inmediate, setInmediate] = useState(true);
+  const [repite, setRepite] = useState(false);
   const [senddate, setSendDate] = useState(hoy);
   const [sendtime, setSendTime] = useState("09:00");
   const [todos, setTodos] = useState(false)
+  const [days, setDays] = useState(30)
+  const [veces, setVeces] = useState(1)
+  const [mensual, setMensual] = useState(false)
 
   const allContacts = useSelector((state) => state.contactsReducer.contacts)
 
@@ -72,6 +76,33 @@ const AddMessage = () => {
           // y luego modificar mensaje con el resultado obtenido
           // await dispatch(resultMessage())
         }
+
+        if (repite) {
+          setInmediate(false)
+          let sumdays = new Date(senddates)
+          if (mensual)
+            sumdays.setMonth(sumdays.getMonth() + 1)
+          else
+            sumdays.setDate(sumdays.getDate() + days)
+          console.log(new Date(sumdays))
+          senddates = sumdays.toISOString().split('T')[0];
+          console.log(senddates)
+          for (let i = 0; i < veces; i++) {
+            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
+            dispatch(messageAdd(messrepite));
+            sumdays = new Date(senddates)
+            if (mensual)
+              sumdays.setMonth(sumdays.getMonth() + 1)
+            else
+              sumdays.setDate(sumdays.getDate() + days)
+            senddates = sumdays.toISOString().split('T')[0];
+            console.log(messrepite)
+            // senddates.setDate(senddates.getDate() + days);
+          }
+        }
+
+
+
       })
     } else {
       // console.log("destinatario", destins)
@@ -103,6 +134,31 @@ const AddMessage = () => {
           // y luego modificar mensaje con el resultado obtenido
 
         }
+
+        if (repite) {
+          setInmediate(false)
+          let sumdays = new Date(senddates)
+          if (mensual)
+            sumdays.setMonth(sumdays.getMonth() + 1)
+          else
+            sumdays.setDate(sumdays.getDate() + days)
+          console.log(new Date(sumdays))
+          senddates = sumdays.toISOString().split('T')[0];
+          console.log(senddates)
+          for (let i = 0; i < veces; i++) {
+            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+            dispatch(messageAdd(messrepite));
+            sumdays = new Date(senddates)
+            if (mensual)
+              sumdays.setMonth(sumdays.getMonth() + 1)
+            else
+              sumdays.setDate(sumdays.getDate() + days)
+            senddates = sumdays.toISOString().split('T')[0];
+            console.log(messrepite)
+            // senddates.setDate(senddates.getDate() + days);
+          }
+        }
+
       })
     }
     //    const message = { text, inmediate, senddates, sendtimes, /* contactid: contact.id */ alldestins, backwa: login.bacwa };
@@ -388,12 +444,41 @@ const AddMessage = () => {
                   <option value="21:30:00" />
                   <option value="21:45:00" />
                 </datalist>
-
-
               </div>
-
               : ""}
           </div>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" checked={repite} onChange={() => setRepite(!repite)} />
+          <label class="form-check-label" for="flexCheckDefault">
+            Repetir
+          </label>
+          <div>
+            {repite ?
+              <div className="form-control">
+                <input class="form-check-input" type="checkbox" value="" checked={mensual} onChange={() => setMensual(!mensual)} />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Mensualmente
+                </label>
+                <br />
+                {!mensual ? <>
+                  Cada:<input
+                    type="number"
+                    id="days"
+                    value={days}
+                    onChange={(e) => setDays(e.target.value)} />
+                  dias </> : " Mismo dia de cada mes"}
+                <br />
+                <input
+                  type="number"
+                  id="veces"
+                  value={veces}
+                  onChange={(e) => setVeces(e.target.value)} />Veces
+                <br />
+              </div>
+              : ""}
+          </div>
+
         </div>
 
         <button
