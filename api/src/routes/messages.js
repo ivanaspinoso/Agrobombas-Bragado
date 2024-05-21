@@ -247,5 +247,36 @@ router.put("/result", async (req, res) => {
   }
 });
 
+// Borrar mensaje
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  if (!id) return res.status(400).send({ message: "Debe ingresar mensaje" });
+
+  const existMess = await Messages.findOne({
+    where: {
+      id,
+    },
+  });
+
+  if (existMess) {
+    try {
+      let delMessage = await Messages.destroy({
+        where: {
+          id,
+        },
+      });
+      console.log(delMessage);
+      return res
+        .status(200)
+        .json({ message: "Mensaje eliminado correctamente" });
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ message: "No se pudo eliminar el mensaje" + err });
+    }
+  }
+});
+
 
 module.exports = router;

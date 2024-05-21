@@ -60,13 +60,13 @@ const Navbar = () => {
                                     Enviados
                                 </Link>
                             </li>
-                            {/*  
-                                                       <li className="nav-item dropdown">
-                                <Link className="nav-link" to="/building">
-                                    Autorespuesta
+
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link" to="/show-receipts">
+                                    Recibidos
                                 </Link>
                             </li>
- */}
+
                             <li className="nav-item dropdown">
                                 <Link className="nav-link" to="/show-configs">
                                     Configuración

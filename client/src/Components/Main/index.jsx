@@ -88,7 +88,7 @@ const Main = () => {
                         <h3 className="d-flex center-flex aligns-items-center justify-content-center">{vincu}</h3>
                     </div>
                 </header>
-                <div className="row"> {/* row row-cols-1 row-cols-md-3 */}
+                <div className="row justify-content-center"> {/* row row-cols-1 row-cols-md-3 */}
                     <div className="card" style={{ "width": "18rem" }}>
                         <img src={grupos} className="card-img-top" alt="ABM de grupos" />
                         <div className="card-body">

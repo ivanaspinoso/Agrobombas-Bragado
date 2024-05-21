@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteCategory } from "../../app/actions/categories";
+import { messageDelete } from "../../app/actions/messages";
 import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2'
 
@@ -38,7 +38,7 @@ const QueuedView = () => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-          dispatch(deleteCategory(id));
+          dispatch(messageDelete(id));
         } else if (result.isDenied) {
 
         }

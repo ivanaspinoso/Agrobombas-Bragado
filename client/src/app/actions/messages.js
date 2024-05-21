@@ -53,12 +53,28 @@ export const messageAdd = (messageNew) => async (dispatch) => {
     }
   }
   
-
   export const resultMessage = (id) => async (dispatch) => {
     try {
       const { data } = await axios.get(`${resMessagesEndpoint}` + id);
       // console.log("ejecutando action getusermessages", data)
       dispatch({ type: updatemessage, payload: data });
+      //  localStorage.setItem("appConfig", JSON.stringify(data.config));
+      localStorage.setItem("gettingResultMessages", true)
+    } catch (err) {
+      localStorage.setItem("gettingResultMessages", err.response.data.message)
+      console.log(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      );
+    }
+  }
+
+  export const messageDelete = (id) => async (dispatch) => {
+    try {
+      const { data } = await axios.delete(`${delMessagesEndpoint}` + id);
+      // console.log("ejecutando action getusermessages", data)
+      dispatch({ type: deletemessage, payload: id });
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingResultMessages", true)
     } catch (err) {

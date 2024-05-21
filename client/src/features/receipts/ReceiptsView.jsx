@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
-import { deleteCategory } from "../../app/actions/categories";
+import { useNavigate } from "react-router-dom";
+import { receiptDelete } from "../../app/actions/receipts";
 import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2'
 import { getUserReceipts } from "../../app/actions/receipts";
@@ -33,7 +33,8 @@ const ReceiptsView = () => {
   const handleDelete = (id, text) => {
     swal
       .fire({
-        title: "Desea eliminar el mensaje recibido " + text + "?",
+        title: "Desea eliminar el mensaje recibido?",
+        html: text,
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: `Sí`,
@@ -43,8 +44,7 @@ const ReceiptsView = () => {
       .then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-
-          dispatch(deleteCategory(id));
+          dispatch(receiptDelete(id));
         } else if (result.isDenied) {
 
         }
@@ -52,6 +52,19 @@ const ReceiptsView = () => {
 
 
   };
+
+  const handleView = (id, text) => {
+    swal
+      .fire({
+        title: "Mensaje Recibido",
+        html: text,
+        showCancelButton: false,
+        confirmButtonText: `Aceptar`,
+        icon: "success",
+        // denyButtonText: `Cancelar`,
+      })
+  };
+
 
   return (
     <div className="container">
@@ -88,11 +101,11 @@ const ReceiptsView = () => {
                   <td>{num}</td>
                   <td>{createdAt}</td>
                   <td className="d-flex gap-2">
-                    <Link to="/edit-group" state={{ id, text, numwa, createdAt }}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Ver Mensaje">
+                    {/* <Link to="/edit-group" state={{ id, text, numwa, createdAt }}> */}
+                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Ver Mensaje" onClick={() => handleView(id, text)}>
                         <FaEye />
                       </button>
-                    </Link>
+                    {/* </Link> */}
 
                     <button data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Recibido" onClick={() => handleDelete(id, text)}>
                       <FaTrashAlt />

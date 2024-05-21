@@ -47,3 +47,4 @@ export const queMessagesEndpoint = REACT_APP_API + 'messages/queue/';
 // receipts
 
 export const userReceiptsEndpoint = REACT_APP_API + 'receipts/byuser/'
+export const delReceiptsEndpoint = REACT_APP_API + 'receipts/delete/';

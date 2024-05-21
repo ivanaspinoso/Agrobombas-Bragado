@@ -475,12 +475,10 @@ const AddMessage = () => {
                   value={veces}
                   onChange={(e) => setVeces(e.target.value)} />Veces
                 <br />
-              </div>
+              </div> 
               : ""}
           </div>
-
         </div>
-
         <button
           type="submit"
           className="btn"
