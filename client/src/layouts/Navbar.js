@@ -1,4 +1,5 @@
 import React from "react";
+import logo from "../assets/images/logo64.png"
 import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "../app/actions/users";
 import { useDispatch } from "react-redux";
@@ -13,6 +14,7 @@ const Navbar = () => {
 
         <nav className="navbar navbar-expand-lg navbar-dark bg-success">
             <div className="container">
+                <img src={logo} alt="Logo Wapp System" width={48} height={48} />
                 <Link className="navbar-brand" to="/">
                     WhatsApp Message System
                 </Link>
