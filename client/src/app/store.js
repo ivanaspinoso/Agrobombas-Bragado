@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import { composeWithDevTools } from "@redux-devtools/extension";
+// import { composeWithDevToolsDevelopmentOnly } from "@redux-devtools/extension";
 
 import contactsReducer from "../features/contacts/ContactsSlice";
 import configsReducer from "../features/config/ConfigSlice"
@@ -9,15 +9,29 @@ import messagesReducer from '../features/messages/MessagesSlice'
 import usersReducer from '../features/users/usersSlice'
 import receiptsReducer from '../features/receipts/receiptsSlice'
 
+import storage from "redux-persist/lib/storage"
+import {persistReducer} from "redux-persist"
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer"],
+}
+
+const rootReducer = combineReducers({
+  contactsReducer: contactsReducer,
+  configsReducer: configsReducer,
+  groupsReducer: groupsReducer,
+  messagesReducer: messagesReducer,
+  usersReducer: usersReducer,
+  receiptsReducer: receiptsReducer
+})
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+
 export const store = configureStore({
-  reducer: {
-    contactsReducer: contactsReducer,
-    configsReducer: configsReducer,
-    groupsReducer: groupsReducer,
-    messagesReducer: messagesReducer,
-    usersReducer: usersReducer,
-    receiptsReducer: receiptsReducer
-  },
-  composeWithDevTools,
-  
+  reducer: persistedReducer,
+  // devTools: process.env.REACT_APP_NODE_ENV !== 'production',
+  // composeWithDevToolsDevelopmentOnly
 });

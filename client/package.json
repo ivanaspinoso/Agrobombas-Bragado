@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://server8.km210.com",
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.2.1",
@@ -19,6 +20,8 @@
     "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
     "react-tooltip": "^5.26.3",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^3.1.0",
     "sweetalert2": "^11.10.6",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"

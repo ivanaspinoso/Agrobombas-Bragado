@@ -22,24 +22,24 @@ const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const configs = useSelector((state) => state.configsReducer.configs);
+    const login = useSelector((state) => state.usersReducer.login)
     const [vincu, setVincu] = useState("")
 
     const [isloading, setIsLoading] = useState(true)
 
-    var login = {}
+    // var loginvue = login
 
     // Obtener todos los  datos del sistema
-    if (!localStorage.getItem("userInfo")) {
-        login = { id: 0 }
-        // console.log("Not exist localStorage")
-    } else if (localStorage.getItem("userInfo") === undefined) {
-        login = { id: 0 }
-        // console.log("Undefined localStorage")
-    } else {
-        login = JSON.parse(localStorage.getItem("userInfo"))
-        // console.log("Obtenido userInfo", localStorage.getItem("userInfo"))
-    }
-
+    /*     if (!localStorage.getItem("userInfo")) {
+            login = { id: 0 }
+        
+        } else if (localStorage.getItem("userInfo") === undefined) {
+            login = { id: 0 }
+        
+        } else {
+            login = JSON.parse(localStorage.getItem("userInfo"))
+        }
+     */
     // ("login", login)
     async function fetchData() {
         if (login.id) {
@@ -63,12 +63,13 @@ const Main = () => {
 
     }
 
-
     useEffect(() => {
         console.clear()
         console.log("Iniciando sistema...")
+        // console.log(configs.lenght)
         // ("id de usuario" + login.id)
-        if (!localStorage.getItem("appConfig")) fetchData()
+        if (!configs.lenght) fetchData()
+        // if (!localStorage.getItem("appConfig")) fetchData()
 
         const QRobten = login.vinculated
         // console.log(QRobten)

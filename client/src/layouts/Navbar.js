@@ -16,7 +16,7 @@ const Navbar = () => {
             <div className="container">
                 <img src={logo} alt="Logo Wapp System" width={48} height={48} />
                 <Link className="navbar-brand" to="/">
-                    WhatsApp Message System
+                    WApp Message System
                 </Link>
                 <button
                     className="navbar-toggler"
