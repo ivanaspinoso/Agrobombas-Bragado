@@ -99,7 +99,7 @@ const QueuedView = () => {
             })}
         </tbody>
       </table>
-      <div className="d-flex center-flex aligns-items-center justify-content-center">
+      { cantPages <= 1 ? "" :<> <div className="d-flex center-flex aligns-items-center justify-content-center">
         <button data-tooltip-id="my-tooltip" data-tooltip-content="Primer página" onClick={() => setPagBreeds(1)}>⬅</button>
         <button data-tooltip-id="my-tooltip" data-tooltip-content="Anterior"
           onClick={() => {
@@ -124,7 +124,7 @@ const QueuedView = () => {
         </button>
         <button data-tooltip-id="my-tooltip" data-tooltip-content="ültima página" onClick={() => setPagBreeds(cantPages)}>➡</button>
 
-      </div>
+      </div></>}
       <Tooltip id="my-tooltip" />
     </div>
   );

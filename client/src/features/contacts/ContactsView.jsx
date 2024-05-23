@@ -108,7 +108,7 @@ const ContactsView = () => {
             })}
         </tbody>
       </table>
-      <div className="d-flex center-flex aligns-items-center justify-content-center">
+      { cantPages <= 1 ? "" :<> <div className="d-flex center-flex aligns-items-center justify-content-center">
         <button data-tooltip-id="my-tooltip" data-tooltip-content="Primer página" onClick={() => setPagContacts(1)}>⬅</button>
         <button data-tooltip-id="my-tooltip" data-tooltip-content="Anterior"
           onClick={() => {
@@ -133,7 +133,7 @@ const ContactsView = () => {
         </button>
         <button data-tooltip-id="my-tooltip" data-tooltip-content="ültima página" onClick={() => setPagContacts(cantPages)}>➡</button>
 
-      </div>
+      </div></>}
 
       <Tooltip id="my-tooltip" />
     </div>
