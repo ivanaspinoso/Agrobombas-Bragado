@@ -8,9 +8,17 @@ import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
 import "../../App.css"
 
+import { Icon } from 'react-icons-kit';
+import { eyeOff } from 'react-icons-kit/feather/eyeOff';
+import { eye } from 'react-icons-kit/feather/eye'
+import { useState } from 'react';
+
 const Register = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const [type, setType] = useState('password');
+    const [icon, setIcon] = useState(eyeOff);
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -22,14 +30,25 @@ const Register = () => {
         repassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').min(4, "Re Password must be at least 4 characters").required("Re ingrese Contraseña"),
     });
 
+    // show/hide password
+    const handleToggle = () => {
+        if (type === 'password') {
+            setIcon(eye);
+            setType('text')
+        } else {
+            setIcon(eyeOff)
+            setType('password')
+        }
+    }
+
     return (
         <div className="container mt-5">
-        <h2
-          className="text-center text-uppercase m-5"
-          style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-        >
-          Formulario de registro
-        </h2>
+            <h2
+                className="text-center text-uppercase m-5"
+                style={{ letterSpacing: "5px", fontWeight: "ligher" }}
+            >
+                Formulario de registro
+            </h2>
             <Formik
                 validationSchema={schema}
                 initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
@@ -50,11 +69,11 @@ const Register = () => {
                     if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
                         console.log()
                         const objConf = {
-                            business: values.name, 
+                            business: values.name,
                             userid: localStorage.getItem("userAdded")
                         }
                         const objGroup = {
-                            category: "Default", 
+                            category: "Default",
                             description: "Categoría por defecto",
                             undelete: true,
                             userid: localStorage.getItem("userAdded")
@@ -65,18 +84,18 @@ const Register = () => {
                             title: "Genial!",
                             text: "Usuario registrado con éxito!",
                             icon: "success"
-                          }).then((result) => {
+                        }).then((result) => {
                             if (result.isConfirmed) {
-                              resetForm({ values: "" })
-                              navigate("/", { replace: true });
+                                resetForm({ values: "" })
+                                navigate("/", { replace: true });
                             }
-                          });
+                        });
                     } else {
                         Swal.fire({
                             title: "Error",
                             text: localStorage.getItem("userAdded"),
                             icon: "error"
-                          });
+                        });
                     }
                     setSubmitting(false);
 
@@ -96,8 +115,8 @@ const Register = () => {
 
                         return (
                             <Form onSubmit={handleSubmit}
-                            className="border rounded p-4"
-                            style={{ maxWidth: "600px", margin: "auto" }}
+                                className="border rounded p-4"
+                                style={{ maxWidth: "600px", margin: "auto" }}
                             >
                                 <label className='form-label' htmlFor='Usuario'>Nombre</label>
                                 <input
@@ -124,9 +143,9 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                { errors.phoneNumber ? <p className="error">
+                                {errors.phoneNumber ? <p className="error">
                                     {errors.phoneNumber && touched.phoneNumber && errors.phoneNumber}
-                                </p> : "" }
+                                </p> : ""}
                                 <label className='form-label' htmlFor='Usuario'>Usuario</label>
                                 <input
                                     className='form-control'
@@ -140,13 +159,16 @@ const Register = () => {
                                 />
                                 {errors.username ? <p className="error">
                                     {errors.username && touched.username && errors.username}
-                                </p> : "" }
-                                <label className='form-label' htmlFor='password'>Password</label>
+                                </p> : ""}
+                                <span className="flex justify-around items-center" onClick={handleToggle}>
+                                    <Icon className="absolute mr-10" icon={icon} size={18} />
+                                </span>
+                                <label className='form-label' htmlFor='password'> - Contraseña</label>
                                 <input
                                     className='form-control'
                                     id='password'
                                     name='password'
-                                    type='password'
+                                    type={type}
                                     placeholder='Ingresa tu contraseña'
                                     value={values.password}
                                     onChange={handleChange}
@@ -154,13 +176,13 @@ const Register = () => {
                                 />
                                 {errors.password ? <p className="error">
                                     {errors.password && touched.password && errors.password}
-                                </p> : "" }
-                                <label className='form-label' htmlFor='reassword'>Confirm Password</label>
+                                </p> : ""}
+                                <label className='form-label' htmlFor='reassword'>Confirme Contraseña</label>
                                 <input
                                     className='form-control'
                                     id='repassword'
                                     name='repassword'
-                                    type='password'
+                                    type={type}
                                     placeholder='Confirma tu contraseña'
                                     value={values.repassword}
                                     onChange={handleChange}
@@ -168,7 +190,7 @@ const Register = () => {
                                 />
                                 {errors.repassword ? <p className="error">
                                     {errors.repassword && touched.repassword && errors.repassword}
-                                </p>:"" }
+                                </p> : ""}
                                 <div className='d-flex justify-content-around'>
                                     <button type='sumit' disabled={isSubmitting}>Registrarme</button>
                                     <div>Si ya tienes cuenta<button onClick={() => { navigate("/login") }}>Login</button></div>

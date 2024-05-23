@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { getUser } from '../../app/actions/users';
 import { useDispatch } from 'react-redux';
@@ -7,9 +7,16 @@ import * as Yup from 'yup'
 import Swal from 'sweetalert2';
 import "../../App.css"
 
+import { Icon } from 'react-icons-kit';
+import { eyeOff } from 'react-icons-kit/feather/eyeOff';
+import { eye } from 'react-icons-kit/feather/eye'
+
 const LogIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const [type, setType] = useState('password');
+    const [icon, setIcon] = useState(eyeOff);
 
     const schema = Yup.object().shape({
         username: Yup.string().required("Usuario es requerido"),
@@ -17,6 +24,17 @@ const LogIn = () => {
         password: Yup.string()
             .required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
     });
+
+    // show/hide password
+    const handleToggle = () => {
+        if (type === 'password') {
+            setIcon(eye);
+            setType('text')
+        } else {
+            setIcon(eyeOff)
+            setType('password')
+        }
+    }
 
     return (
         <div className="container mt-5">
@@ -75,14 +93,17 @@ const LogIn = () => {
                                 {/* If validation is not passed show errors */}
                                 {errors.username ? <p className="error">
                                     {errors.username && touched.username && errors.username}
-                                </p> : "" }
+                                </p> : ""}
                                 {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
-                                <label className='form-label' htmlFor='password'>Password</label>
+                                <span className="flex justify-around items-center" onClick={handleToggle}>
+                                    <Icon className="absolute mr-10" icon={icon} size={18} />
+                                </span>
+                                <label className='form-label' htmlFor='password'> - Contraseña:</label>
                                 <input
-                                    className='form-control'
+                                    className='form-control absolute mr-10'
                                     id='password'
                                     name='password'
-                                    type='password'
+                                    type={type}
                                     placeholder='Ingresa tu contraseña'
                                     value={values.password}
                                     onChange={handleChange}
@@ -91,7 +112,7 @@ const LogIn = () => {
                                 {/* If validation is not passed show errors */}
                                 {errors.password ? <p className="error">
                                     {errors.password && touched.password && errors.password}
-                                </p> : "" }
+                                </p> : ""}
                                 {/* Click on submit button to submit the form */}
                                 <div className='d-flex justify-content-around'>
                                     <div><button type='sumit' disabled={isSubmitting}>LogIn</button></div>
