@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../assets/images/logo64.png"
 import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "../app/actions/users";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const login = useSelector((state) => state.usersReducer.login);
 
+    useEffect(() => {
+        console.log("redibuje menu", login.id)
+    }, [login]
+    )
 
     return (<>
-
         <nav className="navbar navbar-expand-lg navbar-dark bg-success">
             <div className="container">
-                <img src={logo} alt="Logo Wapp System" width={48} height={48} />
+                <img src={logo} alt="Logo Wapp Message System" width={48} height={48} />
                 <Link className="navbar-brand" to="/">
                     WApp Message System
                 </Link>
@@ -29,7 +33,7 @@ const Navbar = () => {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                {!localStorage.getItem("userInfo") ? "" :
+                {!login.id ? "" :
                     <div className="collapse navbar-collapse" id="navbarCentral">
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
@@ -54,7 +58,7 @@ const Navbar = () => {
                             </li>
                             <li className="nav-item dropdown">
                                 <Link className="nav-link" to="/queue-messages">
-                                    En espera
+                                    Cola
                                 </Link>
                             </li>
                             <li className="nav-item dropdown">
@@ -75,12 +79,12 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li className="nav-item dropdown">
-                                <button className="success" onClick={async () => {
+                                <button /* className="success" */ onClick={async () => {
                                     await dispatch(logOut());
                                     navigate("/login")
 
                                 }}>
-                                    Cerrar Sesión
+                                    Salir
                                 </button>
                             </li>
                         </ul>

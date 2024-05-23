@@ -1,6 +1,6 @@
 import axios from "axios";
-import { allContactsEndpoint, addContactsEndpoint, delContactsEndpoint, updContactsEndpoint, userContactsEndpoint, byidContactsEndpoint } from "../consts/consts";
-import { showContacts, addContact, deleteContact, updateContact, allContact, sendContact } from "../../features/contacts/ContactsSlice";
+import { ASC, DES, allContactsEndpoint, addContactsEndpoint, delContactsEndpoint, updContactsEndpoint, userContactsEndpoint, byidContactsEndpoint } from "../consts/consts";
+import { showContacts, addContact, deleteContact, updateContact, allContact, sendContact, sortContacts } from "../../features/contacts/ContactsSlice";
 
 export const contactAdd = (userNew) => async (dispatch) => {
   // console.log("agregando", userNew);
@@ -103,3 +103,35 @@ export const contactUpdate = (user) => async (dispatch) => {
     );
   }
 };
+
+
+export const contactsSort = (order, breeds) => async (dispatch) => {
+  let sortBreed = [...breeds]
+
+  sortBreed.sort(function(a,b){
+      var nombreA = a.name.toUpperCase();
+      var nombreB = b.name.toUpperCase();
+
+      if(order === ASC){
+          if(nombreA < nombreB){
+              return -1;
+          }
+          if(nombreA > nombreB){
+              return 1
+          }
+          return 0
+      }
+      if(order === DES){
+          if(nombreA < nombreB){
+              return 1;
+          }
+          if(nombreA > nombreB){
+              return -1
+          }
+          return 0
+      }
+  })
+  /* return function(dispatch){
+ */      dispatch({type: sortContacts, payload: sortBreed})
+/*   }
+ */}

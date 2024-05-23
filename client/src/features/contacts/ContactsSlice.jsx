@@ -42,10 +42,12 @@ export const contactsSlice = createSlice({
     logoutContacts: (state, action) => {
       state.contacts = action.payload
     },
+    sortContacts: (state, action) => {
+      state.contacts = action.payload
+    }
   },
 });
 
-export const { showContacts, addContact, updateContact, deleteContact, allContact, sendContact, logoutContacts } =
-contactsSlice.actions;
+export const { showContacts, addContact, updateContact, deleteContact, allContact, sendContact, logoutContacts, sortContacts } = contactsSlice.actions;
 
 export default contactsSlice.reducer;
