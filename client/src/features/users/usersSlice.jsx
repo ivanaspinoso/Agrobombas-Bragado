@@ -59,11 +59,12 @@ export const usersSlice = createSlice({
       }
     },
     updateUserAdm: (state, action) => {
-      const { id, /* name, email, cellphone, username, password, address, city, zip, province,  country, active, blocked, */ backwa} = action.payload;
+      const { id, backwa, isAdmin} = action.payload;
       const isUserExist = state.users.filter((user) => user.id === id);
 
       if (isUserExist) {
         isUserExist[0].backwa = backwa;
+        isUserExist[0].isAdmin = isAdmin;
       }
     },
 

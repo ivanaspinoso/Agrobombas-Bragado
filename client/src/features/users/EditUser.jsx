@@ -12,11 +12,13 @@ const EditUser = () => {
   const [cellphone, setCellphone] = useState(location.state.cellphone);
   const [username, setUsername] = useState(location.state.cellphone);
   const [backwa, setBackwa] = useState(location.state.backwa);
+  const [isAdmin, setIsAdmin] = useState(location.state.isAdmin)
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(userUpdateAdm({ id, backwa }));
+    let isAdm = isAdmin
+    dispatch(userUpdateAdm({ id, backwa, isAdm }));
     navigate("/show-users", { replace: true });
   };
 
@@ -82,6 +84,12 @@ const EditUser = () => {
             value={backwa}
             onChange={(e) => setBackwa(e.target.value)}
           />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="author" className="form-label">
+            is Admin:
+          </label>
+          <input class="form-check-input" type="checkbox" value="" checked={isAdmin} onChange={() => setIsAdmin(!isAdmin)} />
         </div>
         <button
           type="submit"
