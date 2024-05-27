@@ -59,12 +59,14 @@ export const usersSlice = createSlice({
       }
     },
     updateUserAdm: (state, action) => {
-      const { id, backwa, isAdmin} = action.payload;
+      const { id, backwa, isAdmin, vinculated, qrcode } = action.payload;
       const isUserExist = state.users.filter((user) => user.id === id);
 
       if (isUserExist) {
         isUserExist[0].backwa = backwa;
         isUserExist[0].isAdmin = isAdmin;
+        isUserExist[0].vinculated = vinculated;
+        isUserExist[0].qrcode = qrcode;
       }
     },
 

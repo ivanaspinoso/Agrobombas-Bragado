@@ -13,12 +13,15 @@ const EditUser = () => {
   const [username, setUsername] = useState(location.state.cellphone);
   const [backwa, setBackwa] = useState(location.state.backwa);
   const [isAdmin, setIsAdmin] = useState(location.state.isAdmin)
+  const [vincula, setVincula] = useState(location.state.vinculated)
+  const [qrcode, setQrcode] = useState(location.state.qrcode)
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let isAdm = isAdmin
-    dispatch(userUpdateAdm({ id, backwa, isAdm }));
+    let vinculated = vincula
+    dispatch(userUpdateAdm({ id, backwa, isAdm, vinculated, qrcode }));
     navigate("/show-users", { replace: true });
   };
 
@@ -58,7 +61,7 @@ const EditUser = () => {
             id="cellphone"
             value={cellphone}
             onChange={(e) => setCellphone(e.target.value)}
-            // required
+          // required
           />
         </div>
         <div className="mb-3">
@@ -90,6 +93,24 @@ const EditUser = () => {
             is Admin:
           </label>
           <input class="form-check-input" type="checkbox" value="" checked={isAdmin} onChange={() => setIsAdmin(!isAdmin)} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="author" className="form-label">
+            Vinculated:
+          </label>
+          <input class="form-check-input" type="checkbox" value="" checked={vincula} onChange={() => setVincula(!vincula)} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="author" className="form-label">
+            QRCode:
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="qrcode"
+            value={qrcode}
+            onChange={(e) => setQrcode(e.target.value)}
+          />
         </div>
         <button
           type="submit"

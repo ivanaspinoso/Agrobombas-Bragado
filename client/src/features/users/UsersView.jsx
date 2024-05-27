@@ -53,7 +53,7 @@ const UsersView = () => {
             <th>N</th>
             <th>Id</th>
             <th>Nombre</th>
-            <th>Numero WA</th>
+            <th>Numero WA - Sync</th>
             <th>Usuario</th>            
             <th>back WA</th>
             <th>Admin</th>
@@ -63,18 +63,18 @@ const UsersView = () => {
         <tbody>
           {users &&
             users.map((user, index) => {
-              const { id, name, cellphone, country, username, backwa, isAdmin } = user;
+              const { id, name, cellphone, country, username, backwa, isAdmin, vinculated, qrcode } = user;
               return (
                 <tr key={id}>
                   <th>{index + 1}</th>
                   <th>{id}</th>
                   <td>{name}</td>
-                  <td>{cellphone}</td>
+                  <td>{cellphone} - {vinculated === true ? "si" : "no"} </td>
                   <td>{username}</td>
                   <td>{backwa}</td>
                   <td>{isAdmin === true ? "si" : "no" }</td>
                   <td className="d-flex gap-2">
-                    <Link to="/edit-user" state={{ id, name, cellphone, country, username, backwa, isAdmin }}>
+                    <Link to="/edit-user" state={{ id, name, cellphone, country, username, backwa, isAdmin, vinculated, qrcode }}>
                       <button data-tooltip-id="my-tooltip" data-tooltip-content="Editar Usuario">
                         <FaEdit />
                       </button>

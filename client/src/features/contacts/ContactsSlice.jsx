@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialContacts = {
   loading: 'idle',
   contacts: [],
+  admcontacts: [],
   aenviar: {},
 };
 
@@ -13,6 +14,9 @@ export const contactsSlice = createSlice({
     showContacts: (state) => state,
     allContact: (state, action) => {
       state.contacts = action.payload
+    },
+    admContact: (state, action) => {
+      state.admcontacts = action.payload
     },
     addContact: (state, action) => {
       state.contacts.push(action.payload);
@@ -48,6 +52,6 @@ export const contactsSlice = createSlice({
   },
 });
 
-export const { showContacts, addContact, updateContact, deleteContact, allContact, sendContact, logoutContacts, sortContacts } = contactsSlice.actions;
+export const { showContacts, addContact, updateContact, deleteContact, allContact, sendContact, logoutContacts, sortContacts, admContact } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

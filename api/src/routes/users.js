@@ -259,7 +259,7 @@ router.put("/update", /* validateToken, */ async (req, res) => {
 // Actualizar datos de usuario por parte de admin
 router.put("/updateadm", /* validateToken, */ async (req, res) => {
   // tomo todos los campos del form de registro de usuario
-  const { id, backwa, isAdm } = req.body.user;
+  const { id, backwa, isAdm, vinculated, qrcode } = req.body.user;
   // console.log(req.body.user);
   // chequeo que estén completos los 3 campos requeridos
   if (!id || id === "") {
@@ -282,7 +282,9 @@ router.put("/updateadm", /* validateToken, */ async (req, res) => {
     const objUser = {
       id,
       backwa,
-      isAdmin: isAdm
+      isAdmin: isAdm,
+      vinculated,
+      qrcode
     };
 
     try {
