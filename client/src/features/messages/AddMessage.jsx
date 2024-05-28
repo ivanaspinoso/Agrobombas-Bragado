@@ -32,6 +32,7 @@ const AddMessage = () => {
   const [days, setDays] = useState(30)
   const [veces, setVeces] = useState(1)
   const [mensual, setMensual] = useState(false)
+  const [xmonths, setXMonths] = useState(1)
 
   const allContacts = useSelector((state) => state.contactsReducer.contacts)
 
@@ -81,7 +82,7 @@ const AddMessage = () => {
           setInmediate(false)
           let sumdays = new Date(senddates)
           if (mensual)
-            sumdays.setMonth(sumdays.getMonth() + 1)
+            sumdays.setMonth(sumdays.getMonth() + xmonths)
           else
             sumdays.setDate(sumdays.getDate() + days)
           console.log(new Date(sumdays))
@@ -91,10 +92,14 @@ const AddMessage = () => {
             const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
             dispatch(messageAdd(messrepite));
             sumdays = new Date(senddates)
-            if (mensual)
-              sumdays.setMonth(sumdays.getMonth() + 1)
-            else
+            if (mensual) {
+              console.log("meses",xmonths)
+              sumdays.setMonth(sumdays.getMonth() + xmonths)
+            }
+            else {
               sumdays.setDate(sumdays.getDate() + days)
+              console.log("dias",days)
+            }
             senddates = sumdays.toISOString().split('T')[0];
             console.log(messrepite)
             // senddates.setDate(senddates.getDate() + days);
@@ -136,25 +141,37 @@ const AddMessage = () => {
         }
 
         if (repite) {
+          console.clear()
           setInmediate(false)
           let sumdays = new Date(senddates)
-          if (mensual)
-            sumdays.setMonth(sumdays.getMonth() + 1)
-          else
+          console.log("Fecha inicial",senddates,"convertida a sumdays ",sumdays,"\n mes obtenido", sumdays.getMonth())
+          
+          if (mensual) 
+            sumdays.setMonth(sumdays.getMonth() + xmonths)
+          else 
             sumdays.setDate(sumdays.getDate() + days)
-          console.log(new Date(sumdays))
+
+          console.log("Fecha sumada la primera vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
+          // console.log("Fecha sumada la primera vez",sumdays)          
           senddates = sumdays.toISOString().split('T')[0];
-          console.log(senddates)
+          console.log("Senddates ",senddates," Sumdays",sumdays)
           for (let i = 0; i < veces; i++) {
             const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
             dispatch(messageAdd(messrepite));
             sumdays = new Date(senddates)
-            if (mensual)
-              sumdays.setMonth(sumdays.getMonth() + 1)
-            else
+            if (mensual) {
+              sumdays.setMonth(sumdays.getMonth() + xmonths)
+            }
+            else {
               sumdays.setDate(sumdays.getDate() + days)
+              console.log("dias",days)
+            }
             senddates = sumdays.toISOString().split('T')[0];
-            console.log(messrepite)
+            // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
+            console.log("Fecha sumada la "+ (i + 2) +" vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
+            console.log()
+            console.log(senddates)
+            // console.log(messrepite)
             // senddates.setDate(senddates.getDate() + days);
           }
         }
@@ -467,7 +484,13 @@ const AddMessage = () => {
                     id="days"
                     value={days}
                     onChange={(e) => setDays(e.target.value)} />
-                  dias </> : " Mismo dia de cada mes"}
+                  dias </> : <>Mismo dia de cada mes<br/>
+                  Cada:<input
+                    type="number"
+                    id="nonths"
+                    value={xmonths}
+                    onChange={(e) => setXMonths(e.target.value)} />
+                  mes/es </> }
                 <br />
                 <input
                   type="number"

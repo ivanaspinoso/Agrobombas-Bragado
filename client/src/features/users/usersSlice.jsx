@@ -58,7 +58,7 @@ export const usersSlice = createSlice({
         isUserExist[0].blocked = blocked;
       }
     },
-    updateUserAdm: (state, action) => {
+    updateUserAdm/* : */ (state, action) /* => */ {
       const { id, backwa, isAdmin, vinculated, qrcode } = action.payload;
       const isUserExist = state.users.filter((user) => user.id === id);
 

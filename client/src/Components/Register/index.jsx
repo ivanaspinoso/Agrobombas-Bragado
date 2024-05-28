@@ -139,6 +139,7 @@ const Register = () => {
                                     name='phoneNumber'
                                     type='text'
                                     placeholder='Tu WA formato: 5491144445555'
+                                    maxlength="13"
                                     value={values.phoneNumber}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
