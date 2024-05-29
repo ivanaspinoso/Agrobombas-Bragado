@@ -79,34 +79,37 @@ const AddMessage = () => {
         }
 
         if (repite) {
+          console.clear()
           setInmediate(false)
           let sumdays = new Date(senddates)
-          if (mensual)
-            sumdays.setMonth(sumdays.getMonth() + xmonths)
-          else
-            sumdays.setDate(sumdays.getDate() + days)
-          console.log(new Date(sumdays))
-          senddates = sumdays.toISOString().split('T')[0];
-          console.log(senddates)
+
+          let mesobten = parseInt(sumdays.getMonth())
+          console.log("Primer mes" + mesobten)
+          let elmes = parseInt(mesobten) + parseInt(xmonths)
+          console.log("Primer somatorial, elmes", elmes)
+
           for (let i = 0; i < veces; i++) {
-            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
-            dispatch(messageAdd(messrepite));
-            sumdays = new Date(senddates)
             if (mensual) {
-              console.log("meses",xmonths)
-              sumdays.setMonth(sumdays.getMonth() + xmonths)
+              sumdays.setMonth(elmes)
+              elmes = parseInt(elmes) + parseInt(xmonths)
             }
             else {
-              sumdays.setDate(sumdays.getDate() + days)
+              sumdays.setDate(sumdays.getDate() + parseInt(days))
               console.log("dias",days)
             }
             senddates = sumdays.toISOString().split('T')[0];
-            console.log(messrepite)
+            // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
+            // console.log("Fecha sumada la "+ (i + 2) +" vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
+            // console.log()
+            console.log(senddates)
+            console.log("El mes " + elmes)
             // senddates.setDate(senddates.getDate() + days);
+            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
+            dispatch(messageAdd(messrepite));
+//            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+//            dispatch(messageAdd(messrepite));
           }
         }
-
-
 
       })
     } else {
@@ -144,35 +147,31 @@ const AddMessage = () => {
           console.clear()
           setInmediate(false)
           let sumdays = new Date(senddates)
-          console.log("Fecha inicial",senddates,"convertida a sumdays ",sumdays,"\n mes obtenido", sumdays.getMonth())
-          
-          if (mensual) 
-            sumdays.setMonth(sumdays.getMonth() + xmonths)
-          else 
-            sumdays.setDate(sumdays.getDate() + days)
 
-          console.log("Fecha sumada la primera vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
-          // console.log("Fecha sumada la primera vez",sumdays)          
-          senddates = sumdays.toISOString().split('T')[0];
-          console.log("Senddates ",senddates," Sumdays",sumdays)
+          let mesobten = parseInt(sumdays.getMonth())
+          console.log("Primer mes" + mesobten)
+          let elmes = parseInt(mesobten) + parseInt(xmonths)
+          console.log("Primer somatorial, elmes", elmes)
+
           for (let i = 0; i < veces; i++) {
-            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
-            dispatch(messageAdd(messrepite));
-            sumdays = new Date(senddates)
             if (mensual) {
-              sumdays.setMonth(sumdays.getMonth() + xmonths)
+              sumdays.setMonth(elmes)
+              elmes = parseInt(elmes) + parseInt(xmonths)
             }
             else {
-              sumdays.setDate(sumdays.getDate() + days)
+              sumdays.setDate(sumdays.getDate() + parseInt(days))
               console.log("dias",days)
             }
             senddates = sumdays.toISOString().split('T')[0];
             // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
-            console.log("Fecha sumada la "+ (i + 2) +" vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
-            console.log()
+            // console.log("Fecha sumada la "+ (i + 2) +" vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
+            // console.log()
             console.log(senddates)
-            // console.log(messrepite)
+            console.log("El mes " + elmes)
             // senddates.setDate(senddates.getDate() + days);
+            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+            dispatch(messageAdd(messrepite));
+
           }
         }
 
