@@ -21,128 +21,91 @@ const ReceiptsView = () => {
   }, [])
 
   const receipts = useSelector((state) => state.receiptsReducer.receipts);
-  // Paginar Mensajes y preparar el paginado
   const [pagBreeds, setPagBreeds] = useState(1); // comienza en página 1
   const itemsPPage = 15;
   const totalItems = pagBreeds * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(receipts.length / itemsPPage);
-  const view = receipts.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
-
+  const view = receipts.slice(inicialItems, totalItems);
 
   const handleDelete = (id, text) => {
     swal
-      .fire({
+    .fire({
         title: "Desea eliminar el mensaje recibido?",
         html: text,
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: `Sí`,
         icon: "success",
-        // denyButtonText: `Cancelar`,
       })
-      .then((result) => {
-        /* Read more about isConfirmed, isDenied below */
+    .then((result) => {
         if (result.isConfirmed) {
           dispatch(receiptDelete(id));
-        } else if (result.isDenied) {
-
         }
       });
-
-
   };
 
   const handleView = (id, text) => {
     swal
-      .fire({
+    .fire({
         title: "Mensaje Recibido",
         html: text,
         showCancelButton: false,
         confirmButtonText: `Aceptar`,
         icon: "success",
-        // denyButtonText: `Cancelar`,
       })
   };
 
-
   return (
-    <div className="container">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
+    <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <h2 className="text-center flex flex-row justify-between text-2xl font-semibold mb-10">
         Listado de mensajes recibidos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar mensaje" onClick={() => { navigate("/add-message") }}><FcAddRow /></button>
+        <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/add-message") }}>
+          <FcAddRow className="mr-2" /> Agregar mensaje
+        </button>
       </h2>
-      <table
-        className="table mb-5"
-        style={{ maxWidth: "80%", margin: "auto" }}
-      >
-        <thead>
-          <tr style={{ background: "#006877", color: "white" }}>
-            <th>N</th>
-            <th>Texto</th>
-            <th>De</th>
-            <th>Dia</th>
-            <th>Acción</th>
+      <table className="w-full whitespace-nowrap">
+        <thead className="bg-green-500 text-white">
+          <tr>
+            <th className="px-4 py-2">N</th>
+            <th className="px-4 py-2">Texto</th>
+            <th className="px-4 py-2">De</th>
+            <th className="px-4 py-2">Dia</th>
+            <th className="px-4 py-2">Acción</th>
           </tr>
         </thead>
         <tbody>
-          {view &&
-            view.map((receipt, index) => {
-              /* setNumItem(index + 1) */
-              const { id, text, numwa, createdAt } = receipt;
-              let num = numwa.replaceAll("@c.us","")
-              return (
-                <tr key={id}>
-                  <th>{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</th>
-                  <td>{text.substr(0,50)} { text.length > 50 ? " ..." : ""}</td>
-                  <td>{num}</td>
-                  <td>{createdAt}</td>
-                  <td className="d-flex gap-2">
-                    {/* <Link to="/edit-group" state={{ id, text, numwa, createdAt }}> */}
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Ver Mensaje" onClick={() => handleView(id, text)}>
-                        <FaEye />
-                      </button>
-                    {/* </Link> */}
-
-                    <button data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Recibido" onClick={() => handleDelete(id, text)}>
-                      <FaTrashAlt />
-                    </button>
-
-                  </td>
-                </tr>
-              );
-            })}
+          {view.map((receipt, index) => {
+            const { id, text, numwa, createdAt } = receipt;
+            let num = numwa.replaceAll("@c.us","")
+            return (
+              <tr key={id} className="hover:bg-gray-100">
+                <td className="border px-4 py-2">{index + 1 + (pagBreeds > 1? ((pagBreeds - 1) * 15) : 0)}</td>
+                <td className="border px-4 py-2">{text.substr(0,50)} { text.length > 50? "..." : ""}</td>
+                <td className="border px-4 py-2">{num}</td>
+                <td className="border px-4 py-2">{new Date(createdAt).toLocaleDateString()}</td>
+                <td className="border px-4 py-2 flex gap-2">
+                  <button className="text-green-500 hover:text-green-700" onClick={() => handleView(id, text)}>
+                    <FaEye />
+                  </button>
+                  <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(id, text)}>
+                    <FaTrashAlt />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-      { cantPages <= 1 ? "" :<> <div className="d-flex center-flex aligns-items-center justify-content-center">
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Primer página" onClick={() => setPagBreeds(1)}>⬅</button>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Anterior"
-          onClick={() => {
-            pagBreeds > 1 ? setPagBreeds(pagBreeds - 1) : setPagBreeds(1);
-          }}
-        >
-          {" "}
-          👈{" "}
-        </button>
-        <label>
-          página {pagBreeds} de {Math.round(cantPages)}
-        </label>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Siguiente"
-          onClick={() => {
-            pagBreeds < cantPages
-              ? setPagBreeds(pagBreeds + 1)
-              : setPagBreeds(cantPages);
-          }}
-        >
-          {" "}
-          👉{" "}
-        </button>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="ültima página" onClick={() => setPagBreeds(cantPages)}>➡</button>
-
-      </div></>}
+      {cantPages > 1 && (
+        <nav aria-label="Pagination" className="flex justify-end mt-4">
+          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(1)}>⬅</button>
+          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds > 1? pagBreeds - 1 : 1)}>👈</button>
+          <span className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Página {pagBreeds} de {Math.round(cantPages)}</span>
+          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds < cantPages? pagBreeds + 1 : cantPages)}>👉</button>
+          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(cantPages)}>➡</button>
+        </nav>
+      )}
       <Tooltip id="my-tooltip" />
     </div>
   );

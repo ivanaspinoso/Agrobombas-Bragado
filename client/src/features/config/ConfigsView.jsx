@@ -7,25 +7,16 @@ import { Tooltip } from 'react-tooltip';
 const ConfigsView = () => {
   const configs = useSelector((state) => state.configsReducer.configs);
 
-
-// console.log("Figu", configs)
-
-let objConfig= {id: configs.id, business: configs.business, slogan: configs.slogan}
+  let objConfig = { id: configs.id, business: configs.business, slogan: configs.slogan };
 
   return (
-    <div className="container">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
+    <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <h2 className="text-center flex flex-row justify-between text-xl font-semibold mb-10">
         Configuración del sistema
       </h2>
-      <table
-        className="table mb-5"
-        style={{ maxWidth: "80%", margin: "auto" }}
-      >
-        <thead>
-          <tr style={{ background: "#006877", color: "white" }}>
+      <table className="table-auto w-full mb-10">
+        <thead className="bg-green-500 text-white">
+          <tr>
             <th>ID</th>
             <th>Business</th>
             <th>Slogan</th>
@@ -33,23 +24,21 @@ let objConfig= {id: configs.id, business: configs.business, slogan: configs.slog
           </tr>
         </thead>
         <tbody>
-
-                <tr key={configs.id}>
-                  <th>{1}</th>
-                  <td>{configs.business}</td>
-                  <td>{configs.slogan}</td>
-                  <td className="d-flex gap-2">
-                    {  }
-                    <Link to="/edit-config" state={objConfig}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Edit Connfig">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                  </td>
-                </tr>
-
+          <tr key={configs.id}>
+            <td>{1}</td>
+            <td>{configs.business}</td>
+            <td>{configs.slogan}</td>
+            <td className="flex gap-2">
+              <Link to="/edit-config" state={objConfig}>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
+                  <FaEdit />
+                </button>
+              </Link>
+            </td>
+          </tr>
         </tbody>
       </table>
+      {/* Asegúrate de tener una referencia única para cada tooltip si vas a usar varias */}
       <Tooltip id="my-tooltip" />
     </div>
   );

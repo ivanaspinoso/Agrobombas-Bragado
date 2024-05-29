@@ -1,206 +1,92 @@
-import contacto from '../../assets/images/contactos.jpg';
-import mensaje from '../../assets/images/mensajes.jpg'
-import reloj from '../../assets/images/reloj.jpg'
-import receipts from '../../assets/images/recibidos.avif'
-import config from '../../assets/images/configuracion.webp'
-import grupos from '../../assets/images/grupos.jpg'
-import enviados from "../../assets/images/whatsapp-enviado.webp"
-import autoreplys from "../../assets/images/autoreply.jpg"
-import bots from "../../assets/images/botswapp.webp"
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import Spinner from '../spinner';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
 import { getAllUsers, getQRUser } from '../../app/actions/users';
 import { getUserReceipts } from '../../app/actions/receipts';
+import Spinner from '../spinner';
+import contacto from '../../assets/images/contactos.jpg';
+import mensaje from '../../assets/images/mensajes.jpg';
+import reloj from '../../assets/images/reloj.jpg';
+import receipts from '../../assets/images/recibidos.avif';
+import config from '../../assets/images/configuracion.webp';
+import grupos from '../../assets/images/grupos.jpg';
+import enviados from "../../assets/images/whatsapp-enviado.webp";
+import autoreplys from "../../assets/images/autoreply.jpg";
+import bots from "../../assets/images/botswapp.webp";
 
 const Main = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const configs = useSelector((state) => state.configsReducer.configs);
-    const login = useSelector((state) => state.usersReducer.login)
-    const [vincu, setVincu] = useState("")
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const configs = useSelector((state) => state.configsReducer.configs);
+  const login = useSelector((state) => state.usersReducer.login);
+  const [vincu, setVincu] = useState("");
+  const [isloading, setIsLoading] = useState(true);
 
-    const [isloading, setIsLoading] = useState(true)
-
-    // var loginvue = login
-
-    // Obtener todos los  datos del sistema
-    /*     if (!localStorage.getItem("userInfo")) {
-            login = { id: 0 }
-        
-        } else if (localStorage.getItem("userInfo") === undefined) {
-            login = { id: 0 }
-        
-        } else {
-            login = JSON.parse(localStorage.getItem("userInfo"))
-        }
-     */
-    // ("login", login)
-    async function fetchData() {
-        if (login.id) {
-
-            dispatch(getConfig(login.id))
-            dispatch(getUserContacts(login.id));
-            dispatch(getUserCategories(login.id));
-            dispatch(getUserMessages(login.id))
-            dispatch(getQRUser(login.username, login.password))
-            if (login.isAdmin) {
-                dispatch(getAllUsers())
-            }
-
-            // await dispatch(getUser(login.username, login.password))
-            // «("QRobten",QRobten)
-
-
-        } else {
-            navigate("/login")
-        }
-
+  async function fetchData() {
+    if (login.id) {
+      dispatch(getConfig(login.id));
+      dispatch(getUserContacts(login.id));
+      dispatch(getUserCategories(login.id));
+      dispatch(getUserMessages(login.id));
+      dispatch(getQRUser(login.username, login.password));
+      if (login.isAdmin) {
+        dispatch(getAllUsers());
+      }
+    } else {
+      navigate("/login");
     }
+  }
 
-    useEffect(() => {
-        console.clear()
-        console.log("Iniciando sistema...")
-        // console.log(configs.lenght)
-        // ("id de usuario" + login.id)
-        if (!configs.lenght) fetchData()
-        // if (!localStorage.getItem("appConfig")) fetchData()
+  useEffect(() => {
+    if (!configs.length) fetchData();
+    const QRobten = login.vinculated;
+    setVincu(QRobten === false ? "Aun no se ha vinculado su WhatsApp" : "Su cuenta vinculada a WhatsApp");
+    setIsLoading(false);
+  }, []);
 
-        const QRobten = login.vinculated
-        // console.log(QRobten)
-        QRobten === false ? setVincu("Aun no se ha vinculado su WhatsApp") : setVincu("Su cuenta vinculada a WhatsApp")
-        setIsLoading(false)
-    }, []
-    );
+  if (isloading) {
+    return <Spinner />;
+  }
 
-    return (<>
-        {!isloading ?
-            <div className="container my-12 mx-auto px-4 md:px-12">
-                <header>
-                    <h1 className="d-flex center-flex aligns-items-center justify-content-center">
-                        Control Panel de {configs.business}
-                    </h1>
-                    <div>
-                        <h3 className="d-flex center-flex aligns-items-center justify-content-center">{vincu}</h3>
-                    </div>
-                </header>
-                <div className="row justify-content-center"> {/* row row-cols-1 row-cols-md-3 */}
-                    <div className="card" style={{ "width": "18rem" }}>
-                        <img src={grupos} className="card-img-top" alt="ABM de grupos" />
-                        <div className="card-body">
-                            <h5 className="card-title">Grupos de Contacto</h5>
-                            <p className="card-text">ABM de grupos. Ingrese aquí los grupos para asignar destinatarios.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-groups") }}>Grupos</button>
-                        </div>
-                    </div>
-                    <div className="card" style={{ "width": "18rem" }}>
-                        <img src={contacto} className="card-img-top" alt="ABM de contactos" />
-                        <div className="card-body">
-                            <h5 className="card-title">Contactos</h5>
-                            <p className="card-text">ABM de contactos. Ingrese aquí los destinatarios de su sistema.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-contacts") }}>Contactos</button>
-                        </div>
-                    </div>
-                    <div className="card" style={{ "width": "18rem" }}>
-                        <img src={mensaje} className="card-img-top" alt="ABM de Mensajes" />
-                        <div className="card-body">
-                            <h5 className="card-title">Mensajes</h5>
-                            <p className="card-text">ABM de mensajes. Aquí puede cargar sus mensajes inmediatos o programados.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-messages") }}>Mensajes</button>
-                        </div>
-                    </div>
-                    <div className="card" style={{ "width": "18rem" }}>
-                        <img src={reloj} className="card-img-top" alt="Mensajes en espera" />
-                        <div className="card-body">
-                            <h5 className="card-title">Cola de mensajes</h5>
-                            <p className="card-text">Listado de mensajes que estén programados o aún no hayan sido enviados. Podrá editarlos antes de su envío</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/queue-messages") }}>En espera</button>
-                        </div>
-                    </div>
-                    <div className="card" style={{ "width": "18rem" }} >
-                        <img src={enviados} className="card-img-top" alt="Mensajes enviados" />
-                        <div className="card-body">
-                            <h5 className="card-title">Mensajes Enviados</h5>
-                            <p className="card-text">Listado de mensajes que ya han sido enviados.</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/sended-messages") }}>Enviados</button>
-                        </div>
-                    </div>
-                    <div className="card" style={{ "width": "18rem" }}>
-                        <img src={receipts} className="card-img-top" alt="..." />
-                        <div className="card-body">
-                            <h5 className="card-title">Recibidos</h5>
-                            <p className="card-text">Aquí podrá ver los mensajes recibidos (aunque también los verá en celu asociado)</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-receipts") }}>Recibidos</button>
-                        </div>
-                    </div>
-                    <div className="card" style={{ "width": "18rem" }} >
-                        <img src={config} className="card-img-top" alt="..." />
-                        <div className="card-body">
-                            <h5 className="card-title">Configuracion</h5>
-                            <p className="card-text">Edite datos de su empresa. Y además se usará para vincular el WhatsApp®</p>
-                            <button className="btn btn-primary" onClick={() => { navigate("/show-configs") }}>Configuraciones</button>
-                        </div>
-                    </div>
-
-
-                    <div className="card" style={{ "width": "18rem" }} >
-                        <img src={autoreplys} className="card-img-top" alt="..." />
-                        <div className="card-body">
-                            <h5 className="card-title">Autorespuestas</h5>
-                            <p className="card-text">Defina autorespuestas según disparador.</p>
-                            {login.autoreplys === true ? <>
-                                <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Autorespuestas</button></> :
-                                <><button className="btn btn-primary" onClick={() => { navigate("/opcional") }}>Opcional proximamente</button></>
-                            }
-                        </div>
-                    </div>
-
-                    <div className="card" style={{ "width": "18rem" }} >
-                        <img src={bots} className="card-img-top" alt="..." />
-                        <div className="card-body">
-                            <h5 className="card-title">Bots</h5>
-                            <p className="card-text">Genere bots personalizados</p>
-                            {login.autobots === true ?
-                                <>
-                                    <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Bots</button></> :
-                                <><button className="btn btn-primary" onClick={() => { navigate("/opcional") }}>Opcional Próximamente</button></>
-                            }
-                        </div>
-                    </div>
-                    {login.isAdmin === true ?
-                        <>
-                            <div className="card" style={{ "width": "18rem" }} >
-                                <img src={contacto} className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Usuarios</h5>
-                                    <p className="card-text">Control de usuarios del sistema.</p>
-                                    <button className="btn btn-primary" onClick={() => { navigate("/show-users") }}>Usuarios</button>
-                                </div>
-                            </div>
-                            <div className="card" style={{ "width": "18rem" }} >
-                                <img src={contacto} className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Contactos</h5>
-                                    <p className="card-text">Contacto de los usuarios.</p>
-                                    <button className="btn btn-primary" onClick={() => { navigate("/show-allcontacts") }}>Contactos</button>
-                                </div>
-                            </div>
-                            <div className="card" style={{ "width": "18rem" }}>
-                                <img src={contacto} className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Grupos</h5>
-                                    <p className="card-text">Grupos de Contacto de los usuarios.</p>
-                                    <button className="btn btn-primary" onClick={() => { navigate("/show-allgroups") }}>Grupos</button>
-                                </div>
-                            </div>
-                        </> : ""}
-                </div>
-            </div > : <Spinner />}</>)
-}
+  return (
+    <div className="container mx-auto px-4 md:px-12 my-12">
+    <header className="text-center mb-8">
+      <h1 className="text-3xl font-bold text-blue-600">Control Panel de {configs.business}</h1>
+      <h3 className="text-lg text-gray-800">{vincu}</h3>
+    </header>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+      {[
+        { src: grupos, title: 'Grupos de Contacto', text: 'ABM de grupos. Ingrese aquí los grupos para asignar destinatarios.', link: '/show-groups' },
+        { src: contacto, title: 'Contactos', text: 'ABM de contactos. Ingrese aquí los destinatarios de su sistema.', link: '/show-contacts' },
+        { src: mensaje, title: 'Mensajes', text: 'ABM de mensajes. Aquí puede cargar sus mensajes inmediatos o programados.', link: '/show-messages' },
+        { src: reloj, title: 'Cola de mensajes', text: 'Listado de mensajes que estén programados o aún no hayan sido enviados. Podrá editarlos antes de su envío.', link: '/queue-messages' },
+        { src: enviados, title: 'Mensajes Enviados', text: 'Listado de mensajes que ya han sido enviados.', link: '/sended-messages' },
+        { src: receipts, title: 'Recibidos', text: 'Aquí podrá ver los mensajes recibidos (aunque también los verá en celu asociado)', link: '/show-receipts' },
+        { src: config, title: 'Configuración', text: 'Edite datos de su empresa. Y además se usará para vincular el WhatsApp®', link: '/show-configs' },
+        { src: autoreplys, title: 'Autorespuestas', text: 'Defina autorespuestas según disparador.', link: login.autoreplys? '/show-users' : '/opcional' },
+        { src: bots, title: 'Bots', text: 'Genere bots personalizados', link: login.autobots? '/show-users' : '/opcional' }
+      ].map((item, index) => (
+        <div key={index} className="max-w-sm rounded overflow-hidden shadow-lg bg-white p-4">
+          <img className="w-full h-48 object-cover mb-4" src={item.src} alt={item.title} />
+          <div className="px-6 py-4">
+            <h5 className="font-bold text-xl mb-2 text-blue-600">{item.title}</h5>
+            <p className="text-gray-700 text-base">{item.text}</p>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-flex items-center" onClick={() => navigate(item.link)}>
+              {item.title}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="ml-2 h-5 w-5" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  );
+};
 
 export default Main

@@ -2,91 +2,82 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
-// import { deleteContact } from "./ContactsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCategory } from "../../app/actions/categories";
-import { Tooltip } from 'react-tooltip';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
 
 const GroupsView = () => {
-
   const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleDelete = (id, category) => {
-
     swal
     .fire({
-      title: "Desea eliminar el grupo " + category + "?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: `Sí`,
-      icon: "success",
-      // denyButtonText: `Cancelar`,
-    })
+        title: "¿Desea eliminar el grupo " + category + "?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: `Sí`,
+        icon: "success",
+      })
     .then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        
-        dispatch(deleteCategory(id));
-      } else if (result.isDenied) {
-        
-      }
-    });
-
-
+        if (result.isConfirmed) {
+          dispatch(deleteCategory(id));
+        }
+      });
   };
 
   return (
-    <div className="container">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
-        Listado de grupos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Grupo" onClick={() => { navigate("/add-group") }}><FcAddRow /></button>
-      </h2>
-      <table
-        className="table mb-5"
-        style={{ maxWidth: "80%", margin: "auto" }}
-      >
-        <thead>
-          <tr style={{ background: "#006877", color: "white" }}>
-            <th>N</th>
-            <th>Grupo</th>
-            <th>Descripción</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          {groups &&
-            groups.map((group, index) => {
+    <div className="flex flex-col flex-grow">
+      <div className="container mx-auto px-4">
+        <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-10">
+          Listado de Grupos
+          <button 
+            className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" 
+            onClick={() => navigate("/add-group")}
+          >
+            <FcAddRow className="mr-2 -ml-1" />
+            Agregar Grupo
+          </button>
+        </h2>
+        <table className="w-full table-auto">
+          <thead className="bg-green-500 text-white">
+            <tr>
+              <th className="px-4 py-2">#</th>
+              <th className="px-4 py-2">Grupo</th>
+              <th className="px-4 py-2">Descripción</th>
+              <th className="px-4 py-2">Acciones</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {groups?.map((group, index) => {
               const { id, category, description, undelete } = group;
               return (
                 <tr key={id}>
-                  <th>{index + 1}</th>
-                  <td>{category}</td>
-                  <td>{description}</td>
-                  <td className="d-flex gap-2">
-                    <Link to="/edit-group" state={{ id, category, description }}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Editar Grupo">
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{category}</td>
+                  <td className="px-4 py-2">{description}</td>
+                  <td className="px-4 py-2 flex gap-2">
+                    <Link to={`/edit-group`} state={{ id, category, description }}>
+                      <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
                         <FaEdit />
                       </button>
                     </Link>
-                    { !undelete ?
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Grupo" onClick={() => handleDelete(id, category)}>
+                    {!undelete? (
+                      <button 
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" 
+                        onClick={() => handleDelete(id, category)}
+                      >
                         <FaTrashAlt />
-                      </button> : ""
-                    }
+                      </button>
+                    ) : null}
                   </td>
                 </tr>
               );
             })}
-        </tbody>
-      </table>
-      <Tooltip id="my-tooltip" />
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

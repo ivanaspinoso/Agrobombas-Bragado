@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
-// import { deleteContact } from "./ContactsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { contactDelete, contactsSort } from "../../app/actions/contacts";
 import { ASC, DES } from "../../app/consts/consts";
@@ -12,130 +11,83 @@ import Swal from "sweetalert2";
 const ContactsView = () => {
   const contacts = useSelector((state) => state.contactsReducer.contacts);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  // Paginar Contacts y preparar el paginado
   const [pagContacts, setPagContacts] = useState(1); // comienza en página 1
   const itemsPPage = 15;
   const totalItems = pagContacts * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(contacts.length / itemsPPage);
-  const view = contacts.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
-
+  const view = contacts.slice(inicialItems, totalItems);
 
   const handleDelete = (id, name) => {
-    Swal
-      .fire({
-        title: "Desea eliminar el contacto " + name + "?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: `Sí`,
-        icon: "success",
-        // denyButtonText: `Cancelar`,
-      })
-      .then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-
-          dispatch(contactDelete(id));
-        } else if (result.isDenied) {
-
-        }
-      });
-
+    Swal.fire({
+      title: "Desea eliminar el contacto " + name + "?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: `Sí`,
+      icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(contactDelete(id));
+      }
+    });
   };
 
-  /*  Contacts sort by Name */
   function handleDispatchOrder(event) {
-    console.log(event, contacts);
     if (event.target.value === ASC || event.target.value === DES) {
       dispatch(contactsSort(event.target.value, contacts))
     }
-    /*     if (event.target.value === PASC || event.target.value === PDES) {
-          props.sortweight(event.target.value, contacts);
-        } */
   }
 
-
   return (
-    <div className="container">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
+    <div className="container mx-auto px-4 py-6 flex flex-col flex-grow ">
+      <h2 className="text-center flex flex-row justify-between text-2xl font-semibold mb-10">
         Listado de contactos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Contacto" onClick={() => { navigate("/add-contact") }}><FcAddRow /></button>
+        <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/add-contact") }}>
+          <FcAddRow className="mr-2 h-5 w-5" />
+          Agregar Contacto
+        </button>
       </h2>
-      <table
-        className="table mb-5"
-        style={{ maxWidth: "80%", margin: "auto" }}
-      >
-        <thead>
-          <tr style={{ background: "#006877", color: "white" }}>
-            <th>N</th>
-            <th>Nombre &nbsp; 
-              <select onChange={handleDispatchOrder}>
-                <option>Orden</option>
-                <option value={ASC}>A-Z</option>
-                <option value={DES}>Z-A</option>
-              </select></th>
-            <th>Numero WA</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          {view &&
-            view.map((contact, index) => {
+      <div className="overflow-x-scroll">
+        <table className="w-full table-auto">
+          <thead className="bg-green-500 text-white">
+            <tr>
+              <th className="px-4 py-2">#</th>
+              <th className="px-4 py-2">Nombre</th>
+              <th className="px-4 py-2">Número WA</th>
+              <th className="px-4 py-2">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {view && view.map((contact, index) => {
               const { id, name, cellphone, country } = contact;
               return (
-                <tr key={id}>
-                  <th>{index + 1}</th>
-                  <td>{name}</td>
-                  <td>{cellphone}</td>
-                  <td className="d-flex gap-2">
-                    <Link to="/edit-contact" state={{ id, name, cellphone, country }}>
-                      <button data-tooltip-id="my-tooltip" data-tooltip-content="Editar Contacto">
-                        <FaEdit />
-                      </button>
+                <tr key={id} className="hover:bg-gray-50">
+                  <td className="border px-4 py-2">{index + 1}</td>
+                  <td className="border px-4 py-2">{name}</td>
+                  <td className="border px-4 py-2">{cellphone}</td>
+                  <td className="border px-4 py-2 flex space-x-2">
+                    <Link to={`/edit-contact/${id}`} className="text-blue-500 hover:text-blue-700">
+                      <FaEdit />
                     </Link>
-
-                    <button data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Contacto" onClick={() => handleDelete(id, name)}>
+                    <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(id, name)}>
                       <FaTrashAlt />
                     </button>
                   </td>
                 </tr>
               );
             })}
-        </tbody>
-      </table>
-      { cantPages <= 1 ? "" :<> <div className="d-flex center-flex aligns-items-center justify-content-center">
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Primer página" onClick={() => setPagContacts(1)}>⬅</button>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Anterior"
-          onClick={() => {
-            pagContacts > 1 ? setPagContacts(pagContacts - 1) : setPagContacts(1);
-          }}
-        >
-          {" "}
-          👈{" "}
-        </button>
-        <label>
-          página {pagContacts} de {Math.round(cantPages)}
-        </label>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Siguiente"
-          onClick={() => {
-            pagContacts < cantPages
-              ? setPagContacts(pagContacts + 1)
-              : setPagContacts(cantPages);
-          }}
-        >
-          {" "}
-          👉{" "}
-        </button>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="ültima página" onClick={() => setPagContacts(cantPages)}>➡</button>
-
-      </div></>}
-
-      <Tooltip id="my-tooltip" />
+          </tbody>
+        </table>
+      </div>
+      <nav className="mt-6 flex justify-end">
+        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(1)}>⬅</button>
+        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts > 1? setPagContacts(pagContacts - 1) : setPagContacts(1); }}>👈</button>
+        <span className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">página {pagContacts} de {Math.round(cantPages)}</span>
+        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts < cantPages? setPagContacts(pagContacts + 1) : setPagContacts(cantPages); }}>👉</button>
+        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(cantPages)}>➡</button>
+      </nav>
     </div>
   );
 };

@@ -1,29 +1,29 @@
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import { userAdd } from '../../app/actions/users';
 import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
-import "../../App.css"
+import "../../App.css";
 
 import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
-import { eye } from 'react-icons-kit/feather/eye'
+import { eye } from 'react-icons-kit/feather/eye';
 import { useState } from 'react';
 
 const Register = () => {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [type, setType] = useState('password');
     const [icon, setIcon] = useState(eyeOff);
 
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     const schema = Yup.object().shape({
-        phoneNumber: Yup.string().required("Tu celular es requerido").matches(phoneRegExp, 'Phone number is not valid').max(13, "Máximo 13 caracteres numericos"),
+        phoneNumber: Yup.string().required("Tu celular es requerido").matches(phoneRegExp, 'Phone number is not valid').max(13, "Máximo 13 caracteres numéricos"),
         name: Yup.string().required("Tu nombre es requerido"),
         username: Yup.string().required("Usuario es requerido"),
         password: Yup.string().required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
@@ -42,13 +42,10 @@ const Register = () => {
     }
 
     return (
-        <div className="container mt-5">
-            <h2
-                className="text-center text-uppercase m-5"
-                style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-            >
+        <div className="container mx-auto mt-5 px-4">
+            <h1 className="text-center text-2xl font-bold mb-5">
                 Formulario de registro
-            </h2>
+            </h1>
             <Formik
                 validationSchema={schema}
                 initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
@@ -98,7 +95,6 @@ const Register = () => {
                         });
                     }
                     setSubmitting(false);
-
                 }}
             >
                 {
@@ -114,89 +110,91 @@ const Register = () => {
                         } = props;
 
                         return (
-                            <Form onSubmit={handleSubmit}
-                                className="border rounded p-4"
-                                style={{ maxWidth: "600px", margin: "auto" }}
-                            >
-                                <label className='form-label' htmlFor='Usuario'>Nombre</label>
+                            <form onSubmit={handleSubmit} className="bg-white rounded px-8 pt-6 pb-8 mb-4">
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Nombre</label>
                                 <input
-                                    className='form-control'
-                                    id='name'
-                                    name='name'
-                                    type='text'
-                                    placeholder='Ingresa tu Nombre'
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    placeholder="Ingresa tu Nombre"
                                     value={values.name}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                {errors.name ? <p className="error">
-                                    {errors.name && touched.name && errors.name}
-                                </p> : ""}
-                                <label className='form-label' htmlFor='Usuario'>Celular</label>
+                                {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
                                 <input
-                                    className='form-control'
-                                    id='phoneNumber'
-                                    name='phoneNumber'
-                                    type='text'
-                                    placeholder='Tu WA formato: 5491144445555'
-                                    maxlength="13"
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="phoneNumber"
+                                    name="phoneNumber"
+                                    type="tel"
+                                    placeholder="Tu WA formato: 5491144445555"
                                     value={values.phoneNumber}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                {errors.phoneNumber ? <p className="error">
-                                    {errors.phoneNumber && touched.phoneNumber && errors.phoneNumber}
-                                </p> : ""}
-                                <label className='form-label' htmlFor='Usuario'>Usuario</label>
+                                {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
                                 <input
-                                    className='form-control'
-                                    id='username'
-                                    name='username'
-                                    type='text'
-                                    placeholder='Ingresa tu Usuario'
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    placeholder="Ingresa tu Usuario"
                                     value={values.username}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                {errors.username ? <p className="error">
-                                    {errors.username && touched.username && errors.username}
-                                </p> : ""}
-                                <span className="flex justify-around items-center" onClick={handleToggle}>
-                                    <Icon className="absolute mr-10" icon={icon} size={18} />
-                                </span>
-                                <label className='form-label' htmlFor='password'> - Contraseña</label>
+                                {errors.username && touched.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Contraseña</label>
+                                <div className="relative">
+                                    <input
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="password"
+                                        name="password"
+                                        type={type}
+                                        placeholder="Ingresa tu Contraseña"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <span onClick={handleToggle} className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+                                        <Icon icon={icon} size={20} />
+                                    </span>
+                                </div>
+                                {errors.password && touched.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="repassword">Confirmar Contraseña</label>
                                 <input
-                                    className='form-control'
-                                    id='password'
-                                    name='password'
-                                    type={type}
-                                    placeholder='Ingresa tu contraseña'
-                                    value={values.password}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.password ? <p className="error">
-                                    {errors.password && touched.password && errors.password}
-                                </p> : ""}
-                                <label className='form-label' htmlFor='reassword'>Confirme Contraseña</label>
-                                <input
-                                    className='form-control'
-                                    id='repassword'
-                                    name='repassword'
-                                    type={type}
-                                    placeholder='Confirma tu contraseña'
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="repassword"
+                                    name="repassword"
+                                    type="password"
+                                    placeholder="Confirma tu Contraseña"
                                     value={values.repassword}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                {errors.repassword ? <p className="error">
-                                    {errors.repassword && touched.repassword && errors.repassword}
-                                </p> : ""}
-                                <div className='d-flex justify-content-around'>
-                                    <button type='sumit' disabled={isSubmitting}>Registrarme</button>
-                                    <div>Si ya tienes cuenta<button onClick={() => { navigate("/login") }}>Login</button></div>
-                                </div>
-                            </Form>
+                                {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    Registrarme
+                                </button>
+                                <a href="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700">
+                                    Si ya tienes cuenta Login
+                                </a>
+                            </div>
+                        </form>
                         );
                     }
                 }

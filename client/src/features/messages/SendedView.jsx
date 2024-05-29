@@ -5,126 +5,94 @@ import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCategory } from "../../app/actions/categories";
 import { Tooltip } from 'react-tooltip';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
 
 const SendedView = () => {
-  // sate.filter((goal) => goal.id !== goalId)
   const messages = useSelector((state) => state.messagesReducer.messages);
-  const sendedmess = messages.filter((message) => message.sended === true )
-  //const messages = useSelector((state) => state.messagesReducer.messages);
+  const sendedMessages = messages.filter((message) => message.sended === true);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-  // Paginar Mensajes y preparar el paginado
-  const [pagBreeds, setPagBreeds] = useState(1); // comienza en página 1
-  const itemsPPage = 15;
-  const totalItems = pagBreeds * itemsPPage;
-  const inicialItems = totalItems - itemsPPage;
-  const cantPages = Math.ceil(sendedmess.length / itemsPPage);
-  const view = sendedmess.slice(inicialItems, totalItems); //props.raza.slice(inicialItems, totalItems);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
+  const indexOfLastMessage = currentPage * itemsPerPage;
+  const indexOfFirstMessage = indexOfLastMessage - itemsPerPage;
+  const currentMessages = sendedMessages.slice(indexOfFirstMessage, indexOfLastMessage);
 
   const handleDelete = (id, text) => {
-    swal
-      .fire({
-        title: "Desea eliminar el mensaje " + text + "?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: `Sí`,
-        icon: "success",
-        // denyButtonText: `Cancelar`,
-      })
-      .then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-
-          dispatch(deleteCategory(id));
-        } else if (result.isDenied) {
-
-        }
-      });
-
-
+    swal.fire({
+      title: "¿Desea eliminar el mensaje " + text + "?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: `Sí`,
+      icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteCategory(id));
+      }
+    });
   };
 
   return (
-    <div className="container">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
+    <div className="container mx-auto px-4 flex flex-col flex-grow">
+      <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-5">
         Listado de mensajes enviados
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar mensaje" onClick={() => { navigate("/add-message") }}><FcAddRow /></button>
+        <button onClick={() => navigate("/add-message")} className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          <FcAddRow />
+        </button>
       </h2>
-      <table
-        className="table mb-5"
-        style={{ maxWidth: "80%", margin: "auto" }}
-      >
-        <thead>
-          <tr style={{ background: "#006877", color: "white" }}>
-            <th>N</th>
+      <table className="w-full table-auto">
+        <thead className="bg-green-500 text-white">
+          <tr>
+            <th>#</th>
             <th>Texto</th>
             <th>Para</th>
             <th>Enviado</th>
-            <th>REsult</th>
-            <th>Acción</th>
+            <th>Resultado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {view &&
-            view.map((message, index) => {
-              /* setNumItem(index + 1) */
-              const { id, text, sended, contact, sendeddate, sendedtime, result } = message;
-              return (
-                <tr key={id}>
-                  <th>{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</th>
-                  <td>{text}</td>
-                  <td>{contact.name}</td>
-                  <td>{sendeddate} - {sendedtime}</td>
-                  <td>{result}</td>
-                  <td className="d-flex gap-2">
-                    <Link to="/edit-group" state={{ id, text, sended }}>
-                      <button disabled={sended} data-tooltip-id="my-tooltip" data-tooltip-content="Editar Mensaje">
-                        <FaEdit />
-                      </button>
-                    </Link>
-
-                    <button disabled={sended} data-tooltip-id="my-tooltip" data-tooltip-content="Borrar Mensaje" onClick={() => handleDelete(id, text)}>
-                      <FaTrashAlt />
+          {currentMessages.map((message, index) => {
+            const { id, text, sended, contact, sendedDate, sendedTime, result } = message;
+            return (
+              <tr key={id}>
+                <td>{index + 1}</td>
+                <td>{text}</td>
+                <td>{contact.name}</td>
+                <td>{sendedDate} - {sendedTime}</td>
+                <td>{result}</td>
+                <td>
+                  <Link to={`/edit-group`} state={{ id, text, sended }}>
+                    <button className="mr-2 px-2 py-1 text-white bg-blue-500 rounded hover:bg-blue-600">
+                      <FaEdit />
                     </button>
-
-                  </td>
-                </tr>
-              );
-            })}
+                  </Link>
+                  <button onClick={() => handleDelete(id, text)} className="px-2 py-1 text-white bg-red-500 rounded hover:bg-red-600">
+                    <FaTrashAlt />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-      { cantPages <= 1 ? "" :<> <div className="d-flex center-flex aligns-items-center justify-content-center">
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Primer página" onClick={() => setPagBreeds(1)}>⬅</button>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Anterior"
-          onClick={() => {
-            pagBreeds > 1 ? setPagBreeds(pagBreeds - 1) : setPagBreeds(1);
-          }}
-        >
-          {" "}
-          👈{" "}
+      {/* Pagination */}
+      <div className="mt-4 flex justify-end">
+        <button onClick={() => setCurrentPage(1)} className="mx-2 px-2 py-1 text-white bg-gray-300 rounded hover:bg-gray-400">
+          Primera página
         </button>
-        <label>
-          página {pagBreeds} de {Math.round(cantPages)}
-        </label>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Siguiente"
-          onClick={() => {
-            pagBreeds < cantPages
-              ? setPagBreeds(pagBreeds + 1)
-              : setPagBreeds(cantPages);
-          }}
-        >
-          {" "}
-          👉{" "}
+        <button onClick={() => setCurrentPage(currentPage - 1)} className="mx-2 px-2 py-1 text-white bg-gray-300 rounded hover:bg-gray-400">
+          Anterior
         </button>
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="ültima página" onClick={() => setPagBreeds(cantPages)}>➡</button>
-
-      </div></>}
+        <span>Página {currentPage} de {Math.ceil(sendedMessages.length / itemsPerPage)}</span>
+        <button onClick={() => setCurrentPage(currentPage + 1)} className="mx-2 px-2 py-1 text-white bg-gray-300 rounded hover:bg-gray-400">
+          Siguiente
+        </button>
+        <button onClick={() => setCurrentPage(Math.ceil(sendedMessages.length / itemsPerPage))} className="mx-2 px-2 py-1 text-white bg-gray-300 rounded hover:bg-gray-400">
+          Última página
+        </button>
+      </div>
       <Tooltip id="my-tooltip" />
     </div>
   );
