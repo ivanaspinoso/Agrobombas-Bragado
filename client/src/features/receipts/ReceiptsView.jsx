@@ -67,11 +67,11 @@ const ReceiptsView = () => {
       <table className="w-full whitespace-nowrap">
         <thead className="bg-green-500 text-white">
           <tr>
-            <th className="px-4 py-2">N</th>
-            <th className="px-4 py-2">Texto</th>
-            <th className="px-4 py-2">De</th>
-            <th className="px-4 py-2">Dia</th>
-            <th className="px-4 py-2">Acción</th>
+            <th className="px-4 py-2 text-left">N</th>
+            <th className="px-4 py-2 text-left">Texto</th>
+            <th className="px-4 py-2 text-left">De</th>
+            <th className="px-4 py-2 text-left">Dia</th>
+            <th className="px-4 py-2 text-left">Acción</th>
           </tr>
         </thead>
         <tbody>

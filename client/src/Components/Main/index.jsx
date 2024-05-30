@@ -54,10 +54,16 @@ const Main = () => {
 
   return (
     <div className="container mx-auto px-4 md:px-12 my-12">
-    <header className="text-center mb-8">
-      <h1 className="text-3xl font-bold text-blue-600">Control Panel de {configs.business}</h1>
-      <h3 className="text-lg text-gray-800">{vincu}</h3>
+    <header className="text-center mb-8 flex justify-between items-center mx-10">
+      <h1 className="text-3xl font-bold">Control Panel de {configs.business}</h1>
+      <div className="flex items-center">
+        <span>{vincu}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
     </header>
+
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
       {[
         { src: grupos, title: 'Grupos de Contacto', text: 'ABM de grupos. Ingrese aquí los grupos para asignar destinatarios.', link: '/show-groups' },
@@ -70,19 +76,32 @@ const Main = () => {
         { src: autoreplys, title: 'Autorespuestas', text: 'Defina autorespuestas según disparador.', link: login.autoreplys? '/show-users' : '/opcional' },
         { src: bots, title: 'Bots', text: 'Genere bots personalizados', link: login.autobots? '/show-users' : '/opcional' }
       ].map((item, index) => (
-        <div key={index} className="max-w-sm rounded overflow-hidden shadow-lg bg-white p-4">
-          <img className="w-full h-48 object-cover mb-4" src={item.src} alt={item.title} />
-          <div className="px-6 py-4">
-            <h5 className="font-bold text-xl mb-2 text-blue-600">{item.title}</h5>
-            <p className="text-gray-700 text-base">{item.text}</p>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-flex items-center" onClick={() => navigate(item.link)}>
-              {item.title}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="ml-2 h-5 w-5" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"></path>
-              </svg>
-            </button>
-          </div>
+        <div
+        key={index}
+        className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200"
+      >
+        <img className="w-full h-48 object-cover mb-4 rounded-md" src={item.src} alt={item.title} />
+        <div className="w-full px-4 text-center">
+          <h5 className="font-bold text-lg mb-1 text-green-600">{item.title}</h5>
+          <p className="text-gray-700 text-base mb-4">{item.text}</p>
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition-colors duration-300"
+            onClick={() => navigate(item.link)}
+          >
+            {item.title}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="ml-2 h-5 w-5"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
+      </div>
       ))}
     </div>
   </div>

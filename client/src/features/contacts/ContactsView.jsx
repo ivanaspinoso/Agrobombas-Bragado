@@ -53,10 +53,10 @@ const ContactsView = () => {
         <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
             <tr>
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Nombre</th>
-              <th className="px-4 py-2">Número WA</th>
-              <th className="px-4 py-2">Acción</th>
+              <th className="px-4 py-2 text-left">#</th>
+              <th className="px-4 py-2 text-left">Nombre</th>
+              <th className="px-4 py-2 text-left">Número WA</th>
+              <th className="px-4 py-2 text-left">Acción</th>
             </tr>
           </thead>
           <tbody>

@@ -48,12 +48,12 @@ const MessagesView = () => {
         <table className="w-full whitespace-nowrap">
           <thead className="bg-green-500 text-white">
             <tr>
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Texto</th>
-              <th className="px-4 py-2">Para</th>
-              <th className="px-4 py-2">Enviar</th>
-              <th className="px-4 py-2">Hora</th>
-              <th className="px-4 py-2">Acción</th>
+              <th className="px-4 py-2 text-left">#</th>
+              <th className="px-4 py-2 text-left">Texto</th>
+              <th className="px-4 py-2 text-left">Para</th>
+              <th className="px-4 py-2 text-left">Enviar</th>
+              <th className="px-4 py-2 text-left">Hora</th>
+              <th className="px-4 py-2 text-left">Acción</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">

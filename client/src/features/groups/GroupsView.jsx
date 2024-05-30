@@ -43,10 +43,10 @@ const GroupsView = () => {
         <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
             <tr>
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Grupo</th>
-              <th className="px-4 py-2">Descripción</th>
-              <th className="px-4 py-2">Acciones</th>
+              <th className="px-4 py-2 text-left">#</th>
+              <th className="px-4 py-2 text-left">Grupo</th>
+              <th className="px-4 py-2 text-left">Descripción</th>
+              <th className="px-4 py-2 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
