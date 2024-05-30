@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
-
+import './i18n'
 const persistor = persistStore(store)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

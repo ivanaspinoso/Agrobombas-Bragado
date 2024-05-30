@@ -3,17 +3,45 @@ import { useSelector } from "react-redux";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Tooltip } from 'react-tooltip';
+import { useTranslation } from "react-i18next";
+import Spain from '../../assets/images/spain.jpg'
+import Usa from '../../assets/images/usa.jpg'
 
 const ConfigsView = () => {
+  const { t, i18n } = useTranslation();
   const configs = useSelector((state) => state.configsReducer.configs);
 
   let objConfig = { id: configs.id, business: configs.business, slogan: configs.slogan };
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
+  const isActive = (lng) => i18n.language === lng;
+
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
-      <h2 className="text-center flex flex-row justify-between text-xl font-semibold mb-10">
-        Configuración del sistema
-      </h2>
+      <div className="flex justify-between items-center mb-10">
+        <h2 className="text-xl font-semibold">
+          {t('configuration.systemConfiguration')}
+        </h2>
+        <div className="flex space-x-4 items-center">
+          <button
+            onClick={() => changeLanguage('en')}
+            className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+          >
+            <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
+            English
+          </button>
+          <button
+            onClick={() => changeLanguage('es')}
+            className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+          >
+            <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
+            Español
+          </button>
+        </div>
+      </div>
       <table className="table-auto w-full mb-10">
         <thead className="bg-green-500 text-white">
           <tr>

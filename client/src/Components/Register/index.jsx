@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
 import "../../App.css";
-
+import logo from "../../assets/images/logo64.png";
+import { Link } from "react-router-dom";
 import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
@@ -42,10 +43,17 @@ const Register = () => {
     }
 
     return (
-        <div className="container mx-auto mt-5 px-4">
-            <h1 className="text-center text-2xl font-bold mb-5">
+        <div className="fixed inset-0 bg-gradient-to-r bg-green-500 to-white flex items-center justify-center">
+            <div className="absolute top-4 left-4">
+                <Link to="/" className="text-white text-xl font-semibold hover:text-gray-500 transition duration-300 flex flex-row gap-4 justify-center items-center">
+                    <img src={logo} alt="Logo Wapp Message System" className="w-8 h-8" />
+                    WApp Message System
+                </Link>
+            </div>
+        <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
+            <h2 className="text-center text-2xl font-bold mb-5">
                 Formulario de registro
-            </h1>
+            </h2>
             <Formik
                 validationSchema={schema}
                 initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
@@ -108,98 +116,101 @@ const Register = () => {
                             handleBlur,
                             handleSubmit
                         } = props;
-
+    
                         return (
-                            <form onSubmit={handleSubmit} className="bg-white rounded px-8 pt-6 pb-8 mb-4">
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Nombre</label>
-                                <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    placeholder="Ingresa tu Nombre"
-                                    value={values.name}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
-                                <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    type="tel"
-                                    placeholder="Tu WA formato: 5491144445555"
-                                    value={values.phoneNumber}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
-                                <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="username"
-                                    name="username"
-                                    type="text"
-                                    placeholder="Ingresa tu Usuario"
-                                    value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.username && touched.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Contraseña</label>
-                                <div className="relative">
+                            <Form onSubmit={handleSubmit} className="space-y-4">
+                                <div>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Nombre</label>
                                     <input
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="password"
-                                        name="password"
-                                        type={type}
-                                        placeholder="Ingresa tu Contraseña"
-                                        value={values.password}
+                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        placeholder="Ingresa tu Nombre"
+                                        value={values.name}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                    <span onClick={handleToggle} className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
-                                        <Icon icon={icon} size={20} />
-                                    </span>
+                                    {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
                                 </div>
-                                {errors.password && touched.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="repassword">Confirmar Contraseña</label>
-                                <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="repassword"
-                                    name="repassword"
-                                    type="password"
-                                    placeholder="Confirma tu Contraseña"
-                                    value={values.repassword}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    Registrarme
-                                </button>
-                                <a href="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700">
-                                    Si ya tienes cuenta Login
-                                </a>
-                            </div>
-                        </form>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
+                                    <input
+                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        type="tel"
+                                        placeholder="Tu WA formato: 5491144445555"
+                                        value={values.phoneNumber}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
+                                    <input
+                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        placeholder="Ingresa tu Usuario"
+                                        value={values.username}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.username && touched.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Contraseña</label>
+                                    <div className="relative">
+                                        <input
+                                            className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            id="password"
+                                            name="password"
+                                            type={type}
+                                            placeholder="Ingresa tu Contraseña"
+                                            value={values.password}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <span onClick={handleToggle} className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+                                            <Icon icon={icon} size={20} />
+                                        </span>
+                                    </div>
+                                    {errors.password && touched.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="repassword">Confirmar Contraseña</label>
+                                    <input
+                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="repassword"
+                                        name="repassword"
+                                        type="password"
+                                        placeholder="Confirma tu Contraseña"
+                                        value={values.repassword}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        Registrarme
+                                    </button>
+                                    <a href="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700">
+                                        Si ya tienes cuenta Login
+                                    </a>
+                                </div>
+                            </Form>
                         );
                     }
                 }
             </Formik>
         </div>
+    </div>
+    
+    
     )
 }
 
