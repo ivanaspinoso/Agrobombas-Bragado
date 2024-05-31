@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserMessages, messageAdd, resultMessage } from "../../app/actions/messages";
+import { messageAdd} from "../../app/actions/messages";
 import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
-import { getContactSend } from "../../app/actions/contacts";
-
 
 let data = []
 
