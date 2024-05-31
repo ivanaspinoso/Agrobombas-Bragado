@@ -7,7 +7,7 @@ const resources = {
   en: {
     translation: {
      configuration: {
-      systemConfiguration: "System Configuration"
+      systemConfiguration: "System Configuration",
      }
     }
   },

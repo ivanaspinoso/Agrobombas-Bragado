@@ -195,12 +195,24 @@ const Register = () => {
                                     {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    <button type="submit" disabled={isSubmitting} className="g-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                         Registrarme
                                     </button>
-                                    <a href="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700">
-                                        Si ya tienes cuenta Login
-                                    </a>
+                                    <div className='flex flex-row items-center justify-center'>
+                                        <button
+                                            onClick={() => navigate('/login')}
+                                            className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
+                                        >
+                                            Ya tienes cuenta?
+                                        </button>
+                                        <button
+                                            onClick={() => navigate('/register')}
+                                            className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
+                                        >
+                                            Ingresa
+                                        </button>
+                                    </div>
+
                                 </div>
                             </Form>
                         );

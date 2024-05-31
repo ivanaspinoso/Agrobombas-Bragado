@@ -116,12 +116,18 @@ const LogIn = () => {
                                             LogIn
                                         </button>
                                         <div className='flex flex-row items-center justify-center'>
-                                        <a href="/register" className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1">
-                                        No tienes cuenta?
-                                        </a>
-                                        <a href="/register" className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700">
-                                            Regístrate
-                                        </a>
+                                            <button
+                                                onClick={() => navigate('/login')}
+                                                className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
+                                            >
+                                                No tienes cuenta?
+                                            </button>
+                                            <button
+                                                onClick={() => navigate('/register')}
+                                                className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
+                                            >
+                                                Regístrate
+                                            </button>
                                         </div>
                                     </div>
                                 </Form>
