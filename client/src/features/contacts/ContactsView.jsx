@@ -61,14 +61,14 @@ const ContactsView = () => {
           </thead>
           <tbody>
             {view && view.map((contact, index) => {
-              const { id, name, cellphone, country } = contact;
+              const { id, name, cellphone, categories } = contact;
               return (
                 <tr key={id} className="hover:bg-gray-50">
                   <td className="border px-4 py-2">{index + 1}</td>
                   <td className="border px-4 py-2">{name}</td>
                   <td className="border px-4 py-2">{cellphone}</td>
                   <td className="border px-4 py-2 flex space-x-2">
-                    <Link to={`/edit-contact/${id}`} className="text-blue-500 hover:text-blue-700">
+                    <Link to={`/edit-contact`} className="text-blue-500 hover:text-blue-700" state={{id, name, cellphone, categories}}>
                       <FaEdit />
                     </Link>
                     <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(id, name)}>

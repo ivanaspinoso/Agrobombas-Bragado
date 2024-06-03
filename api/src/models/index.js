@@ -88,6 +88,7 @@ module.exports = {
   Category,
   Users,
   Receipts,
+  Contact_Group: sequelize.models.contact_category,
 //  Mess_Cont/* : sequelize.models.contact_messages */,
 /*
    Product,

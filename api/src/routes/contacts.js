@@ -2,7 +2,7 @@ var express = require("express");
 
 
 // Defino el modelo user para utilizarlo en las rutas correspondientes
-const { Contacts, Messages, Category } = require("../models/index");
+const { Contacts, Messages, Category, Contact_Group } = require("../models/index");
 
 const { generateToken, validateToken } = require("../utils/token");
 
@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
   try {
     let getAllContacts = await Contacts.findAll({
       order: [["name", "ASC"]],
+      include: { model: Category }
     });
     console.log(getAllContacts)
     return res.send(getAllContacts);
@@ -29,7 +30,8 @@ router.get("/byid/:id", async (req, res) => {
   try {
     let getContactbyId = await Contacts.findOne({
       order: [["name", "ASC"]],
-      where: {id }
+      where: {id },
+      include: { model: Category }
     });
     // console.log(getAllContacts)
     return res.send(getContactbyId);
@@ -47,7 +49,8 @@ router.get("/byuser/:id", async (req, res) => {
   try {
     let getAllContacts = await Contacts.findAll({
       order: [["name", "ASC"]],
-      where: { userId: id }
+      where: { userId: id },
+      include: { model: Category }
     });
     console.log(getAllContacts)
     return res.send(getAllContacts);
@@ -118,8 +121,8 @@ router.get("/allphones", async (req, res) => {
 // Actualizar datos de contacto
 router.put("/update", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
-  const { id, name, email, cellphone, address, city, zip, province, country } = req.body.user;
-  console.log("RESULTADO: ", id);
+  const { id, name, email, cellphone, address, city, zip, province, country, groups } = req.body.user;
+  console.log("RESULTADO: ", id, groups);
   // chequeo que estén completos los 3 campos requeridos
   if (!id || id === "") {
     return res.status(400).json({ message: "Falta ingresar id de usuario" });
@@ -156,6 +159,23 @@ router.put("/update", async (req, res) => {
     });
     // si todo sale bien devuelvo el objeto agregado
     // console.log("Objeto de usuario guardado")
+    groups.map(async (cates) => {
+      await Contact_Group.destroy({
+        where: {
+          contactId: id,
+        },
+      });
+    });
+
+    groups.map(async (cates) => {
+      const relacion = {
+        contactId: id,
+        categoryId: cates
+      }
+      console.log("cates",cates,"Id contact",id)
+       await Contact_Group.create(relacion);
+    });
+    // await newUser.setCategories(groups);
     res
       .status(200)
       .json({ message: "contacto modificado con éxito", user: objUser });
