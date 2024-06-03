@@ -30,7 +30,7 @@ const ReceiptsView = () => {
 
   const handleDelete = (id, text) => {
     swal
-    .fire({
+      .fire({
         title: "Desea eliminar el mensaje recibido?",
         html: text,
         showDenyButton: true,
@@ -38,7 +38,7 @@ const ReceiptsView = () => {
         confirmButtonText: `Sí`,
         icon: "success",
       })
-    .then((result) => {
+      .then((result) => {
         if (result.isConfirmed) {
           dispatch(receiptDelete(id));
         }
@@ -47,7 +47,7 @@ const ReceiptsView = () => {
 
   const handleView = (id, text) => {
     swal
-    .fire({
+      .fire({
         title: "Mensaje Recibido",
         html: text,
         showCancelButton: false,
@@ -60,8 +60,9 @@ const ReceiptsView = () => {
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center flex flex-row justify-between text-2xl font-semibold mb-10">
         Listado de mensajes recibidos
-        <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/add-message") }}>
-          <FcAddRow className="mr-2" /> Agregar mensaje
+        <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
+          <FcAddRow className="mr-2 h-5 w-5" />
+          Agregar mensaje
         </button>
       </h2>
       <table className="w-full whitespace-nowrap">
@@ -77,11 +78,11 @@ const ReceiptsView = () => {
         <tbody>
           {view.map((receipt, index) => {
             const { id, text, numwa, createdAt } = receipt;
-            let num = numwa.replaceAll("@c.us","")
+            let num = numwa.replaceAll("@c.us", "")
             return (
               <tr key={id} className="hover:bg-gray-100">
-                <td className="border px-4 py-2">{index + 1 + (pagBreeds > 1? ((pagBreeds - 1) * 15) : 0)}</td>
-                <td className="border px-4 py-2">{text.substr(0,50)} { text.length > 50? "..." : ""}</td>
+                <td className="border px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
+                <td className="border px-4 py-2">{text.substr(0, 50)} {text.length > 50 ? "..." : ""}</td>
                 <td className="border px-4 py-2">{num}</td>
                 <td className="border px-4 py-2">{new Date(createdAt).toLocaleDateString()}</td>
                 <td className="border px-4 py-2 flex gap-2">
@@ -100,9 +101,9 @@ const ReceiptsView = () => {
       {cantPages > 1 && (
         <nav aria-label="Pagination" className="flex justify-end mt-4">
           <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(1)}>⬅</button>
-          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds > 1? pagBreeds - 1 : 1)}>👈</button>
+          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds > 1 ? pagBreeds - 1 : 1)}>👈</button>
           <span className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Página {pagBreeds} de {Math.round(cantPages)}</span>
-          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds < cantPages? pagBreeds + 1 : cantPages)}>👉</button>
+          <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds < cantPages ? pagBreeds + 1 : cantPages)}>👉</button>
           <button className="mx-1 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(cantPages)}>➡</button>
         </nav>
       )}

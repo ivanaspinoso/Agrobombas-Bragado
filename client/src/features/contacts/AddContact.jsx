@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "./ContactsSlice";
 import { useNavigate } from "react-router-dom";
 import { contactAdd } from "../../app/actions/contacts";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 let data = []
 
@@ -28,7 +30,7 @@ const AddContact = () => {
     } else {
       const cellphone = "549" + cellphon
       const userid = login.id
-      const contact = { name, cellphone , country, groups, userid };
+      const contact = { name, cellphone, country, groups, userid };
       dispatch(contactAdd(contact));
       navigate("/show-contacts", { replace: true });
     }
@@ -65,100 +67,61 @@ const AddContact = () => {
 
 
   return (
-    <div className="container mt-5">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
-        Add Contact
+    <div class="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <h2 class="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
+        Agregar contacto
       </h2>
-      <form
-        onSubmit={handleSubmit}
-        className="border rounded p-4"
-        style={{ maxWidth: "600px", margin: "auto" }}
-      >
-        <div className="mb-3">
-          <label className="form-label">Seleccione grupo/s</label>
-          <select
-            className="form-select"
-            name="categories"
-            // value={input.categories}
-            // onChange={handleChangeSelect}
-            onChange={handleChangeSelect}
-            value={input.categories}
-            id="seleccategory"
-          >
-            <option key="0" value="0">
-              Group of contact{" "}
-            </option>
-            {groups &&
-              groups.map((elem) => (
-                <option key={elem.id} value={elem.id}>
-                  {elem.category}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div className="mb-3">
-          <label className="mb-3">Selecteds groups:</label>
-          <textarea
-            className="form-control"
-            id="areatempe"
-            readOnly
-            rows="1"
-            cols="35"
-          /><div className="btn btn-outline-success searchbut" onClick={handleClick}> borrar </div>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+      <form onSubmit={handleSubmit} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
             Nombre:
           </label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
-        <div className="mb-3">
-          <label htmlFor="author" className="form-label">
-            Numero de celular sin 0 ni 15:
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="cellphon">
+            Numero de celular:
           </label>
-          <input
-            type="number"
-            className="form-control"
+          <PhoneInput
             id="cellphon"
+            country={"ar"}
+            enableSearch={true}
             value={cellphon}
-            onChange={(e) => setCellphon(e.target.value)}
-            required
+            inputStyle={{
+              height: '19px',
+              width: 'inherit',
+            }}
+            onChange={(phone) => {
+              setCellphon(phone);
+            }}
+
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="author" className="form-label">
-            Pais y prefijo:
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="seleccategory">
+            Seleccione grupo/s
           </label>
-          <input
-            type="text"
-            className="form-control"
-            id="country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            required
-          />
+          <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="categories" value={input.categories} onChange={handleChangeSelect} id="seleccategory">
+            <option value="">Group of contact</option>
+            {groups && groups.map((elem) => (
+              <option key={elem.id} value={elem.id}>{elem.category}</option>
+            ))}
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="areatempe">
+            Grupos seleccionados:
+          </label>
+          <textarea class="form-textarea mt-1 block w-full rounded" id="areatempe" disabled rows="1" cols="35" readonly>{data.join(", ")}</textarea>
+
         </div>
 
-        <button
-          type="submit"
-          className="btn"
-          style={{ background: "#006877", color: "white" }}
-        >
-          Add Contact
+        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" type="submit">
+          Agregar Contacto
         </button>
       </form>
     </div>
+
   );
 };
 

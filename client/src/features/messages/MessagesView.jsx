@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { messageDelete } from "../../app/actions/messages"; 
+import { messageDelete } from "../../app/actions/messages";
 import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2';
 
@@ -21,7 +21,7 @@ const MessagesView = () => {
 
   const handleDelete = (id, text) => {
     swal
-     .fire({
+      .fire({
         title: "Desea eliminar el mensaje?",
         html: text,
         showDenyButton: true,
@@ -29,7 +29,7 @@ const MessagesView = () => {
         confirmButtonText: `Sí`,
         icon: "success",
       })
-     .then((result) => {
+      .then((result) => {
         if (result.isConfirmed) {
           dispatch(messageDelete(id));
         }
@@ -41,7 +41,8 @@ const MessagesView = () => {
       <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-5">
         Listado de mensajes
         <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
-          <FcAddRow className="mr-2" /> Agregar mensaje
+          <FcAddRow className="mr-2 h-5 w-5" />
+          Agregar mensaje
         </button>
       </h2>
       <div className="overflow-x-auto">
@@ -61,7 +62,7 @@ const MessagesView = () => {
               const { id, text, sended, contact, senddate, sendtime } = message;
               return (
                 <tr key={id}>
-                  <td className="px-4 py-2">{index + 1 + (pagBreeds > 1? ((pagBreeds - 1) * 15) : 0)}</td>
+                  <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
                   <td className="px-4 py-2">{text}</td>
                   <td className="px-4 py-2">{contact.name}</td>
                   <td className="px-4 py-2">{senddate}</td>

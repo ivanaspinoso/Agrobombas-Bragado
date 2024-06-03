@@ -13,14 +13,14 @@ const GroupsView = () => {
 
   const handleDelete = (id, category) => {
     swal
-    .fire({
+      .fire({
         title: "¿Desea eliminar el grupo " + category + "?",
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: `Sí`,
         icon: "success",
       })
-    .then((result) => {
+      .then((result) => {
         if (result.isConfirmed) {
           dispatch(deleteCategory(id));
         }
@@ -32,12 +32,9 @@ const GroupsView = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-10">
           Listado de Grupos
-          <button 
-            className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" 
-            onClick={() => navigate("/add-group")}
-          >
-            <FcAddRow className="mr-2 -ml-1" />
-            Agregar Grupo
+          <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-group")}>
+            <FcAddRow className="mr-2 h-5 w-5" />
+            Agregar grupo
           </button>
         </h2>
         <table className="w-full table-auto">
@@ -63,9 +60,9 @@ const GroupsView = () => {
                         <FaEdit />
                       </button>
                     </Link>
-                    {!undelete? (
-                      <button 
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" 
+                    {!undelete ? (
+                      <button
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
                         onClick={() => handleDelete(id, category)}
                       >
                         <FaTrashAlt />

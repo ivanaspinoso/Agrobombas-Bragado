@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { messageAdd} from "../../app/actions/messages";
+import { messageAdd } from "../../app/actions/messages";
 import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
@@ -93,7 +93,7 @@ const AddMessage = () => {
             }
             else {
               sumdays.setDate(sumdays.getDate() + parseInt(days))
-              console.log("dias",days)
+              console.log("dias", days)
             }
             senddates = sumdays.toISOString().split('T')[0];
             // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
@@ -104,8 +104,8 @@ const AddMessage = () => {
             // senddates.setDate(senddates.getDate() + days);
             const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
             dispatch(messageAdd(messrepite));
-//            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
-//            dispatch(messageAdd(messrepite));
+            //            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+            //            dispatch(messageAdd(messrepite));
           }
         }
 
@@ -158,7 +158,7 @@ const AddMessage = () => {
             }
             else {
               sumdays.setDate(sumdays.getDate() + parseInt(days))
-              console.log("dias",days)
+              console.log("dias", days)
             }
             senddates = sumdays.toISOString().split('T')[0];
             // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
@@ -261,185 +261,185 @@ const AddMessage = () => {
   }
 
   return (
-<div class="container mx-auto mt-5 px-4">
-  <h2 class="text-left text-xl font-bold uppercase mb-2 mx-8" style={{ letterSpacing: "2px" }}>
-    Agregar mensaje
-  </h2>
-  <form onSubmit={handleSubmit} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="textAreaExample">
-        Message
-      </label>
-      <textarea class="form-textarea mt-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="todos">
-        Todos los destinatarios
-      </label>
-      <input class="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
-    </div>
-    {!todos && (
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="seleccontact">
-          Seleccione Destinatario/s
-        </label>
-        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="contacts" value={input.contacts} onChange={handleDestinChangeSelect} id="seleccontact">
-          <option value="">Elija contacto</option>
-          {destin && destin.map((elem) => (
-            <option key={elem.id} value={elem.id}>{elem.name}</option>
-          ))}
-        </select>
-      </div>
-    )}
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="areatempec">
-        Contactos Seleccionados:
-      </label>
-      <textarea class="form-textarea mt-1 block w-full rounded" id="areatempec" rows="1" cols="35" readonly>{data.join(", ")}</textarea>
-      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleCClick}>
-        Borrar contacto
-      </button>
-    </div>
-    <div class="mb-4">
-      <div class="flex flex-col justify-between">
-        <div class="md:w-1/2">
-          <label class="inline-flex items-center">
-            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="inmediate" checked={inmediate} onChange={() => setInmediate(!inmediate)} />
-            <span class="text-gray-700">Enviar inmediato</span>
+    <div class="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <h2 class="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
+        Agregar mensaje
+      </h2>
+      <form onSubmit={handleSubmit} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="textAreaExample">
+            Message
           </label>
+          <textarea class="form-textarea mt-1 block w-full border border-gray-300 rounded" disabled id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
         </div>
-        <div>
-            {!inmediate ?
-              <div className="form-control">
-                <label>Programar envio:</label><br />
-                Fecha: <input
-                  type="date"
-                  id="senddate"
-                  value={senddate}
-                  onChange={(e) => setSendDate(e.target.value)} />
-                <br />
-                Hora:   <input
-                  type="time"
-                  id="hora"
-                  list="times"
-                  value={sendtime}
-                  onChange={(e) => setSendTime(e.target.value)} />
-
-                <datalist id="times">
-                  <option value="08:00:00" />
-                  <option value="08:15:00" />
-                  <option value="08:30:00" />
-                  <option value="08:45:00" />
-                  <option value="09:00:00" />
-                  <option value="09:15:00" />
-                  <option value="09:30:00" />
-                  <option value="09:45:00" />
-                  <option value="10:00:00" />
-                  <option value="10:15:00" />
-                  <option value="10:30:00" />
-                  <option value="10:45:00" />
-                  <option value="11:00:00" />
-                  <option value="10:15:00" />
-                  <option value="11:30:00" />
-                  <option value="11:45:00" />
-                  <option value="12:00:00" />
-                  <option value="12:15:00" />
-                  <option value="12:30:00" />
-                  <option value="12:45:00" />
-                  <option value="13:00:00" />
-                  <option value="13:15:00" />
-                  <option value="13:30:00" />
-                  <option value="13:45:00" />
-                  <option value="14:00:00" />
-                  <option value="14:15:00" />
-                  <option value="14:30:00" />
-                  <option value="14:45:00" />
-                  <option value="15:00:00" />
-                  <option value="15:15:00" />
-                  <option value="15:30:00" />
-                  <option value="15:45:00" />
-                  <option value="16:00:00" />
-                  <option value="16:15:00" />
-                  <option value="16:30:00" />
-                  <option value="16:45:00" />
-                  <option value="17:00:00" />
-                  <option value="17:15:00" />
-                  <option value="17:30:00" />
-                  <option value="17:45:00" />
-                  <option value="18:00:00" />
-                  <option value="18:15:00" />
-                  <option value="18:30:00" />
-                  <option value="18:45:00" />
-                  <option value="19:00:00" />
-                  <option value="19:15:00" />
-                  <option value="19:30:00" />
-                  <option value="19:45:00" />
-                  <option value="20:00:00" />
-                  <option value="20:15:00" />
-                  <option value="20:30:00" />
-                  <option value="20:45:00" />
-                  <option value="21:00:00" />
-                  <option value="21:15:00" />
-                  <option value="21:30:00" />
-                  <option value="21:45:00" />
-                </datalist>
-              </div>
-              : ""}
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="todos">
+            Todos los destinatarios
+          </label>
+          <input class="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
+        </div>
+        {!todos && (
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="seleccontact">
+              Seleccione Destinatario/s
+            </label>
+            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="contacts" value={input.contacts} onChange={handleDestinChangeSelect} id="seleccontact">
+              <option value="">Elija contacto</option>
+              {destin && destin.map((elem) => (
+                <option key={elem.id} value={elem.id}>{elem.name}</option>
+              ))}
+            </select>
           </div>
-      </div>
-    </div>
-    <div class="mb-4">
-      <div class="flex flex-col md:flex-row items-center justify-between">
-        <div class="md:w-1/2">
-          <label class="inline-flex items-center">
-            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="repite" checked={repite} onChange={() => setRepite(!repite)} />
-            <span class="text-gray-700">Repetir</span>
+        )}
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="areatempec">
+            Contactos Seleccionados:
           </label>
-          {repite && (
-            <div class="mt-2 md:mt-0 md:ml-4">
-              <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" id="mensual" checked={mensual} onChange={() => setMensual(!mensual)} />
-              <span class="ml-2 text-gray-700">Mensualmente</span>
-              <br />
-              {!mensual? (
-                <>
-                  Cada:<input
-                    type="number"
-                    id="days"
-                    value={days}
-                    onChange={(e) => setDays(e.target.value)} />
-                  días
-                </>
-              ) : (
-                <>
-                  Mismo día de cada mes<br />
-                  Cada:<input
-                    type="number"
-                    id="nonths"
-                    value={xmonths}
-                    onChange={(e) => setXMonths(e.target.value)} />
-                  mes/es
-                </>
-              )}
-              <br />
-              <input
-                type="number"
-                id="veces"
-                value={veces}
-                onChange={(e) => setVeces(e.target.value)} /> Veces
-              <br />
-            </div>
-          )}
+          <textarea class="form-textarea mt-1 block w-full rounded bg-white" id="areatempec" rows="1" cols="35" disabled readonly>{data.join(", ")}</textarea>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleCClick}>
+            Borrar contacto
+          </button>
         </div>
-      </div>
+        <div class="mb-4">
+          <div class="flex flex-col justify-between">
+            <div class="md:w-1/2">
+              <label class="inline-flex items-center">
+                <input type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="inmediate" checked={inmediate} onChange={() => setInmediate(!inmediate)} />
+                <span class="text-gray-700">Enviar inmediato</span>
+              </label>
+            </div>
+            <div>
+              {!inmediate ?
+                <div className="form-control">
+                  <label>Programar envio:</label><br />
+                  Fecha: <input
+                    type="date"
+                    id="senddate"
+                    value={senddate}
+                    onChange={(e) => setSendDate(e.target.value)} />
+                  <br />
+                  Hora:   <input
+                    type="time"
+                    id="hora"
+                    list="times"
+                    value={sendtime}
+                    onChange={(e) => setSendTime(e.target.value)} />
+
+                  <datalist id="times">
+                    <option value="08:00:00" />
+                    <option value="08:15:00" />
+                    <option value="08:30:00" />
+                    <option value="08:45:00" />
+                    <option value="09:00:00" />
+                    <option value="09:15:00" />
+                    <option value="09:30:00" />
+                    <option value="09:45:00" />
+                    <option value="10:00:00" />
+                    <option value="10:15:00" />
+                    <option value="10:30:00" />
+                    <option value="10:45:00" />
+                    <option value="11:00:00" />
+                    <option value="10:15:00" />
+                    <option value="11:30:00" />
+                    <option value="11:45:00" />
+                    <option value="12:00:00" />
+                    <option value="12:15:00" />
+                    <option value="12:30:00" />
+                    <option value="12:45:00" />
+                    <option value="13:00:00" />
+                    <option value="13:15:00" />
+                    <option value="13:30:00" />
+                    <option value="13:45:00" />
+                    <option value="14:00:00" />
+                    <option value="14:15:00" />
+                    <option value="14:30:00" />
+                    <option value="14:45:00" />
+                    <option value="15:00:00" />
+                    <option value="15:15:00" />
+                    <option value="15:30:00" />
+                    <option value="15:45:00" />
+                    <option value="16:00:00" />
+                    <option value="16:15:00" />
+                    <option value="16:30:00" />
+                    <option value="16:45:00" />
+                    <option value="17:00:00" />
+                    <option value="17:15:00" />
+                    <option value="17:30:00" />
+                    <option value="17:45:00" />
+                    <option value="18:00:00" />
+                    <option value="18:15:00" />
+                    <option value="18:30:00" />
+                    <option value="18:45:00" />
+                    <option value="19:00:00" />
+                    <option value="19:15:00" />
+                    <option value="19:30:00" />
+                    <option value="19:45:00" />
+                    <option value="20:00:00" />
+                    <option value="20:15:00" />
+                    <option value="20:30:00" />
+                    <option value="20:45:00" />
+                    <option value="21:00:00" />
+                    <option value="21:15:00" />
+                    <option value="21:30:00" />
+                    <option value="21:45:00" />
+                  </datalist>
+                </div>
+                : ""}
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2">
+              <label class="inline-flex items-center">
+                <input type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="repite" checked={repite} onChange={() => setRepite(!repite)} />
+                <span class="text-gray-700">Repetir</span>
+              </label>
+              {repite && (
+                <div class="mt-2 md:mt-0 md:ml-4">
+                  <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" id="mensual" checked={mensual} onChange={() => setMensual(!mensual)} />
+                  <span class="ml-2 text-gray-700">Mensualmente</span>
+                  <br />
+                  {!mensual ? (
+                    <>
+                      Cada:<input
+                        type="number"
+                        id="days"
+                        value={days}
+                        onChange={(e) => setDays(e.target.value)} />
+                      días
+                    </>
+                  ) : (
+                    <>
+                      Mismo día de cada mes<br />
+                      Cada:<input
+                        type="number"
+                        id="nonths"
+                        value={xmonths}
+                        onChange={(e) => setXMonths(e.target.value)} />
+                      mes/es
+                    </>
+                  )}
+                  <br />
+                  <input
+                    type="number"
+                    id="veces"
+                    value={veces}
+                    onChange={(e) => setVeces(e.target.value)} /> Veces
+                  <br />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <button class="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" type="submit">
+          Enviar Mensaje
+        </button>
+      </form>
     </div>
 
-      <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" type="submit">
-        Agregar Mensaje
-      </button>
-    </form>
-  </div>
-  
-  
+
   );
 };
 

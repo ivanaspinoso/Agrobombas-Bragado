@@ -13,6 +13,8 @@ import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
 import { useState } from 'react';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 const Register = () => {
     const dispatch = useDispatch();
@@ -50,179 +52,183 @@ const Register = () => {
                     WApp Message System
                 </Link>
             </div>
-        <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
-            <h2 className="text-center text-2xl font-bold mb-5">
-                Formulario de registro
-            </h2>
-            <Formik
-                validationSchema={schema}
-                initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
-                onSubmit={async (values, { setSubmitting, resetForm }) => {
-                    console.log('Logging in', values);
-                    const userNew = {
-                        name: values.name,
-                        password: values.password,
-                        username: values.username,
-                        cellphone: values.phoneNumber,
-                        isAdmin: false,
-                        active: false,
-                        autoreplys: false,
-                        autobots: false
-                    }
-                    await dispatch(userAdd(userNew))
-                    console.log("Usuario", localStorage.getItem("userAdded"))
-                    if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
-                        console.log()
-                        const objConf = {
-                            business: values.name,
-                            userid: localStorage.getItem("userAdded")
+            <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
+                <h2 className="text-center text-2xl font-bold mb-5">
+                    Formulario de registro
+                </h2>
+                <Formik
+                    validationSchema={schema}
+                    initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                        console.log('Logging in', values);
+                        const userNew = {
+                            name: values.name,
+                            password: values.password,
+                            username: values.username,
+                            cellphone: values.phoneNumber,
+                            isAdmin: false,
+                            active: false,
+                            autoreplys: false,
+                            autobots: false
                         }
-                        const objGroup = {
-                            category: "Default",
-                            description: "Categoría por defecto",
-                            undelete: true,
-                            userid: localStorage.getItem("userAdded")
-                        }
-                        await dispatch(configAdd(objConf))
-                        await dispatch(cateAdd(objGroup))
-                        Swal.fire({
-                            title: "Genial!",
-                            text: "Usuario registrado con éxito!",
-                            icon: "success"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                resetForm({ values: "" })
-                                navigate("/", { replace: true });
+                        await dispatch(userAdd(userNew))
+                        console.log("Usuario", localStorage.getItem("userAdded"))
+                        if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
+                            console.log()
+                            const objConf = {
+                                business: values.name,
+                                userid: localStorage.getItem("userAdded")
                             }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Error",
-                            text: localStorage.getItem("userAdded"),
-                            icon: "error"
-                        });
-                    }
-                    setSubmitting(false);
-                }}
-            >
-                {
-                    props => {
-                        const {
-                            values,
-                            touched,
-                            errors,
-                            isSubmitting,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit
-                        } = props;
-    
-                        return (
-                            <Form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Nombre</label>
-                                    <input
-                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        placeholder="Ingresa tu Nombre"
-                                        value={values.name}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
-                                    <input
-                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="phoneNumber"
-                                        name="phoneNumber"
-                                        type="tel"
-                                        placeholder="Tu WA formato: 5491144445555"
-                                        value={values.phoneNumber}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
-                                    <input
-                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="username"
-                                        name="username"
-                                        type="text"
-                                        placeholder="Ingresa tu Usuario"
-                                        value={values.username}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    {errors.username && touched.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Contraseña</label>
-                                    <div className="relative">
+                            const objGroup = {
+                                category: "Default",
+                                description: "Categoría por defecto",
+                                undelete: true,
+                                userid: localStorage.getItem("userAdded")
+                            }
+                            await dispatch(configAdd(objConf))
+                            await dispatch(cateAdd(objGroup))
+                            Swal.fire({
+                                title: "Genial!",
+                                text: "Usuario registrado con éxito!",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    resetForm({ values: "" })
+                                    navigate("/", { replace: true });
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error",
+                                text: localStorage.getItem("userAdded"),
+                                icon: "error"
+                            });
+                        }
+                        setSubmitting(false);
+                    }}
+                >
+                    {
+                        props => {
+                            const {
+                                values,
+                                touched,
+                                errors,
+                                isSubmitting,
+                                handleChange,
+                                handleBlur,
+                                handleSubmit
+                            } = props;
+
+                            return (
+                                <Form onSubmit={handleSubmit} className="space-y-4">
+                                    <div>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Nombre</label>
                                         <input
                                             className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="password"
-                                            name="password"
-                                            type={type}
-                                            placeholder="Ingresa tu Contraseña"
-                                            value={values.password}
+                                            id="name"
+                                            name="name"
+                                            type="text"
+                                            placeholder="Ingresa tu Nombre"
+                                            value={values.name}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
-                                        <span onClick={handleToggle} className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
-                                            <Icon icon={icon} size={20} />
-                                        </span>
+                                        {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
                                     </div>
-                                    {errors.password && touched.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="repassword">Confirmar Contraseña</label>
-                                    <input
-                                        className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="repassword"
-                                        name="repassword"
-                                        type="password"
-                                        placeholder="Confirma tu Contraseña"
-                                        value={values.repassword}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <button type="submit" disabled={isSubmitting} className="g-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                        Registrarme
-                                    </button>
-                                    <div className='flex flex-row items-center justify-center'>
-                                        <button
-                                            onClick={() => navigate('/login')}
-                                            className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
-                                        >
-                                            Ya tienes cuenta?
-                                        </button>
-                                        <button
-                                            onClick={() => navigate('/register')}
-                                            className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
-                                        >
-                                            Ingresa
-                                        </button>
+                                    <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
+                                        <PhoneInput
+                                            country={"ar"}
+                                            id="phoneNumber"
+                                            name="phoneNumber"
+                                            type="tel"
+                                            enableSearch={true}
+                                            value={values.phoneNumber}
+                                            inputStyle={{
+                                                height: '19px',
+                                                width: 'inherit',
+                                            }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
                                     </div>
+                                    <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
+                                        <input
+                                            className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            id="username"
+                                            name="username"
+                                            type="text"
+                                            placeholder="Ingresa tu Usuario"
+                                            value={values.username}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        {errors.username && touched.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Contraseña</label>
+                                        <div className="relative">
+                                            <input
+                                                className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                id="password"
+                                                name="password"
+                                                type={type}
+                                                placeholder="Ingresa tu Contraseña"
+                                                value={values.password}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
+                                            <span onClick={handleToggle} className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+                                                <Icon icon={icon} size={20} />
+                                            </span>
+                                        </div>
+                                        {errors.password && touched.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="repassword">Confirmar Contraseña</label>
+                                        <input
+                                            className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            id="repassword"
+                                            name="repassword"
+                                            type="password"
+                                            placeholder="Confirma tu Contraseña"
+                                            value={values.repassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <button type="submit" disabled={isSubmitting} className="g-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                            Registrarme
+                                        </button>
+                                        <div className='flex flex-row items-center justify-center'>
+                                            <button
+                                                onClick={() => navigate('/login')}
+                                                className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
+                                            >
+                                                Ya tienes cuenta?
+                                            </button>
+                                            <button
+                                                onClick={() => navigate('/login')}
+                                                className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
+                                            >
+                                                Ingresa
+                                            </button>
+                                        </div>
 
-                                </div>
-                            </Form>
-                        );
+                                    </div>
+                                </Form>
+                            );
+                        }
                     }
-                }
-            </Formik>
+                </Formik>
+            </div>
         </div>
-    </div>
-    
-    
+
+
     )
 }
 

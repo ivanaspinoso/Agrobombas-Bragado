@@ -18,13 +18,9 @@ const AddGroup = () => {
     description: Yup.string().required("Descripcion es requerida").min(4, "Al menos 4"),
   });
 
-
   return (
-    <div className="container mt-5">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
+    <div class="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <h2 class="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
         Agregar Grupo
       </h2>
       <Formik
@@ -42,7 +38,7 @@ const AddGroup = () => {
           if (success && success === true) {
             Swal.fire({
               title: "Genial!",
-              text: "Grupo de contactos agregado! \n Desea seguir agregando?",
+              text: "Grupo de contactos agregado \n Desea seguir agregando?",
               icon: "success",
               showDenyButton: true,
               confirmButtonText: 'Sí',
@@ -78,43 +74,41 @@ const AddGroup = () => {
 
             return (
               <Form onSubmit={handleSubmit}
-                className="border rounded p-4"
-                style={{ maxWidth: "600px", margin: "auto" }}
+                class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
               >
-                <label htmlFor="title" className="form-label">
-                  Grupo:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="category"
-                  name="category"
-                  value={values.category}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.category ? <p className="error">
-                  {errors.category && touched.category && errors.category}
-                </p> : ""}
-                <label htmlFor="author" className="form-label">
-                  Descripción:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="description"
-                  name="description"
-                  value={values.description}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.description ? <p className="error">
-                  {errors.description && touched.description && errors.description}
-                </p> : ""}
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="category">
+                    Grupo:
+                  </label>
+                  <input
+                    type="text"
+                    class="form-input mt-1 block w-full border border-gray-300 rounded"
+                    id="category"
+                    name="category"
+                    value={values.category}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.category ? <p class="text-red-500 text-xs italic">{errors.category}</p> : ""}
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+                    Descripción:
+                  </label>
+                  <input
+                    type="text"
+                    class="form-input mt-1 block w-full border border-gray-300 rounded"
+                    id="description"
+                    name="description"
+                    value={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.description ? <p class="text-red-500 text-xs italic">{errors.description}</p> : ""}
+                </div>
                 <button
                   type="submit"
-                  className="btn"
-                  style={{ background: "#006877", color: "white" }}
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
                   Agregar Grupo
                 </button>

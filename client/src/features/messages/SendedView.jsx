@@ -37,10 +37,9 @@ const SendedView = () => {
     <div className="container mx-auto px-4 flex flex-col flex-grow">
       <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-5">
         Listado de mensajes enviados
-        <button 
-          onClick={() => navigate("/add-message")} 
-          className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-          <FcAddRow />
+        <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
+          <FcAddRow className="mr-2 h-5 w-5" />
+          Agregar mensaje
         </button>
       </h2>
       <table className="w-full table-auto border-collapse">
@@ -81,13 +80,13 @@ const SendedView = () => {
       </table>
       {/* Pagination */}
       <div className="mt-4 flex justify-end space-x-2">
-        <button 
-          onClick={() => setCurrentPage(1)} 
+        <button
+          onClick={() => setCurrentPage(1)}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400">
           Primera página
         </button>
-        <button 
-          onClick={() => setCurrentPage(currentPage - 1)} 
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400"
           disabled={currentPage === 1}>
           Anterior
@@ -95,14 +94,14 @@ const SendedView = () => {
         <span className="flex items-center">
           Página {currentPage} de {Math.ceil(sendedMessages.length / itemsPerPage)}
         </span>
-        <button 
-          onClick={() => setCurrentPage(currentPage + 1)} 
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400"
           disabled={currentPage === Math.ceil(sendedMessages.length / itemsPerPage)}>
           Siguiente
         </button>
-        <button 
-          onClick={() => setCurrentPage(Math.ceil(sendedMessages.length / itemsPerPage))} 
+        <button
+          onClick={() => setCurrentPage(Math.ceil(sendedMessages.length / itemsPerPage))}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400">
           Última página
         </button>
