@@ -56,7 +56,7 @@ const LogIn = () => {
                         // console.log('Logging in', localStorage.getItem("allowLogin"));
                         dispatch(getUser(values.username, values.password))
                         if (localStorage.getItem("allowLogin") === 'true') {
-                            // navigate("/")
+                            navigate("/")
                             console.log("ENTRO!")
                         } else {
                             Swal.fire({
