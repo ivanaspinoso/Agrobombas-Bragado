@@ -2,26 +2,38 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { contactUpdate } from "../../app/actions/contacts";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
-let data = []
 
 const EditContact = () => {
   const location = useLocation();
   const categs = useSelector((state) => state.groupsReducer.groups)
   const dispatch = useDispatch();
-  console.log(location.state);
+  // console.log(location.state);
   const [id] = useState(location.state.id);
   const [name, setName] = useState(location.state.name);
-  const [cellphone, setCellphone] = useState(location.state.cellphone);
+  const editphone = location.state.cellphone.slice(0,2) + location.state.cellphone.slice(3,13)
+  const [cellphone, setCellphone] = useState(editphone);
   const [groups, setGroups] = useState(location.state.categories)
   const [input,  setInput] = useState({
     categories: []
   })
+  let data = []
+  let txtdata = []
+    location.state.categories.map((cate) => {
+      data.push(cate.id)
+      txtdata.push(cate.category)
+    })
+  // console.log("Data",data)
   const navigate = useNavigate();
 
   function handleChangeSelect(e) {
-    var tempera = input.categories.find((temp) => temp === e.target.value);
-    console.log(tempera);
+    console.log("elegido ",e.target.value);
+    console.log("Data", data)
+    console.log("igual", data[0] === e.target.value ? "si" : "no")
+    var tempera = data.find((temp) => temp === e.target.value); // input.categories.find((temp) => temp === e.target.value);
+    console.log("a ver", tempera)
     if (!tempera && e.target.value !== "0") {
       data = [...input.categories];
       data.push(e.target.value);
@@ -32,7 +44,8 @@ const EditContact = () => {
       var artempes = document.getElementById("areatempe");
       artempes.value += artempes.value.length > 0 ? ", " + strtempe : strtempe;
       console.log("estas seleccionando:" + data);
-    } else alert("La categoría ya fue agregada");
+    } 
+    else alert("La categoría ya fue agregada");
   }
 
 
@@ -52,27 +65,27 @@ const EditContact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(groups, input.categories)
-    dispatch(contactUpdate({ id, name, cellphone, groups: input.categories }));
+    const numphone = cellphone.slice(0,2) + "9" + cellphone.slice(2,12)
+    dispatch(contactUpdate({ id, name, cellphone: numphone, groups: input.categories }));
     navigate("/show-contacts", { replace: true });
   };
 
   return (
     <div className="container mt-5">
       <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
+        className="text-center text-xl uppercase m-5 font-semibold"
       >
         Editar Contacto
       </h2>
       <form
         onSubmit={handleSubmit}
-        className="border rounded p-4 "
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         style={{ maxWidth: "600px", margin: "auto" }}
       >
                 <div className="mb-3">
-          <label className="form-label">Seleccione grupo/s</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2" for="seleccategory">Seleccione grupo/s</label>
           <select
-            className="form-select"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="categories"
             // value={input.categories}
             // onChange={handleChangeSelect}
@@ -92,23 +105,24 @@ const EditContact = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label className="mb-3">Selecteds groups:</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2" for="areatempe">Selecteds groups:</label>
           <textarea
-            className="form-control"
+            className="shadow form-textarea mt-1 block w-full rounded"
             id="areatempe"
             readOnly
             rows="1"
             cols="35"
-          /><div className="btn btn-outline-success searchbut" onClick={handleClick}> borrar </div>
+          >{txtdata.join(", ")}</textarea>
+          <div className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={handleClick}> - </div>
         </div>
 
         <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+          <label className="block text-gray-700 text-sm font-bold mb-2" for="name">
             Name:
           </label>
           <input
             type="text"
-            className="form-control"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -116,22 +130,28 @@ const EditContact = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="author" className="form-label">
+          <label className="block text-gray-700 text-sm font-bold mb-2" for="cellphon">
             Cellphone:
           </label>
-          <input
-            type="text"
-            className="form-control"
-            id="cellphone"
+          <PhoneInput
+            id="cellphon"
+            country={"ar"}
+            enableSearch={true}
             value={cellphone}
-            onChange={(e) => setCellphone(e.target.value)}
-            required
+            inputStyle={{
+              height: '19px',
+              width: 'inherit',
+            }}
+            onChange={(phone) => {
+              setCellphone(phone);
+            }}
+
           />
         </div>
 
         <button
           type="submit"
-          className="btn "
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           style={{ background: "#006877", color: "white" }}
         >
           Update Contact

@@ -36,6 +36,7 @@ const LogIn = () => {
         }
     }
 
+
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-green-500 to-white flex items-center justify-center">
              <div className="absolute top-4 left-4">
@@ -51,17 +52,19 @@ const LogIn = () => {
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "" }}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        console.log('Logging in', localStorage.getItem("allowLogin"));
-                        await dispatch(getUser(values.username, values.password))
+                    onSubmit={(values, { setSubmitting }) => {
+                        // console.log('Logging in', localStorage.getItem("allowLogin"));
+                        dispatch(getUser(values.username, values.password))
                         if (localStorage.getItem("allowLogin") === 'true') {
-                            navigate("/")
+                            // navigate("/")
+                            console.log("ENTRO!")
                         } else {
                             Swal.fire({
                                 title: "Error",
                                 text: localStorage.getItem("userInfo"),
                                 icon: "error"
                             });
+                            console.log("NO entro")
                         }
                         setSubmitting(false);
                     }}
@@ -137,7 +140,7 @@ const LogIn = () => {
                 </Formik>
             </div>
         </div>
-    )
+    ) 
 }
 
 export default LogIn;

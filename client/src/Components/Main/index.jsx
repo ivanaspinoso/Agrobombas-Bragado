@@ -74,8 +74,8 @@ const Main = () => {
         { src: receipts, title: 'Recibidos', text: 'Aquí podrá ver los mensajes recibidos (aunque también los verá en celu asociado)', link: '/show-receipts' },
         { src: config, title: 'Configuración', text: 'Edite datos de su empresa. Y además se usará para vincular el WhatsApp®', link: '/show-configs' },
         { src: autoreplys, title: 'Autorespuestas', text: 'Defina autorespuestas según disparador.', link: login.autoreplys? '/show-users' : '/opcional' },
-        { src: bots, title: 'Bots', text: 'Genere bots personalizados', link: login.autobots? '/show-users' : '/opcional' }
-      ].map((item, index) => (
+        { src: bots, title: 'Bots', text: 'Genere bots personalizados', link: login.autobots? '/show-users' : '/opcional' },
+      ].map((item, index) => (  
         <div
         key={index}
         className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200"
