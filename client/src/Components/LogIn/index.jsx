@@ -22,13 +22,13 @@ const LogIn = () => {
     const schema = Yup.object().shape({
         username: Yup.string().required("Usuario es requerido"),
         password: Yup.string()
-        .required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
+            .required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
     });
 
     // show/hide password
     const handleToggle = () => {
         if (type === 'password') {
-            setIcon(eye);   
+            setIcon(eye);
             setType('text')
         } else {
             setIcon(eyeOff)
@@ -39,7 +39,7 @@ const LogIn = () => {
 
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-green-500 to-white flex items-center justify-center">
-             <div className="absolute top-4 left-4">
+            <div className="absolute top-4 left-4">
                 <Link to="/" className="text-white text-xl font-semibold hover:text-gray-500 transition duration-300 flex flex-row gap-4 justify-center items-center">
                     <img src={logo} alt="Logo Wapp Message System" className="w-8 h-8" />
                     WApp Message System
@@ -140,7 +140,7 @@ const LogIn = () => {
                 </Formik>
             </div>
         </div>
-    ) 
+    )
 }
 
 export default LogIn;

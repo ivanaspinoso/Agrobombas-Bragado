@@ -10,10 +10,10 @@ export const configAdd = (configNew) => async (dispatch) => {
     dispatch({ type: addConfig, payload: data });
     localStorage.setItem("configAdded", true)
   } catch (err) {
-    localStorage.setItem("configAdded", err.response.data.message)
+    localStorage.setItem("configAdded", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -30,10 +30,10 @@ export const configUpdate = (config) => async (dispatch) => {
       localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("configUpdated", true)
     } catch (err) {
-      localStorage.setItem("configUpdated", false /* err.response.data.message */)
+      localStorage.setItem("configUpdated", false /* err?.response?.data.message */)
       console.log(
-        err.response && err.response.data.message
-          ? err.response.data.message
+        err?.response && err?.response?.data.message
+          ? err?.response?.data.message
           : err.message
       );
     }
@@ -49,10 +49,10 @@ export const configUpdate = (config) => async (dispatch) => {
       localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("userConfig", true);
     } catch (err) {
-      localStorage.setItem("userConfig", err.response.data.message);
+      localStorage.setItem("userConfig", err?.response?.data.message);
       console.log(
-        err.response && err.response.data.message
-          ? err.response.data.message
+        err?.response && err?.response?.data.message
+          ? err?.response?.data.message
           : err.message
       );
     }

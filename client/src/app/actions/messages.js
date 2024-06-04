@@ -10,10 +10,10 @@ export const messageAdd = (messageNew) => async (dispatch) => {
     // console.log("obtenido al añadir",data.mensaje)
     localStorage.setItem("messAdded", data.mensaje.id)
   } catch (err) {
-    localStorage.setItem("messaAdded", err.response.data.message)
+    localStorage.setItem("messaAdded", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -27,10 +27,10 @@ export const getAllMessagess = () => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingMessages", true)
   } catch (err) {
-    localStorage.setItem("gettingMessages", err.response.data.message)
+    localStorage.setItem("gettingMessages", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -44,10 +44,10 @@ export const getUserMessages = (id) => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingUserMessages", true)
   } catch (err) {
-    localStorage.setItem("gettingUserMessages", err.response.data.message)
+    localStorage.setItem("gettingUserMessages", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -61,10 +61,10 @@ export const resultMessage = (id) => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingResultMessages", true)
   } catch (err) {
-    localStorage.setItem("gettingResultMessages", err.response.data.message)
+    localStorage.setItem("gettingResultMessages", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -78,10 +78,10 @@ export const messageDelete = (id) => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingResultMessages", true)
   } catch (err) {
-    localStorage.setItem("gettingResultMessages", err.response.data.message)
+    localStorage.setItem("gettingResultMessages", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }

@@ -14,10 +14,10 @@ export const userAdd = (userNew) => async (dispatch) => {
     dispatch({ type: addUser, payload: data.user });
     localStorage.setItem("userAdded", data.user.id)
   } catch (err) {
-    localStorage.setItem("userAdded", err.response.data.message)
+    localStorage.setItem("userAdded", err?.response.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }
@@ -35,11 +35,11 @@ export const getUser = (username, password) => async (dispatch) => {
     localStorage.setItem("userInfo", JSON.stringify(data.login));
     localStorage.setItem("allowLogin", true)
   } catch (err) {
-    localStorage.setItem("userInfo", err.response.data.error);
+    localStorage.setItem("userInfo", err?.response.data.error);
     localStorage.setItem("allowLogin", false)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }
@@ -56,10 +56,10 @@ export const getQRUser = (username, password, userid) => async (dispatch) => {
     dispatch({ type: getQr, payload: data.qrcode });
     localStorage.setItem("userQR", JSON.stringify(data.qrcode));
   } catch (err) {
-    localStorage.setItem("userQR", err.response.data.error);
+    localStorage.setItem("userQR", err?.response?.data.error);
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }
@@ -77,9 +77,9 @@ export const getAllUsers = () => async (dispatch) => {
   } catch (err) {
     localStorage.setItem("gettingUsers", false)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
-        : err.message
+      err?.response && err?.response?.data.message
+        ? err?.response?.data.message
+        : err?.message
     );
   }
 }
@@ -90,11 +90,11 @@ export const userUpdate = (user) => async (dispatch) => {
     dispatch({ type: updateUser, payload: data.user });
     localStorage.setItem("contactUpdated", true)
   } catch (err) {
-    localStorage.setItem("contactUpdated", err.response.data.message)
+    localStorage.setItem("contactUpdated", err?.response.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
-        : err.message
+      err?.response && err?.response?.data.message
+        ? err?.response?.data?.message
+        : err?.message
     );
   }
 };
@@ -105,11 +105,11 @@ export const userUpdateAdm = (user) => async (dispatch) => {
     dispatch({ type: updateUserAdm, payload: data.user });
     localStorage.setItem("contactUpdated", true)
   } catch (err) {
-    localStorage.setItem("contactUpdated", err.response.data.message)
+    localStorage.setItem("contactUpdated", err?.response.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
-        : err.message
+      err?.response && err?.response?.data?.message
+        ? err?.response?.data?.message
+        : err?.message
     );
   }
 };
@@ -169,10 +169,10 @@ export const logOut = () => async (dispatch) => {
     localStorage.setItem("userInfo", JSON.stringify(data.user));
     localStorage.setItem("userUpdated", true)
   } catch (err) {
-    localStorage.setItem("userUpdated", err.response.data.message)
+    localStorage.setItem("userUpdated", err?.response.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }
@@ -192,10 +192,10 @@ export const logOut = () => async (dispatch) => {
     localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("configUpdated", true)
   } catch (err) {
-    localStorage.setItem("configUpdated", err.response.data.message)
+    localStorage.setItem("configUpdated", err?.response.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }
@@ -211,10 +211,10 @@ export const logOut = () => async (dispatch) => {
     localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("userConfig", true);
   } catch (err) {
-    localStorage.setItem("userConfig", err.response.data.message);
+    localStorage.setItem("userConfig", err?.response.data.message);
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }
@@ -234,10 +234,10 @@ export const logOut = () => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingUsers", true)
   } catch (err) {
-    localStorage.setItem("gettingUsers", err.response.data.message)
+    localStorage.setItem("gettingUsers", err?.response.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
         : err.message
     );
   }

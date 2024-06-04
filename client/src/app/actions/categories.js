@@ -11,8 +11,8 @@ export const getAllCategories = () => async (dispatch) => {
       // localStorage.setItem("userInfo", JSON.stringify(data.login));
     } catch (err) {
       alert(
-        err.response && err.response.data.message
-          ? err.response.data.message
+        err?.response && err?.response.data.message
+          ? err?.response.data.message
           : err.message
       );
     }
@@ -27,8 +27,8 @@ export const getAllCategories = () => async (dispatch) => {
       // localStorage.setItem("userInfo", JSON.stringify(data.login));
     } catch (err) {
       alert(
-        err.response && err.response.data.message
-          ? err.response.data.message
+        err?.response && err?.response.data.message
+          ? err?.response.data.message
           : err.message
       );
     }
@@ -43,8 +43,8 @@ export const getAllCategories = () => async (dispatch) => {
     } catch (err) {
       localStorage.setItem("categoryAdded",err.response.data.message)
       console.log(
-        err.response && err.response.data.message
-          ? err.response.data.message
+        err?.response && err?.response.data.message
+          ? err?.response.data.message
           : err.message
       );
     }
@@ -59,8 +59,8 @@ export const getAllCategories = () => async (dispatch) => {
       dispatch({ type: allgroups, payload: data });
     } catch (err) {
       console.log(
-        err.response && err.response.data.message
-          ? err.response.data.message
+        err?.response && err?.response.data.message
+          ? err?.response.data.message
           : err.message
       );
     }
@@ -74,8 +74,8 @@ export const getAllCategories = () => async (dispatch) => {
       }).catch(err => {
         localStorage.setItem("categoryDeleted",err.response.data.message)
         console.log(
-          err.response && err.response.data.message
-            ? err.response.data.message
+          err?.response && err?.response.data.message
+            ? err?.response.data.message
             : err.message
         )        
       });
@@ -92,8 +92,8 @@ export const getAllCategories = () => async (dispatch) => {
       catch(err) {
         localStorage.setItem("categoryUpdated",err.response.data.message)
         console.log(
-          err.response && err.response.data.message
-            ? err.response.data.message
+          err?.response && err?.response.data.message
+            ? err?.response.data.message
             : err.message
         )        
     };

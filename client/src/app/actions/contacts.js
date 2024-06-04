@@ -10,10 +10,10 @@ export const contactAdd = (userNew) => async (dispatch) => {
     console.log(data)
     localStorage.setItem("userAdded", true)
   } catch (err) {
-    localStorage.setItem("userAdded", err.response.data.message)
+    localStorage.setItem("userAdded", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -28,10 +28,10 @@ export const getAllContacts = () => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingContacts", true)
   } catch (err) {
-    localStorage.setItem("gettingContacts", err.response.data.message)
+    localStorage.setItem("gettingContacts", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -46,10 +46,10 @@ export const getContactSend = (id) => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingContacts", true)
   } catch (err) {
-    localStorage.setItem("gettingContacts", err.response.data.message)
+    localStorage.setItem("gettingContacts", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -65,10 +65,10 @@ export const getUserContacts = (id) => async (dispatch) => {
     //  localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingContacts", true)
   } catch (err) {
-    localStorage.setItem("gettingContacts", err.response.data.message)
+    localStorage.setItem("gettingContacts", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
@@ -80,10 +80,10 @@ export const contactDelete = (id) => async (dispatch) => {
     dispatch({ type: deleteContact, payload: id });
     localStorage.setItem("contactDeleted", true)
   } catch (err) {
-    localStorage.setItem("contactDeleted", err.response.data.message)
+    localStorage.setItem("contactDeleted", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     )
   }
@@ -95,10 +95,10 @@ export const contactUpdate = (user) => async (dispatch) => {
     dispatch({ type: updateContact, payload: data.user });
     localStorage.setItem("contactUpdated", true)
   } catch (err) {
-    localStorage.setItem("contactUpdated", err.response.data.message)
+    localStorage.setItem("contactUpdated", err?.response?.data.message)
     console.log(
-      err.response && err.response.data.message
-        ? err.response.data.message
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
         : err.message
     );
   }
