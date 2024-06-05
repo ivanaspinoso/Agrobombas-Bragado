@@ -7,7 +7,7 @@ export const getUserReceipts = (id) => async (dispatch) => {
     try {
       const { data } = await axios.get(`${userReceiptsEndpoint}` + id);
       console.log("ejecutando action obtener recibidos", data)
-      dispatch({ type: allReceipts, payload: data });
+      dispatch({ type: "receipts/allReceipts", payload: data });
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingUserReceipts", true)
     } catch (err) {
@@ -24,7 +24,7 @@ export const getUserReceipts = (id) => async (dispatch) => {
     try {
       const { data } = await axios.delete(`${delReceiptsEndpoint}` + id);
       // console.log("ejecutando action getusermessages", data)
-      dispatch({ type: deleteReceipt, payload: id });
+      dispatch({ type: "receipts/deleteReceipt", payload: id });
       //  localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("gettingResultMessages", true)
     } catch (err) {

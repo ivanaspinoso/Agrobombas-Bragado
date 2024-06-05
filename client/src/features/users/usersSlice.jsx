@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAction } from "@reduxjs/toolkit";
 
 const initialUsers = {
   loading: 'idle',
@@ -6,6 +6,8 @@ const initialUsers = {
   login: {},
   qrCode: ""
 };
+
+// const loginuser = createAction("users/login")
 
 export const usersSlice = createSlice({
   name: "users",

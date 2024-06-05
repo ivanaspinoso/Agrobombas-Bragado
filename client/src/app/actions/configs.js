@@ -7,7 +7,7 @@ export const configAdd = (configNew) => async (dispatch) => {
   // console.log("agregando", configNew);
   try {
     const { data } = await axios.post(`${addConfigsEndpoint}`, configNew);
-    dispatch({ type: addConfig, payload: data });
+    dispatch({ type: "config/addConfig", payload: data });
     localStorage.setItem("configAdded", true)
   } catch (err) {
     localStorage.setItem("configAdded", err?.response?.data.message)
@@ -25,7 +25,7 @@ export const configUpdate = (config) => async (dispatch) => {
     try {
       // console.log(username,password)
       const { data } = await axios.put(`${updConfigsEndpoint}`, config);
-      dispatch({ type: updateConfig, payload: data.config });
+      dispatch({ type: "config/updateConfig", payload: data.config });
       console.log("A ver",data.config)
       localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("configUpdated", true)
@@ -45,7 +45,7 @@ export const configUpdate = (config) => async (dispatch) => {
       // console.log(username,password)
       // console.log(`${configByIdEndpoint}${id}`)
       const { data } = await axios.get(`${allConfigsEndpoint}` + id);
-      dispatch({ type: allConfig, payload: data.config });
+      dispatch({ type: "config/allConfig", payload: data.config });
       localStorage.setItem("appConfig", JSON.stringify(data.config));
       localStorage.setItem("userConfig", true);
     } catch (err) {

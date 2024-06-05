@@ -1,8 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAction } from "@reduxjs/toolkit";
 
 const initialConfigs = {
   configs: [],
 };
+
+const allconfig = createAction("config/allConfig")
 
 export const configsSlice = createSlice({
   name: "config",

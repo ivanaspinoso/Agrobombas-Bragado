@@ -11,7 +11,7 @@ export const userAdd = (userNew) => async (dispatch) => {
   console.log("agregando", userNew);
   try {
     const { data } = await axios.post(`${addUserEndpoint}`, userNew);
-    dispatch({ type: addUser, payload: data.user });
+    dispatch({ type: "users/addUser", payload: data.user });
     localStorage.setItem("userAdded", data.user.id)
   } catch (err) {
     localStorage.setItem("userAdded", err?.response.data.message)
@@ -31,7 +31,7 @@ export const getUser = (username, password) => async (dispatch) => {
       username,
       password,
     });
-    dispatch({ type: loginUser, payload: data.login });
+    dispatch({ type: "users/loginUser", payload: data.login });
     localStorage.setItem("userInfo", JSON.stringify(data.login));
     localStorage.setItem("allowLogin", true)
   } catch (err) {
@@ -53,7 +53,7 @@ export const getQRUser = (username, password, userid) => async (dispatch) => {
       username,
       password,
     });
-    dispatch({ type: getQr, payload: data.qrcode });
+    dispatch({ type: "users/getQr", payload: data.qrcode });
     localStorage.setItem("userQR", JSON.stringify(data.qrcode));
   } catch (err) {
     localStorage.setItem("userQR", err?.response?.data.error);
@@ -71,7 +71,7 @@ export const getAllUsers = () => async (dispatch) => {
   try {
     const { data } = await axios.get(`${allUsersEndpoint}`);
     // console.log("ejecutando action getallusers", data)
-    dispatch({ type: allUsers, payload: data });
+    dispatch({ type: "users/allUsers", payload: data });
     // localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingUsers", true)
   } catch (err) {
@@ -87,7 +87,7 @@ export const getAllUsers = () => async (dispatch) => {
 export const userUpdate = (user) => async (dispatch) => {
   try {
     const { data } = await axios.put(`${updUserssEndpoint}`, { user });
-    dispatch({ type: updateUser, payload: data.user });
+    dispatch({ type: "users/updateUser", payload: data.user });
     localStorage.setItem("contactUpdated", true)
   } catch (err) {
     localStorage.setItem("contactUpdated", err?.response.data.message)
@@ -102,7 +102,7 @@ export const userUpdate = (user) => async (dispatch) => {
 export const userUpdateAdm = (user) => async (dispatch) => {
   try {
     const { data } = await axios.put(`${updadmUserssEndpoint}`, { user });
-    dispatch({ type: updateUserAdm, payload: data.user });
+    dispatch({ type: "users/updateUserAdm", payload: data.user });
     localStorage.setItem("contactUpdated", true)
   } catch (err) {
     localStorage.setItem("contactUpdated", err?.response.data.message)
@@ -116,7 +116,7 @@ export const userUpdateAdm = (user) => async (dispatch) => {
 
 export const logOut = () => async (dispatch) => {
   try {
-    await dispatch({ type: logoutUser, payload: {} });
+    await dispatch({ type: "users/logoutUser", payload: {} });
     localStorage.removeItem('userInfo')
     localStorage.removeItem("allowLogin")
     localStorage.removeItem("userAdded")
@@ -142,12 +142,12 @@ export const logOut = () => async (dispatch) => {
         localStorage.removeItem("brandAdded")
         localStorage.removeItem("brandUpdated") */
 
-    await dispatch({ type: logoutGroups, payload: [] })
-    await dispatch({ type: logoutConfig, payload: [] });
-    await dispatch({ type: logoutUsers, payload: [] })
-    await dispatch({ type: logoutContacts, payload: [] })
-    await dispatch({ type: logoutMessages, payload: [] })
-    await dispatch({ type: logoutReceipts, payload: [] })
+    await dispatch({ type: "users/logoutGroups", payload: [] })
+    await dispatch({ type: "config/logoutConfig", payload: {} });
+    await dispatch({ type: "users/logoutUsers", payload: [] })
+    await dispatch({ type: "contacts/logoutContacts", payload: [] })
+    await dispatch({ type: "messages/logoutMessages", payload: [] })
+    await dispatch({ type: "receipts/logoutReceipts", payload: [] })
     console.log("saliendo")
   } catch (err) {
     console.log(err)
