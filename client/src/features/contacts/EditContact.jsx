@@ -13,38 +13,42 @@ const EditContact = () => {
   // console.log(location.state);
   const [id] = useState(location.state.id);
   const [name, setName] = useState(location.state.name);
-  const editphone = location.state.cellphone.slice(0,2) + location.state.cellphone.slice(3,13)
+  const editphone = location.state.cellphone.slice(0, 2) + location.state.cellphone.slice(3, 13)
   const [cellphone, setCellphone] = useState(editphone);
   const [groups, setGroups] = useState(location.state.categories)
-  const [input,  setInput] = useState({
+  const [input, setInput] = useState({
     categories: []
   })
+  console.log(location.state.name)
+  console.log(location.state.categories)
   let data = []
   let txtdata = []
-    location.state.categories.map((cate) => {
-      data.push(cate.id)
-      txtdata.push(cate.category)
-    })
+  groups.map((cate) => {
+    data.push(cate.id)
+    txtdata.push(cate.category)
+  })
   // console.log("Data",data)
   const navigate = useNavigate();
 
+  var tempera = ""
   function handleChangeSelect(e) {
-    console.log("elegido ",e.target.value);
-    console.log("Data", data)
-    console.log("igual", data[0] === e.target.value ? "si" : "no")
-    var tempera = data.find((temp) => temp === e.target.value); // input.categories.find((temp) => temp === e.target.value);
-    console.log("a ver", tempera)
-    if (!tempera && e.target.value !== "0") {
-      data = [...input.categories];
-      data.push(e.target.value);
-      setInput({ ...input, categories: data });
-      var seltempe = document.getElementById("seleccategory");
-      console.log(seltempe);
-      var strtempe = seltempe.options[seltempe.selectedIndex].text;
-      var artempes = document.getElementById("areatempe");
-      artempes.value += artempes.value.length > 0 ? ", " + strtempe : strtempe;
-      console.log("estas seleccionando:" + data);
-    } 
+    console.log("elegido ", e.target.value, "tipo", typeof (e.target.value));
+    console.log("Data", data, "item tipo", typeof (data[0]))
+    var abuscar = Number(e.target.value)
+    tempera = data.indexOf(abuscar); // input.categories.find((temp) => temp === e.target.value);
+    console.log("a ver ", tempera, "tipo ", typeof (abuscar))
+    if (tempera === -1) {
+      if (e.target.value !== "0") {
+        data = [...input.categories];
+        data.push(e.target.value);
+        setInput({ ...input, categories: data });
+        var seltempe = document.getElementById("seleccategory");
+        var strtempe = seltempe.options[seltempe.selectedIndex].text;
+        var artempes = document.getElementById("areatempe");
+        artempes.value += artempes.value.length > 0 ? ", " + strtempe : strtempe;
+        console.log("estas seleccionando: " + data + ", e " + e.target.value);
+      }
+    }
     else alert("La categoría ya fue agregada");
   }
 
@@ -61,11 +65,12 @@ const EditContact = () => {
     artempes.value = textoenarea
   }
 
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(groups, input.categories)
-    const numphone = cellphone.slice(0,2) + "9" + cellphone.slice(2,12)
+    // setGroups(input.categories)
+    const numphone = cellphone.slice(0, 2) + "9" + cellphone.slice(2, 12)
     dispatch(contactUpdate({ id, name, cellphone: numphone, groups: input.categories }));
     navigate("/show-contacts", { replace: true });
   };
@@ -82,7 +87,7 @@ const EditContact = () => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         style={{ maxWidth: "600px", margin: "auto" }}
       >
-                <div className="mb-3">
+        <div className="mb-3">
           <label className="block text-gray-700 text-sm font-bold mb-2" for="seleccategory">Seleccione grupo/s</label>
           <select
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

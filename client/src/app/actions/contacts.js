@@ -132,6 +132,6 @@ export const contactsSort = (order, breeds) => async (dispatch) => {
       }
   })
   /* return function(dispatch){
- */      dispatch({type: sortContacts, payload: sortBreed})
+ */      dispatch({type: "contacts/sortContacts", payload: sortBreed})
 /*   }
  */}
