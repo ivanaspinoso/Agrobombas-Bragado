@@ -12,9 +12,8 @@ const EditContact = () => {
   // console.log(location.state);
   const [id] = useState(location.state.id);
   const [name, setName] = useState(location.state.name);
-  const editphone =
-    location.state.cellphone.slice(0, 2) +
-    location.state.cellphone.slice(3, 13);
+  const editphone = location.state.cellphone.slice(3, 13);
+  const valuephone = "+" + location.state.cellphone.slice(0, 2) + location.state.cellphone.slice(3, 13);
   const [cellphone, setCellphone] = useState(editphone);
   const [groups, setGroups] = useState(location.state.categories);
   const [input, setInput] = useState({
@@ -24,10 +23,12 @@ const EditContact = () => {
   console.log(location.state.categories);
   let data = [];
   let txtdata = [];
+  
   groups.map((cate) => {
     data.push(cate.id);
     txtdata.push(cate.category);
   });
+
   // console.log("Data",data)
   const navigate = useNavigate();
 
@@ -162,16 +163,18 @@ const EditContact = () => {
             Cellphone:
           </label>
           <PhoneInput
-            id="cellphon"
+            id="cellphone"
+            country="AR"
             defaultCountry="AR"
+            defaultValue={valuephone}
             enableSearch={true}
             value={cellphone}
             inputStyle={{
               height: "19px",
               width: "inherit",
             }}
-            onChange={(phone) => {
-              setCellphone(phone);
+            onChange={(e) => {
+              setCellphone(e.target.value);
             }}
             placeholder="Número de celular"
           />
