@@ -13,8 +13,8 @@ import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
 import { useState } from 'react';
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/bootstrap.css";
+import PhoneInput from "react-phone-number-input";
+import 'react-phone-number-input/style.css'
 
 const Register = () => {
     const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const Register = () => {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: values.phoneNumber,
+                            cellphone: values.phoneNumber(1, 3) + "9" + values.phoneNumber(3, 13), //values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
@@ -138,7 +138,7 @@ const Register = () => {
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
                                         <PhoneInput
-                                            country={"ar"}
+                                            defaultCountry="AR"
                                             id="phoneNumber"
                                             name="phoneNumber"
                                             type="tel"
@@ -150,6 +150,7 @@ const Register = () => {
                                             }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
+                                            placeholder="Número de celular"
                                         />
                                         {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
                                     </div>
