@@ -49,6 +49,20 @@ const ContactsView = () => {
           Agregar Contacto
         </button>
       </h2>
+      <div className="flex justify-end mb-4">
+        <label htmlFor="sortSelect" className="mr-2">
+          Ordenar por:
+        </label>
+        <select
+          id="sortSelect"
+          onChange={handleDispatchOrder}
+          className="px-2 py-1 border border-gray-300 rounded-md"
+        >
+          <option value="">Seleccionar orden</option>
+          <option value={ASC}>A-Z</option>
+          <option value={DES}>Z-A</option>
+        </select>
+      </div>
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
