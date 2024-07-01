@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { userAdd } from '../../app/actions/users';
+import { addInstance, userAdd } from '../../app/actions/users';
 import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
@@ -20,13 +20,14 @@ const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+
+    const [cellphon, setCellphon] = useState("");
     const [type, setType] = useState('password');
     const [icon, setIcon] = useState(eyeOff);
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     const schema = Yup.object().shape({
-        phoneNumber: Yup.string().required("Tu celular es requerido").matches(phoneRegExp, 'Phone number is not valid').max(13, "Máximo 13 caracteres numéricos"),
         name: Yup.string().required("Tu nombre es requerido"),
         username: Yup.string().required("Usuario es requerido"),
         password: Yup.string().required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
@@ -59,19 +60,20 @@ const Register = () => {
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
-                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         console.log('Logging in', values);
                         const userNew = {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: values.phoneNumber(1, 3) + "9" + values.phoneNumber(3, 13), //values.phoneNumber,
+                            cellphone: cellphon, // .slice(1, 3) + "9" + cellphon.slice(3, 13),
+                            // cellphone: values.phoneNumber(1, 3) + "9" + values.phoneNumber(3, 13), //values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
                             autobots: false
                         }
-                        await dispatch(userAdd(userNew))
+                        dispatch(userAdd(userNew))
                         console.log("Usuario", localStorage.getItem("userAdded"))
                         if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
                             console.log()
@@ -85,8 +87,9 @@ const Register = () => {
                                 undelete: true,
                                 userid: localStorage.getItem("userAdded")
                             }
-                            await dispatch(configAdd(objConf))
-                            await dispatch(cateAdd(objGroup))
+                            dispatch(configAdd(objConf))
+                            dispatch(cateAdd(objGroup))
+                            dispatch(addInstance())
                             Swal.fire({
                                 title: "Genial!",
                                 text: "Usuario registrado con éxito!",
@@ -139,16 +142,14 @@ const Register = () => {
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
                                         <PhoneInput
                                             defaultCountry="AR"
-                                            id="phoneNumber"
-                                            name="phoneNumber"
-                                            type="tel"
+                                            id="cellphon"
                                             enableSearch={true}
-                                            value={values.phoneNumber}
+                                            value={cellphon}
                                             inputStyle={{
                                                 height: '19px',
                                                 width: 'inherit',
                                             }}
-                                            onChange={handleChange}
+                                            onChange={(phone) => setCellphon(phone)}
                                             onBlur={handleBlur}
                                             placeholder="Número de celular"
                                         />
@@ -212,12 +213,12 @@ const Register = () => {
                                             >
                                                 Ya tienes cuenta?
                                             </button>
-                                            <button
+{/*                                             <button  disabled={isSubmitting}
                                                 onClick={() => navigate('/login')}
                                                 className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
                                             >
-                                                Ingresa
-                                            </button>
+                                                Registro
+                                            </button> */}
                                         </div>
 
                                     </div>

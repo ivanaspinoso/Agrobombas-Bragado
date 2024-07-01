@@ -52,10 +52,10 @@ const LogIn = () => {
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "" }}
-                    onSubmit={async (values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting }) => {
                         // console.log('Logging in', localStorage.getItem("allowLogin"));
-                        await dispatch(getUser(values.username, values.password))
-                        if (localStorage.getItem("allowLogin") === 'true') {
+                        dispatch(getUser(values.username, values.password))
+                        if (localStorage.getItem("allowLogin") == "true") {
                             navigate("/")
                             console.log("ENTRO!")
                         } else {

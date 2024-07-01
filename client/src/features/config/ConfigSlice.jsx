@@ -4,8 +4,6 @@ const initialConfigs = {
   configs: [],
 };
 
-const allconfig = createAction("config/allConfig")
-
 export const configsSlice = createSlice({
   name: "config",
   initialState: initialConfigs,

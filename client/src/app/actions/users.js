@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, updUserssEndpoint, updadmUserssEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm, vinculaLogin } from "../../features/users/usersSlice";
+import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm, vinculaLogin, instanceAdd } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 import { logoutContacts } from "../../features/contacts/ContactsSlice";
@@ -35,7 +35,7 @@ export const getUser = (username, password) => async (dispatch) => {
     localStorage.setItem("userInfo", JSON.stringify(data.login));
     localStorage.setItem("allowLogin", true)
   } catch (err) {
-    localStorage.setItem("userInfo", err?.response.data.error);
+    localStorage.setItem("userInfo", err);
     localStorage.setItem("allowLogin", false)
     console.log(
       err?.response && err?.response.data.message
@@ -65,6 +65,43 @@ export const getQRUser = (username, password, userid) => async (dispatch) => {
   }
 };
 
+export const addInstance = () => async (dispatch) => {
+  try {
+    var data = {}
+    const options = {
+      method: 'POST', headers: {
+        accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81'
+      }
+    };
+
+    fetch('https://waapi.app/api/v1/instances', options)
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        data = response
+      })
+      .catch(err => console.error(err));
+    /* 
+      const headoptions = {
+        accept: 'application/json',
+        authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81'
+      }
+      // console.log(username, password)
+      const { data } = await axios.post('https://waapi.app/api/v1/instances', {
+        headers: headoptions
+      });
+     */
+    dispatch({ type: "users/instanceAdd", payload: data });
+    localStorage.setItem("userQR", JSON.stringify(data));
+  } catch (err) {
+    localStorage.setItem("userQR", err?.response?.data.error);
+    console.log(
+      err?.response && err?.response.data.message
+        ? err?.response.data.message
+        : err.message
+    );
+  }
+}
 
 
 export const getAllUsers = () => async (dispatch) => {
@@ -142,7 +179,7 @@ export const logOut = () => async (dispatch) => {
         localStorage.removeItem("brandAdded")
         localStorage.removeItem("brandUpdated") */
 
-    await dispatch({ type: "users/logoutGroups", payload: [] })
+    await dispatch({ type: "groups/logoutGroups", payload: [] })
     await dispatch({ type: "config/logoutConfig", payload: {} });
     await dispatch({ type: "users/logoutUsers", payload: [] })
     await dispatch({ type: "contacts/logoutContacts", payload: [] })

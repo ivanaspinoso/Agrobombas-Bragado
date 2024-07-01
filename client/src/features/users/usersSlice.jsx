@@ -1,13 +1,12 @@
-import { createSlice, createAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialUsers = {
   loading: 'idle',
   users: [],
   login: {},
-  qrCode: ""
+  instancewa: {},
+  qrCode: "",
 };
-
-// const loginuser = createAction("users/login")
 
 export const usersSlice = createSlice({
   name: "users",
@@ -60,7 +59,7 @@ export const usersSlice = createSlice({
         isUserExist[0].blocked = blocked;
       }
     },
-    updateUserAdm/* : */ (state, action) /* => */ {
+    updateUserAdm: (state, action) => {
       const { id, backwa, isAdmin, vinculated, qrcode } = action.payload;
       const isUserExist = state.users.filter((user) => user.id === id);
 
@@ -76,9 +75,13 @@ export const usersSlice = createSlice({
       const id = action.payload;
       state.users = state.users.filter((user) => user.id !== id);
     },
+
+    instanceAdd: (state, action) => {
+      state.instancewa = action.payload;
+    },
   },
 });
 
-export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr , logoutUsers, updateUserAdm, vinculaLogin} = usersSlice.actions;
+export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr , logoutUsers, updateUserAdm, vinculaLogin, instanceAdd} = usersSlice.actions;
 
 export default usersSlice.reducer;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { configUpdate } from "../../app/actions/configs";
-import { getQRUser, getUser, loginUpdate } from "../../app/actions/users";
+import { getQRUser, addInstance, getUser, loginUpdate } from "../../app/actions/users";
 import { QRCode } from 'react-qrcode-logo';
 
 
@@ -19,22 +19,28 @@ const EditConfig = () => {
 
   const verQR = () => {
     dispatch(getQRUser(login.username, login.password))
-    if (userqr === "")
-      console.log("QR Listo")
+    if (login.backwa === "") {
+      // dispatch(addInstance())
+      console.log("No hay instancia creada")
+    }
     else
-      console.log("QR Sin asociar")
+      console.log("instancia creada")
   }
 
   useEffect(() => {
-    verQR()
-
+  
   }, [])
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(configUpdate({ id, business, slogan }));
+    dispatch(configUpdate({ id, business, slogan }));
     navigate("/", { replace: true });
   };
+
+  verQR()
+
   return (
     <div className="container mt-5">
       <h2
@@ -85,16 +91,19 @@ const EditConfig = () => {
       </form>
       <div className="d-flex center-flex aligns-items-center justify-content-center">
         {
-          userqr && userqr.length != 0 ?
+
+
+          login.backwa && login.backwa.length != 0 ?
+
             <>
               <label>Vincule su whatsapp</label>
-              <QRCode className="form-control" value={userqr} size={325} />
+{/*               <QRCode className="form-control" value={userqr} size={325} />
               <button onClick={() => verQR()}>Refresh QR</button>
               <div>
                 Si en tu celu dice no se inicio sesión Refresca el qr <br />
                 Si inició sesión en celu, cierra sesion aqui y vuelve a entrar
               </div>
-            </>
+ */}            </>
             : "Cuenta vinculada"
         }
       </div>

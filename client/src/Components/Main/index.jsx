@@ -42,7 +42,7 @@ const Main = () => {
   }
 
   useEffect(() => {
-    if (!configs.length) fetchData();
+    if (!configs) fetchData();
     const QRobten = login.vinculated;
     setVincu(QRobten === false ? "Aun no se ha vinculado su WhatsApp" : "Su cuenta vinculada a WhatsApp");
     setIsLoading(false);
