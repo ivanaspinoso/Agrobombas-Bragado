@@ -17,6 +17,8 @@ import grupos from '../../assets/images/grupos.jpg';
 import enviados from "../../assets/images/whatsapp-enviado.webp";
 import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
+import { ImCross } from "react-icons/im";
+ 
 
 const Main = () => {
   const navigate = useNavigate();
@@ -44,7 +46,7 @@ const Main = () => {
   useEffect(() => {
     if (!configs.length) fetchData();
     const QRobten = login.vinculated;
-    setVincu(QRobten === false ? "Aun no se ha vinculado su WhatsApp" : "Su cuenta vinculada a WhatsApp");
+    setVincu(QRobten === false ? <span>Aun no se ha vinculado su WhatsApp  <ImCross className="inline-block ml-1 text-red-500 h-6 w-6" /></span> : "Su cuenta vinculada a WhatsApp");
     setIsLoading(false);
   }, []);
 
