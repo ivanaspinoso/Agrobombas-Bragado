@@ -5,6 +5,8 @@ import { messageAdd } from "../../app/actions/messages";
 import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
+import Emoji from "react-emoji-render"; // Importar Emoji desde react-emoji-render
+
 
 let data = []
 
@@ -261,29 +263,40 @@ const AddMessage = () => {
   }
 
   return (
-    <div class="container mx-auto px-4 py-5 flex flex-col flex-grow">
-      <h2 class="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
+    <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <h2 className="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
         Agregar mensaje
       </h2>
-      <form onSubmit={handleSubmit} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="textAreaExample">
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="textAreaExample">
             Message
           </label>
-          <textarea class="form-textarea mt-1 block w-full border border-gray-300 rounded" disabled id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="todos">
+          <textarea className="form-textarea mt-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
+          </div>
+          <div className="mb-4">
+  <label className="block text-gray-700 text-sm font-bold mb-2">
+    Vista previa
+  </label>
+  {textm && (
+  <div className="bg-gray-100 p-2 rounded">
+  <Emoji text={textm || 'Default Text'} />
+</div>
+)}
+</div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">
             Todos los destinatarios
           </label>
-          <input class="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
+          <input className="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
         </div>
         {!todos && (
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="seleccontact">
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="seleccontact">
               Seleccione Destinatario/s
             </label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="contacts" value={input.contacts} onChange={handleDestinChangeSelect} id="seleccontact">
+            <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="contacts" value={input.contacts} onChange={handleDestinChangeSelect} id="seleccontact">
               <option value="">Elija contacto</option>
               {destin && destin.map((elem) => (
                 <option key={elem.id} value={elem.id}>{elem.name}</option>
@@ -291,21 +304,21 @@ const AddMessage = () => {
             </select>
           </div>
         )}
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="areatempec">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="areatempec">
             Contactos Seleccionados:
           </label>
-          <textarea class="form-textarea mt-1 block w-full rounded bg-white" id="areatempec" rows="1" cols="35" disabled readonly>{data.join(", ")}</textarea>
-          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleCClick}>
+          <textarea className="form-textarea mt-1 block w-full rounded bg-white" id="areatempec" rows="1" cols="35" disabled readOnly={false}>{data.join(", ")}</textarea>
+          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleCClick}>
             Borrar contacto
           </button>
         </div>
-        <div class="mb-4">
-          <div class="flex flex-col justify-between">
-            <div class="md:w-1/2">
-              <label class="inline-flex items-center">
-                <input type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="inmediate" checked={inmediate} onChange={() => setInmediate(!inmediate)} />
-                <span class="text-gray-700">Enviar inmediato</span>
+        <div className="mb-4">
+          <div className="flex flex-col justify-between">
+            <div className="md:w-1/2">
+              <label className="inline-flex items-center">
+                <input type="checkbox" className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="inmediate" checked={inmediate} onChange={() => setInmediate(!inmediate)} />
+                <span className="text-gray-700">Enviar inmediato</span>
               </label>
             </div>
             <div>
@@ -388,17 +401,17 @@ const AddMessage = () => {
             </div>
           </div>
         </div>
-        <div class="mb-4">
-          <div class="flex flex-col md:flex-row items-center justify-between">
-            <div class="md:w-1/2">
-              <label class="inline-flex items-center">
-                <input type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="repite" checked={repite} onChange={() => setRepite(!repite)} />
-                <span class="text-gray-700">Repetir</span>
+        <div className="mb-4">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="md:w-1/2">
+              <label className="inline-flex items-center">
+                <input type="checkbox" className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mr-2" id="repite" checked={repite} onChange={() => setRepite(!repite)} />
+                <span className="text-gray-700">Repetir</span>
               </label>
               {repite && (
-                <div class="mt-2 md:mt-0 md:ml-4">
-                  <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" id="mensual" checked={mensual} onChange={() => setMensual(!mensual)} />
-                  <span class="ml-2 text-gray-700">Mensualmente</span>
+                <div className="mt-2 md:mt-0 md:ml-4">
+                  <input type="checkbox" className="form-checkbox h-5 w-5 text-indigo-600" id="mensual" checked={mensual} onChange={() => setMensual(!mensual)} />
+                  <span className="ml-2 text-gray-700">Mensualmente</span>
                   <br />
                   {!mensual ? (
                     <>
@@ -433,7 +446,7 @@ const AddMessage = () => {
           </div>
         </div>
 
-        <button class="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" type="submit">
+        <button className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" type="submit">
           Enviar Mensaje
         </button>
       </form>
