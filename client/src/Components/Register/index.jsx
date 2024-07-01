@@ -203,7 +203,7 @@ const Register = () => {
                                         {errors.repassword && touched.repassword && <p className="text-red-500 text-xs italic">{errors.repassword}</p>}
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <button type="submit" disabled={isSubmitting} className="g-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        <button type="submit" disabled={isSubmitting} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                             Registrarme
                                         </button>
                                         <div className='flex flex-row items-center justify-center'>
