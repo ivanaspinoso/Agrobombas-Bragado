@@ -5,7 +5,7 @@ import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
-import { getAllUsers, getQRUser } from '../../app/actions/users';
+import { getAllUsers, getQRUser, logOut } from '../../app/actions/users';
 import { getUserReceipts } from '../../app/actions/receipts';
 import Spinner from '../spinner';
 import contacto from '../../assets/images/contactos.jpg';
@@ -18,7 +18,6 @@ import enviados from "../../assets/images/whatsapp-enviado.webp";
 import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
 import { ImCross } from "react-icons/im";
- 
 
 const Main = () => {
   const navigate = useNavigate();
@@ -30,6 +29,7 @@ const Main = () => {
 
   async function fetchData() {
     if (login.id) {
+      console.log("Cargando datos")
       dispatch(getConfig(login.id));
       dispatch(getUserContacts(login.id));
       dispatch(getUserCategories(login.id));
@@ -44,7 +44,12 @@ const Main = () => {
   }
 
   useEffect(() => {
-    if (!configs) fetchData();
+    if (configs === null) {
+      dispatch(logOut());
+      navigate("/login");
+      return
+    }
+    if (!configs.length) fetchData();
     const QRobten = login.vinculated;
     setVincu(QRobten === false ? <span>Aun no se ha vinculado su WhatsApp  <ImCross className="inline-block ml-1 text-red-500 h-6 w-6" /></span> : "Su cuenta vinculada a WhatsApp");
     setIsLoading(false);

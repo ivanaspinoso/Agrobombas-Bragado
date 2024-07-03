@@ -7,6 +7,7 @@ export const configAdd = (configNew) => async (dispatch) => {
   // console.log("agregando", configNew);
   try {
     const { data } = await axios.post(`${addConfigsEndpoint}`, configNew);
+    console.log(data)
     dispatch({ type: "config/addConfig", payload: data });
     localStorage.setItem("configAdded", true)
   } catch (err) {

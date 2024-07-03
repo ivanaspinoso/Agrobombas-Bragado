@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { addInstance, userAdd } from '../../app/actions/users';
+import { addInstance, logOut, userAdd } from '../../app/actions/users';
 import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
@@ -62,6 +62,7 @@ const Register = () => {
                     initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         console.log('Logging in', values);
+                        dispatch(logOut)
                         const userNew = {
                             name: values.name,
                             password: values.password,
@@ -76,7 +77,7 @@ const Register = () => {
                         dispatch(userAdd(userNew))
                         console.log("Usuario", localStorage.getItem("userAdded"))
                         if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
-                            console.log()
+                            console.log("usuario creado, armando sus configuraciones")
                             const objConf = {
                                 business: values.name,
                                 userid: localStorage.getItem("userAdded")
@@ -87,9 +88,13 @@ const Register = () => {
                                 undelete: true,
                                 userid: localStorage.getItem("userAdded")
                             }
-                            dispatch(configAdd(objConf))
-                            dispatch(cateAdd(objGroup))
-                            dispatch(addInstance())
+                            // atenti a configAdd
+                            dispatch(configAdd(objConf)) // Genera bien la config del usuario, pero al cargarla en el state falla el push (ni siquiera se si es necesario cargarla en algún state
+                            // al moment del registro)
+                            dispatch(cateAdd(objGroup))  
+                            //
+                            // dispatch(addInstance()) cambiar de lugar esta instancia ya que genera costo ewn waapi
+                            //
                             Swal.fire({
                                 title: "Genial!",
                                 text: "Usuario registrado con éxito!",
