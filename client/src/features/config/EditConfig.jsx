@@ -5,33 +5,28 @@ import { configUpdate } from "../../app/actions/configs";
 import { getQRUser, addInstance, getUser, loginUpdate } from "../../app/actions/users";
 import { QRCode } from 'react-qrcode-logo';
 
-
 const EditConfig = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  // console.log(location.state);
-  const login = useSelector((state) => state.usersReducer.login)
+  const login = useSelector((state) => state.usersReducer.login);
   const [id] = useState(location.state.id);
   const [business, setBusiness] = useState(location.state.business);
   const [slogan, setSlogan] = useState(location.state.slogan);
   const navigate = useNavigate();
-  const userqr = useSelector((state) => state.usersReducer.qrCode)
+  const userqr = useSelector((state) => state.usersReducer.qrCode);
 
   const verQR = () => {
-    dispatch(getQRUser(login.username, login.password))
+    dispatch(getQRUser(login.username, login.password));
     if (login.backwa === "") {
-      // dispatch(addInstance())
-      console.log("No hay instancia creada")
+      console.log("No hay instancia creada");
+    } else {
+      console.log("Instancia creada");
     }
-    else
-      console.log("instancia creada")
-  }
+  };
 
   useEffect(() => {
-  
-  }, [])
-
-
+    verQR();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,73 +34,65 @@ const EditConfig = () => {
     navigate("/", { replace: true });
   };
 
-  verQR()
-
   return (
-    <div className="container mt-5">
-      <h2
-        className="text-center text-uppercase m-5"
-        style={{ letterSpacing: "5px", fontWeight: "ligher" }}
-      >
-        Configuracion del Sistema
-      </h2>
+    <div className="container mx-auto mt-10">
+      <h2 className="text-center text-2xl font-semibold mb-6">Configuración del Sistema</h2>
       <form
         onSubmit={handleSubmit}
-        className="border rounded p-4 "
-        style={{ maxWidth: "600px", margin: "auto" }}
+        className="bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto"
       >
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+        <div className="mb-4">
+          <label htmlFor="business" className="block text-gray-700 font-semibold mb-2">
             Business:
           </label>
           <input
             type="text"
-            className="form-control"
+            className="w-full px-3 py-2 border rounded-lg"
             id="business"
             value={business}
             onChange={(e) => setBusiness(e.target.value)}
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="author" className="form-label">
+        <div className="mb-4">
+          <label htmlFor="slogan" className="block text-gray-700 font-semibold mb-2">
             Slogan:
           </label>
           <input
             type="text"
-            className="form-control"
+            className="w-full px-3 py-2 border rounded-lg"
             id="slogan"
             value={slogan}
             onChange={(e) => setSlogan(e.target.value)}
             required
           />
         </div>
-
         <button
           type="submit"
-          className="btn "
-          style={{ background: "#006877", color: "white" }}
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           Update Config
         </button>
       </form>
-      <div className="d-flex center-flex aligns-items-center justify-content-center">
-        {
-
-
-          login.backwa && login.backwa.length != 0 ?
-
-            <>
-              <label>Vincule su whatsapp</label>
-{/*               <QRCode className="form-control" value={userqr} size={325} />
-              <button onClick={() => verQR()}>Refresh QR</button>
-              <div>
-                Si en tu celu dice no se inicio sesión Refresca el qr <br />
-                Si inició sesión en celu, cierra sesion aqui y vuelve a entrar
-              </div>
- */}            </>
-            : "Cuenta vinculada"
-        }
+      <div className="flex flex-col items-center mt-8">
+        {login.backwa && login.backwa.length !== 0 ? (
+          <>
+            <label className="block text-center text-gray-700 font-semibold mb-4">Vincule su WhatsApp</label>
+            <QRCode value={userqr} size={256} />
+            <button
+              onClick={verQR}
+              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 mb-10"
+            >
+              Refresh QR
+            </button>
+            {/* <div className="text-center text-gray-600 mt-4 mb-4">
+              Si en tu celu dice no se inició sesión, refresca el QR. <br />
+              Si inició sesión en celu, cierra sesión aquí y vuelve a entrar.
+            </div> */}
+          </>
+        ) : (
+          <p className="text-green-600 font-semibold">Cuenta vinculada</p>
+        )}
       </div>
     </div>
   );
