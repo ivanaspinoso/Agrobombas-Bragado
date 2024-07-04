@@ -15,17 +15,17 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
-    backwa: "http://localhost:10001/client-0001",
+    backwa: "",
     vinculated: false,
     autoreplys: true,
     autobots: true,
     price: 60
   },
   {
-    name: "Franco M.",
-    username: "fran",
+    name: "Ivana S",
+    username: "ivana",
     password: bcrypt.hashSync("admin", 8),
-    isAdmin: false,
+    isAdmin: true,
     cellphone: "",
     email: "",
     address: "",
@@ -35,7 +35,7 @@ const initialUsers = [
     country: "",
     active: true,
     blocked: false,
-    backwa: "http://localhost:10002/client-0002",
+    backwa: "",
     vinculated: false,
     autoreplys: false,
     autobots: false,
@@ -58,8 +58,8 @@ const initialConfigs = [
     userId: 1
   },
   {
-    business: "DFM Seguros",
-    slogan: "Servicios y Productos de Seguros",
+    business: "Ivana Frontend",
+    slogan: "Embellecemos tu proyecto",
     horario: "",
     messagewauno: "Mensaje 01",
     messagewados: "Mensaje 02",
@@ -70,9 +70,7 @@ const initialConfigs = [
     city: "Tu Ciudad",
     userId: 2
   },
-
 ];
-
 
 const initialGroups = [
   {

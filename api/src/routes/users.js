@@ -5,7 +5,7 @@ var express = require("express");
 const bcrypt = require("bcrypt");
 
 // Defino el modelo user para utilizarlo en las rutas correspondientes
-const { Users } = require("../models/index");
+const { Users, Contacts } = require("../models/index");
 
 const { generateToken, validateToken } = require("../utils/token");
 
@@ -460,5 +460,51 @@ router.post("/add", async (req, res) => {
   }
 });
 
+// Borrar usuario
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  if (!id) return res.status(400).send({ message: "Debe seleccionar usuario" });
+
+  let producSocios = await Users.findAll({
+    where: { id: id },
+    include: { model: Contacts },
+  }).then((s) => {
+    console.log("S ", s)
+     if (s[0] && s[0].user.length > 0) {
+      return s[0].user.length
+    } else return 0
+  });
+
+/*   const existCat = await Users.findOne({
+    where: {
+      id,
+    },
+  });
+
+  if (producSocios > 0) {
+    return res.status(400).json({ message: "No se puede usuario, contactos asociados" })
+  } else {
+    if (existCat) {
+      try {
+        let delContact = await Users.destroy({
+          where: {
+            id,
+          },
+        });
+        console.log(delContact);
+        return res
+          .status(200)
+          .json({ message: "Usuario eliminado correctamente" });
+      } catch (err) {
+        return res
+          .status(500)
+          .json({ message: "No se pudo eliminar el usuario" + err });
+      }
+    } else {
+      return res.status(400).json({ message: "Usuario inexistente" });
+    }
+  } */
+});
 
 module.exports = router;

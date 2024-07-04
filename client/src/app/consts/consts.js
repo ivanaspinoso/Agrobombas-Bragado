@@ -9,6 +9,7 @@ export const addUserEndpoint = REACT_APP_API + 'users/add'
 export const getQRUserEndpoint = REACT_APP_API + 'users/qrcode'
 export const updUserssEndpoint = REACT_APP_API + 'users/update/';
 export const updadmUserssEndpoint = REACT_APP_API + 'users/updateadm/';
+export const delUsersEndpoint = REACT_APP_API + 'users/delete/';
 
 
 //contacts

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, updUserssEndpoint, updadmUserssEndpoint } from "../consts/consts";
+import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, updUserssEndpoint, updadmUserssEndpoint, delUsersEndpoint } from "../consts/consts";
 import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm, vinculaLogin, instanceAdd } from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
@@ -65,6 +65,8 @@ export const getQRUser = (username, password, userid) => async (dispatch) => {
   }
 };
 
+
+// Generate instance in Waapi to connect this app with whatsapp to send and receiot messages
 export const addInstance = () => async (dispatch) => {
   try {
     var data = {}
@@ -148,6 +150,21 @@ export const userUpdateAdm = (user) => async (dispatch) => {
         ? err?.response?.data?.message
         : err?.message
     );
+  }
+};
+
+export const userDelete = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${delUsersEndpoint}${id}`)
+    dispatch({ type: "users/deleteUser", payload: id });
+    localStorage.setItem("contactDeleted", true)
+  } catch (err) {
+    localStorage.setItem("contactDeleted", err?.response?.data.message)
+    console.log(
+      err.response && err?.response?.data.message
+        ? err?.response?.data.message
+        : err.message
+    )
   }
 };
 
