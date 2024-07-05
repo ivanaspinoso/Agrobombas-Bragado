@@ -61,8 +61,8 @@ const Register = () => {
                     validationSchema={schema}
                     initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        console.log('Logging in', values);
-                        dispatch(logOut)
+                        // console.log('Logging in', values);
+                        // dispatch(logOut)
                         const userNew = {
                             name: values.name,
                             password: values.password,
