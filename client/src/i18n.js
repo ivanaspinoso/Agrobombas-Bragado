@@ -8,6 +8,13 @@ const resources = {
     translation: {
      configuration: {
       systemConfiguration: "System Configuration",
+     },
+     login:{
+      user: "User",
+      password: "Password",
+      login: "Login",
+      register: "You don't have an account?",
+      register1: "Register"
      }
     }
   },
@@ -15,7 +22,15 @@ const resources = {
     translation: {
       configuration: {
         systemConfiguration: "Configuracion del sistema"
-       }
+       },
+       login:{
+        user: "Usuario",
+        password: "Contraseña",
+        login: "Ingresar",
+        register: "No tienes cuenta? ",
+        register1: "Registrate"
+       },
+      
     }
   }
 };

@@ -11,8 +11,20 @@ import { Link } from "react-router-dom";
 import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
+import { useTranslation } from "react-i18next";
+import Spain from '../../assets/images/spain.jpg'
+import Usa from '../../assets/images/usa.jpg'
+
 
 const LogIn = () => {
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+      };
+    
+      const isActive = (lng) => i18n.language === lng;
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -43,11 +55,31 @@ const LogIn = () => {
                     <img src={logo} alt="Logo Wapp Message System" className="w-8 h-8" />
                     WApp Message System
                 </Link>
+            
             </div>
+            <div className='absolute top-4 right-4'>
+            <div className="flex space-x-4 items-center justify-end">
+          <button
+            onClick={() => changeLanguage('en')}
+            className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+          >
+            <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
+            English
+          </button>
+          <button
+            onClick={() => changeLanguage('es')}
+            className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+          >
+            <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
+            Español
+          </button>
+        </div>
+        </div>
             <div className="bg-white rounded-lg p-8 max-w-md w-full">
                 <h2 className="text-center text-2xl font-bold mb-5">
                     WappSystem
                 </h2>
+                
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "" }}
@@ -92,7 +124,7 @@ const LogIn = () => {
                         return (
                             <Form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username" >{t("login.user")}</label>
                                     <input
                                         className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="username"
@@ -106,7 +138,7 @@ const LogIn = () => {
                                     {errors.username && touched.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
                                 </div>
                                 <div className="relative">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Contraseña</label>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">{t("login.password")}</label>
                                     <input
                                         className="w-full px-3 py-2 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="password"
@@ -124,20 +156,21 @@ const LogIn = () => {
                                 </div>
                                 <div className="flex items-center justify-between row">
                                     <button type="submit" disabled={isSubmitting} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                        LogIn
+                                    {t("login.login")}
                                     </button>
                                     <div className='flex flex-row items-center justify-center'>
                                         <button
                                             onClick={() => navigate('/login')}
                                             className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
                                         >
-                                            No tienes cuenta?
-                                        </button>
+                                    {t("login.register")}
+                                    </button>
                                         <button
                                             onClick={() => navigate('/register')}
                                             className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
                                         >
-                                            Regístrate
+                                    {t("login.register1")}
+
                                         </button>
                                     </div>
                                 </div>
