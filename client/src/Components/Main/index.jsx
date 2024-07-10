@@ -68,11 +68,11 @@ const Main = () => {
   }
 
   useEffect(() => {
-/*     if (configs === null) {
+     if (configs === null) {
       dispatch(logOut());
       navigate("/login");
       return
-    } */
+    } 
     if (!configs.length) fetchData();
 
     setIsLoading(false);

@@ -96,7 +96,7 @@ const EditConfig = () => {
           </>
         ) : (
           <p className="text-green-600 font-semibold">Cuenta vinculada</p>
-        ) : "" }
+        ) : "Aun no posee nstancia para vincular su whatsapp" }
       </div>
     </div>
   );
