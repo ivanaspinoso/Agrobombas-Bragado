@@ -6,6 +6,7 @@ import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import Emoji from "react-emoji-render"; // Importar Emoji desde react-emoji-render
+import { REACT_APP_AUTHOR } from "../../app/consts/consts";
 
 
 let data = []
@@ -70,10 +71,23 @@ const AddMessage = () => {
         const messid = Number(localStorage.getItem("messAdded"))
 
         if (message.inmediate === true) {
+
+          const options = {
+            method: 'POST',
+            headers: {accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR},
+            body: {chatId: contact.cellphone, message: texttosend}
+          };
+          
+          fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+
           // console.log(contact.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: contact.cellphone, message: texttosend })
-          console.log(data)
+
+          // const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: contact.cellphone, message: texttosend })
+          // console.log(data)
           // y luego modificar mensaje con el resultado obtenido
           // await dispatch(resultMessage())
         }
@@ -127,17 +141,35 @@ const AddMessage = () => {
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
         // console.log("MENSAJE A ENVIAR", message)
 
-        await dispatch(messageAdd(message));
+        dispatch(messageAdd(message));
         const messid = Number(localStorage.getItem("messAdded"))
 
         if (message.inmediate === true) {
+          console.log(isContactSend[0].cellphone)
+          const numbertosend = isContactSend[0].cellphone + "@c.us"
+          console.log(numbertosend)
+          const params = {
+            chatId: numbertosend,
+            message: texttosend
+        }
+          const options = {
+            method: 'POST',
+            headers: {accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR},
+            body: JSON.stringify(params)
+          };
+          
+          fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+
 
           // const cell = await dispatch(getContactSend(contact))
-          console.log("a enviar", isContactSend[0].cellphone)
+          // console.log("a enviar", isContactSend[0].cellphone)
           // // console.log(cell.cellphone, login.backwa, text)
           // para luego enviar mensaje
-          const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: isContactSend[0].cellphone, message: texttosend })
-          console.log(data)
+          // const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: isContactSend[0].cellphone, message: texttosend })
+          // console.log(data)
 
           // y luego modificar mensaje con el resultado obtenido
 

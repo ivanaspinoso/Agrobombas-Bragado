@@ -140,8 +140,10 @@ export const userUpdate = (user) => async (dispatch) => {
 
 export const userUpdateAdm = (user) => async (dispatch) => {
   try {
+    console.log("modioficar useradmin")
     const { data } = await axios.put(`${updadmUserssEndpoint}`, { user });
     dispatch({ type: "users/updateUserAdm", payload: data.user });
+    console.log("dadadad",data)
     localStorage.setItem("contactUpdated", true)
   } catch (err) {
     localStorage.setItem("contactUpdated", err?.response.data.message)

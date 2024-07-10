@@ -5,7 +5,7 @@ import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
-import { getAllUsers, getQRUser, logOut } from '../../app/actions/users';
+import { getAllUsers, getQRUser, logOut, userUpdateAdm } from '../../app/actions/users';
 import { getUserReceipts } from '../../app/actions/receipts';
 import Spinner from '../spinner';
 import contacto from '../../assets/images/contactos.jpg';
@@ -19,6 +19,7 @@ import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
 import { ImCross } from "react-icons/im";
 
+
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const Main = () => {
   const login = useSelector((state) => state.usersReducer.login);
   const [vincu, setVincu] = useState("");
   const [isloading, setIsLoading] = useState(true);
+  const [txtVincu, setTxtVincu] = useState("")
 
   async function fetchData() {
     if (login.id) {
@@ -38,20 +40,41 @@ const Main = () => {
       if (login.isAdmin) {
         dispatch(getAllUsers());
       }
+      if (login.backwa) {
+        const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
+
+        fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
+          .then(response => response.json())
+          .then(response => {
+            console.log(response)
+            const status = response.me.status;
+            setVincu(status === "error" ? false : true);
+            if (status === "success" && login.vinculated === false) {
+              const objUser = {
+                id: login.id,
+                vinculated: true,
+                qr: "",
+                backwa: login.backwa
+              }
+              console.log("vincular")
+              // dispatch(userUpdateAdm(objUser))
+            } 
+          })
+          .catch(err => console.error(err));
+      }
     } else {
       navigate("/login");
     }
   }
 
   useEffect(() => {
-    if (configs === null) {
+/*     if (configs === null) {
       dispatch(logOut());
       navigate("/login");
       return
-    }
+    } */
     if (!configs.length) fetchData();
-    const QRobten = login.vinculated;
-    setVincu(QRobten === false ? <span>Aun no se ha vinculado su WhatsApp  <ImCross className="inline-block ml-1 text-red-500 h-6 w-6" /></span> : "Su cuenta vinculada a WhatsApp");
+
     setIsLoading(false);
   }, []);
 
@@ -65,10 +88,10 @@ const Main = () => {
         <h1 className="text-3xl font-bold">Control Panel de {configs.business}</h1>
         <div className="flex items-center">
           <span>{vincu}</span>
-          { vincu === true ? 
+          {vincu === true ? <><span>Su cuenta vinculada a WhatsApp</span>
           <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg> : "" }
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg></>: <span>Aun no se ha vinculado su WhatsApp  <ImCross className="inline-block ml-1 text-red-500 h-6 w-6" /></span>}
         </div>
       </header>
 

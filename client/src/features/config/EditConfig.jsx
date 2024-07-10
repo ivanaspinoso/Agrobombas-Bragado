@@ -5,6 +5,8 @@ import { configUpdate } from "../../app/actions/configs";
 import { getQRUser, addInstance, getUser, loginUpdate } from "../../app/actions/users";
 import { QRCode } from 'react-qrcode-logo';
 
+export const REACT_APP_API = process.env.REACT_APP_API
+
 const EditConfig = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ const EditConfig = () => {
   };
 
   useEffect(() => {
-    verQR();
+   // verQR();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -75,10 +77,12 @@ const EditConfig = () => {
         </button>
       </form>
       <div className="flex flex-col items-center mt-8">
-        {login.backwa && login.backwa.length !== 0 ? (
+        {login.backwa ? 
+        login.vinculated === false ? (
           <>
             <label className="block text-center text-gray-700 font-semibold mb-4">Vincule su WhatsApp</label>
-            <QRCode value={userqr} size={256} />
+            <img src={`https://backend.sib-2000.com.ar/wapp/qr/${login.backwa}`} alt="Qr image" />
+            {/*  <QRCode value={userqr} size={256} /> */}
             <button
               onClick={verQR}
               className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 mb-10"
@@ -92,7 +96,7 @@ const EditConfig = () => {
           </>
         ) : (
           <p className="text-green-600 font-semibold">Cuenta vinculada</p>
-        )}
+        ) : "" }
       </div>
     </div>
   );
