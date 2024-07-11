@@ -23,7 +23,7 @@ const EditContact = () => {
   console.log(location.state.categories);
   let data = [];
   let txtdata = [];
-  
+
   groups.map((cate) => {
     data.push(cate.id);
     txtdata.push(cate.category);

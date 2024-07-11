@@ -1,6 +1,25 @@
 import axios from "axios";
-import { getUserEndpoint, addUserEndpoint, getQRUserEndpoint, allUsersEndpoint, updUserssEndpoint, updadmUserssEndpoint, delUsersEndpoint } from "../consts/consts";
-import { addUser, loginUser, logoutUser, getQr, allUsers, logoutUsers, updateUser, updateUserAdm, vinculaLogin, instanceAdd } from "../../features/users/usersSlice";
+import {
+  getUserEndpoint,
+  addUserEndpoint,
+  getQRUserEndpoint,
+  allUsersEndpoint,
+  updUserssEndpoint,
+  updadmUserssEndpoint,
+  delUsersEndpoint,
+} from "../consts/consts";
+import {
+  addUser,
+  loginUser,
+  logoutUser,
+  getQr,
+  allUsers,
+  logoutUsers,
+  updateUser,
+  updateUserAdm,
+  vinculaLogin,
+  instanceAdd,
+} from "../../features/users/usersSlice";
 import { logoutGroups } from "../../features/groups/GroupsSlice";
 import { logoutConfig } from "../../features/config/ConfigSlice";
 import { logoutContacts } from "../../features/contacts/ContactsSlice";
@@ -12,9 +31,9 @@ export const userAdd = (userNew) => async (dispatch) => {
   try {
     const { data } = await axios.post(`${addUserEndpoint}`, userNew);
     dispatch({ type: "users/addUser", payload: data.user });
-    localStorage.setItem("userAdded", data.user.id)
+    localStorage.setItem("userAdded", data.user.id);
   } catch (err) {
-    localStorage.setItem("userAdded", err?.response.data.message)
+    localStorage.setItem("userAdded", err?.response.data.message);
     console.log(
       err?.response && err?.response.data.message
         ? err?.response.data.message
@@ -33,10 +52,10 @@ export const getUser = (username, password) => async (dispatch) => {
     });
     dispatch({ type: "users/loginUser", payload: data.login });
     localStorage.setItem("userInfo", JSON.stringify(data.login));
-    localStorage.setItem("allowLogin", true)
+    localStorage.setItem("allowLogin", true);
   } catch (err) {
     localStorage.setItem("userInfo", err);
-    localStorage.setItem("allowLogin", false)
+    localStorage.setItem("allowLogin", false);
     console.log(
       err?.response && err?.response.data.message
         ? err?.response.data.message
@@ -65,24 +84,26 @@ export const getQRUser = (username, password, userid) => async (dispatch) => {
   }
 };
 
-
 // Generate instance in Waapi to connect this app with whatsapp to send and receiot messages
 export const addInstance = () => async (dispatch) => {
   try {
-    var data = {}
+    var data = {};
     const options = {
-      method: 'POST', headers: {
-        accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81'
-      }
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        authorization:
+          "Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81",
+      },
     };
 
-    fetch('https://waapi.app/api/v1/instances', options)
-      .then(response => response.json())
-      .then(response => {
-        console.log(response)
-        data = response
+    fetch("https://waapi.app/api/v1/instances", options)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        data = response;
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
     /* 
       const headoptions = {
         accept: 'application/json',
@@ -103,8 +124,7 @@ export const addInstance = () => async (dispatch) => {
         : err.message
     );
   }
-}
-
+};
 
 export const getAllUsers = () => async (dispatch) => {
   try {
@@ -112,24 +132,24 @@ export const getAllUsers = () => async (dispatch) => {
     // console.log("ejecutando action getallusers", data)
     dispatch({ type: "users/allUsers", payload: data });
     // localStorage.setItem("appConfig", JSON.stringify(data.config));
-    localStorage.setItem("gettingUsers", true)
+    localStorage.setItem("gettingUsers", true);
   } catch (err) {
-    localStorage.setItem("gettingUsers", false)
+    localStorage.setItem("gettingUsers", false);
     console.log(
       err?.response && err?.response?.data.message
         ? err?.response?.data.message
         : err?.message
     );
   }
-}
+};
 
 export const userUpdate = (user) => async (dispatch) => {
   try {
     const { data } = await axios.put(`${updUserssEndpoint}`, { user });
     dispatch({ type: "users/updateUser", payload: data.user });
-    localStorage.setItem("contactUpdated", true)
+    localStorage.setItem("contactUpdated", true);
   } catch (err) {
-    localStorage.setItem("contactUpdated", err?.response.data.message)
+    localStorage.setItem("contactUpdated", err?.response.data.message);
     console.log(
       err?.response && err?.response?.data.message
         ? err?.response?.data?.message
@@ -140,13 +160,13 @@ export const userUpdate = (user) => async (dispatch) => {
 
 export const userUpdateAdm = (user) => async (dispatch) => {
   try {
-    console.log("modioficar useradmin")
+    console.log("modioficar useradmin");
     const { data } = await axios.put(`${updadmUserssEndpoint}`, { user });
     dispatch({ type: "users/updateUserAdm", payload: data.user });
-    console.log("dadadad",data)
-    localStorage.setItem("contactUpdated", true)
+    console.log("dadadad", data);
+    localStorage.setItem("contactUpdated", true);
   } catch (err) {
-    localStorage.setItem("contactUpdated", err?.response.data.message)
+    localStorage.setItem("contactUpdated", err?.response.data.message);
     console.log(
       err?.response && err?.response?.data?.message
         ? err?.response?.data?.message
@@ -157,25 +177,25 @@ export const userUpdateAdm = (user) => async (dispatch) => {
 
 export const userDelete = (id) => async (dispatch) => {
   try {
-    await axios.delete(`${delUsersEndpoint}${id}`)
+    await axios.delete(`${delUsersEndpoint}${id}`);
     dispatch({ type: "users/deleteUser", payload: id });
-    localStorage.setItem("contactDeleted", true)
+    localStorage.setItem("contactDeleted", true);
   } catch (err) {
-    localStorage.setItem("contactDeleted", err?.response?.data.message)
+    localStorage.setItem("contactDeleted", err?.response?.data.message);
     console.log(
       err.response && err?.response?.data.message
         ? err?.response?.data.message
         : err.message
-    )
+    );
   }
 };
 
 export const logOut = () => async (dispatch) => {
   try {
     await dispatch({ type: "users/logoutUser", payload: {} });
-    localStorage.removeItem('userInfo')
-    localStorage.removeItem("allowLogin")
-    localStorage.removeItem("userAdded")
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("allowLogin");
+    localStorage.removeItem("userAdded");
     localStorage.removeItem("userConfig");
     localStorage.removeItem("appConfig");
     /*     localStorage.removeItem("userInfo");
@@ -198,19 +218,17 @@ export const logOut = () => async (dispatch) => {
         localStorage.removeItem("brandAdded")
         localStorage.removeItem("brandUpdated") */
 
-    await dispatch({ type: "groups/logoutGroups", payload: [] })
+    await dispatch({ type: "groups/logoutGroups", payload: [] });
     await dispatch({ type: "config/logoutConfig", payload: {} });
-    await dispatch({ type: "users/logoutUsers", payload: [] })
-    await dispatch({ type: "contacts/logoutContacts", payload: [] })
-    await dispatch({ type: "messages/logoutMessages", payload: [] })
-    await dispatch({ type: "receipts/logoutReceipts", payload: [] })
-    console.log("saliendo")
+    await dispatch({ type: "users/logoutUsers", payload: [] });
+    await dispatch({ type: "contacts/logoutContacts", payload: [] });
+    await dispatch({ type: "messages/logoutMessages", payload: [] });
+    await dispatch({ type: "receipts/logoutReceipts", payload: [] });
+    console.log("saliendo");
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
-
-
 
 /* export const updateUser = (user) => async (dispatch) => {
   try {

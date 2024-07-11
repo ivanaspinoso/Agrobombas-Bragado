@@ -20,7 +20,7 @@ export const usersSlice = createSlice({
       state.login = action.payload
     },
     getQr: (state, action) => {
-      state.qrCode = action.payload 
+      state.qrCode = action.payload
     },
     logoutUser: (state, action) => {
       state.login = action.payload
@@ -32,16 +32,16 @@ export const usersSlice = createSlice({
       state.users.push(action.payload);
     },
     vinculaLogin: (state, action) => {
-      const {id} = action.payload;
+      const { id } = action.payload;
       const isLoginExist = state.login.filter((login) => login.id === id);
 
       if (isLoginExist) {
         isLoginExist[0].vinculated = true;
       }
-      
+
     },
     updateUser: (state, action) => {
-      const { id, name, email, cellphone, username, password, address, city, zip, province,  country, active, blocked} = action.payload;
+      const { id, name, email, cellphone, username, password, address, city, zip, province, country, active, blocked } = action.payload;
       const isUserExist = state.users.filter((user) => user.id === id);
 
       if (isUserExist) {
@@ -82,6 +82,6 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr , logoutUsers, updateUserAdm, vinculaLogin, instanceAdd} = usersSlice.actions;
+export const { showUsers, addUser, updateUser, deleteUser, allUsers, loginUser, logoutUser, getQr, logoutUsers, updateUserAdm, vinculaLogin, instanceAdd } = usersSlice.actions;
 
 export default usersSlice.reducer;

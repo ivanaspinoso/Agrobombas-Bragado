@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { addInstance, logOut, userAdd } from '../../app/actions/users';
+import { userAdd } from '../../app/actions/users';
 import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
@@ -13,21 +13,20 @@ import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
 import { useState } from 'react';
-import PhoneInput from "react-phone-number-input";
-import 'react-phone-number-input/style.css'
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
-    const [cellphon, setCellphon] = useState("");
     const [type, setType] = useState('password');
     const [icon, setIcon] = useState(eyeOff);
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     const schema = Yup.object().shape({
+        phoneNumber: Yup.string().required("Tu celular es requerido").matches(phoneRegExp, 'Phone number is not valid').max(13, "Máximo 13 caracteres numéricos"),
         name: Yup.string().required("Tu nombre es requerido"),
         username: Yup.string().required("Usuario es requerido"),
         password: Yup.string().required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
@@ -60,24 +59,22 @@ const Register = () => {
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
-                        // console.log('Logging in', values);
-                        // dispatch(logOut)
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                        console.log('Logging in', values);
                         const userNew = {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: cellphon, // .slice(1, 3) + "9" + cellphon.slice(3, 13),
-                            // cellphone: values.phoneNumber(1, 3) + "9" + values.phoneNumber(3, 13), //values.phoneNumber,
+                            cellphone: values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
                             autobots: false
                         }
-                        dispatch(userAdd(userNew))
+                        await dispatch(userAdd(userNew))
                         console.log("Usuario", localStorage.getItem("userAdded"))
                         if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
-                            console.log("usuario creado, armando sus configuraciones")
+                            console.log()
                             const objConf = {
                                 business: values.name,
                                 userid: localStorage.getItem("userAdded")
@@ -88,13 +85,8 @@ const Register = () => {
                                 undelete: true,
                                 userid: localStorage.getItem("userAdded")
                             }
-                            // atenti a configAdd
-                            dispatch(configAdd(objConf)) // Genera bien la config del usuario, pero al cargarla en el state falla el push (ni siquiera se si es necesario cargarla en algún state
-                            // al moment del registro)
-                            dispatch(cateAdd(objGroup))  
-                            //
-                            // dispatch(addInstance()) cambiar de lugar esta instancia ya que genera costo ewn waapi
-                            //
+                            await dispatch(configAdd(objConf))
+                            await dispatch(cateAdd(objGroup))
                             Swal.fire({
                                 title: "Genial!",
                                 text: "Usuario registrado con éxito!",
@@ -124,6 +116,7 @@ const Register = () => {
                                 isSubmitting,
                                 handleChange,
                                 handleBlur,
+                                setFieldValue,
                                 handleSubmit
                             } = props;
 
@@ -146,17 +139,18 @@ const Register = () => {
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
                                         <PhoneInput
-                                            defaultCountry="AR"
-                                            id="cellphon"
+                                            country={"ar"}
+                                            id="phoneNumber"
+                                            name="phoneNumber"
+                                            type="tel"
                                             enableSearch={true}
-                                            value={cellphon}
+                                            value={values.phoneNumber}
                                             inputStyle={{
                                                 height: '19px',
                                                 width: 'inherit',
                                             }}
-                                            onChange={(phone) => setCellphon(phone)}
+                                            onChange={(phone) => setFieldValue('phoneNumber', phone)}
                                             onBlur={handleBlur}
-                                            placeholder="Número de celular"
                                         />
                                         {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
                                     </div>
@@ -218,12 +212,12 @@ const Register = () => {
                                             >
                                                 Ya tienes cuenta?
                                             </button>
-{/*                                             <button  disabled={isSubmitting}
+                                            <button
                                                 onClick={() => navigate('/login')}
                                                 className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
                                             >
-                                                Registro
-                                            </button> */}
+                                                Ingresa
+                                            </button>
                                         </div>
 
                                     </div>
@@ -234,8 +228,6 @@ const Register = () => {
                 </Formik>
             </div>
         </div>
-
-
     )
 }
 
