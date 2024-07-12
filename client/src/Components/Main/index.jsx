@@ -27,6 +27,7 @@ const Main = () => {
   const login = useSelector((state) => state.usersReducer.login);
   const [vincu, setVincu] = useState("");
   const [isloading, setIsLoading] = useState(true);
+  const [txtVincu, setTxtVincu] = useState("")
 
   async function fetchData() {
     if (login.id) {
@@ -38,14 +39,42 @@ const Main = () => {
       if (login.isAdmin) {
         dispatch(getAllUsers());
       }
+      if (login.backwa) {
+        const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
+
+        fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
+          .then(response => response.json())
+          .then(response => {
+            console.log(response)
+            const status = response.me.status;
+            setVincu(status === "error" ? false : true);
+            if (status === "success" && login.vinculated === false) {
+              const objUser = {
+                id: login.id,
+                vinculated: true,
+                qr: "",
+                backwa: login.backwa
+              }
+              console.log("vincular")
+              // dispatch(userUpdateAdm(objUser))
+            }
+          })
+          .catch(err => console.error(err));
+      }
     } else {
       navigate("/login");
     }
   }
 
   useEffect(() => {
-    if (!configs?.length) fetchData();
+    if (configs === null) {
+      dispatch(logOut());
+      navigate("/login");
+      return
+    }
+    if (!configs.length) fetchData();
     const QRobten = login.vinculated;
+    console.log(vincu);
     setVincu(QRobten === false ? t("main.deniedVincMessage") : t("main.successVincMessage"));
     setIsLoading(false);
   }, []);
@@ -59,8 +88,10 @@ const Main = () => {
       <header className="text-center mb-8 flex justify-between items-center mx-10">
         <h1 className="text-3xl font-bold">
           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`}
-        </h1>        <div className="flex items-center">
-          <span>{vincu}</span>
+        </h1>
+
+        <div className="flex items-center">
+          <span>{!login.vinculated ? t("main.deniedVincMessage") : t("main.successVincMessage")} </span>
           {login.vinculated ? (
             <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
