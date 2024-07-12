@@ -73,11 +73,6 @@ const Main = () => {
   const isActive = (lng) => i18n.language === lng;
 
   useEffect(() => {
-    if (configs === null) {
-      dispatch(logOut());
-      navigate("/login");
-      return
-    }
     if (!configs.length) fetchData();
     const QRobten = login.vinculated;
     console.log(vincu);
