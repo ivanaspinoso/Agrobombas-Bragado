@@ -18,8 +18,6 @@ import grupos from '../../assets/images/grupos.jpg';
 import enviados from "../../assets/images/whatsapp-enviado.webp";
 import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
-import Spain from '../../assets/images/spain.jpg';
-import Usa from '../../assets/images/usa.jpg';
 import { ImCross } from "react-icons/im";
 
 const Main = () => {
@@ -28,12 +26,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const configs = useSelector((state) => state.configsReducer.configs);
   const login = useSelector((state) => state.usersReducer.login);
-  const [vincu, setVincu] = useState("");
   const [isloading, setIsLoading] = useState(true);
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
 
   async function fetchData() {
     if (login.id) {
@@ -51,9 +44,7 @@ const Main = () => {
         fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
           .then(response => response.json())
           .then(response => {
-            console.log(response)
             const status = response.me.status;
-            setVincu(status === "error" ? false : true);
             if (status === "success" && login.vinculated === false) {
               const objUser = {
                 id: login.id,
@@ -61,7 +52,6 @@ const Main = () => {
                 qr: "",
                 backwa: login.backwa
               }
-              console.log("vincular")
               // dispatch(userUpdateAdm(objUser))
             }
           })
@@ -71,8 +61,6 @@ const Main = () => {
       navigate("/login");
     }
   }
-  const isActive = (lng) => i18n.language === lng;
-
   useEffect(() => {
     if (!configs.length) fetchData();
 
@@ -102,22 +90,6 @@ const Main = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             )}
-          </div>
-          <div className="flex space-x-4 items-center justify-end">
-            <button
-              onClick={() => changeLanguage('en')}
-              className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
-            >
-              <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
-              EN
-            </button>
-            <button
-              onClick={() => changeLanguage('es')}
-              className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
-            >
-              <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
-              ES
-            </button>
           </div>
         </div>
       </header>
