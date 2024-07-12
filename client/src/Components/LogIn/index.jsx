@@ -21,9 +21,9 @@ const LogIn = () => {
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
-      };
-    
-      const isActive = (lng) => i18n.language === lng;
+    };
+
+    const isActive = (lng) => i18n.language === lng;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -55,31 +55,31 @@ const LogIn = () => {
                     <img src={logo} alt="Logo Wapp Message System" className="w-8 h-8" />
                     WApp Message System
                 </Link>
-            
+
             </div>
             <div className='absolute top-4 right-4'>
-            <div className="flex space-x-4 items-center justify-end">
-          <button
-            onClick={() => changeLanguage('en')}
-            className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
-          >
-            <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
-            English
-          </button>
-          <button
-            onClick={() => changeLanguage('es')}
-            className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
-          >
-            <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
-            Español
-          </button>
-        </div>
-        </div>
+                <div className="flex space-x-4 items-center justify-end">
+                    <button
+                        onClick={() => changeLanguage('en')}
+                        className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+                    >
+                        <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
+                        En
+                    </button>
+                    <button
+                        onClick={() => changeLanguage('es')}
+                        className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+                    >
+                        <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
+                        Es
+                    </button>
+                </div>
+            </div>
             <div className="bg-white rounded-lg p-8 max-w-md w-full">
                 <h2 className="text-center text-2xl font-bold mb-5">
                     WappSystem
                 </h2>
-                
+
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "" }}
@@ -156,20 +156,20 @@ const LogIn = () => {
                                 </div>
                                 <div className="flex items-center justify-between row">
                                     <button type="submit" disabled={isSubmitting} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    {t("login.login")}
+                                        {t("login.login")}
                                     </button>
                                     <div className='flex flex-row items-center justify-center'>
                                         <button
                                             onClick={() => navigate('/login')}
                                             className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
                                         >
-                                    {t("login.register")}
-                                    </button>
+                                            {t("login.register")}
+                                        </button>
                                         <button
                                             onClick={() => navigate('/register')}
                                             className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"
                                         >
-                                    {t("login.register1")}
+                                            {t("login.register1")}
 
                                         </button>
                                     </div>

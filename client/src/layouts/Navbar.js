@@ -13,7 +13,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-green-600 p-4 shadow-md">
-      <div className="container mx-auto flex items-center justify-between px-6">
+      <div className="container mx-auto flex items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
           <Link
             to="/"
@@ -72,7 +72,7 @@ const Navbar = () => {
                 className="text-white hover:text-gray-300 transition duration-300"
                 to="/show-contacts"
               >
-                Contactos
+                {t("navbar.contacts")}
               </Link>
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
@@ -134,68 +134,38 @@ const Navbar = () => {
         </div>
       </div>
       <div id="navbarMobileMenu" className="lg:hidden hidden">
-        <div className="px-6 pt-2 pb-4 space-y-4">
+        <div className="px-6 pt-4 pb-6 space-y-4">
           {login.id && (
             <>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/"
-              >
-                Inicio
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/show-groups"
-              >
-                Grupos
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/show-contacts"
-              >
-                Contactos
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/show-messages"
-              >
-                Mensajes
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/queue-messages"
-              >
-                Cola
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/sended-messages"
-              >
-                Enviados
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/show-receipts"
-              >
-                Recibidos
-              </Link>
-              <Link
-                className="block text-white hover:text-gray-300 transition duration-300"
-                to="/show-configs"
-              >
-                Configuración
-              </Link>
+              {[
+                { to: "/", text: t("navbar.home") },
+                { to: "/show-groups", text: t("navbar.groups") },
+                { to: "/show-contacts", text: t("navbar.contacts") },
+                { to: "/show-messages", text: t("navbar.messages") },
+                { to: "/queue-messages", text: t("navbar.stack") },
+                { to: "/sended-messages", text: t("navbar.sent") },
+                { to: "/show-receipts", text: t("navbar.received") },
+                { to: "/show-configs", text: t("navbar.settings") },
+              ].map((link) => (
+                <Link
+                  key={link.to}
+                  className="block text-white hover:text-gray-300 transition duration-300 text-lg font-semibold"
+                  to={link.to}
+                >
+                  {link.text}
+                </Link>
+              ))}
             </>
           )}
           {login.id && (
             <button
-              className="w-full text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full transition duration-300 shadow-md"
+              className="w-full text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full transition duration-300 shadow-md flex items-center justify-center"
               onClick={() => {
                 dispatch(logOut());
                 navigate("/login");
               }}
             >
-              Salir
+              {t("navbar.logout")}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

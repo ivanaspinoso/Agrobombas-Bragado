@@ -18,6 +18,8 @@ import grupos from '../../assets/images/grupos.jpg';
 import enviados from "../../assets/images/whatsapp-enviado.webp";
 import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
+import Spain from '../../assets/images/spain.jpg';
+import Usa from '../../assets/images/usa.jpg';
 
 const Main = () => {
   const { t, i18n } = useTranslation()
@@ -27,7 +29,10 @@ const Main = () => {
   const login = useSelector((state) => state.usersReducer.login);
   const [vincu, setVincu] = useState("");
   const [isloading, setIsLoading] = useState(true);
-  const [txtVincu, setTxtVincu] = useState("")
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   async function fetchData() {
     if (login.id) {
@@ -65,6 +70,7 @@ const Main = () => {
       navigate("/login");
     }
   }
+  const isActive = (lng) => i18n.language === lng;
 
   useEffect(() => {
     if (configs === null) {
@@ -85,23 +91,43 @@ const Main = () => {
 
   return (
     <div className="container mx-auto px-4 md:px-12 my-12">
-      <header className="text-center mb-8 flex justify-between items-center mx-10">
+      <header className="text-center mb-8 flex flex-col gap-2 justify-between lg:flex-row lg:gap-0">
         <h1 className="text-3xl font-bold">
           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`}
         </h1>
 
-        <div className="flex items-center">
-          <span>{!login.vinculated ? t("main.deniedVincMessage") : t("main.successVincMessage")} </span>
-          {login.vinculated ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          )}
+        <div className="flex items-center justify-center gap-10">
+          <div className="flex items-center justify-center">
+            <span>{!login.vinculated ? t("main.deniedVincMessage") : t("main.successVincMessage")} </span>
+            {login.vinculated ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+          </div>
+          <div className="flex space-x-4 items-center justify-end">
+            <button
+              onClick={() => changeLanguage('en')}
+              className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+            >
+              <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
+              En
+            </button>
+            <button
+              onClick={() => changeLanguage('es')}
+              className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
+            >
+              <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
+              Es
+            </button>
+          </div>
         </div>
+
+
       </header>
 
 
@@ -119,7 +145,7 @@ const Main = () => {
         ].map((item, index) => (
           <div
             key={index}
-            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '390px' }}
+            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200"
           >
             <img className="w-full h-48 object-cover mb-4 rounded-md" src={item.src} alt={item.title} />
             <div className="w-full px-4 text-center">

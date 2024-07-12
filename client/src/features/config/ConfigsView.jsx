@@ -31,14 +31,14 @@ const ConfigsView = () => {
             className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
           >
             <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
-            English
+            En
           </button>
           <button
             onClick={() => changeLanguage('es')}
             className={`flex items-center px-3 py-2 rounded ${isActive('es') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
           >
             <img src={Spain} alt="Español" className="w-4 h-4 mr-2" />
-            Español
+            Es
           </button>
         </div>
       </div>
