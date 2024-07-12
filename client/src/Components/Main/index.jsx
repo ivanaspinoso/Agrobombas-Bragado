@@ -6,7 +6,7 @@ import { getUserContacts } from '../../app/actions/contacts';
 import { getConfig } from '../../app/actions/configs?';
 import { getUserCategories } from '../../app/actions/categories';
 import { getUserMessages } from '../../app/actions/messages';
-import { getAllUsers, getQRUser } from '../../app/actions/users';
+import { getAllUsers, getQRUser, userUpdateAdm } from '../../app/actions/users';
 import { getUserReceipts } from '../../app/actions/receipts';
 import Spinner from '../spinner';
 import contacto from '../../assets/images/contactos.jpg';
@@ -52,7 +52,7 @@ const Main = () => {
                 qr: "",
                 backwa: login.backwa
               }
-              // dispatch(userUpdateAdm(objUser))
+              dispatch(userUpdateAdm(objUser))
             }
           })
           .catch(err => console.error(err));
