@@ -38,6 +38,28 @@ const Main = () => {
       if (login.isAdmin) {
         dispatch(getAllUsers());
       }
+      if (login.backwa) {
+        const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
+
+        fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
+          .then(response => response.json())
+          .then(response => {
+            console.log(response)
+            const status = response.me.status;
+            setVincu(status === "error" ? false : true);
+            if (status === "success" && login.vinculated === false) {
+              const objUser = {
+                id: login.id,
+                vinculated: true,
+                qr: "",
+                backwa: login.backwa
+              }
+              console.log("vincular")
+              // dispatch(userUpdateAdm(objUser))
+            }
+          })
+          .catch(err => console.error(err));
+      }
     } else {
       navigate("/login");
     }
