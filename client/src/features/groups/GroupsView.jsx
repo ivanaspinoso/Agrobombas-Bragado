@@ -4,9 +4,11 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCategory } from "../../app/actions/categories";
+import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
 
 const GroupsView = () => {
+  const { t } = useTranslation();
   const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,19 +33,19 @@ const GroupsView = () => {
     <div className="flex flex-col flex-grow">
       <div className="container mx-auto px-4">
         <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-10">
-          Listado de Grupos
+          {t('groupView.listGroup')}
           <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-group")}>
             <FcAddRow className="mr-2 h-5 w-5" />
-            Agregar grupo
+            {t('groupView.addGroup')}
           </button>
         </h2>
         <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
-              <th className="px-4 py-2 text-left">Grupo</th>
-              <th className="px-4 py-2 text-left">Descripción</th>
-              <th className="px-4 py-2 text-left">Acciones</th>
+              <th className="px-4 py-2 text-left">{t('groupView.group')} </th>
+              <th className="px-4 py-2 text-left">{t('groupView.description')}</th>
+              <th className="px-4 py-2 text-left">{t('groupView.actions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">

@@ -46,9 +46,9 @@ const ConfigsView = () => {
         <thead className="bg-green-500 text-white">
           <tr>
             <th className="px-4 py-2 text-left">ID</th>
-            <th className="px-4 py-2 text-left">Business</th>
-            <th className="px-4 py-2 text-left">Slogan</th>
-            <th className="px-4 py-2 text-left">Acción</th>
+            <th className="px-4 py-2 text-left">{t('config.bussiness')}</th>
+            <th className="px-4 py-2 text-left">{t('config.slogan')}</th>
+            <th className="px-4 py-2 text-left">{t('config.action')}</th>
           </tr>
         </thead>
         <tbody>

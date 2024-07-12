@@ -5,11 +5,13 @@ import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { contactDelete, contactsSort } from "../../app/actions/contacts";
 import { ASC, DES } from "../../app/consts/consts";
+import { useTranslation } from "react-i18next";
 import { Tooltip } from 'react-tooltip';
 import Swal from "sweetalert2";
 
 const ContactsView = () => {
-  const contacts = useSelector((state) => state.contactsReducer.contacts);
+  const { t } = useTranslation();
+  const contacts = useSelector((state) => state?.contactsReducer?.contacts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,22 +45,22 @@ const ContactsView = () => {
   return (
     <div className="container mx-auto px-4 py-6 flex flex-col flex-grow ">
       <h2 className="text-center flex flex-row justify-between text-2xl font-semibold mb-10">
-        Listado de contactos
+        {t('contactsView.contactList')}
         <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/add-contact") }}>
           <FcAddRow className="mr-2 h-5 w-5" />
-          Agregar Contacto
+          {t('contactsView.addContact')}
         </button>
       </h2>
       <div className="flex justify-end mb-4">
         <label htmlFor="sortSelect" className="mr-2">
-          Ordenar por:
+          {t('contactsView.order')}:
         </label>
         <select
           id="sortSelect"
           onChange={handleDispatchOrder}
           className="px-2 py-1 border border-gray-300 rounded-md"
         >
-          <option value="">Seleccionar orden</option>
+          <option value="">{t('contactsView.selectOrder')}</option>
           <option value={ASC}>A-Z</option>
           <option value={DES}>Z-A</option>
         </select>
@@ -68,9 +70,9 @@ const ContactsView = () => {
           <thead className="bg-green-500 text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
-              <th className="px-4 py-2 text-left">Nombre</th>
-              <th className="px-4 py-2 text-left">Número WA</th>
-              <th className="px-4 py-2 text-left">Acción</th>
+              <th className="px-4 py-2 text-left">{t('contactsView.name')}</th>
+              <th className="px-4 py-2 text-left">{t('contactsView.wanumber')}</th>
+              <th className="px-4 py-2 text-left">{t('contactsView.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -82,7 +84,7 @@ const ContactsView = () => {
                   <td className="border px-4 py-2">{name}</td>
                   <td className="border px-4 py-2">{cellphone}</td>
                   <td className="border px-4 py-2 flex space-x-2">
-                    <Link to={`/edit-contact`} className="text-blue-500 hover:text-blue-700" state={{id, name, cellphone, categories}}>
+                    <Link to={`/edit-contact`} className="text-blue-500 hover:text-blue-700" state={{ id, name, cellphone, categories }}>
                       <FaEdit />
                     </Link>
                     <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(id, name)}>
@@ -97,9 +99,9 @@ const ContactsView = () => {
       </div>
       <nav className="mt-6 flex justify-end">
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(1)}>⬅</button>
-        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts > 1? setPagContacts(pagContacts - 1) : setPagContacts(1); }}>👈</button>
+        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts > 1 ? setPagContacts(pagContacts - 1) : setPagContacts(1); }}>👈</button>
         <span className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">página {pagContacts} de {Math.round(cantPages)}</span>
-        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts < cantPages? setPagContacts(pagContacts + 1) : setPagContacts(cantPages); }}>👉</button>
+        <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts < cantPages ? setPagContacts(pagContacts + 1) : setPagContacts(cantPages); }}>👉</button>
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(cantPages)}>➡</button>
       </nav>
     </div>

@@ -5,9 +5,11 @@ import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCategory } from "../../app/actions/categories";
 import { Tooltip } from 'react-tooltip';
+import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
 
 const SendedView = () => {
+  const { t } = useTranslation();
   const messages = useSelector((state) => state.messagesReducer.messages);
   const sendedMessages = messages.filter((message) => message.sended === true);
   const dispatch = useDispatch();
@@ -36,21 +38,21 @@ const SendedView = () => {
   return (
     <div className="container mx-auto px-4 flex flex-col flex-grow">
       <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-5">
-        Listado de mensajes enviados
+        {t('send.sentList')}
         <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
           <FcAddRow className="mr-2 h-5 w-5" />
-          Agregar mensaje
+          {t('send.addMessage')}
         </button>
       </h2>
       <table className="w-full table-auto border-collapse">
         <thead className="bg-green-500 text-white">
           <tr>
             <th className="px-4 py-2 text-left">#</th>
-            <th className="px-4 py-2 text-left">Texto</th>
-            <th className="px-4 py-2 text-left">Para</th>
-            <th className="px-4 py-2 text-left">Enviado</th>
-            <th className="px-4 py-2 text-left">Resultado</th>
-            <th className="px-4 py-2 text-left">Acciones</th>
+            <th className="px-4 py-2 text-left">{t('send.text')}</th>
+            <th className="px-4 py-2 text-left">{t('send.to')}</th>
+            <th className="px-4 py-2 text-left">{t('send.send')}</th>
+            <th className="px-4 py-2 text-left">{t('send.result')}</th>
+            <th className="px-4 py-2 text-left">{t('send.action')}</th>
           </tr>
         </thead>
         <tbody>
@@ -83,27 +85,27 @@ const SendedView = () => {
         <button
           onClick={() => setCurrentPage(1)}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400">
-          Primera página
+          {t('send.firstPage')}
         </button>
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400"
           disabled={currentPage === 1}>
-          Anterior
+          {t('send.before')}
         </button>
         <span className="flex items-center">
-          Página {currentPage} de {Math.ceil(sendedMessages.length / itemsPerPage)}
+          {t('send.page')} {currentPage} de {Math.ceil(sendedMessages.length / itemsPerPage)}
         </span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400"
           disabled={currentPage === Math.ceil(sendedMessages.length / itemsPerPage)}>
-          Siguiente
+          {t('send.after')}
         </button>
         <button
           onClick={() => setCurrentPage(Math.ceil(sendedMessages.length / itemsPerPage))}
           className="px-2 py-1 text-gray-700 bg-gray-300 rounded hover:bg-gray-400">
-          Última página
+          {t('send.lastPage')}
         </button>
       </div>
       <Tooltip id="my-tooltip" />

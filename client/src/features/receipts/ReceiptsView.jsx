@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { receiptDelete } from "../../app/actions/receipts";
 import { Tooltip } from 'react-tooltip';
 import swal from 'sweetalert2'
+import { useTranslation } from "react-i18next";
 import { getUserReceipts } from "../../app/actions/receipts";
 
 const ReceiptsView = () => {
-
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -59,20 +60,20 @@ const ReceiptsView = () => {
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center flex flex-row justify-between text-2xl font-semibold mb-10">
-        Listado de mensajes recibidos
+        {t('received.receivedList')}
         <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
           <FcAddRow className="mr-2 h-5 w-5" />
-          Agregar mensaje
+          {t('received.addMessage')}
         </button>
       </h2>
       <table className="w-full whitespace-nowrap">
         <thead className="bg-green-500 text-white">
           <tr>
-            <th className="px-4 py-2 text-left">N</th>
-            <th className="px-4 py-2 text-left">Texto</th>
-            <th className="px-4 py-2 text-left">De</th>
-            <th className="px-4 py-2 text-left">Dia</th>
-            <th className="px-4 py-2 text-left">Acción</th>
+            <th className="px-4 py-2 text-left"> {t('received.n')}</th>
+            <th className="px-4 py-2 text-left"> {t('received.text')}</th>
+            <th className="px-4 py-2 text-left"> {t('received.from')}</th>
+            <th className="px-4 py-2 text-left">{t('received.day')}</th>
+            <th className="px-4 py-2 text-left">{t('received.action')}</th>
           </tr>
         </thead>
         <tbody>
