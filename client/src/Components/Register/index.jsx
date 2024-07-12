@@ -13,8 +13,10 @@ import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
 import { useState } from 'react';
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/bootstrap.css";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+/* import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css"; */
 
 const Register = () => {
     const dispatch = useDispatch();
@@ -22,11 +24,12 @@ const Register = () => {
 
     const [type, setType] = useState('password');
     const [icon, setIcon] = useState(eyeOff);
+    const [cellphon, setCellphon] = useState("");
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     const schema = Yup.object().shape({
-        phoneNumber: Yup.string().required("Tu celular es requerido").matches(phoneRegExp, 'Phone number is not valid').max(13, "Máximo 13 caracteres numéricos"),
+        // phoneNumber: Yup.string().required("Tu celular es requerido").matches(phoneRegExp, 'Phone number is not valid').max(13, "Máximo 13 caracteres numéricos"),
         name: Yup.string().required("Tu nombre es requerido"),
         username: Yup.string().required("Usuario es requerido"),
         password: Yup.string().required("Contraseña es requerida").min(4, "Password must be at least 4 characters"),
@@ -65,7 +68,7 @@ const Register = () => {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: values.phoneNumber,
+                            cellphone: cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13), // values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
