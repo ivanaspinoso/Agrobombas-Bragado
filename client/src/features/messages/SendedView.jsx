@@ -57,13 +57,13 @@ const SendedView = () => {
         </thead>
         <tbody>
           {currentMessages.map((message, index) => {
-            const { id, text, contact, sendedDate, sendedTime, result } = message;
+            const { id, text, contact, sendeddate, sendedtime, result } = message;
             return (
               <tr key={id} className="border-b">
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{text}</td>
                 <td className="px-4 py-2">{contact.name}</td>
-                <td className="px-4 py-2">{sendedDate} - {sendedTime}</td>
+                <td className="px-4 py-2">{sendeddate} - {sendedtime}</td>
                 <td className="px-4 py-2">{result}</td>
                 <td className="px-4 py-2 flex space-x-2">
                   <Link to={`/edit-group`} state={{ id, text }}>

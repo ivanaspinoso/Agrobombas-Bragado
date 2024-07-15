@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { messageAdd } from "../../app/actions/messages";
+import { messageAdd, resultMessage } from "../../app/actions/messages";
 import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import Emoji from "react-emoji-render"; // Importar Emoji desde react-emoji-render
-import { REACT_APP_AUTHOR } from "../../app/consts/consts";
+import { REACT_APP_AUTHOR, REACT_APP_API } from "../../app/consts/consts";
 
 
 let data = []
@@ -67,20 +67,45 @@ const AddMessage = () => {
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
         // console.log("MENSAJE A ENVIAR", message)
 
-        await dispatch(messageAdd(message));
-        const messid = Number(localStorage.getItem("messAdded"))
-
+        /*         dispatch(messageAdd(message));
+                const messid = Number(localStorage.getItem("messAdded"))
+         */
         if (message.inmediate === true) {
-
+          const numbertosend = contact.cellphone + "@c.us"
+          const params = {
+            chatId: numbertosend,
+            message: texttosend
+          }
           const options = {
             method: 'POST',
-            headers: {accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR},
-            body: {chatId: contact.cellphone, message: texttosend}
+            headers: { accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR },
+            body: JSON.stringify(params)
           };
-          
+
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(async response => {
+              // const messid = Number(localStorage.getItem("messAdded"))
+              // console.log(messid)
+              console.log(response)
+              // aqui escribir resultado de envio de mensaje
+              var datetime = new Date();
+              var fecha = datetime.getFullYear() + "-" + (datetime.getMonth() + 1).toString().padStart(2, '0') + "-" + datetime.getDate().toString().padStart(2, "0")
+              var hora = datetime.getHours().toString().padStart(2, "0") + ":" + datetime.getMinutes().toString().padStart(2, "0")
+              var objMess = {
+                ...message,
+                sendeddate: fecha,
+                sendedtime: hora,
+                sended: response.data.status === "success" ? true : false,
+                result: response.data.status // "Mensaje enviado con éxito"
+              }
+              // console.log(objMess)
+              // console.log("ID ", response.data.data.id)
+              dispatch(messageAdd(objMess));
+              // dispatch(resultMessage(objMess))
+              // await axios.put(`${REACT_APP_API}/messages/sended`, objMess)
+              // fin guardar resultado de envio
+            })
             .catch(err => console.error(err));
 
           // console.log(contact.cellphone, login.backwa, text)
@@ -90,6 +115,8 @@ const AddMessage = () => {
           // console.log(data)
           // y luego modificar mensaje con el resultado obtenido
           // await dispatch(resultMessage())
+        } else {
+          dispatch(messageAdd(message));
         }
 
         if (repite) {
@@ -141,8 +168,7 @@ const AddMessage = () => {
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
         // console.log("MENSAJE A ENVIAR", message)
 
-        dispatch(messageAdd(message));
-        const messid = Number(localStorage.getItem("messAdded"))
+        // dispatch(messageAdd(message));
 
         if (message.inmediate === true) {
           console.log(isContactSend[0].cellphone)
@@ -151,16 +177,37 @@ const AddMessage = () => {
           const params = {
             chatId: numbertosend,
             message: texttosend
-        }
+          }
           const options = {
             method: 'POST',
-            headers: {accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR},
+            headers: { accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR },
             body: JSON.stringify(params)
           };
-          
+
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(async response => {
+              // const messid = Number(localStorage.getItem("messAdded"))
+              // console.log(messid)
+              console.log(response)
+              // aqui escribir resultado de envio de mensaje
+              var datetime = new Date();
+              var fecha = datetime.getFullYear() + "-" + (datetime.getMonth() + 1).toString().padStart(2, '0') + "-" + datetime.getDate().toString().padStart(2, "0")
+              var hora = datetime.getHours().toString().padStart(2, "0") + ":" + datetime.getMinutes().toString().padStart(2, "0")
+              var objMess = {
+                ...message,
+                sendeddate: fecha,
+                sendedtime: hora,
+                sended: response.data.status === "success" ? true : false,
+                result: response.data.status // "Mensaje enviado con éxito"
+              }
+              // console.log(objMess)
+              // console.log("ID ", response.data.data.id)
+              dispatch(messageAdd(objMess));
+              // dispatch(resultMessage(objMess))
+              // await axios.put(`${REACT_APP_API}/messages/sended`, objMess)
+              // fin guardar resultado de envio
+            })
             .catch(err => console.error(err));
 
 
@@ -172,6 +219,9 @@ const AddMessage = () => {
           // console.log(data)
 
           // y luego modificar mensaje con el resultado obtenido
+
+        } else {
+          dispatch(messageAdd(message));
 
         }
 
@@ -305,17 +355,17 @@ const AddMessage = () => {
             Message
           </label>
           <textarea className="form-textarea mt-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
-          </div>
-          <div className="mb-4">
-  <label className="block text-gray-700 text-sm font-bold mb-2">
-    Vista previa
-  </label>
-  {textm && (
-  <div className="bg-gray-100 p-2 rounded">
-  <Emoji text={textm || 'Default Text'} />
-</div>
-)}
-</div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Vista previa
+          </label>
+          {textm && (
+            <div className="bg-gray-100 p-2 rounded">
+              <Emoji text={textm || 'Default Text'} />
+            </div>
+          )}
+        </div>
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">

@@ -163,7 +163,10 @@ router.post("/add", async (req, res) => {
     sendtimes,
     sended,
     backwa,
-    contactid
+    contactid,
+    sendeddate,
+    sendedtime,
+    result
   } = req.body;
 
 
@@ -172,12 +175,15 @@ router.post("/add", async (req, res) => {
     inmediate,
     senddate: senddates,
     sendtime: sendtimes,
-    contactId: contactid
+    contactId: contactid,
+    sendeddate,
+    sendedtime,
+    result
   };
   if (inmediate) {
     objMessage = {
       ...objMessage,
-      sended: true,
+      sended: sended,
     }
   } else {
     objMessage = {
@@ -215,31 +221,37 @@ router.post("/add", async (req, res) => {
 })
 
 router.put("/result", async (req, res) => {
-  const { id, result } = req.body;
+  const { messid, result, sended, sendeddate, sendedtime, text, senddate, sendtime } = req.body;
   console.log(req.body);
   if (!result || result === "") {
     return res
       .status(400)
       .json({ error: "Falta ingresar resultado correspondiente" });
-  } else if (!id || id <= 0) {
+  } else if (!messid || messid <= 0) {
     return res
       .status(400)
       .json({ error: "Ingresar id de mensaje" });
   }
   const objMessUpd = {
-    id,
+    id: messid,
     result,
+    sendeddate,
+    sendedtime,
+    sended,
+    text,
+    senddate,
+    sendtime,
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
     let updMess = await Messages.update(objMessUpd, {
       where: {
-        id,
+        id: messid,
       },
     });
     // si todo sale bien devuelvo el objeto agregado
     console.log("Mensaje modificado");
-    res.send(updMess);
+    res.send(objMessUpd);
   } catch (err) {
     // en caso de error lo devuelvo al frontend
     console.log(err);
