@@ -149,9 +149,9 @@ router.post("/qrcode", async (req, res) => {
 
 // vincular usuario con WA
 router.put("/vinculate", async (req, res) => {
-  const { id, vinculated, qrcode } = req.body
+  const { backwa, vinculated, qrcode } = req.body
   const objUser = {
-    id,
+    backwa,
     vinculated,
     qrcode
   }
@@ -159,11 +159,10 @@ router.put("/vinculate", async (req, res) => {
     // envio los datos al modelo sequelize para que los guarde en la database
     let newUser = await Users.update(objUser, {
       where: {
-        id,
+        backwa,
       },
     });
     res.status(200).send("Usuario vinculated")
-
   } catch (error) {
     res.status(400).json({ message: "No se pudo actualizar usuario" + error });
   }
