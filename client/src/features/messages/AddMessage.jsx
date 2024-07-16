@@ -354,7 +354,7 @@ const AddMessage = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="textAreaExample">
             Message
           </label>
-          <textarea className="form-textarea mt-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
+          <textarea className="form-textarea mt-1 px-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
