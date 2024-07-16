@@ -83,15 +83,13 @@ const QueuedView = () => {
           })}
         </tbody>
       </table>
-      {cantPages > 1 && (
-        <nav aria-label="Pagination" className="flex items-center justify-center mt-4">
-          <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(1)}>&laquo;</button>
-          <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(Math.max(pagBreeds - 1, 1))}>Prev</button>
-          <span className="mx-2 text-sm font-medium text-gray-500">Page {pagBreeds} of {Math.round(cantPages)}</span>
-          <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(Math.min(pagBreeds + 1, cantPages))}>Next</button>
-          <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(cantPages)}>&raquo;</button>
-        </nav>
-      )}
+      <nav aria-label="Pagination" className="mt-6 flex justify-end">
+        <button className="px-4 py-2 mr-2 bg-white border border-gray-300 rounded-md text-gray-500 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(1)}>⬅</button>
+        <button className="px-4 py-2 mr-2 bg-white border border-gray-300 rounded-md text-gray-500 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds - 1)}>👈</button>
+        <span className="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-500">{pagBreeds} de {Math.round(cantPages)}</span>
+        <button className="px-4 py-2 ml-2 bg-white border border-gray-300 rounded-md text-gray-500 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(pagBreeds + 1)}>👉</button>
+        <button className="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-500 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagBreeds(cantPages)}>➡</button>
+      </nav>
       <Tooltip id="my-tooltip" />
     </div>
   );

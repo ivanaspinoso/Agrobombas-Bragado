@@ -100,7 +100,7 @@ const ContactsView = () => {
       <nav className="mt-6 flex justify-end">
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(1)}>⬅</button>
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts > 1 ? setPagContacts(pagContacts - 1) : setPagContacts(1); }}>👈</button>
-        <span className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">página {pagContacts} de {Math.round(cantPages)}</span>
+        <span className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">{pagContacts} de {Math.round(cantPages)}</span>
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts < cantPages ? setPagContacts(pagContacts + 1) : setPagContacts(cantPages); }}>👉</button>
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(cantPages)}>➡</button>
       </nav>

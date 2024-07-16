@@ -1,8 +1,8 @@
-const axios = require("axios")
+const axios = require("axios");
 
 var express = require("express");
 
-const { Messages, Contacts, Users } = require("../models/index");
+const { Messages, Contacts } = require("../models/index");
 const Op = require("sequelize");
 
 var router = express.Router();
@@ -13,18 +13,17 @@ router.get("/", async (req, res) => {
     let getAllMessages = await Messages.findAll({
       order: [["senddate", "ASC"]],
     });
-/*       let usernames = []
+    /*       let usernames = []
       getAllUserNames.map((user) => {
         usernames.push(user.username)
       })
- */      return res.send(getAllMessages);
+ */ return res.send(getAllMessages);
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener mensajes \n " + err,
     });
   }
 });
-
 
 //Obtener todos las mensajes de un usuario
 router.get("/byuser/:id", async (req, res) => {
@@ -34,10 +33,10 @@ router.get("/byuser/:id", async (req, res) => {
       order: [["id", "DESC"]],
       include: {
         model: Contacts,
-        where: { userId: id }
+        where: { userId: id },
       },
     });
-    console.log(getUserMessages)
+    console.log(getUserMessages);
     return res.send(getUserMessages);
   } catch (err) {
     return res.send({
@@ -56,11 +55,11 @@ router.get("/queued", async (req, res) => {
         model: Contacts,
         where: {
           userId: id,
-          sended: false
-        }
+          sended: false,
+        },
       },
     });
-    console.log(getUserMessages)
+    console.log(getUserMessages);
     return res.send(getUserMessages);
   } catch (err) {
     return res.send({
@@ -71,13 +70,13 @@ router.get("/queued", async (req, res) => {
 
 //Obtener todos los mensajes a enviar
 router.post("/tosend", async (req, res) => {
-  const { userid, datesend, timesend } = req.body
+  const { userid, datesend, timesend } = req.body;
   // console.log(req.body, "r1 " + new Date().toISOString(), "r2" + new Date(new Date() - 24 * 60 * 60 * 1000))
   try {
     let getAllMessages = await Messages.findAll({
       include: {
         model: Contacts,
-        where: { userId: userid }
+        where: { userId: userid },
       },
       where: {
         senddate: datesend,
@@ -86,52 +85,15 @@ router.post("/tosend", async (req, res) => {
         // [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
         // },
         sendtime: timesend,
-        sended: false
+        sended: false,
       },
       order: [["senddate", "ASC"]],
-
     });
-/*       let usernames = []
+    /*       let usernames = []
       getAllUserNames.map((user) => {
         usernames.push(user.username)
       })
- */      return res.send(getAllMessages);
-  } catch (err) {
-    return res.send({
-      message: "No se pudieron obtener mensajes \n " + err,
-    });
-  }
-});
-
-//Obtener todos los mensajes a enviar
-router.post("/tosendall", async (req, res) => {
-  const { userid, datesend, timesend } = req.body
-  // console.log(req.body, "r1 " + new Date().toISOString(), "r2" + new Date(new Date() - 24 * 60 * 60 * 1000))
-  try {
-    let getAllMessages = await Messages.findAll({
-      include: {
-        model: Contacts,
-        include: {
-          model: Users
-        }
-      },
-      where: {
-        senddate: datesend,
-        // {
-        // [Op.lte]: datesend + ' 23:59:59.999999',                             // <= 6
-        // [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
-        // },
-        sendtime: timesend,
-        sended: false
-      },
-      order: [["senddate", "ASC"]],
-
-    });
-/*       let usernames = []
-      getAllUserNames.map((user) => {
-        usernames.push(user.username)
-      })
- */      return res.send(getAllMessages);
+ */ return res.send(getAllMessages);
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener mensajes \n " + err,
@@ -141,7 +103,7 @@ router.post("/tosendall", async (req, res) => {
 
 //Guardar resultado de envio de mensaje
 router.put("/sended", async (req, res) => {
-  const { messid, result, datesended, timesended, sended } = req.body
+  const { messid, result, datesended, timesended, sended } = req.body;
   const objMessUpd = {
     id: messid,
     result,
@@ -183,11 +145,8 @@ router.put("/sended", async (req, res) => {
       console.log(error);
       res.status(400).json({ error: error });
     }
-
   }
-
 });
-
 
 router.post("/add", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
@@ -200,11 +159,7 @@ router.post("/add", async (req, res) => {
     sended,
     backwa,
     contactid,
-    sendeddate,
-    sendedtime,
-    result
   } = req.body;
-
 
   let objMessage = {
     text,
@@ -212,24 +167,21 @@ router.post("/add", async (req, res) => {
     senddate: senddates,
     sendtime: sendtimes,
     contactId: contactid,
-    sendeddate,
-    sendedtime,
-    result
   };
   if (inmediate) {
     objMessage = {
       ...objMessage,
-      sended: sended,
-    }
+      sended: true,
+    };
   } else {
     objMessage = {
       ...objMessage,
       sended: false,
-    }
+    };
   }
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
-    const newMessage = await Messages.create(objMessage)
+    const newMessage = await Messages.create(objMessage);
     // console.log(newMessage)
     // console.log(contacts)
     // await newMessage.setContacts(contacts);
@@ -239,8 +191,8 @@ router.post("/add", async (req, res) => {
       where: { id: newMessage.id },
       include: {
         model: Contacts,
-      }
-    })
+      },
+    });
 
     res
       .status(200)
@@ -254,40 +206,32 @@ router.post("/add", async (req, res) => {
     });
     // en caso de error lo devuelvo al frontend
   }
-})
+});
 
 router.put("/result", async (req, res) => {
-  const { messid, result, sended, sendeddate, sendedtime, text, senddate, sendtime } = req.body;
+  const { id, result } = req.body;
   console.log(req.body);
   if (!result || result === "") {
     return res
       .status(400)
       .json({ error: "Falta ingresar resultado correspondiente" });
-  } else if (!messid || messid <= 0) {
-    return res
-      .status(400)
-      .json({ error: "Ingresar id de mensaje" });
+  } else if (!id || id <= 0) {
+    return res.status(400).json({ error: "Ingresar id de mensaje" });
   }
   const objMessUpd = {
-    id: messid,
+    id,
     result,
-    sendeddate,
-    sendedtime,
-    sended,
-    text,
-    senddate,
-    sendtime,
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
     let updMess = await Messages.update(objMessUpd, {
       where: {
-        id: messid,
+        id,
       },
     });
     // si todo sale bien devuelvo el objeto agregado
     console.log("Mensaje modificado");
-    res.send(objMessUpd);
+    res.send(updMess);
   } catch (err) {
     // en caso de error lo devuelvo al frontend
     console.log(err);
@@ -325,6 +269,5 @@ router.delete("/delete/:id", async (req, res) => {
     }
   }
 });
-
 
 module.exports = router;

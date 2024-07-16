@@ -229,11 +229,12 @@ const resources = {
         addMessage: "Agregar Mensaje",
         queueList: "Lista de Mensajes en espera",
       },
-      queue: {
+      send: {
         text: "Texto",
         to: "Para",
         send: "Enviar",
         result: "Resultado",
+        time: "Hora",
         action: "Acción",
         addMessage: "Agregar Mensaje",
         sentList: "Listado de mensajes enviados",
@@ -266,8 +267,8 @@ i18n
   .use(initReactI18next) // Inicializa i18next con react-i18next
   .init({
     resources, // Recursos de traducción
-    lng: "en", // Idioma inicial
-    fallbackLng: "en", // Idioma por defecto si no se encuentra la traducción
+    lng: "es", // Idioma inicial
+    fallbackLng: "es", // Idioma por defecto si no se encuentra la traducción
     debug: true, // Activa mensajes de depuración en consola
     interpolation: {
       escapeValue: false, // React ya maneja la protección contra XSS
