@@ -5,6 +5,7 @@ const routes = require("./src/routes/index");
 const { PORT, FORZAR } = require("./src/utils/config/index.js");
 const errorHandler = require("./src/utils/middlewares/errorHandler.js");
 const setHeaders = require("./src/utils/middlewares/setHeaders.js");
+const { programador_tareas } = require('./src/scheduler.js');
 
 const app = express();
 // app.use(cors()); // uso de cors definido anteriormente
@@ -48,6 +49,8 @@ conn
     app.listen(PORT, () => {
       console.log(`Listen on port ${PORT}, forzar es: ${fuerce}`);
     });
+    //init scheduler
+    programador_tareas();
   })
   .then(async () => {
     if (fuerce === true) await Users.bulkCreate(initialUsers);

@@ -2,7 +2,7 @@ const axios = require("axios")
 
 var express = require("express");
 
-const { Messages, Contacts } = require("../models/index");
+const { Messages, Contacts, Users } = require("../models/index");
 const Op = require("sequelize");
 
 var router = express.Router();
@@ -78,6 +78,42 @@ router.post("/tosend", async (req, res) => {
       include: {
         model: Contacts,
         where: { userId: userid }
+      },
+      where: {
+        senddate: datesend,
+        // {
+        // [Op.lte]: datesend + ' 23:59:59.999999',                             // <= 6
+        // [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+        // },
+        sendtime: timesend,
+        sended: false
+      },
+      order: [["senddate", "ASC"]],
+
+    });
+/*       let usernames = []
+      getAllUserNames.map((user) => {
+        usernames.push(user.username)
+      })
+ */      return res.send(getAllMessages);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener mensajes \n " + err,
+    });
+  }
+});
+
+//Obtener todos los mensajes a enviar
+router.post("/tosendall", async (req, res) => {
+  const { userid, datesend, timesend } = req.body
+  // console.log(req.body, "r1 " + new Date().toISOString(), "r2" + new Date(new Date() - 24 * 60 * 60 * 1000))
+  try {
+    let getAllMessages = await Messages.findAll({
+      include: {
+        model: Contacts,
+        include: {
+          model: Users
+        }
       },
       where: {
         senddate: datesend,
