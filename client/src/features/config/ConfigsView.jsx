@@ -53,10 +53,10 @@ const ConfigsView = () => {
         </thead>
         <tbody>
           <tr key={configs.id} className="border-b">
-            <td className="border px-4 py-2">{1}</td>
-            <td className="border px-4 py-2">{configs.business}</td>
-            <td className="border px-4 py-2">{configs.slogan}</td>
-            <td className="border px-4 py-2 flex gap-2">
+            <td className="px-4 py-2">{1}</td>
+            <td className="px-4 py-2">{configs.business}</td>
+            <td className="px-4 py-2">{configs.slogan}</td>
+            <td className="px-4 py-2 flex gap-2">
               <Link to="/edit-config" state={objConfig}>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
                   <FaEdit />

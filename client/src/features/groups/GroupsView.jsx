@@ -54,10 +54,10 @@ const GroupsView = () => {
                 const { id, category, description, undelete } = group;
                 return (
                   <tr key={id}>
-                    <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2">{category}</td>
-                    <td className="border px-4 py-2">{description}</td>
-                    <td className="border px-4 py-2 flex gap-2">
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">{category}</td>
+                    <td className="px-4 py-2">{description}</td>
+                    <td className="px-4 py-2 flex gap-2">
                       <Link to={`/edit-group`} state={{ id, category, description }}>
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                           <FaEdit />

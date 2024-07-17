@@ -82,11 +82,11 @@ const ReceiptsView = () => {
             let num = numwa.replaceAll("@c.us", "")
             return (
               <tr key={id} className="hover:bg-gray-100">
-                <td className="border px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
-                <td className="border px-4 py-2">{text.substr(0, 50)} {text.length > 50 ? "..." : ""}</td>
-                <td className="border px-4 py-2">{num}</td>
-                <td className="border px-4 py-2">{new Date(createdAt).toLocaleDateString()}</td>
-                <td className="border px-4 py-2 flex gap-2">
+                <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
+                <td className="px-4 py-2">{text.substr(0, 50)} {text.length > 50 ? "..." : ""}</td>
+                <td className="px-4 py-2">{num}</td>
+                <td className="px-4 py-2">{new Date(createdAt).toLocaleDateString()}</td>
+                <td className="px-4 py-2 flex gap-2">
                   <button className="text-green-500 hover:text-green-700" onClick={() => handleView(id, text)}>
                     <FaEye />
                   </button>

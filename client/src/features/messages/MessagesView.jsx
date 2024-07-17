@@ -63,12 +63,12 @@ const MessagesView = () => {
               const { id, text, sended, contact, senddate, sendtime } = message;
               return (
                 <tr key={id}>
-                  <td className="border px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
-                  <td className="border px-4 py-2">{text}</td>
-                  <td className="border px-4 py-2">{contact.name}</td>
-                  <td className="border px-4 py-2">{senddate}</td>
-                  <td className="border px-4 py-2">{sendtime}</td>
-                  <td className="border px-4 py-2 flex gap-2">
+                  <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
+                  <td className="px-4 py-2">{text}</td>
+                  <td className="px-4 py-2">{contact.name}</td>
+                  <td className="px-4 py-2">{senddate}</td>
+                  <td className="px-4 py-2">{sendtime}</td>
+                  <td className="px-4 py-2 flex gap-2">
                     {/* <Link to="/edit-message" state={{ id, text, sended }}>
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><FaEdit /></button>
                     </Link> */}
