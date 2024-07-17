@@ -39,43 +39,43 @@ const GroupsView = () => {
             {t('groupView.addGroup')}
           </button>
         </h2>
-        <table className="w-full table-auto">
-          <thead className="bg-green-500 text-white">
-            <tr>
-              <th className="px-4 py-2 text-left">#</th>
-              <th className="px-4 py-2 text-left">{t('groupView.group')} </th>
-              <th className="px-4 py-2 text-left">{t('groupView.description')}</th>
-              <th className="px-4 py-2 text-left">{t('groupView.actions')}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {groups?.map((group, index) => {
-              const { id, category, description, undelete } = group;
-              return (
-                <tr key={id}>
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td className="px-4 py-2">{category}</td>
-                  <td className="px-4 py-2">{description}</td>
-                  <td className="px-4 py-2 flex gap-2">
-                    <Link to={`/edit-group`} state={{ id, category, description }}>
-                      <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                    {!undelete ? (
+        <div className="overflow-x-scroll">
+          <table className="w-full table-auto">
+            <thead className="bg-green-500 text-white">
+              <tr>
+                <th className="px-4 py-2 text-left">#</th>
+                <th className="px-4 py-2 text-left">{t('groupView.group')} </th>
+                <th className="px-4 py-2 text-left">{t('groupView.description')}</th>
+                <th className="px-4 py-2 text-left">{t('groupView.actions')}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {groups?.map((group, index) => {
+                const { id, category, description, undelete } = group;
+                return (
+                  <tr key={id}>
+                    <td className="border px-4 py-2">{index + 1}</td>
+                    <td className="border px-4 py-2">{category}</td>
+                    <td className="border px-4 py-2">{description}</td>
+                    <td className="border px-4 py-2 flex gap-2">
+                      <Link to={`/edit-group`} state={{ id, category, description }}>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                          <FaEdit />
+                        </button>
+                      </Link>
                       <button
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => handleDelete(id, category)}
                       >
                         <FaTrashAlt />
                       </button>
-                    ) : null}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

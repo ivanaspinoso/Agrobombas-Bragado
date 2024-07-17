@@ -25,7 +25,6 @@ const MessagesView = () => {
     swal
       .fire({
         title: "Desea eliminar el mensaje?",
-        html: text,
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: `Sí`,
@@ -47,8 +46,8 @@ const MessagesView = () => {
           {t('messagesView.addMessage')}
         </button>
       </h2>
-      <div className="overflow-x-auto">
-        <table className="w-full whitespace-nowrap">
+      <div className="overflow-x-scroll">
+        <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
@@ -64,16 +63,16 @@ const MessagesView = () => {
               const { id, text, sended, contact, senddate, sendtime } = message;
               return (
                 <tr key={id}>
-                  <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
-                  <td className="px-4 py-2">{text}</td>
-                  <td className="px-4 py-2">{contact.name}</td>
-                  <td className="px-4 py-2">{senddate}</td>
-                  <td className="px-4 py-2">{sendtime}</td>
-                  <td className="px-4 py-2 flex gap-2">
-                    <Link to="/edit-group" state={{ id, text, sended }}>
-                      <button className="disabled:opacity-50" disabled={sended}><FaEdit /></button>
-                    </Link>
-                    <button className="disabled:opacity-50" disabled={sended} onClick={() => handleDelete(id, text)}><FaTrashAlt /></button>
+                  <td className="border px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
+                  <td className="border px-4 py-2">{text}</td>
+                  <td className="border px-4 py-2">{contact.name}</td>
+                  <td className="border px-4 py-2">{senddate}</td>
+                  <td className="border px-4 py-2">{sendtime}</td>
+                  <td className="border px-4 py-2 flex gap-2">
+                    {/* <Link to="/edit-message" state={{ id, text, sended }}>
+                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><FaEdit /></button>
+                    </Link> */}
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(id, text)}><FaTrashAlt /></button>
                   </td>
                 </tr>
               );

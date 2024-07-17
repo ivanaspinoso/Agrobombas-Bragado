@@ -78,14 +78,14 @@ const EditContact = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
         Editar Contacto
       </h2>
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        style={{ maxWidth: "600px", margin: "auto" }}
+
       >
         <div className="mb-3">
           <label
@@ -131,11 +131,11 @@ const EditContact = () => {
             {txtdata.join(", ")}
           </textarea>
           <div
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            className="inline-flex items-center px-2 py-2 mt-3 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             onClick={handleClick}
           >
             {" "}
-            -{" "}
+            Borrar{" "}
           </div>
         </div>
 
@@ -182,7 +182,7 @@ const EditContact = () => {
 
         <button
           type="submit"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           style={{ background: "#006877", color: "white" }}
         >
           Update Contact

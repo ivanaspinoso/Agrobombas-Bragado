@@ -75,7 +75,7 @@ const ContactsView = () => {
               <th className="px-4 py-2 text-left">{t('contactsView.actions')}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-white divide-y divide-gray-200">
             {view && view.map((contact, index) => {
               const { id, name, cellphone, categories } = contact;
               return (
@@ -84,10 +84,10 @@ const ContactsView = () => {
                   <td className="border px-4 py-2">{name}</td>
                   <td className="border px-4 py-2">{cellphone}</td>
                   <td className="border px-4 py-2 flex space-x-2">
-                    <Link to={`/edit-contact`} className="text-blue-500 hover:text-blue-700" state={{ id, name, cellphone, categories }}>
+                    <Link to={`/edit-contact`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" state={{ id, name, cellphone, categories }}>
                       <FaEdit />
                     </Link>
-                    <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(id, name)}>
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(id, name)}>
                       <FaTrashAlt />
                     </button>
                   </td>
