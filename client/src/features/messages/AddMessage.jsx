@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import Emoji from "react-emoji-render"; // Importar Emoji desde react-emoji-render
 import { REACT_APP_AUTHOR, REACT_APP_API } from "../../app/consts/consts";
+import EmojiPicker from 'emoji-picker-react';
 
 
 let data = []
@@ -36,7 +37,7 @@ const AddMessage = () => {
   const [veces, setVeces] = useState(1)
   const [mensual, setMensual] = useState(false)
   const [xmonths, setXMonths] = useState(1)
-
+  const [openIconModal, setOpenIconModal] = useState(false)
   const allContacts = useSelector((state) => state.contactsReducer.contacts)
 
   const [input, setInput] = useState({
@@ -357,6 +358,15 @@ const AddMessage = () => {
     });
   }
 
+  const onEmojiClick = (emojiData, event) => {
+    // Asegúrate de que emojiData y emojiData.emoji están definidos
+    if (emojiData && emojiData.emoji) {
+      setTextM(prevText => prevText + emojiData.emoji);
+    } else {
+      console.error('Emoji data is undefined or missing the emoji property');
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
@@ -369,13 +379,27 @@ const AddMessage = () => {
           </label>
           <textarea className="form-textarea mt-1 px-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
         </div>
+
+        {openIconModal ? (
+          <div onClick={() => { setOpenIconModal(false) }} className="flex flex-row gap-2 mb-4">
+            <img src="/close.png" width={25} />
+            <label> {t('addMessage.closeIcon')} </label>
+          </div>
+        ) : <div onClick={() => { setOpenIconModal(true) }} className="flex flex-row gap-2 mb-4">
+          <img src="/plus.png" width={25} />
+          <label>{t('addMessage.addIcon')}</label>
+        </div>}
+
+
+        <EmojiPicker onEmojiClick={onEmojiClick} open={openIconModal} />
+
         <div>
           <p> {t('addMessage.title')} </p>
           <label>{t('addMessage.nb')}</label><br />
           <label>{t('addMessage.em')}</label><br />
           <label>{t('addMessage.ems')}</label><br />
         </div>
-        <div className="my-4">
+        {/* <div className="my-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Vista previa
           </label>
@@ -384,9 +408,9 @@ const AddMessage = () => {
               <Emoji text={textm || 'Default Text'} />
             </div>
           )}
-        </div>
+        </div> */}
 
-        <div className="mb-4">
+        <div className="my-5">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">
             Todos los destinatarios
           </label>
