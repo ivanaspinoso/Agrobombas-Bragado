@@ -63,11 +63,12 @@ const AddMessage = () => {
         alldestins.push(contact.id)
         // console.log("la arme?", senddates, sendtimes)
         console.log(contact.id)
-        let texttosend = textm.replaceAll("-NB-", contact.name)
+/*         let texttosend = textm.replaceAll("-NB-", contact.name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
-        console.log("Nuevo texto: " + texttosend)
-        const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
+ */        replaceVariables(textm, contact.name)
+        console.log("Nuevo texto: " + textm)
+        const message = { text: textm, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
         // console.log("MENSAJE A ENVIAR", message)
 
         /*         dispatch(messageAdd(message));
@@ -77,7 +78,7 @@ const AddMessage = () => {
           const numbertosend = contact.cellphone + "@c.us"
           const params = {
             chatId: numbertosend,
-            message: texttosend
+            message: textm
           }
           const options = {
             method: 'POST',
@@ -148,7 +149,7 @@ const AddMessage = () => {
             console.log(senddates)
             console.log("El mes " + elmes)
             // senddates.setDate(senddates.getDate() + days);
-            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
+            const messrepite = { text: textm, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
             dispatch(messageAdd(messrepite));
             //            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
             //            dispatch(messageAdd(messrepite));
@@ -164,11 +165,13 @@ const AddMessage = () => {
         var sendtimes = sendtime
 
         const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
-        let texttosend = textm.replaceAll("-NB-", isContactSend[0].name)
-        texttosend = texttosend.replaceAll("-EM-", configs.business)
-        texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
-        console.log("Nuevo texto: " + texttosend)
-        const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+        /*         let texttosend = textm.replaceAll("-NB-", isContactSend[0].name)
+                texttosend = texttosend.replaceAll("-EM-", configs.business)
+                texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
+         */
+        replaceVariables(textm, isContactSend[0].name)
+        console.log("Nuevo texto: " + textm)
+        const message = { text: textm, inmediate, senddates, sendtimes, contactid: contact };
         // console.log("MENSAJE A ENVIAR", message)
 
         // dispatch(messageAdd(message));
@@ -179,7 +182,7 @@ const AddMessage = () => {
           console.log(numbertosend)
           const params = {
             chatId: numbertosend,
-            message: texttosend
+            message: textm // texttosend
           }
           const options = {
             method: 'POST',
@@ -254,7 +257,7 @@ const AddMessage = () => {
             console.log(senddates)
             console.log("El mes " + elmes)
             // senddates.setDate(senddates.getDate() + days);
-            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+            const messrepite = { text: textm, inmediate, senddates, sendtimes, contactid: contact };
             dispatch(messageAdd(messrepite));
 
           }
@@ -268,15 +271,16 @@ const AddMessage = () => {
     navigate("/show-messages", { replace: true });
   };
 
-  const replaceVariables = (text) => {
+  const replaceVariables = (text, contactname) => {
+    console.log(text,contactname)
     let newText = text;
     // Reemplaza "-NB-" con el nombre del contacto
-    newText = newText.replace(/-NB-/g, contact.name); // Asegúrate de tener acceso al nombre del contacto aquí
+    newText = newText.replaceAll("-NB-", contactname); // Asegúrate de tener acceso al nombre del contacto aquí
     // Reemplaza "-EM-" con el negocio
-    newText = newText.replace(/-EM-/g, configs.business);
+    newText = newText.replaceAll("-EM-", configs.business);
     // Reemplaza "-EMS-" con el eslogan
-    newText = newText.replace(/-EMS-/g, configs.slogan);
-
+    newText = newText.replaceAll("-EMS-", configs.slogan);
+    console.log(newText)
     // Actualiza el estado con el nuevo texto
     setTextM(newText);
   };
