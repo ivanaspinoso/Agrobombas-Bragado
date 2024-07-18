@@ -74,7 +74,7 @@ const Main = () => {
   return (
     <div className="container mx-auto px-4 md:px-12 my-12">
       <header className="text-center mb-8 flex flex-col gap-2 justify-between lg:flex-row lg:gap-0">
-        <h1 className="text-3xl font-bold">
+        <h1 className="hidden md:flex text-3xl font-bold">
           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`}
         </h1>
 

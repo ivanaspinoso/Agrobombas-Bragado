@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { messageAdd, resultMessage } from "../../app/actions/messages";
 import axios from 'axios'
+import { useTranslation } from "react-i18next";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import Emoji from "react-emoji-render"; // Importar Emoji desde react-emoji-render
@@ -12,6 +13,7 @@ import { REACT_APP_AUTHOR, REACT_APP_API } from "../../app/consts/consts";
 let data = []
 
 const AddMessage = () => {
+  const { t } = useTranslation();
   const login = useSelector((state) => state.usersReducer.login)
   const groups = useSelector((state) => state.groupsReducer.groups);
   const destin = useSelector((state) => state.contactsReducer.contacts);
@@ -356,7 +358,13 @@ const AddMessage = () => {
           </label>
           <textarea className="form-textarea mt-1 px-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
         </div>
-        <div className="mb-4">
+        <div>
+          <p> {t('addMessage.title')} </p>
+          <label>{t('addMessage.nb')}</label><br />
+          <label>{t('addMessage.em')}</label><br />
+          <label>{t('addMessage.ems')}</label><br />
+        </div>
+        <div className="my-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Vista previa
           </label>

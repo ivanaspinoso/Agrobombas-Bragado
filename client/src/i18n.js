@@ -130,6 +130,12 @@ const resources = {
         slogan: "Slogan",
         action: "Action",
       },
+      addMessage: {
+        title: "Use these variables in the message",
+        nb: "-NB- : Name of the contact",
+        em: "-EM- : Name of the business",
+        ems: "-EMS- : Slogan of the business"
+      },
     },
   },
   es: {
@@ -258,6 +264,12 @@ const resources = {
         bussiness: "Negocio",
         slogan: "Eslogan",
         action: "Acción",
+      },
+      addMessage: {
+        title: "Usa las siguiente variables en el mensaje",
+        nb: "-NB- : Nombre del contacto",
+        em: "-EM- : Nombre del negocio",
+        ems: "-EMS- : Eslogan del negocio"
       },
     },
   },
