@@ -267,7 +267,18 @@ const AddMessage = () => {
     navigate("/show-messages", { replace: true });
   };
 
+  const replaceVariables = (text) => {
+    let newText = text;
+    // Reemplaza "-NB-" con el nombre del contacto
+    newText = newText.replace(/-NB-/g, contact.name); // Asegúrate de tener acceso al nombre del contacto aquí
+    // Reemplaza "-EM-" con el negocio
+    newText = newText.replace(/-EM-/g, configs.business);
+    // Reemplaza "-EMS-" con el eslogan
+    newText = newText.replace(/-EMS-/g, configs.slogan);
 
+    // Actualiza el estado con el nuevo texto
+    setTextM(newText);
+  };
 
   function handleDestinChangeSelect(e) {
     var temperac = input.contacts.find((temp) => temp === e.target.value);

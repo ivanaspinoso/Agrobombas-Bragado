@@ -109,7 +109,7 @@ const Main = () => {
         ].map((item, index) => (
           <div
             key={index}
-            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200"
+            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}
           >
             <img className="w-full h-48 object-cover mb-4 rounded-md" src={item.src} alt={item.title} />
             <div className="w-full px-4 text-center">
@@ -136,7 +136,7 @@ const Main = () => {
         ))}
         {login.isAdmin && (
           <>
-            <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '390px' }}>
+            <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}>
               <img className="w-full h-48 object-cover mb-4 rounded-md" src={contacto} alt="Usuarios" />
               <div className="w-full px-4 text-center">
                 <h5 className="font-bold text-lg mb-1 text-green-600">{t("main.users")}</h5>
@@ -159,7 +159,7 @@ const Main = () => {
                 </button>
               </div>
             </div>
-            <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '390px' }}>
+            <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}>
               <img className="w-full h-48 object-cover mb-4 rounded-md" src={contacto} alt="Contactos" />
               <div className="w-full px-4 text-center">
                 <h5 className="font-bold text-lg mb-1 text-green-600">{t("main.userContacts")}</h5>
@@ -182,7 +182,7 @@ const Main = () => {
                 </button>
               </div>
             </div>
-            <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '390px' }}>
+            <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}>
               <img className="w-full h-48 object-cover mb-4 rounded-md" src={contacto} alt="Grupos" />
               <div className="w-full px-4 text-center">
                 <h5 className="font-bold text-lg mb-1 text-green-600">{t("main.userGroups")}</h5>
