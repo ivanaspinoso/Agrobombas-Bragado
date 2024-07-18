@@ -22,6 +22,7 @@ import EditUser from "../features/users/EditUser";
 import QueuedView from "../features/messages/QueueView";
 import SendedView from "../features/messages/SendedView";
 import ReceiptsView from "../features/receipts/ReceiptsView";
+import EditMessage from "../features/messages/EditMessage";
 
 const Layout = ({ children }) => {
   return (
@@ -47,6 +48,7 @@ const Index = () => {
           <Route path="/add-message" element={<AddMessage />} />
           <Route path="/queue-messages" element={<QueuedView />} />
           <Route path="/sended-messages" element={<SendedView />} />
+          <Route path="/edit-message" element={<EditMessage />} />
 
           <Route path="/show-groups" element={<GroupsView />} />
           <Route path="/add-group" element={<AddGroup />} />
