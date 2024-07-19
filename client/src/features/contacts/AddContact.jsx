@@ -26,7 +26,7 @@ const AddContact = () => {
     if (groups.length <= 0) {
       alert("Por favor asigne uno o mas grupos al contacto");
     } else {
-      const cellphone = cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13);
+      const cellphone = cellphon.substring(0,2) === "+54" ? cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13) : cellphon.replace("+","")
       const userid = login.id;
       const contact = { name, cellphone, country, groups, userid };
       dispatch(contactAdd(contact));

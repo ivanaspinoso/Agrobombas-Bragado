@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 import { REACT_APP_AUTHOR, REACT_APP_API } from "../../app/consts/consts";
 import EmojiPicker from 'emoji-picker-react';
 
-
 let data = []
 let dataGroup = [];
 
@@ -46,12 +45,13 @@ const AddMessage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const groups = input.categories
+    const groups = input.groups // input.categories
     const destins = input.contacts
     let alldestins = []
     var senddates = senddate
     var sendtimes = sendtime
 
+    // si marco la casilla para todos los destinatarios entrará aquí
     if (todos) {
       allContacts && allContacts.map(async (contact) => {
         var senddates = senddate
@@ -124,7 +124,9 @@ const AddMessage = () => {
         }
 
       })
-    } else {
+    }  // si desmarco la opcion de todos los destinatarios
+    else {
+      // primero vamos a iterar con los contactos seleccionados
       destins && destins.map(async (contact) => {
         var senddates = senddate
         var sendtimes = sendtime
@@ -205,8 +207,18 @@ const AddMessage = () => {
 
           }
         }
-
       })
+
+      // iterar grupo x grupo, si se han elegido y sus contactos
+      console.log(groups)
+      groups && groups.map((grupo) => {
+        console.log(allContacts)
+        console.log(grupo)
+        // y tratar de seleccionar los contactos que estén dentro del grupo
+        const contactsgroup = allContacts.filter(contact => contact.categories.id === grupo) // este no anda, no genera array de contactos del grupo
+        console.log(contactsgroup)
+      })
+
     }
 
     navigate("/show-messages", { replace: true });
@@ -226,9 +238,6 @@ const AddMessage = () => {
       artempesc.value += artempesc?.value?.length > 0 ? ", " + strtempec : strtempec;
     } else alert("El grupo ya fue agregado");
   }
-
-
-
 
   function handleDestinChangeSelect(e) {
     console.log(input.contacts)
@@ -293,9 +302,9 @@ const AddMessage = () => {
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="my-5">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">
+            <input className="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
             Todos los destinatarios
           </label>
-          <input className="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
         </div>
         {!todos && (
           <div className="mb-4 flex flex-row gap-20">
