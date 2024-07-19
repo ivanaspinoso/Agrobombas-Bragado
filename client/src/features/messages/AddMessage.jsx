@@ -2,31 +2,29 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { messageAdd, resultMessage } from "../../app/actions/messages";
-import axios from 'axios'
 import { useTranslation } from "react-i18next";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
-import Emoji from "react-emoji-render"; // Importar Emoji desde react-emoji-render
 import { REACT_APP_AUTHOR, REACT_APP_API } from "../../app/consts/consts";
 import EmojiPicker from 'emoji-picker-react';
 
 
 let data = []
+let dataGroup = [];
 
 const AddMessage = () => {
   const { t } = useTranslation();
   const login = useSelector((state) => state.usersReducer.login)
-  const groups = useSelector((state) => state.groupsReducer.groups);
   const destin = useSelector((state) => state.contactsReducer.contacts);
   const configs = useSelector((state) => state.configsReducer.configs);
+  const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
+  console.log(groups)
   // senddate, sendtime, sended, sendedate, sendedtime
 
   const hoy = new Date()/* .toLocaleDateString();  */
-  const ahora = new Date().toLocaleTimeString();
   const [textm, setTextM] = useState("");
   const [inmediate, setInmediate] = useState(true);
   const [repite, setRepite] = useState(false);
@@ -42,12 +40,12 @@ const AddMessage = () => {
 
   const [input, setInput] = useState({
     categories: [],
-    contacts: []
+    contacts: [],
+    groups: []
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(data)
     const groups = input.categories
     const destins = input.contacts
     let alldestins = []
@@ -55,24 +53,16 @@ const AddMessage = () => {
     var sendtimes = sendtime
 
     if (todos) {
-      // console.log("usuarios", allContacts)
       allContacts && allContacts.map(async (contact) => {
-        // console.log("dia: " + senddate)
         var senddates = senddate
         var sendtimes = sendtime
         alldestins.push(contact.id)
-        // console.log("la arme?", senddates, sendtimes)
         console.log(contact.id)
         let texttosend = textm.replaceAll("-NB-", contact.name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
         console.log("Nuevo texto: " + texttosend)
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
-        // console.log("MENSAJE A ENVIAR", message)
-
-        /*         dispatch(messageAdd(message));
-                const messid = Number(localStorage.getItem("messAdded"))
-         */
         if (message.inmediate === true) {
           const numbertosend = contact.cellphone + "@c.us"
           const params = {
@@ -88,10 +78,8 @@ const AddMessage = () => {
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
             .then(response => response.json())
             .then(async response => {
-              // const messid = Number(localStorage.getItem("messAdded"))
-              // console.log(messid)
+
               console.log(response)
-              // aqui escribir resultado de envio de mensaje
               var datetime = new Date();
               var fecha = datetime.getFullYear() + "-" + (datetime.getMonth() + 1).toString().padStart(2, '0') + "-" + datetime.getDate().toString().padStart(2, "0")
               var hora = datetime.getHours().toString().padStart(2, "0") + ":" + datetime.getMinutes().toString().padStart(2, "0")
@@ -102,22 +90,9 @@ const AddMessage = () => {
                 sended: response.data.status === "success" ? true : false,
                 result: response.data.status // "Mensaje enviado con éxito"
               }
-              // console.log(objMess)
-              // console.log("ID ", response.data.data.id)
               dispatch(messageAdd(objMess));
-              // dispatch(resultMessage(objMess))
-              // await axios.put(`${REACT_APP_API}/messages/sended`, objMess)
-              // fin guardar resultado de envio
             })
             .catch(err => console.error(err));
-
-          // console.log(contact.cellphone, login.backwa, text)
-          // para luego enviar mensaje
-
-          // const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: contact.cellphone, message: texttosend })
-          // console.log(data)
-          // y luego modificar mensaje con el resultado obtenido
-          // await dispatch(resultMessage())
         } else {
           dispatch(messageAdd(message));
         }
@@ -128,9 +103,7 @@ const AddMessage = () => {
           let sumdays = new Date(senddates)
 
           let mesobten = parseInt(sumdays.getMonth())
-          console.log("Primer mes" + mesobten)
           let elmes = parseInt(mesobten) + parseInt(xmonths)
-          console.log("Primer somatorial, elmes", elmes)
 
           for (let i = 0; i < veces; i++) {
             if (mensual) {
@@ -142,24 +115,16 @@ const AddMessage = () => {
               console.log("dias", days)
             }
             senddates = sumdays.toISOString().split('T')[0];
-            // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
-            // console.log("Fecha sumada la "+ (i + 2) +" vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
-            // console.log()
-            console.log(senddates)
-            console.log("El mes " + elmes)
-            // senddates.setDate(senddates.getDate() + days);
+
             const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
             dispatch(messageAdd(messrepite));
-            //            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
-            //            dispatch(messageAdd(messrepite));
+
           }
         }
 
       })
     } else {
-      // console.log("destinatario", destins)
       destins && destins.map(async (contact) => {
-        // console.log("dia: " + senddate)
         var senddates = senddate
         var sendtimes = sendtime
 
@@ -169,9 +134,7 @@ const AddMessage = () => {
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
         console.log("Nuevo texto: " + texttosend)
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
-        // console.log("MENSAJE A ENVIAR", message)
 
-        // dispatch(messageAdd(message));
 
         if (message.inmediate === true) {
           console.log(isContactSend[0].cellphone)
@@ -190,10 +153,8 @@ const AddMessage = () => {
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
             .then(response => response.json())
             .then(async response => {
-              // const messid = Number(localStorage.getItem("messAdded"))
-              // console.log(messid)
+
               console.log(response)
-              // aqui escribir resultado de envio de mensaje
               var datetime = new Date();
               var fecha = datetime.getFullYear() + "-" + (datetime.getMonth() + 1).toString().padStart(2, '0') + "-" + datetime.getDate().toString().padStart(2, "0")
               var hora = datetime.getHours().toString().padStart(2, "0") + ":" + datetime.getMinutes().toString().padStart(2, "0")
@@ -204,25 +165,11 @@ const AddMessage = () => {
                 sended: response.data.status === "success" ? true : false,
                 result: response.data.status // "Mensaje enviado con éxito"
               }
-              // console.log(objMess)
-              // console.log("ID ", response.data.data.id)
+
               dispatch(messageAdd(objMess));
-              // dispatch(resultMessage(objMess))
-              // await axios.put(`${REACT_APP_API}/messages/sended`, objMess)
-              // fin guardar resultado de envio
+
             })
             .catch(err => console.error(err));
-
-
-          // const cell = await dispatch(getContactSend(contact))
-          // console.log("a enviar", isContactSend[0].cellphone)
-          // // console.log(cell.cellphone, login.backwa, text)
-          // para luego enviar mensaje
-          // const { data } = await axios.post(`${login.backwa}/send/`, { idmess: messid, contacto: isContactSend[0].cellphone, message: texttosend })
-          // console.log(data)
-
-          // y luego modificar mensaje con el resultado obtenido
-
         } else {
           dispatch(messageAdd(message));
 
@@ -248,12 +195,8 @@ const AddMessage = () => {
               console.log("dias", days)
             }
             senddates = sumdays.toISOString().split('T')[0];
-            // console.log("meses",xmonths,"fecha sumada la "+ (i + 2) +" vez",sumdays)
-            // console.log("Fecha sumada la "+ (i + 2) +" vez",sumdays, "\n sumado ", xmonths, " meses", "\n mes obtenido", sumdays.getMonth())
-            // console.log()
             console.log(senddates)
             console.log("El mes " + elmes)
-            // senddates.setDate(senddates.getDate() + days);
             const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
             dispatch(messageAdd(messrepite));
 
@@ -262,84 +205,57 @@ const AddMessage = () => {
 
       })
     }
-    //    const message = { text, inmediate, senddates, sendtimes, /* contactid: contact.id */ alldestins, backwa: login.bacwa };
-    //    await dispatch(messageAdd(message));
 
     navigate("/show-messages", { replace: true });
   };
 
-  const replaceVariables = (text) => {
-    let newText = text;
-    // Reemplaza "-NB-" con el nombre del contacto
-    newText = newText.replace(/-NB-/g, contact.name); // Asegúrate de tener acceso al nombre del contacto aquí
-    // Reemplaza "-EM-" con el negocio
-    newText = newText.replace(/-EM-/g, configs.business);
-    // Reemplaza "-EMS-" con el eslogan
-    newText = newText.replace(/-EMS-/g, configs.slogan);
+  function handleGroupChangeSelect(e) {
+    console.log(input.groups)
+    var temperac = input.groups.find((temp) => temp === e?.target?.value);
+    console.log(temperac)
+    if (!temperac && e?.target?.value !== "0") {
+      data = [...input.groups];
+      data.push(e?.target?.value);
+      setInput({ ...input, groups: data });
+      var seltempec = document.getElementById("selecgroup");
+      var strtempec = seltempec.options[seltempec.selectedIndex].text;
+      var artempesc = document.getElementById("areagruposeleccionados");
+      artempesc.value += artempesc?.value?.length > 0 ? ", " + strtempec : strtempec;
+    } else alert("El grupo ya fue agregado");
+  }
 
-    // Actualiza el estado con el nuevo texto
-    setTextM(newText);
-  };
+
+
 
   function handleDestinChangeSelect(e) {
-    var temperac = input.contacts.find((temp) => temp === e.target.value);
-    // console.log(temperac);
-    if (!temperac && e.target.value !== "0") {
+    console.log(input.contacts)
+    var temperac = input.contacts.find((temp) => temp === e?.target?.value);
+    console.log(temperac)
+    if (!temperac && e?.target?.value !== "0") {
       data = [...input.contacts];
-      data.push(e.target.value);
+      data.push(e?.target?.value);
       setInput({ ...input, contacts: data });
       var seltempec = document.getElementById("seleccontact");
-      // console.log(seltempec);
       var strtempec = seltempec.options[seltempec.selectedIndex].text;
       var artempesc = document.getElementById("areatempec");
-      artempesc.value += artempesc.value.length > 0 ? ", " + strtempec : strtempec;
-      // console.log("estas seleccionando:" + data);
+      artempesc.value += artempesc?.value?.length > 0 ? ", " + strtempec : strtempec;
     } else alert("El contacto ya fue agregado");
   }
 
   const handleCClick = () => {
-    // console.log("DATA", data)
     let eliminado = data.pop()
-    // console.log("Elimine", eliminado)
     var artempesc = document.getElementById("areatempec");
-    // artempes.value -= artempes.value.length > 0 ? ", " - strtempe : strtempe;
     var textoenareac = artempesc.value.split(",");
     textoenareac.pop()
-    // console.log("Text area", textoenareac)
     artempesc.value = textoenareac
-    // console.log(artempesc)
   }
 
-  function handleChangeSelect(e) {
-    var tempera = input.categories.find((temp) => temp === e.target.value);
-    // console.log(tempera);
-    if (!tempera && e.target.value !== "0") {
-      data = [...input.categories];
-      data.push(e.target.value);
-      setInput({ ...input, categories: data });
-      var seltempe = document.getElementById("seleccategory");
-      // console.log(seltempe);
-      var strtempe = seltempe.options[seltempe.selectedIndex].text;
-      var artempes = document.getElementById("areatempe");
-      artempes.value += artempes.value.length > 0 ? ", " + strtempe : strtempe;
-      // console.log("estas seleccionando:" + data);
-    } else alert("La categoría ya fue agregada");
+  function handleGroupRemoveClick() {
+    var artempesc = document.getElementById("areagruposeleccionados");
+    var textoenareac = artempesc.value.split(",");
+    textoenareac.pop()
+    artempesc.value = textoenareac
   }
-
-
-  const handleClick = () => {
-    // console.log("DATA", data)
-    let eliminado = data.pop()
-    // console.log("Elimine", eliminado)
-    var artempes = document.getElementById("areatempe");
-    // artempes.value -= artempes.value.length > 0 ? ", " - strtempe : strtempe;
-    var textoenarea = artempes.value.split(",");
-    textoenarea.pop()
-    // console.log("Text area", textoenarea)
-    artempes.value = textoenarea
-  }
-
-  // console.log("use estate ", hoy, "DEstinatarios ", destin)
 
   if (destin.length === 0) {
     Swal.fire({
@@ -359,7 +275,6 @@ const AddMessage = () => {
   }
 
   const onEmojiClick = (emojiData, event) => {
-    // Asegúrate de que emojiData y emojiData.emoji están definidos
     if (emojiData && emojiData.emoji) {
       setTextM(prevText => prevText + emojiData.emoji);
     } else {
@@ -373,6 +288,63 @@ const AddMessage = () => {
         Agregar mensaje
       </h2>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="my-5">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">
+            Todos los destinatarios
+          </label>
+          <input className="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
+        </div>
+        {!todos && (
+          <div className="mb-4 flex flex-row gap-20">
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="seleccontact">
+                Seleccione Destinatario/s
+              </label>
+              <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="contacts" value={input.contacts} onChange={handleDestinChangeSelect} id="seleccontact">
+                <option value="">Elija contacto</option>
+                {destin && destin.map((elem) => (
+                  <option key={elem.id} value={elem.id}>{elem.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="ml-7">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="selecgroup">
+                Seleccione grupo/s
+              </label>
+              <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="groups" value={input.groups} onChange={handleGroupChangeSelect} id="selecgroup">
+                <option value="">Elija grupo</option>
+                {groups && groups.map((elem) => (
+                  <option key={elem.id} value={elem.id}>{elem.category}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
+        <div className="flex flex-row">
+          {!todos && (
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="areatempec">
+                Contactos Seleccionados:
+              </label>
+              <textarea className="form-textarea mt-1 block w-full rounded bg-white" id="areatempec" rows="1" cols="35" disabled readOnly={false}>{data.join(", ")}</textarea>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleCClick}>
+                Borrar contacto
+              </button>
+            </div>
+          )}
+          {!todos && (
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="areagruposeleccionados">
+                Grupos Seleccionados:
+              </label>
+              <textarea className="form-textarea mt-1 block w-full rounded bg-white" id="areagruposeleccionados" rows="1" cols="35" disabled readOnly={false}>{input.groups.join(", ")}</textarea>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleGroupRemoveClick}>
+                Eliminar Grupo
+              </button>
+            </div>
+          )}
+        </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="textAreaExample">
             Message
@@ -399,46 +371,8 @@ const AddMessage = () => {
           <label>{t('addMessage.em')}</label><br />
           <label>{t('addMessage.ems')}</label><br />
         </div>
-        {/* <div className="my-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Vista previa
-          </label>
-          {textm && (
-            <div className="bg-gray-100 p-2 rounded">
-              <Emoji text={textm || 'Default Text'} />
-            </div>
-          )}
-        </div> */}
 
-        <div className="my-5">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">
-            Todos los destinatarios
-          </label>
-          <input className="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
-        </div>
-        {!todos && (
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="seleccontact">
-              Seleccione Destinatario/s
-            </label>
-            <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="contacts" value={input.contacts} onChange={handleDestinChangeSelect} id="seleccontact">
-              <option value="">Elija contacto</option>
-              {destin && destin.map((elem) => (
-                <option key={elem.id} value={elem.id}>{elem.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="areatempec">
-            Contactos Seleccionados:
-          </label>
-          <textarea className="form-textarea mt-1 block w-full rounded bg-white" id="areatempec" rows="1" cols="35" disabled readOnly={false}>{data.join(", ")}</textarea>
-          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mt-2" onClick={handleCClick}>
-            Borrar contacto
-          </button>
-        </div>
-        <div className="mb-4">
+        <div className="my-4">
           <div className="flex flex-col justify-between">
             <div className="md:w-1/2">
               <label className="inline-flex items-center">
