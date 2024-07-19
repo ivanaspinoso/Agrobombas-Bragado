@@ -69,7 +69,7 @@ const QueuedView = () => {
                 <td className="px-4 py-2">{senddate}</td>
                 <td className="px-4 py-2">{sendtime}</td>
                 <td className="px-4 py-2 flex gap-2">
-                  <Link to="/edit-message" state={{ id, text, sended }}>
+                  <Link to="/edit-message" state={{ id, text, senddate, sendtime }}>
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled={sended}>
                       <FaEdit />
                     </button>

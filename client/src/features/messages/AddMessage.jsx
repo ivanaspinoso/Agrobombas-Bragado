@@ -61,6 +61,7 @@ const AddMessage = () => {
         let texttosend = textm.replaceAll("-NB-", contact.name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
+        //        replaceVariables(textm, contact.name)
         console.log("Nuevo texto: " + texttosend)
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact.id, backwa: login.bacwa };
         if (message.inmediate === true) {
@@ -132,6 +133,8 @@ const AddMessage = () => {
         let texttosend = textm.replaceAll("-NB-", isContactSend[0].name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
+
+        // replaceVariables(textm, isContactSend[0].name)
         console.log("Nuevo texto: " + texttosend)
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
 
