@@ -421,7 +421,7 @@ router.post("/add", async (req, res) => {
       .json({ message: "Falta ingresar password correspondiente" });
   } else {
     // hasheo password
-    hash = await bcrypt.hashSync(password, 8);
+    hash = bcrypt.hashSync(password, 8);
   }
 
   const objUser = {
@@ -470,17 +470,18 @@ router.delete("/delete/:id", async (req, res) => {
     include: { model: Contacts },
   }).then((s) => {
     console.log("S ", s)
-     if (s[0] && s[0].user.length > 0) {
-      return s[0].user.length
+     if (s[0] && s[0].contact && s[0].contact.length > 0) {
+      return s[0].contact.length
     } else return 0
   });
 
-/*   const existCat = await Users.findOne({
+  const existCat = await Users.findOne({
     where: {
       id,
     },
   });
 
+  console.log(producSocios)
   if (producSocios > 0) {
     return res.status(400).json({ message: "No se puede usuario, contactos asociados" })
   } else {
@@ -503,7 +504,7 @@ router.delete("/delete/:id", async (req, res) => {
     } else {
       return res.status(400).json({ message: "Usuario inexistente" });
     }
-  } */
+  }
 });
 
 module.exports = router;

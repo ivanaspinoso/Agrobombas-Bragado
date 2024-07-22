@@ -46,9 +46,9 @@ const Register = () => {
             setType('password')
         }
     }
-                        
-    dispatch(logOut())
-                        
+
+    // dispatch(logOut())
+    localStorage.setItem("userAdded", "");
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-green-500 to-white flex items-center justify-center">
             <div className="absolute top-4 left-4">
@@ -64,21 +64,21 @@ const Register = () => {
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
                         console.log('Logging in', values);
                         const userNew = {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: values.phoneNumber.slice(1, 3) + "9" + values.phoneNumber.slice(3, 13), // values.phoneNumber,
+                            cellphone: cellphon.substring(0,3) === "+54" ? cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13) : cellphon.replace("+",""),// values.phoneNumber.slice(1, 3) + "9" + values.phoneNumber.slice(3, 13), // values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
                             autobots: false
                         }
-                        dispatch(userAdd(userNew))
-                        console.log("Usuario", localStorage.getItem("userAdded"))
-                        if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
+                        await dispatch(userAdd(userNew))
+                        console.log("Usuario llegado a register", localStorage.getItem("userAdded"))
+                        if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") === "true") {
                             console.log()
                             const objConf = {
                                 business: values.name,
@@ -90,15 +90,15 @@ const Register = () => {
                                 undelete: true,
                                 userid: localStorage.getItem("userAdded")
                             }
-                            dispatch(configAdd(objConf))
-                            dispatch(cateAdd(objGroup))
+                            await dispatch(configAdd(objConf))
+                            await dispatch(cateAdd(objGroup))
                             Swal.fire({
                                 title: "Genial!",
                                 text: "Usuario registrado con éxito!",
                                 icon: "success"
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    
+
                                     resetForm({ values: "" })
                                     navigate("/", { replace: true });
                                 }
@@ -145,20 +145,20 @@ const Register = () => {
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Celular</label>
                                         <PhoneInput
-                                            country={"ar"}
-                                            id="phoneNumber"
-                                            name="phoneNumber"
-                                            type="tel"
+                                            id="cellphon"
+                                            defaultCountry="AR"
                                             enableSearch={true}
-                                            value={values.phoneNumber}
+                                            value={cellphon}
                                             inputStyle={{
-                                                height: '19px',
-                                                width: 'inherit',
+                                                height: "19px",
+                                                width: "inherit",
                                             }}
-                                            onChange={(phone) => setFieldValue('phoneNumber', phone)}
-                                            onBlur={handleBlur}
+                                            onChange={(cellphon) => {
+                                                setCellphon(cellphon);
+                                            }}
+                                            placeholder="Número de celular"
                                         />
-                                        {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>}
+                                        {/* {errors.phoneNumber && touched.phoneNumber && <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>} */}
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Usuario</label>
@@ -212,12 +212,7 @@ const Register = () => {
                                             Registrarme
                                         </button>
                                         <div className='flex flex-row items-center justify-center'>
-                                            <button
-                                                onClick={() => navigate('/login')}
-                                                className="inline-block align-baseline font-semibold text-sm hover:text-green-700 pr-1"
-                                            >
-                                                Ya tienes cuenta?
-                                            </button>
+                                            Ya tienes cuenta?
                                             <button
                                                 onClick={() => navigate('/login')}
                                                 className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-700"

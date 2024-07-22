@@ -259,6 +259,7 @@ router.delete("/delete/:id", async (req, res) => {
     where: { id: id },
     include: { model: Messages },
   }).then((s) => {
+    console.log(s)
     if (s[0] && s[0].messages.length > 0) {
       return s[0].messages.length
     } else return 0
