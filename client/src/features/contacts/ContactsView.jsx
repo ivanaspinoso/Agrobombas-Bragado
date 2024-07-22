@@ -21,7 +21,7 @@ const ContactsView = () => {
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(contacts.length / itemsPPage);
   const view = contacts.slice(inicialItems, totalItems);
-
+  console.log(view)
   const handleDelete = (id, name) => {
     Swal.fire({
       title: "Desea eliminar el contacto " + name + "?",
@@ -41,6 +41,10 @@ const ContactsView = () => {
       dispatch(contactsSort(event.target.value, contacts))
     }
   }
+  const handleSearch = (event) => {
+    const query = event.target.value;
+  };
+
 
   return (
     <div className="container mx-auto px-4 py-6 flex flex-col flex-grow ">
@@ -51,19 +55,48 @@ const ContactsView = () => {
           {t('contactsView.addContact')}
         </button>
       </h2>
-      <div className="flex justify-end mb-4">
-        <label htmlFor="sortSelect" className="mr-2">
-          {t('contactsView.order')}:
-        </label>
-        <select
-          id="sortSelect"
-          onChange={handleDispatchOrder}
-          className="px-2 py-1 border border-gray-300 rounded-md"
-        >
-          <option value="">{t('contactsView.selectOrder')}</option>
-          <option value={ASC}>A-Z</option>
-          <option value={DES}>Z-A</option>
-        </select>
+      <div className="flex flex-row gap-5 align-center justify-end">
+        <div className="flex justify-center align-center text-lg mb-4">
+          <label htmlFor="searchInput" className="mr-2 self-center">
+            {t('contactsView.search')}:
+          </label>
+          <input
+            id="searchInput"
+            type="search"
+            onChange={handleSearch}
+            className="px-2 py-1 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="flex justify-center align-center text-lg mb-4">
+          <label htmlFor="sortSelect" className="mr-2 self-center">
+            {t('contactsView.order')}:
+          </label>
+          <select
+            id="sortSelect"
+            onChange={handleDispatchOrder}
+            className="px-2 py-1 border border-gray-300 rounded-md"
+          >
+            <option value="">{t('contactsView.selectOrder')}</option>
+            <option value={ASC}>A-Z</option>
+            <option value={DES}>Z-A</option>
+          </select>
+        </div>
+        <div className="flex justify-center align-center text-lg mb-4">
+          <label htmlFor="sortSelect" className="mr-2 self-center">
+            {t('contactsView.filter')}:
+          </label>
+          <select
+            id="sortSelect"
+            onChange={handleDispatchOrder}
+            className="px-2 py-1 border border-gray-300 rounded-md"
+          >
+            <option value="">{t('contactsView.selectOrder')}</option>
+            <option value={ASC}>A-Z</option>
+            <option value={DES}>Z-A</option>
+          </select>
+        </div>
+
+
       </div>
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
@@ -71,6 +104,7 @@ const ContactsView = () => {
             <tr>
               <th className="px-4 py-2 text-left">#</th>
               <th className="px-4 py-2 text-left">{t('contactsView.name')}</th>
+              <th className="px-4 py-2 text-left">{t('contactsView.group')}</th>
               <th className="px-4 py-2 text-left">{t('contactsView.wanumber')}</th>
               <th className="px-4 py-2 text-left">{t('contactsView.actions')}</th>
             </tr>
@@ -80,8 +114,9 @@ const ContactsView = () => {
               const { id, name, cellphone, categories } = contact;
               return (
                 <tr key={id} className="hover:bg-gray-50">
-                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{index >= 15 ? index + 1 : " "}</td>
                   <td className="px-4 py-2">{name}</td>
+                  <td className="px-4 py-2">{categories.map(user => user.category)}</td>
                   <td className="px-4 py-2">{cellphone}</td>
                   <td className="px-4 py-2 flex space-x-2">
                     <Link to={`/edit-contact`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" state={{ id, name, cellphone, categories }}>
