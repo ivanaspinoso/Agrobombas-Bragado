@@ -210,15 +210,23 @@ const AddMessage = () => {
       })
 
       // iterar grupo x grupo, si se han elegido y sus contactos
-      console.log(groups)
+      let contactxgroup = [] // array auxiliar para guardar a los contactos de los grupos seleccionados
       groups && groups.map((grupo) => {
-        console.log(allContacts)
-        console.log(grupo)
-        // y tratar de seleccionar los contactos que estén dentro del grupo
-        const contactsgroup = allContacts.filter(contact => contact.categories.id === grupo) // este no anda, no genera array de contactos del grupo
-        console.log(contactsgroup)
+        // console.log(allContacts)
+        // console.log(grupo)
+        allContacts.map ((contact) => {
+          // console.log(contact.categories.length)
+          // iterar en todos los grupos seleccionados para el contacto
+          for (var i=0; i < contact.categories.length; i++) {
+            // si uno de los grupos seleccionados coincide con uno de los grupos del usuario
+            if (parseInt(contact.categories[i].id) === parseInt(grupo)) {
+              //lo agrego al al listado de contactos a enviar
+              contactxgroup.push(contact)
+            }
+          }
+        }) // este está funcionando perfecto, quizás habria que refactorizar mapeando o filtrando
+        console.log("seleccionados: ",contactxgroup)
       })
-
     }
 
     navigate("/show-messages", { replace: true });
