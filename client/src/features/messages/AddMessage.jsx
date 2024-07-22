@@ -127,23 +127,52 @@ const AddMessage = () => {
     }  // si desmarco la opcion de todos los destinatarios
     else {
       // primero vamos a iterar con los contactos seleccionados
+      let selectedcontacts = [] // array auxiliar para guardar a los contactos seleccionados y luego de los grupos seleccionados
       destins && destins.map(async (contact) => {
+        const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
+        isContactSend.map((destino) => {
+          selectedcontacts.push(destino)
+        })
+      })
+
+      // iterar grupo x grupo, si se han elegido y sus contactos y sumarlos a los contactos elegidos de a uno
+      groups && groups.map((grupo) => {
+        // console.log(allContacts)
+        // console.log(grupo)
+        allContacts.map((contact) => {
+          // console.log(contact.categories.length)
+          // iterar en todos los grupos seleccionados para el contacto
+          for (var i = 0; i < contact.categories.length; i++) {
+            // si uno de los grupos seleccionados coincide con uno de los grupos del usuario
+            if (parseInt(contact.categories[i].id) === parseInt(grupo)) {
+              //lo agrego al al listado de contactos a enviar
+              selectedcontacts.push(contact)
+            }
+          }
+        }) // este está funcionando perfecto, quizás habria que refactorizar mapeando o filtrando
+        console.log("seleccionados: ", selectedcontacts)
+      })
+
+      // aquí estaría bueno verificar duplicados, para que no enviar mismo mensaje 2 veces
+
+      // aqui va logica de envio (seria bueno pasarla a funcion y llamarla desde aqui y desde seleccion de todos los contactos)     
+      selectedcontacts.map((contacttosend) => {
         var senddates = senddate
         var sendtimes = sendtime
-
-        const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
-        let texttosend = textm.replaceAll("-NB-", isContactSend[0].name)
+  
+        // const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
+        let texttosend = textm.replaceAll("-NB-", contacttosend.name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
-
-        // replaceVariables(textm, isContactSend[0].name)
+  
+        // replaceVariables(textm, contacttosend.name)
         console.log("Nuevo texto: " + texttosend)
-        const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
-
-
+        const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contacttosend.id };
+  
+  
         if (message.inmediate === true) {
-          console.log(isContactSend[0].cellphone)
-          const numbertosend = isContactSend[0].cellphone + "@c.us"
+          console.log(contacttosend.cellphone)
+          const numbertosend = contacttosend.cellphone + "@c.us"
           console.log(numbertosend)
           const params = {
             chatId: numbertosend,
@@ -154,11 +183,11 @@ const AddMessage = () => {
             headers: { accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR },
             body: JSON.stringify(params)
           };
-
+  
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
             .then(response => response.json())
             .then(async response => {
-
+  
               console.log(response)
               var datetime = new Date();
               var fecha = datetime.getFullYear() + "-" + (datetime.getMonth() + 1).toString().padStart(2, '0') + "-" + datetime.getDate().toString().padStart(2, "0")
@@ -170,26 +199,26 @@ const AddMessage = () => {
                 sended: response.data.status === "success" ? true : false,
                 result: response.data.status // "Mensaje enviado con éxito"
               }
-
+  
               dispatch(messageAdd(objMess));
-
+  
             })
             .catch(err => console.error(err));
         } else {
           dispatch(messageAdd(message));
-
+  
         }
-
+  
         if (repite) {
           console.clear()
           setInmediate(false)
           let sumdays = new Date(senddates)
-
+  
           let mesobten = parseInt(sumdays.getMonth())
           console.log("Primer mes" + mesobten)
           let elmes = parseInt(mesobten) + parseInt(xmonths)
           console.log("Primer somatorial, elmes", elmes)
-
+  
           for (let i = 0; i < veces; i++) {
             if (mensual) {
               sumdays.setMonth(elmes)
@@ -202,31 +231,14 @@ const AddMessage = () => {
             senddates = sumdays.toISOString().split('T')[0];
             console.log(senddates)
             console.log("El mes " + elmes)
-            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contact };
+            const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contacttosend.id };
             dispatch(messageAdd(messrepite));
-
+  
           }
         }
+  
       })
 
-      // iterar grupo x grupo, si se han elegido y sus contactos
-      let contactxgroup = [] // array auxiliar para guardar a los contactos de los grupos seleccionados
-      groups && groups.map((grupo) => {
-        // console.log(allContacts)
-        // console.log(grupo)
-        allContacts.map ((contact) => {
-          // console.log(contact.categories.length)
-          // iterar en todos los grupos seleccionados para el contacto
-          for (var i=0; i < contact.categories.length; i++) {
-            // si uno de los grupos seleccionados coincide con uno de los grupos del usuario
-            if (parseInt(contact.categories[i].id) === parseInt(grupo)) {
-              //lo agrego al al listado de contactos a enviar
-              contactxgroup.push(contact)
-            }
-          }
-        }) // este está funcionando perfecto, quizás habria que refactorizar mapeando o filtrando
-        console.log("seleccionados: ",contactxgroup)
-      })
     }
 
     navigate("/show-messages", { replace: true });
