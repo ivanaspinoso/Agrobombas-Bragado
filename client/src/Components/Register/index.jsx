@@ -75,12 +75,12 @@ const Register = () => {
                             autobots: false
                         }
                         await dispatch(userAdd(userNew))
-                        console.log("Usuario llegado a register", localStorage.getItem("userAdded"))
                         if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") === "true") {
+                            const usuarioNuevoId = parseInt(localStorage.getItem("newUser"))
                             console.log()
                             const objConf = {
                                 business: values.name,
-                                userid: parseInt(localStorage.getItem("newUser"))
+                                userid: parseInt(usuarioNuevoId)
                             }
                             console.log("agrego config por defecto")
                             await dispatch(configAdd(objConf))
@@ -88,7 +88,7 @@ const Register = () => {
                                 category: "Default",
                                 description: "Categoría por defecto",
                                 undelete: true,
-                                userid: parseInt(localStorage.getItem("newUser"))
+                                userid: parseInt(usuarioNuevoId)
                             }
                             console.log("agrego grupo por defecto")
                             await dispatch(cateAdd(objGroup))

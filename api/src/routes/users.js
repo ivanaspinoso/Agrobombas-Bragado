@@ -470,7 +470,7 @@ router.delete("/delete/:id", async (req, res) => {
     include: { model: Contacts },
   }).then((s) => {
     console.log("S ", s)
-     if (s[0] && s[0].contact && s[0].contact.length > 0) {
+    if (s[0] && s[0].contact && s[0].contact.length > 0) {
       return s[0].contact.length
     } else return 0
   });
@@ -486,13 +486,28 @@ router.delete("/delete/:id", async (req, res) => {
     return res.status(400).json({ message: "No se puede usuario, contactos asociados" })
   } else {
     if (existCat) {
+      // eliminar mensajes
+      // code here
+      // eliminar recibidos
+      // code here
+      // eliminar contactos
+      // code here
+      // eliminar grupos
+      // code here
+      // eliminar autorespuestas
+      // code here
+      // eliminar bots
+      // code here
+      // eliminar config
+      // code here
+      // eliminar usuario
       try {
         let delContact = await Users.destroy({
           where: {
             id,
           },
         });
-//        console.log(delContact);
+        //        console.log(delContact);
         return res
           .status(200)
           .json({ message: "Usuario eliminado correctamente" });
