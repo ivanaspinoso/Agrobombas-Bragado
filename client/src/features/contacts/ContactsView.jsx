@@ -112,6 +112,7 @@ const ContactsView = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {view && view.map((contact, index) => {
               const { id, name, cellphone, categories } = contact;
+              console.log(contact.categories)
               return (
                 <tr key={id} className="hover:bg-gray-50">
                   <td className="px-4 py-2">{index >= 15 ? index + 1 : " "}</td>

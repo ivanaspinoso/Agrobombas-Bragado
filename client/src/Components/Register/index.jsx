@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { userAdd } from '../../app/actions/users';
+import { logOut, userAdd } from '../../app/actions/users';
 import Swal from 'sweetalert2';
 import { configAdd } from '../../app/actions/configs';
 import { cateAdd } from '../../app/actions/categories';
@@ -46,7 +46,9 @@ const Register = () => {
             setType('password')
         }
     }
-
+                        
+    dispatch(logOut())
+                        
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-green-500 to-white flex items-center justify-center">
             <div className="absolute top-4 left-4">
@@ -62,19 +64,19 @@ const Register = () => {
                 <Formik
                     validationSchema={schema}
                     initialValues={{ username: "", password: "", phoneNumber: "", name: "" }}
-                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         console.log('Logging in', values);
                         const userNew = {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13), // values.phoneNumber,
+                            cellphone: values.phoneNumber.slice(1, 3) + "9" + values.phoneNumber.slice(3, 13), // values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
                             autobots: false
                         }
-                        await dispatch(userAdd(userNew))
+                        dispatch(userAdd(userNew))
                         console.log("Usuario", localStorage.getItem("userAdded"))
                         if (localStorage.getItem("userAdded") && localStorage.getItem("userAdded") >= 0) {
                             console.log()
@@ -88,14 +90,15 @@ const Register = () => {
                                 undelete: true,
                                 userid: localStorage.getItem("userAdded")
                             }
-                            await dispatch(configAdd(objConf))
-                            await dispatch(cateAdd(objGroup))
+                            dispatch(configAdd(objConf))
+                            dispatch(cateAdd(objGroup))
                             Swal.fire({
                                 title: "Genial!",
                                 text: "Usuario registrado con éxito!",
                                 icon: "success"
                             }).then((result) => {
                                 if (result.isConfirmed) {
+                                    
                                     resetForm({ values: "" })
                                     navigate("/", { replace: true });
                                 }
