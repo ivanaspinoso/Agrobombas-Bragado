@@ -32,6 +32,7 @@ export const userAdd = (userNew) => async (dispatch) => {
     const { data } = await axios.post(`${addUserEndpoint}`, userNew);
     dispatch({ type: "users/addUser", payload: data.user });
     localStorage.setItem("userAdded", true);
+    localStorage.setItem("newUser",data.user.id)
   } catch (err) {
     localStorage.setItem("userAdded", err.response.data.message);
     console.log(

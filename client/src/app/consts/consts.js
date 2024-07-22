@@ -26,6 +26,7 @@ export const byidContactsEndpoint = REACT_APP_API + 'contacts/byid/';
 export const allConfigsEndpoint = REACT_APP_API + 'configs/';
 export const addConfigsEndpoint = REACT_APP_API + 'configs/add/';
 export const updConfigsEndpoint = REACT_APP_API + 'configs/update/';
+export const usrConfigsEndpoint = REACT_APP_API + 'configs/byuser/';
 
 //groups
 

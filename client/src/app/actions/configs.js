@@ -3,6 +3,7 @@ import {
   allConfigsEndpoint,
   updConfigsEndpoint,
   addConfigsEndpoint,
+  usrConfigsEndpoint,
 } from "../consts/consts";
 import {
   allConfig,
@@ -58,6 +59,26 @@ export const getConfig = (id) => async (dispatch) => {
     const { data } = await axios.get(`${allConfigsEndpoint}` + id);
     dispatch({ type: "config/allConfig", payload: data.config });
     localStorage.setItem("appConfig", JSON.stringify(data.config));
+    localStorage.setItem("userConfig", true);
+  } catch (err) {
+    localStorage.setItem("userConfig", err?.response?.data.message);
+    console.log(
+      err?.response && err?.response?.data.message
+        ? err?.response?.data.message
+        : err.message
+    );
+  }
+};
+
+export const getConfigbyUser = (id) => async (dispatch) => {
+  /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
+  try {
+    // console.log(username,password)
+    // console.log(`${configByIdEndpoint}${id}`)
+    const { data } = await axios.get(`${usrConfigsEndpoint}` + id);
+    console.log(data)
+    dispatch({ type: "config/allConfig", payload: data });
+    localStorage.setItem("appConfig", JSON.stringify(data));
     localStorage.setItem("userConfig", true);
   } catch (err) {
     localStorage.setItem("userConfig", err?.response?.data.message);

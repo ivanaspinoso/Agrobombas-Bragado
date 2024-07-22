@@ -17,18 +17,19 @@ const UsersView = () => {
   const handleDelete = (id, name) => {
     Swal
       .fire({
-        title: "Desea eliminar el contacto " + name + "?",
+        title: "Desea eliminar al usuario " + name + "?",
+        html: "Recuerde que al eliminar el usuario deberá registrarse nuevamente y volver a crear todos sus contactos, instancia WA, y demás información",
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: `Sí`,
         icon: "success",
         // denyButtonText: `Cancelar`,
       })
-      .then((result) => {
+      .then(async (result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-          dispatch(userDelete(id));
+          await dispatch(userDelete(id));
         } else if (result.isDenied) {
 
         }

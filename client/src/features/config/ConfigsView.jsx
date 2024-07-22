@@ -9,7 +9,7 @@ import Usa from '../../assets/images/usa.jpg'
 
 const ConfigsView = () => {
   const { t, i18n } = useTranslation();
-  const configs = useSelector((state) => state.configsReducer.configs);
+  const configs = useSelector((state) => state.configsReducer.configs[0]);
 
   let objConfig = { id: configs.id, business: configs.business, slogan: configs.slogan };
 

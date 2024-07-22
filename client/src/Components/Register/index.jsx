@@ -47,8 +47,6 @@ const Register = () => {
         }
     }
 
-    // dispatch(logOut())
-    localStorage.setItem("userAdded", "");
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-green-500 to-white flex items-center justify-center">
             <div className="absolute top-4 left-4">
@@ -70,7 +68,7 @@ const Register = () => {
                             name: values.name,
                             password: values.password,
                             username: values.username,
-                            cellphone: cellphon.substring(0,3) === "+54" ? cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13) : cellphon.replace("+",""),// values.phoneNumber.slice(1, 3) + "9" + values.phoneNumber.slice(3, 13), // values.phoneNumber,
+                            cellphone: cellphon.substring(0, 3) === "+54" ? cellphon.slice(1, 3) + "9" + cellphon.slice(3, 13) : cellphon.replace("+", ""),// values.phoneNumber.slice(1, 3) + "9" + values.phoneNumber.slice(3, 13), // values.phoneNumber,
                             isAdmin: false,
                             active: false,
                             autoreplys: false,
@@ -82,24 +80,26 @@ const Register = () => {
                             console.log()
                             const objConf = {
                                 business: values.name,
-                                userid: localStorage.getItem("userAdded")
+                                userid: parseInt(localStorage.getItem("newUser"))
                             }
+                            console.log("agrego config por defecto")
+                            await dispatch(configAdd(objConf))
                             const objGroup = {
                                 category: "Default",
                                 description: "Categoría por defecto",
                                 undelete: true,
-                                userid: localStorage.getItem("userAdded")
+                                userid: parseInt(localStorage.getItem("newUser"))
                             }
-                            await dispatch(configAdd(objConf))
+                            console.log("agrego grupo por defecto")
                             await dispatch(cateAdd(objGroup))
                             Swal.fire({
                                 title: "Genial!",
                                 text: "Usuario registrado con éxito!",
                                 icon: "success"
-                            }).then((result) => {
+                            }).then(async (result) => {
                                 if (result.isConfirmed) {
-
                                     resetForm({ values: "" })
+                                    await dispatch(logOut())
                                     navigate("/", { replace: true });
                                 }
                             });

@@ -462,7 +462,7 @@ router.post("/add", async (req, res) => {
 // Borrar usuario
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
   if (!id) return res.status(400).send({ message: "Debe seleccionar usuario" });
 
   let producSocios = await Users.findAll({
@@ -492,7 +492,7 @@ router.delete("/delete/:id", async (req, res) => {
             id,
           },
         });
-        console.log(delContact);
+//        console.log(delContact);
         return res
           .status(200)
           .json({ message: "Usuario eliminado correctamente" });

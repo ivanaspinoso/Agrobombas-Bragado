@@ -19,6 +19,7 @@ import enviados from "../../assets/images/whatsapp-enviado.webp";
 import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
 import { ImCross } from "react-icons/im";
+import { getConfigbyUser } from '../../app/actions/configs';
 
 const Main = () => {
   const { t, i18n } = useTranslation()
@@ -30,20 +31,20 @@ const Main = () => {
 
   async function fetchData() {
     if (login.id) {
-      dispatch(getConfig(login.id));
-      dispatch(getUserContacts(login.id));
-      dispatch(getUserCategories(login.id));
-      dispatch(getUserMessages(login.id));
-      dispatch(getQRUser(login.username, login.password));
+      await dispatch(getConfigbyUser(login.id));
+      await dispatch(getUserContacts(login.id));
+      await dispatch(getUserCategories(login.id));
+      await dispatch(getUserMessages(login.id));
+      // await dispatch(getQRUser(login.username, login.password));
       if (login.isAdmin) {
-        dispatch(getAllUsers());
+        await dispatch(getAllUsers());
       }
       if (login.backwa) {
         const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
 
         fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
           .then(response => response.json())
-          .then(response => {
+          .then(async response => {
             const status = response.me.status;
             if (status === "success" && login.vinculated === false) {
               const objUser = {
@@ -52,7 +53,7 @@ const Main = () => {
                 qr: "",
                 backwa: login.backwa
               }
-              dispatch(userUpdateAdm(objUser))
+              await dispatch(userUpdateAdm(objUser))
             }
           })
           .catch(err => console.error(err));
@@ -62,7 +63,8 @@ const Main = () => {
     }
   }
   useEffect(() => {
-    if (!configs.length) fetchData();
+    // if (!configs.length)
+    fetchData();
 
     setIsLoading(false);
   }, []);
