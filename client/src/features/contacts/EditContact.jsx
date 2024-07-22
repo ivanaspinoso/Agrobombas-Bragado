@@ -19,8 +19,8 @@ const EditContact = () => {
   const [input, setInput] = useState({
     categories: [],
   });
-  console.log(location.state.name);
-  console.log(location.state.categories);
+  console.log("Nombre: ",location.state.name);
+  console.log("categories: ",location.state.categories);
   let data = [];
   let txtdata = [];
 
