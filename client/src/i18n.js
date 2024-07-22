@@ -82,6 +82,9 @@ const resources = {
         order: "Order By",
         contactList: "Contact List",
         selectOrder: "Select Order",
+        group: "Groups",
+        filter: "Filter Groups",
+        search: "Search",
       },
       messagesView: {
         text: "Text",
@@ -136,7 +139,7 @@ const resources = {
         em: "-EM- : Name of the business",
         ems: "-EMS- : Slogan of the business",
         addIcon: "Add Icon",
-        closeIcon: 'Close Modal Icon'
+        closeIcon: "Close Modal Icon",
       },
     },
   },
@@ -211,13 +214,16 @@ const resources = {
         listGroup: "Listado de Grupos",
       },
       contactsView: {
-        name: "name",
+        name: "Nombre",
         wanumber: "Número de WA",
         actions: "Acción",
         addContact: "Agregar Contacto",
         order: "Ordenar por",
         contactList: "Lista de Contactos",
         selectOrder: "Seleccionar orden",
+        group: "Grupos",
+        filter: "Filtrar Grupos",
+        search: "Buscar",
       },
       messagesView: {
         text: "Texto",
@@ -273,7 +279,7 @@ const resources = {
         em: "-EM- : Nombre del negocio",
         ems: "-EMS- : Eslogan del negocio",
         addIcon: "Agregar Iconos",
-        closeIcon: 'Cerrar Modal de Iconos'
+        closeIcon: "Cerrar Modal de Iconos",
       },
     },
   },

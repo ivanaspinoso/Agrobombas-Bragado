@@ -82,7 +82,7 @@ const AddGroup = () => {
                   </label>
                   <input
                     type="text"
-                    class="form-input mt-1 block w-full border border-gray-300 rounded"
+                    class="form-input mt-1 block w-full border border-gray-300 rounded px-1"
                     id="category"
                     name="category"
                     value={values.category}
@@ -97,7 +97,7 @@ const AddGroup = () => {
                   </label>
                   <input
                     type="text"
-                    class="form-input mt-1 block w-full border border-gray-300 rounded"
+                    class="form-input mt-1 block w-full border border-gray-300 rounded px-1"
                     id="description"
                     name="description"
                     value={values.description}
