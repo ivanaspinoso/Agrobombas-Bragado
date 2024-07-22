@@ -70,7 +70,7 @@ const EditContact = () => {
     e.preventDefault();
     console.log(groups, input.categories);
     // setGroups(input.categories)
-    const numphone = cellphone.substring(0,2) === "+54" ? cellphone.slice(1, 3) + "9" + cellphone.slice(3, 13) : cellphone.replace("+","") // cellphone.slice(1, 3) + "9" + cellphone.slice(3, 13); // cellphone.slice(0, 2) + "9" + cellphone.slice(2, 12);
+    const numphone = cellphone.substring(0,3) === "+54" ? cellphone.slice(1, 3) + "9" + cellphone.slice(3, 13) : cellphone.replace("+","") // cellphone.slice(1, 3) + "9" + cellphone.slice(3, 13); // cellphone.slice(0, 2) + "9" + cellphone.slice(2, 12);
     dispatch(
       contactUpdate({ id, name, cellphone: numphone, groups: input.categories })
     );
