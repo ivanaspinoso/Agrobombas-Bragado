@@ -22,6 +22,7 @@ const ContactsView = () => {
   const cantPages = Math.ceil(contacts.length / itemsPPage);
   const view = contacts.slice(inicialItems, totalItems);
   console.log(view)
+
   const handleDelete = (id, name) => {
     Swal.fire({
       title: "Desea eliminar el contacto " + name + "?",
@@ -29,20 +30,23 @@ const ContactsView = () => {
       showCancelButton: false,
       confirmButtonText: `Sí`,
       icon: "success",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(contactDelete(id));
+        await dispatch(contactDelete(id));
       }
     });
   };
 
-  function handleDispatchOrder(event) {
+  async function handleDispatchOrder(event) {
     if (event.target.value === ASC || event.target.value === DES) {
-      dispatch(contactsSort(event.target.value, contacts))
+      await dispatch(contactsSort(event.target.value, contacts))
     }
   }
   const handleSearch = (event) => {
     const query = event.target.value;
+    const encontrados = contacts.filter(contact => contact.name.includes(query))
+    console.log(encontrados)
+    // y ahora como muestro esto en la pantalla?
   };
 
 
