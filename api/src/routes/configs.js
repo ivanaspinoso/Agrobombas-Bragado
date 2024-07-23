@@ -79,12 +79,13 @@ router.get("/:id", (req, res) => {
 router.get("/byuser/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    let getConfigUser = await Configs.findAll({
+    let getConfigUser = await Configs.findOne({
       include: {model: Users},
       where: {
         userId: id,
       },
     });
+    // return res.status(200).json({ message: "Get config", getConfigUser });
     return res.send(getConfigUser);
   } catch (err) {
     return res.send({
