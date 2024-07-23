@@ -421,7 +421,7 @@ router.post("/add", async (req, res) => {
       .json({ message: "Falta ingresar password correspondiente" });
   } else {
     // hasheo password
-    hash = await bcrypt.hashSync(password, 8);
+    hash = bcrypt.hashSync(password, 8);
   }
 
   const objUser = {
@@ -462,7 +462,7 @@ router.post("/add", async (req, res) => {
 // Borrar usuario
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
   if (!id) return res.status(400).send({ message: "Debe seleccionar usuario" });
 
   let producSocios = await Users.findAll({
@@ -470,28 +470,44 @@ router.delete("/delete/:id", async (req, res) => {
     include: { model: Contacts },
   }).then((s) => {
     console.log("S ", s)
-     if (s[0] && s[0].user.length > 0) {
-      return s[0].user.length
+    if (s[0] && s[0].contact && s[0].contact.length > 0) {
+      return s[0].contact.length
     } else return 0
   });
 
-/*   const existCat = await Users.findOne({
+  const existCat = await Users.findOne({
     where: {
       id,
     },
   });
 
+  console.log(producSocios)
   if (producSocios > 0) {
     return res.status(400).json({ message: "No se puede usuario, contactos asociados" })
   } else {
     if (existCat) {
+      // eliminar mensajes
+      // code here
+      // eliminar recibidos
+      // code here
+      // eliminar contactos
+      // code here
+      // eliminar grupos
+      // code here
+      // eliminar autorespuestas
+      // code here
+      // eliminar bots
+      // code here
+      // eliminar config
+      // code here
+      // eliminar usuario
       try {
         let delContact = await Users.destroy({
           where: {
             id,
           },
         });
-        console.log(delContact);
+        //        console.log(delContact);
         return res
           .status(200)
           .json({ message: "Usuario eliminado correctamente" });
@@ -503,7 +519,7 @@ router.delete("/delete/:id", async (req, res) => {
     } else {
       return res.status(400).json({ message: "Usuario inexistente" });
     }
-  } */
+  }
 });
 
 module.exports = router;

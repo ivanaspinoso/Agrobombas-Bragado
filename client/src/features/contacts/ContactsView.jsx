@@ -116,9 +116,9 @@ const ContactsView = () => {
               const { id, name, cellphone, categories } = contact;
               return (
                 <tr key={id} className="hover:bg-gray-50">
-                  <td className="px-4 py-2">{index >= 15 ? index + 1 : " "}</td>
+                  <td className="px-4 py-2">{pagContacts > 1 ? (15 * (pagContacts - 1)) + index + 1 : index + 1}</td>
                   <td className="px-4 py-2">{name}</td>
-                  <td className="px-4 py-2">{categories.map(user => user.category)}</td>
+                  <td className="px-4 py-2">{categories ? categories.map(user => user.category) : ""} </td>
                   <td className="px-4 py-2">{cellphone}</td>
                   <td className="px-4 py-2 flex space-x-2">
                     <Link to={`/edit-contact`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" state={{ id, name, cellphone, categories }}>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { contactUpdate } from "../../app/actions/contacts";
-import PhoneInput from "react-phone-number-input";
+import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
 const EditContact = () => {
@@ -12,13 +12,16 @@ const EditContact = () => {
   // console.log(location.state);
   const [id] = useState(location.state.id);
   const [name, setName] = useState(location.state.name);
-  const editphone = location.state.cellphone.slice(3, 13);
+  const editphone = location.state.cellphone.substring(0,2) === "54" ? "+" + location.state.cellphone.slice(0, 2) + location.state.cellphone.slice(3, 13) : "+" + location.state.cellphone // location.state.cellphone.slice(3, 13);
   const valuephone = "+" + location.state.cellphone.slice(0, 2) + location.state.cellphone.slice(3, 13);
   const [cellphone, setCellphone] = useState(editphone);
   const [groups, setGroups] = useState(location.state.categories);
   const [input, setInput] = useState({
     categories: [],
   });
+
+  console.log("Numero:", parsePhoneNumber(editphone))
+  console.log("Pais", parsePhoneNumber(cellphone).country)
   console.log("Nombre: ",location.state.name);
   console.log("categories: ",location.state.categories);
   let data = [];
@@ -164,8 +167,8 @@ const EditContact = () => {
           </label>
           <PhoneInput
             id="cellphone"
-            // country="AR"
-            // defaultCountry="AR"
+            // country={parsePhoneNumber(cellphone).country}
+            defaultCountry={parsePhoneNumber(cellphone).country}
             // defaultValue={valuephone}
             enableSearch={true}
             value={cellphone}
@@ -173,7 +176,7 @@ const EditContact = () => {
               height: "19px",
               width: "inherit",
             }}
-            onChange={setCellphone} 
+            onChange={(cellphone) => {setCellphone(cellphone)}} 
             placeholder="Número de celular"
           />
         </div>

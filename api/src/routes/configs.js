@@ -1,6 +1,6 @@
 var express = require("express");
 
-const { Configs } = require("../models/index");
+const { Configs, Users } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
 
@@ -61,6 +61,7 @@ router.put("/update", (req, res) => {
     });
 });
 
+//Obtener config por Id
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   // console.log(req.params);
@@ -73,6 +74,26 @@ router.get("/:id", (req, res) => {
       return res.status(400).json({ message: err });
     });
 });
+
+//obtenerConfig por usuario
+router.get("/byuser/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    let getConfigUser = await Configs.findOne({
+      include: {model: Users},
+      where: {
+        userId: id,
+      },
+    });
+    // return res.status(200).json({ message: "Get config", getConfigUser });
+    return res.send(getConfigUser);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener las categorías" + err,
+    });
+  }
+});
+
 
 //Obtener todas las categorías
 router.get("/", async (req, res) => {
