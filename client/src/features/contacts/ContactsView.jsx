@@ -48,15 +48,17 @@ const ContactsView = () => {
 
   return (
     <div className="container mx-auto px-4 py-6 flex flex-col flex-grow ">
-      <h2 className="text-center flex flex-row justify-between text-2xl font-semibold mb-10">
-        {t('contactsView.contactList')}
+      <div className="flex flex-row justify-between text-2xl mb-10">
+        <h2 className="text-center flex flex-row text-start text-2xl font-semibold">
+          {t('contactsView.contactList')}
+        </h2>
         <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/add-contact") }}>
           <FcAddRow className="mr-2 h-5 w-5" />
           {t('contactsView.addContact')}
         </button>
-      </h2>
-      <div className="flex flex-row gap-5 align-center justify-end">
-        <div className="flex justify-center align-center text-lg mb-4">
+      </div >
+      <div className="flex flex-col lg:flex-row gap-5 align-center justify-end">
+        <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
           <label htmlFor="searchInput" className="mr-2 self-center">
             {t('contactsView.search')}:
           </label>
@@ -67,7 +69,7 @@ const ContactsView = () => {
             className="px-2 py-1 border border-gray-300 rounded-md"
           />
         </div>
-        <div className="flex justify-center align-center text-lg mb-4">
+        <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
           <label htmlFor="sortSelect" className="mr-2 self-center">
             {t('contactsView.order')}:
           </label>
@@ -81,7 +83,7 @@ const ContactsView = () => {
             <option value={DES}>Z-A</option>
           </select>
         </div>
-        <div className="flex justify-center align-center text-lg mb-4">
+        <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
           <label htmlFor="sortSelect" className="mr-2 self-center">
             {t('contactsView.filter')}:
           </label>
@@ -112,7 +114,6 @@ const ContactsView = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {view && view.map((contact, index) => {
               const { id, name, cellphone, categories } = contact;
-              console.log(contact.categories)
               return (
                 <tr key={id} className="hover:bg-gray-50">
                   <td className="px-4 py-2">{index >= 15 ? index + 1 : " "}</td>
@@ -140,7 +141,7 @@ const ContactsView = () => {
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts < cantPages ? setPagContacts(pagContacts + 1) : setPagContacts(cantPages); }}>👉</button>
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(cantPages)}>➡</button>
       </nav>
-    </div>
+    </div >
   );
 };
 

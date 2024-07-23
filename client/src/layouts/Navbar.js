@@ -11,6 +11,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const login = useSelector((state) => state.usersReducer.login);
 
+  const handleMenuClick = () => {
+    document.getElementById("navbarMobileMenu").classList.add("hidden");
+  };
+
   return (
     <nav className="bg-green-600 p-4 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
@@ -151,6 +155,7 @@ const Navbar = () => {
                   key={link.to}
                   className="block text-white hover:text-gray-300 transition duration-300 text-lg font-semibold"
                   to={link.to}
+                  onClick={handleMenuClick}
                 >
                   {link.text}
                 </Link>
