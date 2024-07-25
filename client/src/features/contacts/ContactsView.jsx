@@ -21,7 +21,7 @@ const ContactsView = () => {
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(contacts.length / itemsPPage);
   const view = contacts.slice(inicialItems, totalItems);
-  console.log(contacts)
+    // console.log(contacts)
   const auxcontacts = useSelector((state) => state?.contactsReducer?.auxcontacts)
 
   const [order, setOrder] = React.useState("");
@@ -58,7 +58,7 @@ const ContactsView = () => {
 
   const handleSearch = async (event) => {
     const query = event.target.value;
-    console.log(query, contacts)
+    console.log("query",query,"contactos",contacts)
     if (query !== "")
       await dispatch(contactsFilter(query, auxcontacts))
      else
@@ -111,6 +111,7 @@ const ContactsView = () => {
             filterOptions={(options, state) => options.filter(option => option.name.toLowerCase().includes(state.inputValue.toLowerCase()))}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => <TextField {...params} label="Search for contacts" />}
+
             renderOption={(props, option) => (
               <li {...props} key={option.id}>
                 {option.name}
