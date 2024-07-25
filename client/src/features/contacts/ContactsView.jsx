@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { contactDelete, contactsSort } from "../../app/actions/contacts";
+import { contactDelete, contactsFilter, contactsRestore, contactsSort } from "../../app/actions/contacts";
 import { ASC, DES } from "../../app/consts/consts";
 import { useTranslation } from "react-i18next";
 import { Autocomplete, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
@@ -14,7 +14,6 @@ const ContactsView = () => {
   const contacts = useSelector((state) => state?.contactsReducer?.contacts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [pagContacts, setPagContacts] = useState(1); // comienza en página 1
   const [encontrados, setEncontrados] = useState("")
   const itemsPPage = 15;
@@ -23,14 +22,15 @@ const ContactsView = () => {
   const cantPages = Math.ceil(contacts.length / itemsPPage);
   const view = contacts.slice(inicialItems, totalItems);
   console.log(contacts)
-
+  const auxcontacts = useSelector((state) => state?.contactsReducer?.auxcontacts)
 
   const [order, setOrder] = React.useState("");
   const [filter, setFilter] = React.useState("");
 
-  const handleOrderChange = (event) => {
+  const handleOrderChange = async (event) => {
     setOrder(event.target.value);
     // Manejar el cambio en el orden
+    await dispatch(contactsSort(event.target.value, contacts))
     // dispatch(contactsSort(event.target.value, contacts));
   };
 
@@ -55,15 +55,14 @@ const ContactsView = () => {
     });
   };
 
-  async function handleDispatchOrder(event) {
-    if (event.target.value === ASC || event.target.value === DES) {
-      await dispatch(contactsSort(event.target.value, contacts))
-    }
-  }
-  const handleSearch = (event) => {
+
+  const handleSearch = async (event) => {
     const query = event.target.value;
-    const dataEncontrados = contacts.filter(contact => contact.name.includes(query))
-    setEncontrados(dataEncontrados)
+    console.log(query, contacts)
+    if (query !== "")
+      await dispatch(contactsFilter(query, auxcontacts))
+     else
+       await dispatch(contactsRestore(auxcontacts)) 
   };
 
   const CustomSelect = ({ id, value, onChange, label, options }) => {
@@ -107,6 +106,7 @@ const ContactsView = () => {
             id="contacts-autocomplete"
             options={contacts}
             sx={{ width: 300 }}
+            // onChange={handleSearch}
             onInputChange={handleSearch}
             filterOptions={(options, state) => options.filter(option => option.name.toLowerCase().includes(state.inputValue.toLowerCase()))}
             getOptionLabel={(option) => option.name}
