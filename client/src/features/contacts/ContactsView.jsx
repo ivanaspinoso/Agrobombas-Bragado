@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { contactDelete, contactsSort } from "../../app/actions/contacts";
 import { ASC, DES } from "../../app/consts/consts";
 import { useTranslation } from "react-i18next";
-import { Tooltip } from 'react-tooltip';
+import { Autocomplete, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import Swal from "sweetalert2";
 
 const ContactsView = () => {
@@ -16,12 +16,30 @@ const ContactsView = () => {
   const navigate = useNavigate();
 
   const [pagContacts, setPagContacts] = useState(1); // comienza en página 1
+  const [encontrados, setEncontrados] = useState("")
   const itemsPPage = 15;
   const totalItems = pagContacts * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(contacts.length / itemsPPage);
   const view = contacts.slice(inicialItems, totalItems);
-  console.log(view)
+  console.log(contacts)
+
+
+  const [order, setOrder] = React.useState("");
+  const [filter, setFilter] = React.useState("");
+
+  const handleOrderChange = (event) => {
+    setOrder(event.target.value);
+    // Manejar el cambio en el orden
+    // dispatch(contactsSort(event.target.value, contacts));
+  };
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+    // Manejar el cambio en el filtro
+    // dispatch(contactsFilter(event.target.value, contacts));
+  };
+
 
   const handleDelete = (id, name) => {
     Swal.fire({
@@ -44,9 +62,30 @@ const ContactsView = () => {
   }
   const handleSearch = (event) => {
     const query = event.target.value;
-    const encontrados = contacts.filter(contact => contact.name.includes(query))
-    console.log(encontrados)
-    // y ahora como muestro esto en la pantalla?
+    const dataEncontrados = contacts.filter(contact => contact.name.includes(query))
+    setEncontrados(dataEncontrados)
+  };
+
+  const CustomSelect = ({ id, value, onChange, label, options }) => {
+    return (
+      <FormControl fullWidth variant="outlined">
+        <InputLabel id={`${id}-label`}>{label}</InputLabel>
+        <Select
+          labelId={`${id}-label`}
+          id={id}
+          value={value}
+          onChange={onChange}
+          label={label}
+          className="px-2 rounded-md w-[300px]"
+        >
+          {options.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    );
   };
 
 
@@ -62,46 +101,54 @@ const ContactsView = () => {
         </button>
       </div >
       <div className="flex flex-col lg:flex-row gap-5 align-center justify-end">
-        <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
-          <label htmlFor="searchInput" className="mr-2 self-center">
-            {t('contactsView.search')}:
-          </label>
-          <input
-            id="searchInput"
-            type="search"
-            onChange={handleSearch}
-            className="px-2 py-1 border border-gray-300 rounded-md"
+        <div className="flex justify-start lg:justify-center align-center text-lg mb-4 relative">
+          <Autocomplete
+            disablePortal
+            id="contacts-autocomplete"
+            options={contacts}
+            sx={{ width: 300 }}
+            onInputChange={handleSearch}
+            filterOptions={(options, state) => options.filter(option => option.name.toLowerCase().includes(state.inputValue.toLowerCase()))}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => <TextField {...params} label="Search for contacts" />}
+            renderOption={(props, option) => (
+              <li {...props} key={option.id}>
+                {option.name}
+              </li>
+            )}
           />
         </div>
-        <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
-          <label htmlFor="sortSelect" className="mr-2 self-center">
-            {t('contactsView.order')}:
-          </label>
-          <select
-            id="sortSelect"
-            onChange={handleDispatchOrder}
-            className="px-2 py-1 border border-gray-300 rounded-md"
-          >
-            <option value="">{t('contactsView.selectOrder')}</option>
-            <option value={ASC}>A-Z</option>
-            <option value={DES}>Z-A</option>
-          </select>
-        </div>
-        <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
-          <label htmlFor="sortSelect" className="mr-2 self-center">
-            {t('contactsView.filter')}:
-          </label>
-          <select
-            id="sortSelect"
-            onChange={handleDispatchOrder}
-            className="px-2 py-1 border border-gray-300 rounded-md"
-          >
-            <option value="">{t('contactsView.selectOrder')}</option>
-            <option value={ASC}>A-Z</option>
-            <option value={DES}>Z-A</option>
-          </select>
-        </div>
 
+        <div className="flex flex-col lg:flex-row gap-5 align-center justify-end">
+          <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
+            <CustomSelect
+              id="order-select"
+              value={order}
+
+              onChange={handleOrderChange}
+              label={t('contactsView.order')}
+              options={[
+                { value: "", label: t('contactsView.selectOrder') },
+                { value: ASC, label: "A-Z" },
+                { value: DES, label: "Z-A" }
+              ]}
+            />
+          </div>
+
+          <div className="flex justify-start lg:justify-center align-center text-lg mb-4">
+            <CustomSelect
+              id="filter-select"
+              value={filter}
+              onChange={handleFilterChange}
+              label={t('contactsView.filter')}
+              options={[
+                { value: "", label: t('contactsView.selectFilter') },
+                { value: ASC, label: "A-Z" },
+                { value: DES, label: "Z-A" }
+              ]}
+            />
+          </div>
+        </div>
 
       </div>
       <div className="overflow-x-scroll">

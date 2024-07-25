@@ -85,6 +85,7 @@ const resources = {
         group: "Groups",
         filter: "Filter Groups",
         search: "Search",
+        selectFilter: "Select Filter",
       },
       messagesView: {
         text: "Text",
@@ -224,6 +225,7 @@ const resources = {
         group: "Grupos",
         filter: "Filtrar Grupos",
         search: "Buscar",
+        selectFilter: "Seleccionar Filtro",
       },
       messagesView: {
         text: "Texto",
