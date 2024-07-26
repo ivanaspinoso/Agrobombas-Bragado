@@ -108,30 +108,43 @@ export const contactUpdate = (user) => async (dispatch) => {
 export const contactsSort = (order, breeds) => async (dispatch) => {
   let sortBreed = [...breeds]
 
-  sortBreed.sort(function(a,b){
-      var nombreA = a.name.toUpperCase();
-      var nombreB = b.name.toUpperCase();
+  sortBreed.sort(function (a, b) {
+    var nombreA = a.name.toUpperCase();
+    var nombreB = b.name.toUpperCase();
 
-      if(order === ASC){
-          if(nombreA < nombreB){
-              return -1;
-          }
-          if(nombreA > nombreB){
-              return 1
-          }
-          return 0
+    if (order === ASC) {
+      if (nombreA < nombreB) {
+        return -1;
       }
-      if(order === DES){
-          if(nombreA < nombreB){
-              return 1;
-          }
-          if(nombreA > nombreB){
-              return -1
-          }
-          return 0
+      if (nombreA > nombreB) {
+        return 1
       }
+      return 0
+    }
+    if (order === DES) {
+      if (nombreA < nombreB) {
+        return 1;
+      }
+      if (nombreA > nombreB) {
+        return -1
+      }
+      return 0
+    }
   })
-  /* return function(dispatch){
- */      dispatch({type: "contacts/sortContacts", payload: sortBreed})
-/*   }
- */}
+  dispatch({ type: "contacts/sortContacts", payload: sortBreed })
+}
+
+export const contactsFilter = (filter, contacts) => async (dispatch) => {
+  // let filterBreed = [...breeds]
+  // option.name.toLowerCase().includes(state.inputValue.toLowerCase()
+  const toUpper = filter ? filter.toLowerCase() : ""
+  const filterContact = contacts.filter(contact => contact.name.toLowerCase().includes(toUpper))
+  dispatch({ type: "contacts/filterContacts", payload: filterContact })
+}
+
+export const contactsRestore = (auxcontacts) => async (dispatch) => {
+  // let filterBreed = [...breeds]
+  // console.log(filter, breeds)
+  //  const filterContact = contacts.filter(contact => contact.name.toUpperCase().includes(filter))
+  dispatch({ type: "contacts/filterContacts", payload: auxcontacts })
+}
