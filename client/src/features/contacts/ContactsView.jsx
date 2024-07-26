@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
@@ -16,17 +16,15 @@ const ContactsView = () => {
   const navigate = useNavigate();
 
   const [pagContacts, setPagContacts] = useState(1); // comienza en página 1
-  const [encontrados, setEncontrados] = useState("")
+  const [encontrados, setEncontrados] = useState([]);
   const itemsPPage = 15;
   const totalItems = pagContacts * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(contacts.length / itemsPPage);
-  const view = contacts.slice(inicialItems, totalItems);
-  console.log(contacts)
+  const view = encontrados.length > 0 ? encontrados : contacts.slice(inicialItems, totalItems);
 
-
-  const [order, setOrder] = React.useState("");
-  const [filter, setFilter] = React.useState("");
+  const [order, setOrder] = useState("");
+  const [filter, setFilter] = useState("");
 
   const handleOrderChange = (event) => {
     setOrder(event.target.value);
@@ -39,7 +37,6 @@ const ContactsView = () => {
     // Manejar el cambio en el filtro
     // dispatch(contactsFilter(event.target.value, contacts));
   };
-
 
   const handleDelete = (id, name) => {
     Swal.fire({
@@ -57,13 +54,20 @@ const ContactsView = () => {
 
   async function handleDispatchOrder(event) {
     if (event.target.value === ASC || event.target.value === DES) {
-      await dispatch(contactsSort(event.target.value, contacts))
+      await dispatch(contactsSort(event.target.value, contacts));
     }
   }
-  const handleSearch = (event) => {
-    const query = event.target.value;
-    const dataEncontrados = contacts.filter(contact => contact.name.includes(query))
-    setEncontrados(dataEncontrados)
+
+  const handleSearch = (event, value) => {
+    const query = value.toLowerCase();
+    const dataEncontrados = contacts.filter((contact) => contact.name.toLowerCase().includes(query));
+    setEncontrados(dataEncontrados);
+  };
+
+  const handleSelect = (event, value) => {
+    if (value) {
+      setEncontrados([value]);
+    }
   };
 
   const CustomSelect = ({ id, value, onChange, label, options }) => {
@@ -88,7 +92,6 @@ const ContactsView = () => {
     );
   };
 
-
   return (
     <div className="container mx-auto px-4 py-6 flex flex-col flex-grow ">
       <div className="flex flex-row justify-between text-2xl mb-10">
@@ -100,7 +103,7 @@ const ContactsView = () => {
           {t('contactsView.addContact')}
         </button>
       </div >
-      <div className="flex flex-col lg:flex-row gap-5 align-center justify-end">
+      <div className="flex flex-col justify-center lg:flex-row gap-5 items-center lg:justify-end">
         <div className="flex justify-start lg:justify-center align-center text-lg mb-4 relative">
           <Autocomplete
             disablePortal
@@ -108,6 +111,7 @@ const ContactsView = () => {
             options={contacts}
             sx={{ width: 300 }}
             onInputChange={handleSearch}
+            onChange={handleSelect}
             filterOptions={(options, state) => options.filter(option => option.name.toLowerCase().includes(state.inputValue.toLowerCase()))}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => <TextField {...params} label="Search for contacts" />}
@@ -124,7 +128,6 @@ const ContactsView = () => {
             <CustomSelect
               id="order-select"
               value={order}
-
               onChange={handleOrderChange}
               label={t('contactsView.order')}
               options={[
@@ -149,7 +152,6 @@ const ContactsView = () => {
             />
           </div>
         </div>
-
       </div>
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
@@ -192,7 +194,7 @@ const ContactsView = () => {
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => { pagContacts < cantPages ? setPagContacts(pagContacts + 1) : setPagContacts(cantPages); }}>👉</button>
         <button className="mx-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => setPagContacts(cantPages)}>➡</button>
       </nav>
-    </div >
+    </div>
   );
 };
 
