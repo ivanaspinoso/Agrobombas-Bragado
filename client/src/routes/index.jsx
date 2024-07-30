@@ -57,14 +57,14 @@ const Index = () => {
           <Route path="/show-contacts" element={<ContactsView />} />
           <Route path="/add-contact" element={<AddContact />} />
           <Route path="/edit-contact" element={<EditContact />} />
-          
-          <Route path="/show-configs" element={<ConfigsView />} />       
+
+          <Route path="/show-configs" element={<ConfigsView />} />
           <Route path="/edit-config" element={<EditConfig />} />
 
-          <Route path="/show-users" element={<UsersView />} />       
+          <Route path="/show-users" element={<UsersView />} />
           <Route path="/edit-user" element={<EditUser />} />
 
-          <Route path="/show-receipts" element={<ReceiptsView />} />       
+          <Route path="/show-receipts" element={<ReceiptsView />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
