@@ -1,6 +1,6 @@
 var express = require("express");
 
-const { Receipts } = require("../models/index");
+const { Receipts, Users } = require("../models/index");
 
 var router = express.Router();
 
@@ -43,14 +43,23 @@ router.get("/byuser/:id", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-    const { text, number, userid, type } = req.body
+    const { text, number, backwa, type } = req.body
     console.log(req.body)
+    let getUser = await Users.findOne({
+        where: {
+          backwa: backwa,
+        },
+      });
+
     const objReceipt = {
         type,
         text,
         numwa: number,
-        userId: userid
+        userId: getUser.id
     }
+
+    console.log(objReceipt)
+    
     try {
         let newReceipt = await Receipts.create(objReceipt);
         res
@@ -60,6 +69,7 @@ router.post("/add", async (req, res) => {
         console.log(error);
         res.status(400).json({ message: "No se pudo guardar mensaje" + error });
     }
+
 })
 
 // Borrar mensaje
