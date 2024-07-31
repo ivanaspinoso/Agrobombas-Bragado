@@ -2,7 +2,7 @@ const axios = require("axios");
 
 var express = require("express");
 
-const { Messages, Contacts } = require("../models/index");
+const { Messages, Contacts , Users} = require("../models/index");
 const Op = require("sequelize");
 
 var router = express.Router();
@@ -33,11 +33,11 @@ router.get("/byuser/:id", async (req, res) => {
       order: [["id", "DESC"]],
       include: {
         model: Contacts,
-        where: { userId: id },
+        where: { userId: id }
       },
     });
-    console.log(getUserMessages);
-    return res.send(getUserMessages);
+    console.log(getUserMessages)
+    return res.send(getUserMessages)
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener usuarios \n" + err,
@@ -55,12 +55,12 @@ router.get("/queued", async (req, res) => {
         model: Contacts,
         where: {
           userId: id,
-          sended: false,
+          sended: false
         },
       },
     });
-    console.log(getUserMessages);
-    return res.send(getUserMessages);
+    console.log(getUserMessages)
+    return res.send(getUserMessages)
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener usuarios \n" + err,
@@ -94,6 +94,42 @@ router.post("/tosend", async (req, res) => {
         usernames.push(user.username)
       })
  */ return res.send(getAllMessages);
+  } catch (err) {
+    return res.send({
+      message: "No se pudieron obtener mensajes \n " + err,
+    });
+  }
+});
+
+//Obtener todos los mensajes a enviar
+router.post("/tosendall", async (req, res) => {
+  const { userid, datesend, timesend } = req.body
+  // console.log(req.body, "r1 " + new Date().toISOString(), "r2" + new Date(new Date() - 24 * 60 * 60 * 1000))
+  try {
+    let getAllMessages = await Messages.findAll({
+      include: {
+        model: Contacts,
+        include: {
+          model: Users
+        }
+      },
+      where: {
+        senddate: datesend,
+        // {
+        // [Op.lte]: datesend + ' 23:59:59.999999',                             // <= 6
+        // [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+        // },
+        sendtime: timesend,
+        sended: false
+      },
+      order: [["senddate", "ASC"]],
+
+    });
+/*       let usernames = []
+      getAllUserNames.map((user) => {
+        usernames.push(user.username)
+      })
+ */      return res.send(getAllMessages);
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener mensajes \n " + err,
@@ -159,6 +195,9 @@ router.post("/add", async (req, res) => {
     sended,
     backwa,
     contactid,
+    sendeddate,
+    sendedtime,
+    result
   } = req.body;
 
   let objMessage = {
@@ -167,11 +206,14 @@ router.post("/add", async (req, res) => {
     senddate: senddates,
     sendtime: sendtimes,
     contactId: contactid,
+    sendeddate,
+    sendedtime,
+    result
   };
   if (inmediate) {
     objMessage = {
       ...objMessage,
-      sended: true,
+      sended: sended
     };
   } else {
     objMessage = {
@@ -209,29 +251,37 @@ router.post("/add", async (req, res) => {
 });
 
 router.put("/result", async (req, res) => {
-  const { id, result } = req.body;
+  const { messid, result, sended, sendeddate, sendedtime, text, senddate, sendtime } = req.body;
   console.log(req.body);
   if (!result || result === "") {
     return res
       .status(400)
       .json({ error: "Falta ingresar resultado correspondiente" });
-  } else if (!id || id <= 0) {
-    return res.status(400).json({ error: "Ingresar id de mensaje" });
-  }
-  const objMessUpd = {
-    id,
-    result,
+    } else if (!messid || messid <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Ingresar id de mensaje" });
+    }
+    const objMessUpd = {
+      id: messid,
+      result,
+      sendeddate,
+      sendedtime,
+      sended,
+      text,
+      senddate,
+      sendtime,
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
     let updMess = await Messages.update(objMessUpd, {
       where: {
-        id,
+        id: messid,
       },
     });
     // si todo sale bien devuelvo el objeto agregado
     console.log("Mensaje modificado");
-    res.send(updMess);
+    res.send(objMessUpd);
   } catch (err) {
     // en caso de error lo devuelvo al frontend
     console.log(err);
