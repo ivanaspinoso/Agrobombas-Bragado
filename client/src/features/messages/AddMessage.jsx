@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { messageAdd, resultMessage } from "../../app/actions/messages";
@@ -11,6 +11,13 @@ import EmojiPicker from 'emoji-picker-react';
 let data = []
 let dataGroup = [];
 
+const formatDate = (date) => {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString().slice(-2); // Get last 2 digits of the year
+  return `${day}-${month}-${year}`;
+};
+
 const AddMessage = () => {
   const { t } = useTranslation();
   const login = useSelector((state) => state.usersReducer.login)
@@ -20,14 +27,13 @@ const AddMessage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(groups)
   // senddate, sendtime, sended, sendedate, sendedtime
 
   const hoy = new Date()/* .toLocaleDateString();  */
   const [textm, setTextM] = useState("");
   const [inmediate, setInmediate] = useState(true);
   const [repite, setRepite] = useState(false);
-  const [senddate, setSendDate] = useState(hoy);
+  const [senddate, setSendDate] = useState(formatDate(hoy));
   const [sendtime, setSendTime] = useState("09:00");
   const [todos, setTodos] = useState(false)
   const [days, setDays] = useState(30)
@@ -159,17 +165,17 @@ const AddMessage = () => {
       selectedcontacts.map((contacttosend) => {
         var senddates = senddate
         var sendtimes = sendtime
-  
+
         // const isContactSend = destin.filter((aenviar) => aenviar.id == contact);
         let texttosend = textm.replaceAll("-NB-", contacttosend.name)
         texttosend = texttosend.replaceAll("-EM-", configs.business)
         texttosend = texttosend.replaceAll("-EMS-", configs.slogan)
-  
+
         // replaceVariables(textm, contacttosend.name)
         console.log("Nuevo texto: " + texttosend)
         const message = { text: texttosend, inmediate, senddates, sendtimes, contactid: contacttosend.id };
-  
-  
+
+
         if (message.inmediate === true) {
           console.log(contacttosend.cellphone)
           const numbertosend = contacttosend.cellphone + "@c.us"
@@ -183,11 +189,11 @@ const AddMessage = () => {
             headers: { accept: 'application/json', 'content-type': 'application/json', authorization: REACT_APP_AUTHOR },
             body: JSON.stringify(params)
           };
-  
+
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/action/send-message', options)
             .then(response => response.json())
             .then(async response => {
-  
+
               console.log(response)
               var datetime = new Date();
               var fecha = datetime.getFullYear() + "-" + (datetime.getMonth() + 1).toString().padStart(2, '0') + "-" + datetime.getDate().toString().padStart(2, "0")
@@ -199,26 +205,26 @@ const AddMessage = () => {
                 sended: response.data.status === "success" ? true : false,
                 result: response.data.status // "Mensaje enviado con éxito"
               }
-  
+
               dispatch(messageAdd(objMess));
-  
+
             })
             .catch(err => console.error(err));
         } else {
           dispatch(messageAdd(message));
-  
+
         }
-  
+
         if (repite) {
           console.clear()
           setInmediate(false)
           let sumdays = new Date(senddates)
-  
+
           let mesobten = parseInt(sumdays.getMonth())
           console.log("Primer mes" + mesobten)
           let elmes = parseInt(mesobten) + parseInt(xmonths)
           console.log("Primer somatorial, elmes", elmes)
-  
+
           for (let i = 0; i < veces; i++) {
             if (mensual) {
               sumdays.setMonth(elmes)
@@ -233,16 +239,20 @@ const AddMessage = () => {
             console.log("El mes " + elmes)
             const messrepite = { text: texttosend, inmediate, senddates, sendtimes, contactid: contacttosend.id };
             dispatch(messageAdd(messrepite));
-  
+
           }
         }
-  
+
       })
 
     }
 
     navigate("/show-messages", { replace: true });
   };
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setSendDate(today);
+  }, []);
 
   function handleGroupChangeSelect(e) {
     console.log(input.groups)
@@ -320,8 +330,8 @@ const AddMessage = () => {
         Agregar mensaje
       </h2>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="my-5">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="todos">
+        <div className="my-5 flex justify-start items-center gap-5">
+          <label className="block text-gray-700 text-sm font-bold flex justify-start items-center gap-5" htmlFor="todos">
             <input className="form-checkbox h-5 w-5 text-indigo-600" type="checkbox" id="todos" checked={todos} onChange={() => setTodos(!todos)} />
             Todos los destinatarios
           </label>
@@ -381,21 +391,31 @@ const AddMessage = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="textAreaExample">
             Message
           </label>
-          <textarea className="form-textarea mt-1 px-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
+          <div className="flex flex-row gap-10">
+            <textarea className="form-textarea mt-1 px-1 block w-full border border-gray-300 rounded" id="textAreaExample" rows="4" value={textm} onChange={(e) => setTextM(e.target.value)} required></textarea>
+            <div>
+              {openIconModal ? (
+                <div onClick={() => { setOpenIconModal(false) }} className="flex flex-row gap-2 mb-4 w-[200px]">
+                  <img src="/close.png" style={{
+                    height: "25px",
+                    width: "25px",
+                  }} />
+                  <label> {t('addMessage.closeIcon')} </label>
+                </div>
+              ) : <div onClick={() => { setOpenIconModal(true) }} className="flex flex-row gap-2 mb-4 w-[200px]">
+                <img src="/plus.png" style={{
+                  height: "25px",
+                  width: "25px",
+                }} />
+                <label>{t('addMessage.addIcon')}</label>
+              </div>}
+
+
+              <EmojiPicker onEmojiClick={onEmojiClick} open={openIconModal} />
+            </div>
+          </div>
         </div>
 
-        {openIconModal ? (
-          <div onClick={() => { setOpenIconModal(false) }} className="flex flex-row gap-2 mb-4">
-            <img src="/close.png" width={25} />
-            <label> {t('addMessage.closeIcon')} </label>
-          </div>
-        ) : <div onClick={() => { setOpenIconModal(true) }} className="flex flex-row gap-2 mb-4">
-          <img src="/plus.png" width={25} />
-          <label>{t('addMessage.addIcon')}</label>
-        </div>}
-
-
-        <EmojiPicker onEmojiClick={onEmojiClick} open={openIconModal} />
 
         <div>
           <p> {t('addMessage.title')} </p>
