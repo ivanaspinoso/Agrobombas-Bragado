@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { messageDelete } from "../../app/actions/messages";
 import { Tooltip } from 'react-tooltip';
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const MessagesView = () => {
   const { t } = useTranslation();
@@ -19,7 +21,28 @@ const MessagesView = () => {
   const totalItems = pagBreeds * itemsPPage;
   const inicialItems = totalItems - itemsPPage;
   const cantPages = Math.ceil(messages.length / itemsPPage);
-  const view = messages.slice(inicialItems, totalItems);
+  const [searchText, setSearchText] = useState("");
+  const [selectedContact, setSelectedContact] = useState(null);
+
+  // Filtra la lista de contactos en función del texto de búsqueda
+  const filteredContacts = useMemo(() => {
+    const uniqueContacts = [...new Set(messages.map(message => message.contact.name))];
+    return uniqueContacts
+      .filter(name => name.toLowerCase().includes(searchText.toLowerCase()))
+      .map(name => ({ label: name }));
+  }, [messages, searchText]);
+
+  // Filtra los mensajes basados en el texto de búsqueda y el contacto seleccionado
+  const filteredMessages = useMemo(() => {
+    return messages
+      .filter(message => {
+        const matchesContact = !selectedContact || message.contact.name === selectedContact.label;
+        const matchesSearchText = message.contact.name.toLowerCase().includes(searchText.toLowerCase());
+        return matchesContact && matchesSearchText;
+      });
+  }, [messages, selectedContact, searchText]);
+
+  const view = filteredMessages.slice(inicialItems, totalItems);
 
   const handleDelete = (id, text) => {
     swal
@@ -46,6 +69,19 @@ const MessagesView = () => {
           {t('messagesView.addMessage')}
         </button>
       </h2>
+
+      {/* Componente Autocomplete para filtrar mensajes */}
+      <div className="mb-4 flex justify-end">
+        <Autocomplete
+          options={filteredContacts}
+          getOptionLabel={(option) => option.label}
+          sx={{ width: '250px' }}
+          onInputChange={(event, newInputValue) => setSearchText(newInputValue)}
+          onChange={(event, value) => setSelectedContact(value)}
+          renderInput={(params) => <TextField {...params} label={t('messagesView.to')} variant="outlined" />}
+        />
+      </div>
+
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
@@ -60,7 +96,7 @@ const MessagesView = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {view.map((message, index) => {
-              const { id, text, sended, contact, senddate, sendtime } = message;
+              const { id, text, contact, senddate, sendtime } = message;
               return (
                 <tr key={id}>
                   <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
@@ -69,10 +105,10 @@ const MessagesView = () => {
                   <td className="px-4 py-2">{senddate}</td>
                   <td className="px-4 py-2">{sendtime}</td>
                   <td className="px-4 py-2 flex gap-2">
-                    {/* <Link to="/edit-message" state={{ id, text, sended }}>
-                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><FaEdit /></button>
-                    </Link> */}
-                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(id, text, senddate,sendtime)}><FaTrashAlt /></button>
+                    <Link to={`/view-message/${id}`} state={{ id, text }}>
+                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><FaEye /></button>
+                    </Link>
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(id, text)}><FaTrashAlt /></button>
                   </td>
                 </tr>
               );
