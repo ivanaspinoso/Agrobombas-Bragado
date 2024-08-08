@@ -24,7 +24,6 @@ const MessagesView = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedContact, setSelectedContact] = useState(null);
 
-  // Filtra la lista de contactos en función del texto de búsqueda
   const filteredContacts = useMemo(() => {
     const uniqueContacts = [...new Set(messages.map(message => message.contact.name))];
     return uniqueContacts
@@ -32,7 +31,6 @@ const MessagesView = () => {
       .map(name => ({ label: name }));
   }, [messages, searchText]);
 
-  // Filtra los mensajes basados en el texto de búsqueda y el contacto seleccionado
   const filteredMessages = useMemo(() => {
     return messages
       .filter(message => {
@@ -70,7 +68,6 @@ const MessagesView = () => {
         </button>
       </h2>
 
-      {/* Componente Autocomplete para filtrar mensajes */}
       <div className="mb-4 flex justify-end">
         <Autocomplete
           options={filteredContacts}
