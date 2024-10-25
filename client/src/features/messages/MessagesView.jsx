@@ -81,13 +81,13 @@ const MessagesView = () => {
 
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
-          <thead className="bg-green-500 text-white">
+          <thead className="bg-[#0e6fa5] text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
               <th className="px-4 py-2 text-left">{t('messagesView.text')}</th>
               <th className="px-4 py-2 text-left">{t('messagesView.to')}</th>
-              <th className="px-4 py-2 text-left">{t('messagesView.send')}</th>
-              <th className="px-4 py-2 text-left">{t('messagesView.time')}</th>
+              {/* <th className="px-4 py-2 text-left">{t('messagesView.send')}</th> */}
+              {/* <th className="px-4 py-2 text-left">{t('messagesView.time')}</th> */}
               <th className="px-4 py-2 text-left">{t('messagesView.action')}</th>
             </tr>
           </thead>
@@ -99,8 +99,8 @@ const MessagesView = () => {
                   <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>
                   <td className="px-4 py-2">{text}</td>
                   <td className="px-4 py-2">{contact.name}</td>
-                  <td className="px-4 py-2">{senddate}</td>
-                  <td className="px-4 py-2">{sendtime}</td>
+                  {/* <td className="px-4 py-2">{senddate}</td>
+                  <td className="px-4 py-2">{sendtime}</td> */}
                   <td className="px-4 py-2 flex gap-2">
                     <Link to={`/view-message/${id}`} state={{ id, text }}>
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><FaEye /></button>
