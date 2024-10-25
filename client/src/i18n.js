@@ -229,12 +229,12 @@ const resources = {
       },
       messagesView: {
         text: "Nombre",
-        to: "Codigo",
+        to: "Nombre",
         //  send: "",
         // time: "",
         action: "Acción",
-        addMessage: "Agregar Mensaje",
-        messageList: "Lista de Mensajes",
+        addMessage: "Agregar Productos",
+        messageList: "Lista de Productos",
       },
       queue: {
         text: "Nombre",
@@ -242,7 +242,7 @@ const resources = {
         //  send: "",
         //  time: "",
         action: "Acción",
-        addMessage: "Agregar Mensaje",
+        addMessage: "Agregar Productos",
         queueList: "Registro de empleados",
       },
       send: {
@@ -252,7 +252,7 @@ const resources = {
         result: "Resultado",
         time: "Hora",
         action: "Acción",
-        addMessage: "Agregar Mensaje",
+        addMessage: "Agregar Productos",
         sentList: "Listado de mensajes enviados",
         firstPage: "Primer Pagina",
         before: "Anterior",
