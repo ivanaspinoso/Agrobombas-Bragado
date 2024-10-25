@@ -62,7 +62,7 @@ const MessagesView = () => {
     <div className="container mx-auto px-4 flex flex-col flex-grow">
       <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-5">
         {t('messagesView.messageList')}
-        <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
+        <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-message")}>
           <FcAddRow className="mr-2 h-5 w-5" />
           {t('messagesView.addMessage')}
         </button>

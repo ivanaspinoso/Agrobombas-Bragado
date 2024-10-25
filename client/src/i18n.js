@@ -9,6 +9,17 @@ const resources = {
       configuration: {
         systemConfiguration: "System Configuration",
       },
+
+      translation: {
+        // Añadir nuevas traducciones aquí si es necesario
+        familieView: {
+          name: "Family Name",
+          description: "Description",
+          actions: "Actions",
+          addFamilies: "Add Family",
+          listFamily: "Family List",
+        },
+      },
       login: {
         user: "User",
         password: "Password",
@@ -149,12 +160,21 @@ const resources = {
       configuration: {
         systemConfiguration: "Configuracion del sistema",
       },
+
+      
       login: {
         user: "Usuario",
         password: "Contraseña",
         login: "Ingresar",
         register: "No tienes cuenta? ",
         register1: "Registrate",
+      },
+      familieView: {
+        name: "Nombre de la familia",
+        description: "Descripción",
+        actions: "Acciones",
+        addFamilies: "Agregar Familia",
+        listFamily: "Lista de Familias",
       },
       navbar: {
         home: "Inicio",
@@ -229,12 +249,12 @@ const resources = {
       },
       messagesView: {
         text: "Nombre",
-        to: "Codigo",
+        to: "Nombre",
         //  send: "",
         // time: "",
         action: "Acción",
-        addMessage: "Agregar Mensaje",
-        messageList: "Lista de Mensajes",
+        addMessage: "Agregar Productos",
+        messageList: "Lista de Productos",
       },
       queue: {
         text: "Nombre",
@@ -242,7 +262,7 @@ const resources = {
         //  send: "",
         //  time: "",
         action: "Acción",
-        addMessage: "Agregar Mensaje",
+        addMessage: "Agregar Productos",
         queueList: "Registro de empleados",
       },
       send: {
@@ -252,7 +272,7 @@ const resources = {
         result: "Resultado",
         time: "Hora",
         action: "Acción",
-        addMessage: "Agregar Mensaje",
+        addMessage: "Agregar Productos",
         sentList: "Listado de mensajes enviados",
         firstPage: "Primer Pagina",
         before: "Anterior",
