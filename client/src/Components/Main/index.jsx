@@ -148,6 +148,7 @@ const Main = () => {
           { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
           { src: receipts, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
           { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
+          { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
           // { src: autoreplys, title: t("main.autoReply"), text: t("main.autoReplyDescription"), link: login.autoreplys ? '/building' : '/opcional' },
           // { src: bots, title: t("main.bots"), text: t("main.botsDescription"), link: login.autobots ? '/building' : '/opcional' }
         ].map((item, index) => (

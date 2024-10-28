@@ -44,7 +44,7 @@ const CompanysView = () => {
         </div> */}
       </div>
       <table className="table-auto w-full mb-10">
-        <thead className="bg-green-500 text-white">
+        <thead className="bg-[#0e6fa5] text-white">
           <tr>
             <th className="px-4 py-2 text-left">ID</th>
             <th className="px-4 py-2 text-left">{t('config.bussiness')}</th>

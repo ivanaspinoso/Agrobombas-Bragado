@@ -166,8 +166,8 @@ const resources = {
         user: "Usuario",
         password: "Contraseña",
         login: "Ingresar",
-        register: "No tienes cuenta? ",
-        register1: "Registrate",
+        // register: "No tienes cuenta? ",
+        // register1: "Registrate",
       },
       familieView: {
         name: "Nombre de la familia",
@@ -220,6 +220,9 @@ const resources = {
         usersDescription: "Control de usuarios del sistema.",
         usersList: "Listado de usuarios",
         usersListDescription: "Ver lista de usuarios registrados.",
+        families: "Familias/Rubros",
+        familiesDescription:
+          "Edite datos del rubro de su producto ",
         addUser: "Agregar Usuario",
         addUserDescription: "Agregar un nuevo usuario al sistema.",
         userContacts: "Contactos",

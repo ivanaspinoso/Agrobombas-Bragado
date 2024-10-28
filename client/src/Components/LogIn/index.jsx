@@ -51,21 +51,21 @@ const LogIn = () => {
 
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-[#0e6fa5] to-white flex items-center justify-center">
-            <div className="absolute top-4 left-4">
+            <div className="absolute top-12 ">
                 <Link to="/gestion" className="text-white text-xl font-semibold hover:text-gray-500 transition duration-300 flex flex-row gap-4 justify-center items-center">
                     <img src={Agrobombas} alt="Logo Agrobombas Bragado" className="w-18 h-12 rounded-md" />
                     Agro Bombas Bragado
                 </Link>
 
             </div>
-            <div className='absolute top-4 right-4'>
+            {/* <div className='absolute top-4 right-4'>
                 <div className="flex space-x-4 items-center justify-end">
                     <button
                         onClick={() => changeLanguage('en')}
                         className={`flex items-center px-3 py-2 rounded ${isActive('en') ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'}`}
                     >
                         <img src={Usa} alt="English" className="w-4 h-4 mr-2" />
-                        Es
+                        EN
                     </button>
                     <button
                         onClick={() => changeLanguage('es')}
@@ -75,7 +75,7 @@ const LogIn = () => {
                         ES
                     </button>
                 </div>
-            </div>
+            </div> */}
             <div className="bg-white rounded-lg p-8 max-w-md w-full">
                 <h2 className="text-center text-2xl font-bold mb-5">
                     ¡Bienvenido!
@@ -159,7 +159,7 @@ const LogIn = () => {
                                     <button type="submit" disabled={isSubmitting} className="bg-[#0e6fa5] hover:bg-[#3bc7f3] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                         {t("login.login")}
                                     </button>
-                                    <div className='flex flex-row items-center justify-center'>
+                                    {/* <div className='flex flex-row items-center justify-center'>
                                         <button
                                             onClick={() => navigate('/login')}
                                             className="inline-block align-baseline font-semibold text-sm hover:text-[#3bc7f3] pr-1"
@@ -173,7 +173,7 @@ const LogIn = () => {
                                             {t("login.register1")}
 
                                         </button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </Form>
                         );
