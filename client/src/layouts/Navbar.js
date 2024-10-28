@@ -79,6 +79,13 @@ const Navbar = () => {
 
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
+                to="/show-users"
+              >
+                {t("Usuarios")}
+              </Link>
+
+              <Link
+                className="text-white hover:text-gray-300 transition duration-300"
                 to="/show-families"
               >
                 {t("Familias")}
@@ -169,6 +176,7 @@ const Navbar = () => {
                 { to: "/sended-messages", text: t("navbar.sent") },
                 { to: "/show-receipts", text: t("navbar.received") },
                 { to: "/show-configs", text: t("navbar.settings") },
+                { to: "/show-users", text: t("navbar.settings") },
               ].map((link) => (
                 <Link
                   key={link.to}
