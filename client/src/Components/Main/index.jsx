@@ -153,14 +153,15 @@ const Main = () => {
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
         {[
           { src: proveedores, title: t("main.contactGroup"), text: t("main.contactGroupDescription"), link: '/show-groups' },
-          { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-companys' },
+          { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
           { src: mensaje, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
           { src: clientes, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
+          { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
           { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
           { src: receipts, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
-          { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
-          { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
           { src: config, title: t("main.users"), text: t("main.usersDescription"), link: '/show-users?' },
+
+          { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-companys' },
           // { src: autoreplys, title: t("main.autoReply"), text: t("main.autoReplyDescription"), link: login.autoreplys ? '/building' : '/opcional' },
           // { src: bots, title: t("main.bots"), text: t("main.botsDescription"), link: login.autobots ? '/building' : '/opcional' }
         ].map((item, index) => (

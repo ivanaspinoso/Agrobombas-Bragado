@@ -192,12 +192,12 @@ const resources = {
         successVincMessage: "Su cuenta esta vinculada a WhatsApp",
         deniedVincMessage: "Aun no se ha vinculado su WhatsApp",
         contactGroup: "Proveedores",
-        contactGroupDescription:
-          "Aqui podrás administrar y asignar a tus proveedores para garantizar un flujo continuo de materiales y repuestos esenciales.",
-        contact: "Empresa Propietaria",
-        contactDescription:
-          " Ingresa los detalles de la empresa principal que gestiona las operaciones. Administra la información clave de la empresa propietaria, asegurando un manejo eficiente de los recursos.",
+        
         message: "Productos",
+
+        receivedMessagesDescription:
+        "Lleva un registro de pagos, cobros y cualquier otra transacción vinculada a tu cuenta corriente, facilitando el control de los balances pendientes.",
+      settings: "Venta de productos",
         messageDescription:
           "Aqui podrás agregar y gestionar los productos y artículos que ofreces, actualizando fácilmente el stock disponible.",
         queue: "Clientes",
@@ -207,9 +207,7 @@ const resources = {
         sentMessagesDescription:
           "Mantén un registro claro de las transacciones diarias para garantizar que todas las operaciones financieras estén ordenadas y disponibles para consulta.",
         receivedMessages: "Movimientos cuentas corrientes",
-        receivedMessagesDescription:
-          "Lleva un registro de pagos, cobros y cualquier otra transacción vinculada a tu cuenta corriente, facilitando el control de los balances pendientes.",
-        settings: "Venta de productos",
+        
         settingsDescription:
           "Edite datos de su empresa. Y además se usará para vincular el WhatsApp®",
         autoReply: "Autorespuestas",
@@ -229,6 +227,11 @@ const resources = {
         userContactsDescription: "Contacto de los usuarios.",
         userGroups: "Grupos",
         userGroupsDescription: "Grupos de Contacto de los usuarios.",
+        contactGroupDescription:
+          "Aqui podrás administrar y asignar a tus proveedores para garantizar un flujo continuo de materiales y repuestos esenciales.",
+        contact: "Empresa Propietaria",
+        contactDescription:
+          " Ingresa los detalles de la empresa principal que gestiona las operaciones. Administra la información clave de la empresa propietaria, asegurando un manejo eficiente de los recursos.",
       },
       groupView: {
         name: "Nombre",

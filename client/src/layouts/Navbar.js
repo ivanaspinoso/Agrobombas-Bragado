@@ -76,26 +76,11 @@ const Navbar = () => {
               >
                 {t("navbar.groups")}
               </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-users"
-              >
-                {t("Usuarios")}
-              </Link>
-
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
                 to="/show-families"
               >
                 {t("Familias")}
-              </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-companys"
-              >
-                {t("navbar.contacts")}
               </Link>
 
               <Link
@@ -114,6 +99,13 @@ const Navbar = () => {
 
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
+                to="/show-configs"
+              >
+                {t("navbar.settings")}
+              </Link>
+
+              <Link
+                className="text-white hover:text-gray-300 transition duration-300"
                 to="/sended-messages"
               >
                 {t("navbar.sent")}
@@ -128,10 +120,33 @@ const Navbar = () => {
 
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-configs"
+                to="/show-users"
               >
-                {t("navbar.settings")}
+                {t("Usuarios")}
               </Link>
+
+              <Link
+                className="text-white hover:text-gray-300 transition duration-300"
+                to="/show-companys"
+              >
+                {t("navbar.contacts")}
+              </Link>
+
+              
+
+              
+
+             
+
+              
+
+              
+
+        
+
+              
+
+              
             </>
             
           )}
@@ -171,8 +186,8 @@ const Navbar = () => {
                 { to: "/show-groups", text: t("navbar.groups") },
                 { to: "/show-families", text: t("navbar.families") },
                 { to: "/show-contacts", text: t("navbar.contacts") },
-                { to: "/show-messages", text: t("navbar.messages") },
                 { to: "/queue-messages", text: t("navbar.stack") },
+                { to: "/show-messages", text: t("navbar.messages") },
                 { to: "/sended-messages", text: t("navbar.sent") },
                 { to: "/show-receipts", text: t("navbar.received") },
                 { to: "/show-configs", text: t("navbar.settings") },
