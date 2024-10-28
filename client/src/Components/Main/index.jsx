@@ -24,6 +24,7 @@ import enviados from "../../assets/images/whatsapp-enviado.webp";
 // import { getConfigbyUser } from '../../app/actions/configs';
 import { getAllFamilies } from '../../app/actions/families';
 import { getCompany } from '../../app/actions/companys';
+import { getAllUsers } from '../../app/actions/users';
 
 const Main = () => {
   const { t, i18n } = useTranslation()
@@ -33,13 +34,21 @@ const Main = () => {
   const login = useSelector((state) => state.usersReducer.login);
   // const [isloading, setIsLoading] = useState(true);
 
-  async function fetchData() {
+  const fetchData = async () => {
     console.log("loginid", login.id)
     if (login.id) {
       try {
 
+        // Relleno estado de usuarios
+        const usersResponse = await dispatch(getAllUsers());
+        if (usersResponse && usersResponse.data) {
+          console.log('Usuarios data:', usersResponse.data);
+        } else {
+          console.error('No config users available');
+        }
+
         // Relleno estado de familias
-        const familyResponse = dispatch(getAllFamilies());
+        const familyResponse = await dispatch(getAllFamilies());
         if (familyResponse && familyResponse.data) {
           console.log('Familias data:', familyResponse.data);
         } else {
@@ -47,13 +56,13 @@ const Main = () => {
         }
 
         // Relleno estado de empresa
-        const companyResponse = dispatch(getCompany(1));
+        const companyResponse = await dispatch(getCompany(1));
         if (companyResponse && companyResponse.data.company) {
           console.log('Empresa data:', companyResponse.data.company);
         } else {
           console.error('No config family available');
         }
-        
+
 
         /*        // Intenta obtener los datos
                const configResponse = await dispatch(getConfigbyUser(login.id));
