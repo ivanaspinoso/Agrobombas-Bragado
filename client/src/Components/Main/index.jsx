@@ -34,17 +34,9 @@ const Main = () => {
   const [isloading, setIsLoading] = useState(true);
 
   async function fetchData() {
-    console.log("loginid",login.id)
+    console.log("loginid", login.id)
     if (login.id) {
       try {
-
-        // Relleno estado de empresa
-        const companyResponse = dispatch(getCompany(1));
-        if (companyResponse && companyResponse.data.company) {
-          console.log('Empresa data:', companyResponse.data.company);
-        } else {
-          console.error('No config family available');
-        }
 
         // Relleno estado de familias
         const familyResponse = dispatch(getAllFamilies());
@@ -54,57 +46,65 @@ const Main = () => {
           console.error('No config family available');
         }
 
- /*        // Intenta obtener los datos
-        const configResponse = await dispatch(getConfigbyUser(login.id));
-        if (configResponse && configResponse.data) {
-          console.log('Config data:', configResponse.data);
+        // Relleno estado de empresa
+        const companyResponse = dispatch(getCompany(1));
+        if (companyResponse && companyResponse.data.company) {
+          console.log('Empresa data:', companyResponse.data.company);
         } else {
-          console.error('No config data available');
+          console.error('No config family available');
         }
-  
-        const contactsResponse = await dispatch(getUserContacts(login.id));
-        if (contactsResponse && contactsResponse.data) {
-          console.log('Contacts data:', contactsResponse.data);
-        } else {
-          console.error('No contacts data available');
-        }
-  
-        const categoriesResponse = await dispatch(getUserCategories(login.id));
-        if (categoriesResponse && categoriesResponse.data) {
-          console.log('Categories data:', categoriesResponse.data);
-        } else {
-          console.error('No categories data available');
-        }
-  
-        const messagesResponse = await dispatch(getUserMessages(login.id));
-        if (messagesResponse && messagesResponse.data) {
-          console.log('Messages data:', messagesResponse.data);
-        } else {
-          console.error('No messages data available');
-        }
-  
-        if (login.isAdmin) {
-          await dispatch(getAllUsers());
-        } */
-  
-/*         if (login.backwa) {
-          const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
-          fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
-            .then(response => response.json())
-            .then(async (response) => {
-              const status = response.me.status;
-              if (status === "success" && login.vinculated === false) {
-                const objUser = {
-                  id: login.id,
-                  vinculated: true,
-                  qr: "",
-                  backwa: login.backwa
-                }
-                await dispatch(userUpdateAdm(objUser))
-              }
-            })
-            .catch(err => console.error(err));
-        } */
+
+        /*        // Intenta obtener los datos
+               const configResponse = await dispatch(getConfigbyUser(login.id));
+               if (configResponse && configResponse.data) {
+                 console.log('Config data:', configResponse.data);
+               } else {
+                 console.error('No config data available');
+               }
+         
+               const contactsResponse = await dispatch(getUserContacts(login.id));
+               if (contactsResponse && contactsResponse.data) {
+                 console.log('Contacts data:', contactsResponse.data);
+               } else {
+                 console.error('No contacts data available');
+               }
+         
+               const categoriesResponse = await dispatch(getUserCategories(login.id));
+               if (categoriesResponse && categoriesResponse.data) {
+                 console.log('Categories data:', categoriesResponse.data);
+               } else {
+                 console.error('No categories data available');
+               }
+         
+               const messagesResponse = await dispatch(getUserMessages(login.id));
+               if (messagesResponse && messagesResponse.data) {
+                 console.log('Messages data:', messagesResponse.data);
+               } else {
+                 console.error('No messages data available');
+               }
+         
+               if (login.isAdmin) {
+                 await dispatch(getAllUsers());
+               } */
+
+        /*         if (login.backwa) {
+                  const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
+                  fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
+                    .then(response => response.json())
+                    .then(async (response) => {
+                      const status = response.me.status;
+                      if (status === "success" && login.vinculated === false) {
+                        const objUser = {
+                          id: login.id,
+                          vinculated: true,
+                          qr: "",
+                          backwa: login.backwa
+                        }
+                        await dispatch(userUpdateAdm(objUser))
+                      }
+                    })
+                    .catch(err => console.error(err));
+                } */
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -112,7 +112,7 @@ const Main = () => {
       navigate("/login");
     }
   }
-  
+
   fetchData()
 
   return (
@@ -127,11 +127,11 @@ const Main = () => {
             {/* <span>{!login.vinculated ? t("main.deniedVincMessage") : t("main.successVincMessage")} </span> */}
             {login.vinculated ? (
               // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-[#0e6fa5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               // </svg>
             ) : (
               // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               // </svg>
             )}
           </div>

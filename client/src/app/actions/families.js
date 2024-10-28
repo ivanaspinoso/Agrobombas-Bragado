@@ -15,6 +15,7 @@ import {
 // Obtener todas las familias
 export const getAllFamilies = () => async (dispatch) => {
   try {
+    console.log("action get",allFamiliesEndpoint)
     const { data } = await axios.get(`${allFamiliesEndpoint}`);
     dispatch({ type: "families/allFamilies", payload: data });
     // dispatch(allFamilies(data)); // Esto despacha la lista de familias al estado global

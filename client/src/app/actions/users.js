@@ -225,6 +225,8 @@ export const logOut = () => async (dispatch) => {
     await dispatch({ type: "contacts/logoutContacts", payload: [] });
     await dispatch({ type: "messages/logoutMessages", payload: [] });
     await dispatch({ type: "receipts/logoutReceipts", payload: [] });
+    await dispatch({ type: "families/logoutFamilies", payload: [] });
+    await dispatch({ type: "company/logoutCompany", payload: [] });
     console.log("saliendo");
   } catch (err) {
     console.log(err);

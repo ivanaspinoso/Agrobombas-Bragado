@@ -28,6 +28,9 @@ export const familiesSlice = createSlice({
       const id = action.payload;
       state.families = state.families.filter((family) => family.id !== id);
     },
+    logoutFamilies: (state, action) => {
+      state.families = action.payload
+    }
   },
 });
 
