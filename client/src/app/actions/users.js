@@ -8,23 +8,23 @@ import {
   updadmUserssEndpoint,
   delUsersEndpoint,
 } from "../consts/consts";
-import {
-  addUser,
-  loginUser,
-  logoutUser,
-  getQr,
-  allUsers,
-  logoutUsers,
-  updateUser,
-  updateUserAdm,
-  vinculaLogin,
-  instanceAdd,
-} from "../../features/users/usersSlice";
-import { logoutGroups } from "../../features/groups/GroupsSlice";
-import { logoutConfig } from "../../features/config/ConfigSlice";
-import { logoutContacts } from "../../features/contacts/ContactsSlice";
-import { logoutMessages } from "../../features/messages/MessagesSlice";
-import { logoutReceipts } from "../../features/receipts/receiptsSlice";
+// import {
+//   addUser,
+//   loginUser,
+//   logoutUser,
+//   getQr,
+//   allUsers,
+//   logoutUsers,
+//   updateUser,
+//   updateUserAdm,
+//   vinculaLogin,
+//   instanceAdd,
+// } from "../../features/users/usersSlice";
+// import { logoutGroups } from "../../features/groups/GroupsSlice";
+// import { logoutConfig } from "../../features/config/ConfigSlice";
+// import { logoutContacts } from "../../features/contacts/ContactsSlice";
+// import { logoutMessages } from "../../features/messages/MessagesSlice";
+// import { logoutReceipts } from "../../features/receipts/receiptsSlice";
 
 export const userAdd = (userNew) => async (dispatch) => {
   console.log("agregando", userNew);
@@ -131,7 +131,7 @@ export const getAllUsers = () => async (dispatch) => {
   try {
     const { data } = await axios.get(`${allUsersEndpoint}`);
     // console.log("ejecutando action getallusers", data)
-    dispatch({ type: "users/allUsers", payload: data });
+    dispatch({ type: "users/nodevs", payload: data });
     // localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingUsers", true);
   } catch (err) {
