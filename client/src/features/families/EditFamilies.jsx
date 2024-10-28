@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
-import { familyUpdate } from "../../app/actions/familiesActions";
+import { familyUpdate } from "../../app/actions/families";
 
 const EditFamily = () => {
   const location = useLocation();

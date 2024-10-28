@@ -10,13 +10,15 @@ import {
   addFamily,
   updateFamily,
   deleteFamily,
-} from "../../features/families/FamilieSlice"; // Asegúrate de que esta ruta es correcta
+} from "../../features/families/FamiliesSlice"; // Asegúrate de que esta ruta es correcta
 
 // Obtener todas las familias
 export const getAllFamilies = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(allFamiliesEndpoint);
-    dispatch(allFamilies(data)); // Esto despacha la lista de familias al estado global
+    const { data } = await axios.get(`${allFamiliesEndpoint}`);
+    dispatch({ type: "families/allFamilies", payload: data });
+    // dispatch(allFamilies(data)); // Esto despacha la lista de familias al estado global
+    console.table(data)
     localStorage.setItem("gettingFamilies", true);
   } catch (err) {
     localStorage.setItem("gettingFamilies", false);

@@ -53,6 +53,14 @@ export const addFamilyEndpoint = REACT_APP_API + 'families/add';
 export const delFamilyEndpoint = REACT_APP_API + 'families/delete';
 export const updateFamilyEndpoint = REACT_APP_API + 'families/update';
 
+// Company
+
+export const allCompanysEndpoint = REACT_APP_API + 'ccompany/';
+export const addCompanysEndpoint = REACT_APP_API + 'company/add/';
+export const updCompanysEndpoint = REACT_APP_API + 'company/update/';
+export const usrCompanysEndpoint = REACT_APP_API + 'company/byuser/';
+export const getCompanysEndpoint = REACT_APP_API + 'company/';
+
 // receipts
 
 export const userReceiptsEndpoint = REACT_APP_API + 'receipts/byuser/'

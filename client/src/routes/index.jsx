@@ -26,6 +26,8 @@ import EditMessage from "../features/messages/EditMessage";
 import FamiliesView from "../features/families/FamiliesView";
 import AddFamily from "../features/families/AddFamilies";
 import EditFamily from "../features/families/EditFamilies";
+import CompanysView from "../features/company/CompanysView";
+import EditCompany from "../features/company/EditCompany";
 
 const Layout = ({ children }) => {
   return (
@@ -42,7 +44,7 @@ const Index = () => {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/gestion" element={<Main />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/building" element={<Next />} />
           <Route path="/register" element={<Register />} />
@@ -67,6 +69,9 @@ const Index = () => {
 
           <Route path="/show-configs" element={<ConfigsView />} />
           <Route path="/edit-config" element={<EditConfig />} />
+
+          <Route path="/show-companys" element={<CompanysView />} />
+          <Route path="/edit-company" element={<EditCompany />} />
 
           <Route path="/show-users" element={<UsersView />} />
           <Route path="/edit-user" element={<EditUser />} />

@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
           <Link
-            to="/"
+            to="/gestion"
             className="text-white text-xl font-semibold hover:text-gray-200 transition duration-300 flex flex-row gap-4 justify-center items-center"
           >
             <img
@@ -63,7 +63,7 @@ const Navbar = () => {
             <>
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
-                to="/"
+                to="/gestion"
               >
                 {t("navbar.home")}
               </Link>
@@ -84,7 +84,7 @@ const Navbar = () => {
 
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-contacts"
+                to="/show-companys"
               >
                 {t("navbar.contacts")}
               </Link>

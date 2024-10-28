@@ -22,6 +22,8 @@ import autoreplys from "../../assets/images/autoreply.jpg";
 import bots from "../../assets/images/botswapp.webp";
 import { ImCross } from "react-icons/im";
 import { getConfigbyUser } from '../../app/actions/configs';
+import { getAllFamilies } from '../../app/actions/families';
+import { getComany, getCompany } from '../../app/actions/companys';
 
 const Main = () => {
   const { t, i18n } = useTranslation()
@@ -32,9 +34,27 @@ const Main = () => {
   const [isloading, setIsLoading] = useState(true);
 
   async function fetchData() {
+    console.log("loginid",login.id)
     if (login.id) {
       try {
-        // Intenta obtener los datos
+
+        // Relleno estado de empresa
+        const companyResponse = dispatch(getCompany(1));
+        if (companyResponse && companyResponse.data.company) {
+          console.log('Empresa data:', companyResponse.data.company);
+        } else {
+          console.error('No config family available');
+        }
+
+        // Relleno estado de familias
+        const familyResponse = dispatch(getAllFamilies());
+        if (familyResponse && familyResponse.data) {
+          console.log('Familias data:', familyResponse.data);
+        } else {
+          console.error('No config family available');
+        }
+
+ /*        // Intenta obtener los datos
         const configResponse = await dispatch(getConfigbyUser(login.id));
         if (configResponse && configResponse.data) {
           console.log('Config data:', configResponse.data);
@@ -65,9 +85,9 @@ const Main = () => {
   
         if (login.isAdmin) {
           await dispatch(getAllUsers());
-        }
+        } */
   
-        if (login.backwa) {
+/*         if (login.backwa) {
           const options = { method: 'GET', headers: { accept: 'application/json', authorization: 'Bearer AoGFVf56BAaI3ROzBuByrqpwjvyKI1BFgdgtjm1Adaeb1b81' } };
           fetch('https://waapi.app/api/v1/instances/' + login.backwa + '/client/me', options)
             .then(response => response.json())
@@ -84,7 +104,7 @@ const Main = () => {
               }
             })
             .catch(err => console.error(err));
-        }
+        } */
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -93,6 +113,7 @@ const Main = () => {
     }
   }
   
+  fetchData()
 
   return (
     <div className="container mx-auto px-4 md:px-12 my-12">
@@ -121,7 +142,7 @@ const Main = () => {
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
         {[
           { src: proveedores, title: t("main.contactGroup"), text: t("main.contactGroupDescription"), link: '/show-groups' },
-          { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-contacts' },
+          { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-companys' },
           { src: mensaje, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
           { src: clientes, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
           { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },

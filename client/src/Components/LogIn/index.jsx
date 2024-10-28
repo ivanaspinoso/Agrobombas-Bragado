@@ -52,7 +52,7 @@ const LogIn = () => {
     return (
         <div className="fixed inset-0 bg-gradient-to-r bg-[#0e6fa5] to-white flex items-center justify-center">
             <div className="absolute top-4 left-4">
-                <Link to="/" className="text-white text-xl font-semibold hover:text-gray-500 transition duration-300 flex flex-row gap-4 justify-center items-center">
+                <Link to="/gestion" className="text-white text-xl font-semibold hover:text-gray-500 transition duration-300 flex flex-row gap-4 justify-center items-center">
                     <img src={Agrobombas} alt="Logo Agrobombas Bragado" className="w-18 h-12 rounded-md" />
                     Agro Bombas Bragado
                 </Link>
@@ -88,7 +88,7 @@ const LogIn = () => {
                         dispatch(getUser(values.username, values.password))
                             .then(() => {
                                 if (localStorage.getItem("allowLogin") === "true") {
-                                    navigate("/");
+                                    navigate("/gestion");
                                     console.log("ENTRO!");
                                 } else {
                                     Swal.fire({

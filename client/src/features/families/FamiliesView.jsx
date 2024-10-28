@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { familyDelete } from "../../app/actions/familiesActions";
+import { familyDelete } from "../../app/actions/families";
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
 
 const FamiliesView = () => {
   const { t } = useTranslation();
-  const families = useSelector((state) => state.families.families);
+  const families = useSelector((state) => state.familiesReducer.families);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

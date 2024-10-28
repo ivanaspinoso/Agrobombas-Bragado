@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { familyAdd } from "../../app/actions/familiesActions";
+import { familyAdd } from "../../app/actions/families";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
