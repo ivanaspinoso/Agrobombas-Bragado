@@ -30,7 +30,7 @@ const Main = () => {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const configs = useSelector((state) => state.configsReducer.configs);
+  const companys = useSelector((state) => state.companysReducer.companys);
   const login = useSelector((state) => state.usersReducer.login);
   // const [isloading, setIsLoading] = useState(true);
 
@@ -129,7 +129,8 @@ const Main = () => {
     <div className="container mx-auto px-4 md:px-12 my-12">
       <header className="text-center mb-8 flex flex-col gap-2 justify-between lg:flex-row lg:gap-0">
         <h1 className="hidden md:flex text-3xl font-bold">
-          {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`}
+         Sistema de gestión de {companys.name}
+{/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
         </h1>
 
         <div className="flex items-center justify-center gap-10">
