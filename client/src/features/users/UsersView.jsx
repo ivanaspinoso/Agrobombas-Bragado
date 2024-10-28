@@ -1,18 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { FcAddRow } from "react-icons/fc";
+// import { FcAddRow } from "react-icons/fc";
 // import { deleteContact } from "./ContactsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Tooltip } from 'react-tooltip';
 import Swal from "sweetalert2";
-import { userDelete } from "../../app/actions/users";
+import { userDelete, getAllUsers } from "../../app/actions/users";
 
 const UsersView = () => {
   const users = useSelector((state) => state.usersReducer.users);
+  console.log(users)
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+  useEffect(() => {
+    dispatch(getAllUsers()); 
+  }, [dispatch]);
 
   const handleDelete = (id, name) => {
     Swal
@@ -50,33 +54,31 @@ const UsersView = () => {
           className="w-full table-auto "
         // style={{ maxWidth: "80%", margin: "auto" }}
         >
-          <thead className="bg-green-500 text-white">
+          <thead className="bg-[#0e6fa5] text-white">
             <tr>
               <th className="px-4 py-2 text-left">N</th>
               <th className="px-4 py-2 text-left">Id</th>
               <th className="px-4 py-2 text-left">Nombre</th>
-              <th className="px-4 py-2 text-left">Numero WA - Sync</th>
+              {/* <th className="px-4 py-2 text-left">Numero WA - Sync</th> */}
               <th className="px-4 py-2 text-left">Usuario</th>
-              <th className="px-4 py-2 text-left">back WA</th>
-              <th className="px-4 py-2 text-left">Admin</th>
+              {/* <th className="px-4 py-2 text-left">Admin</th> */}
               <th className="px-4 py-2 text-left">Acción</th>
             </tr>
           </thead>
-          <tbody className="bg-white  divide-gray-200">
+          <tbody className="bg-white  ">
             {users &&
               users.map((user, index) => {
-                const { id, name, cellphone, country, username, backwa, isAdmin, vinculated, qrcode } = user;
+                const { id, name, country, username, backwa,vinculated, qrcode } = user;
                 return (
-                  <tr key={id} className="hover:bg-gray-50">
-                    <th className="border px-4 py-2">{index + 1}</th>
-                    <th className="border px-4 py-2">{id}</th>
-                    <td className="border px-4 py-2">{name}</td>
-                    <td className="border px-4 py-2">{cellphone} - {vinculated === true ? "si" : "no"} </td>
-                    <td className="border px-4 py-2">{username}</td>
-                    <td className="border px-4 py-2">{backwa}</td>
-                    <td className="border px-4 py-2">{isAdmin === true ? "si" : "no"}</td>
-                    <td className="border px-4 py-2 flex space-x-4 justify-center">
-                      <Link to="/edit-user" state={{ id, name, cellphone, country, username, backwa, isAdmin, vinculated, qrcode }}>
+                  <tr key={id} className="hover:bg-gray-50 text-left">
+                    <th className=" px-4 py-2">{index + 1}</th>
+                    <th className=" px-4 py-2">{id}</th>
+                    <td className=" px-4 py-2">{name}</td>
+                    {/* <td className=" px-4 py-2">{cellphone} - {vinculated === true ? "si" : "no"} </td> */}
+                    <td className=" px-4 py-2">{username}</td>
+                    {/* <td className=" px-4 py-2">{isAdmin === true ? "si" : "no"}</td> */}
+                    <td className=" px-4 py-2 flex space-x-4 justify-center">
+                      <Link to="/edit-user" state={{ id, name, country, username, backwa,  vinculated, qrcode }}>
                         <button className="text-blue-500 hover:text-blue-700" data-tooltip-id="my-tooltip" data-tooltip-content="Editar Usuario">
                           <FaEdit />
                         </button>

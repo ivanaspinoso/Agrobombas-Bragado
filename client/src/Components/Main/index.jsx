@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserContacts } from '../../app/actions/contacts';
-import { getConfig } from '../../app/actions/configs?';
-import { getUserCategories } from '../../app/actions/categories';
-import { getUserMessages } from '../../app/actions/messages';
-import { getAllUsers, getQRUser, userUpdateAdm } from '../../app/actions/users';
-import { getUserReceipts } from '../../app/actions/receipts';
-import Spinner from '../spinner';
+// import { getUserContacts } from '../../app/actions/contacts';
+// import { getConfig } from '../../app/actions/configs?';
+// import { getUserCategories } from '../../app/actions/categories';
+// import { getUserMessages } from '../../app/actions/messages';
+// import { getAllUsers, getQRUser, userUpdateAdm } from '../../app/actions/users';
+// import { getUserReceipts } from '../../app/actions/receipts';
+// import Spinner from '../spinner';
 import contacto from '../../assets/images/contactos.jpg';
 import mensaje from '../../assets/images/mensajes.jpg';
-import reloj from '../../assets/images/reloj.jpg';
+// import reloj from '../../assets/images/reloj.jpg';
 import receipts from '../../assets/images/recibidos.avif';
 import config from '../../assets/images/configuracion.webp';
 import proveedores from '../../assets/images/proveedores1.jpg';
 import clientes from '../../assets/images/clientes.jpg';
 
 import enviados from "../../assets/images/whatsapp-enviado.webp";
-import autoreplys from "../../assets/images/autoreply.jpg";
-import bots from "../../assets/images/botswapp.webp";
-import { ImCross } from "react-icons/im";
-import { getConfigbyUser } from '../../app/actions/configs';
+// import autoreplys from "../../assets/images/autoreply.jpg";
+// import bots from "../../assets/images/botswapp.webp";
+// import { ImCross } from "react-icons/im";
+// import { getConfigbyUser } from '../../app/actions/configs';
 import { getAllFamilies } from '../../app/actions/families';
-import { getComany, getCompany } from '../../app/actions/companys';
+import { getCompany } from '../../app/actions/companys';
 
 const Main = () => {
   const { t, i18n } = useTranslation()
@@ -31,7 +31,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const configs = useSelector((state) => state.configsReducer.configs);
   const login = useSelector((state) => state.usersReducer.login);
-  const [isloading, setIsLoading] = useState(true);
+  // const [isloading, setIsLoading] = useState(true);
 
   async function fetchData() {
     console.log("loginid", login.id)
@@ -53,6 +53,7 @@ const Main = () => {
         } else {
           console.error('No config family available');
         }
+        
 
         /*        // Intenta obtener los datos
                const configResponse = await dispatch(getConfigbyUser(login.id));
@@ -148,6 +149,8 @@ const Main = () => {
           { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
           { src: receipts, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
           { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
+          { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
+          { src: config, title: t("main.users"), text: t("main.usersDescription"), link: '/show-users?' },
           // { src: autoreplys, title: t("main.autoReply"), text: t("main.autoReplyDescription"), link: login.autoreplys ? '/building' : '/opcional' },
           // { src: bots, title: t("main.bots"), text: t("main.botsDescription"), link: login.autobots ? '/building' : '/opcional' }
         ].map((item, index) => (
