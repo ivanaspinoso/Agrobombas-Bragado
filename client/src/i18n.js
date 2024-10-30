@@ -182,7 +182,7 @@ const resources = {
         contacts: "Empresa",
         messages: "Productos",
         stack: "Clientes",
-        sent: "Movimientos",
+        sent: "Caja",
         received: "Cuentas Corrientes",
         settings: "Ventas",
         logout: "Salir",
