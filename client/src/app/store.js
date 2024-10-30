@@ -9,11 +9,13 @@ import receiptsReducer from '../features/receipts/receiptsSlice'
 import companysReducer from '../features/company/CompanysSlice'
 import storage from "redux-persist/lib/storage"
 import { persistReducer } from "redux-persist"
-
+import customersReducer from '../features/customers/CustomerSlice'
+// import { customersSlice } from "../features/customers/CustomerSlice";
+import productsReducer from '../features/products/ProductsSlice'
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer"],
+  whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer","customersReducer","productsReducer"],
 }
 
 const rootReducer = combineReducers({
@@ -25,6 +27,9 @@ const rootReducer = combineReducers({
   receiptsReducer: receiptsReducer,
   familiesReducer: familiesReducer, 
   companysReducer: companysReducer,
+  customersReducer:customersReducer,
+  productsReducer: productsReducer,
+
   // Nombre que usaremos en useSelector
 })
 

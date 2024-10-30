@@ -36,6 +36,20 @@ export const addGroupsEndpoint = REACT_APP_API + 'categories/add';
 export const delGroupsEndpoint = REACT_APP_API + 'categories/delete/';
 export const updGroupsEndpoint = REACT_APP_API + 'categories/update/';
 
+//customers
+export const allCustomersEndpoint = REACT_APP_API + 'customers';
+export const addCustomerEndpoint = REACT_APP_API + 'customers/add';
+export const updateCustomerEndpoint = REACT_APP_API + 'customers/update/';
+export const deleteCustomerEndpoint = REACT_APP_API + 'customers/delete/';
+
+
+//products
+export const allProductsEndpoint = REACT_APP_API + 'products';
+// export const addProductsEndpoint = REACT_APP_API + 'products/add';
+export const updateProductsEndpoint = REACT_APP_API + 'products/update/';
+export const deleteProductsEndpoint = REACT_APP_API + 'products/delete/';
+
+
 //messages
 
 export const allMessagesEndpoint = REACT_APP_API + 'messages/';

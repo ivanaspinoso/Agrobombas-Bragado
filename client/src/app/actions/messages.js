@@ -1,6 +1,6 @@
 import axios from "axios";
-import { allMessagesEndpoint, userMessagesEndpoint, addMessagesEndpoint, resMessagesEndpoint, delMessagesEndpoint, updMessagesEndpoint, queMessagesEndpoint } from "../consts/consts";
-import { allmessages, addmessage, deletemessage, updatemessage, allmessqueued } from "../../features/messages/MessagesSlice";
+import { allMessagesEndpoint, userMessagesEndpoint, addMessagesEndpoint, resMessagesEndpoint, delMessagesEndpoint} from "../consts/consts";
+// import { allmessages, addmessage, deletemessage, updatemessage, allmessqueued } from "../../features/messages/MessagesSlice";
 
 export const getAllMessagess = () => async (dispatch) => {
   try {

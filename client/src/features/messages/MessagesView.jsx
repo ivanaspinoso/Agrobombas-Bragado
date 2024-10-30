@@ -93,7 +93,7 @@ const MessagesView = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {view.map((message, index) => {
-              const { id, text, contact, senddate, sendtime } = message;
+              const { id, text, contact } = message;
               return (
                 <tr key={id}>
                   <td className="px-4 py-2">{index + 1 + (pagBreeds > 1 ? ((pagBreeds - 1) * 15) : 0)}</td>

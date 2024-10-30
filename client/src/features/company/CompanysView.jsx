@@ -4,20 +4,20 @@ import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Tooltip } from 'react-tooltip';
 import { useTranslation } from "react-i18next";
-import Spain from '../../assets/images/spain.jpg'
-import Usa from '../../assets/images/usa.jpg'
+// import Spain from '../../assets/images/spain.jpg'
+// import Usa from '../../assets/images/usa.jpg'
 
 const CompanysView = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const companys = useSelector((state) => state.companysReducer.companys);
 
   let objCompany = { id: companys.id, address: companys.address, cuit: companys.cuit };
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
+  // const changeLanguage = (lng) => {
+  //   i18n.changeLanguage(lng);
+  // };
 
-  const isActive = (lng) => i18n.language === lng;
+  // const isActive = (lng) => i18n.language === lng;
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
