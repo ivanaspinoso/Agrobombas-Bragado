@@ -1,6 +1,6 @@
 import axios from "axios";
 import { allGroupsEndpoint, addGroupsEndpoint, delGroupsEndpoint, updGroupsEndpoint, userGroupsEndpoint } from "../consts/consts";
-import { allgroups, addgroup, deletegroup, updategroup } from "../../features/groups/GroupsSlice";
+// import { allgroups, addgroup, deletegroup, updategroup } from "../../features/groups/GroupsSlice";
 
 export const getAllCategories = () => async (dispatch) => {
     /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */

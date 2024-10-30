@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "../app/actions/users";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,15 +10,15 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const login = useSelector((state) => state.usersReducer.login);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const handleMenuClick = () => {
     document.getElementById("navbarMobileMenu").classList.add("hidden");
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setDropdownOpen(!isDropdownOpen);
+  // };
 
   return (
 <nav className="bg-[#0e6fa5] p-4 shadow-lg">

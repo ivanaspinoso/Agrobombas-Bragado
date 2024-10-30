@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteCategory } from "../../app/actions/categories";
+import { deleteCategory, getAllCategories } from "../../app/actions/categories";
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
 
@@ -12,6 +12,10 @@ const GroupsView = () => {
   const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getAllCategories()); 
+  }, [dispatch]);
 
   const handleDelete = (id, category) => {
     swal
@@ -45,27 +49,27 @@ const GroupsView = () => {
               <tr>
                 <th className="px-4 py-2 text-left">#</th>
                 <th className="px-4 py-2 text-left">{t('groupView.name')} </th>
-                <th className="px-4 py-2 text-left">{t('groupView.description')}</th>
+                <th className="px-4 py-2 text-left">Codigo</th>
                 <th className="px-4 py-2 text-left">{t('groupView.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {groups?.map((group, index) => {
-                const { id, category, description, undelete } = group;
+                const { id, code , name } = group;
                 return (
                   <tr key={id}>
                     <td className="px-4 py-2">{index + 1}</td>
-                    <td className="px-4 py-2">{category}</td>
-                    <td className="px-4 py-2">{description}</td>
+                    <td className="px-4 py-2">{name}</td>
+                    <td className="px-4 py-2">{code}</td>
                     <td className="px-4 py-2 flex gap-2">
-                      <Link to={`/edit-group`} state={{ id, category, description }}>
+                      <Link to={`/edit-group`} state={{ id,name, code }}>
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                           <FaEdit />
                         </button>
                       </Link>
                       <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => handleDelete(id, category)}
+                        onClick={() => handleDelete(id, name)}
                       >
                         <FaTrashAlt />
                       </button>

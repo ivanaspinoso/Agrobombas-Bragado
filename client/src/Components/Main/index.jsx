@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 // import { getUserContacts } from '../../app/actions/contacts';
 // import { getConfig } from '../../app/actions/configs?';
-// import { getUserCategories } from '../../app/actions/categories';
+import { getAllCategories } from '../../app/actions/categories';
 // import { getUserMessages } from '../../app/actions/messages';
 // import { getAllUsers, getQRUser, userUpdateAdm } from '../../app/actions/users';
 // import { getUserReceipts } from '../../app/actions/receipts';
@@ -25,13 +26,17 @@ import enviados from "../../assets/images/whatsapp-enviado.webp";
 import { getAllFamilies } from '../../app/actions/families';
 import { getCompany } from '../../app/actions/companys';
 import { getAllUsers } from '../../app/actions/users';
+// import { getAllProducts } from '../../app/actions/products';
+import { getAllMessagess } from '../../app/actions/messages';
 
 const Main = () => {
-  const { t, i18n } = useTranslation()
+  const { t, } = useTranslation()
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const companys = useSelector((state) => state.companysReducer.companys);
+  // const groups = useSelector((state) => state.groupsReducer.groups);
   const login = useSelector((state) => state.usersReducer.login);
+  // const messages = useSelector((state) => state.messagesReducer.messages);
   // const [isloading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
@@ -62,6 +67,22 @@ const Main = () => {
         } else {
           console.error('No config family available');
         }
+        
+        const groupsResponse = await dispatch(getAllCategories());
+        if (groupsResponse && groupsResponse.data.groups) {
+          console.log('Empresa data:', groupsResponse.data.groups);
+        } else {
+          console.error('No config family available');
+        }
+
+        const productsResponse = await dispatch(getAllMessagess());
+        if (productsResponse && productsResponse.data.messages) {
+          console.log('Empresa data:', productsResponse.data.messages);
+        } else {
+          console.error('No config family available');
+        }
+
+        
 
 
         /*        // Intenta obtener los datos
@@ -123,7 +144,9 @@ const Main = () => {
     }
   }
 
-  fetchData()
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 md:px-12 my-12">

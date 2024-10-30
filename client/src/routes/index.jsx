@@ -12,14 +12,14 @@ import ConfigsView from "../features/config/ConfigsView";
 import GroupsView from "../features/groups/GroupsView";
 import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
-import MessagesView from "../features/messages/MessagesView";
+// import MessagesView from "../features/messages/MessagesView";
 import Next from "../pages/Next";
 import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../Components/LogIn";
 import Register from "../Components/Register";
 import UsersView from "../features/users/UsersView";
 import EditUser from "../features/users/EditUser";
-import QueuedView from "../features/messages/QueueView";
+// import QueuedView from "../features/messages/QueueView";
 import SendedView from "../features/messages/SendedView";
 import ReceiptsView from "../features/receipts/ReceiptsView";
 import EditMessage from "../features/messages/EditMessage";
@@ -28,6 +28,9 @@ import AddFamily from "../features/families/AddFamilies";
 import EditFamily from "../features/families/EditFamilies";
 import CompanysView from "../features/company/CompanysView";
 import EditCompany from "../features/company/EditCompany";
+import CustomersView from "../features/customers/CustomersView";
+import EditMessages from "../features/messages/EditMessage";
+import ProductsView from "../features/products/ProductsView";
 
 const Layout = ({ children }) => {
   return (
@@ -49,9 +52,12 @@ const Index = () => {
           <Route path="/building" element={<Next />} />
           <Route path="/register" element={<Register />} />
 
-          <Route path="/show-messages" element={<MessagesView />} />
+          <Route path="/show-messages" element={<ProductsView />} />
+          
           <Route path="/add-message" element={<AddMessage />} />
-          <Route path="/queue-messages" element={<QueuedView />} />
+          <Route path="/queue-messages" element={<CustomersView />} />
+          <Route path="/edit-customers" element={<EditMessages />} />
+
           <Route path="/sended-messages" element={<SendedView />} />
           <Route path="/edit-message" element={<EditMessage />} />
 
