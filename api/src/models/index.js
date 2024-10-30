@@ -6,96 +6,96 @@ const {
   dbName,
 } = require("../utils/config/index.js");
 
-const configsModel = require("./configs");
-const contactsModel = require("./contacts.js");
-const messagesModel = require("./messages.js");
-const categoryModel = require("./categories.js");
-const userModel = require("./users.js");
-const receiptsModel = require("./receipts.js")
+const userModel = require("./users");
+const familyModel = require("./families");
+const orderModel = require("./sales");
+const productModel = require("./products");
+const orderLineModel = require("./orderline");
+const companyModel = require("./companys");
+const customerModel = require("./customers")
+const supplierModel = require("./suppliers")
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 let sequelize =
   process.env.NODE_ENV === "production"
     ? new Sequelize({
-      database: DB_NAME,
-      dialect: "postgres",
-      host: DB_HOST,
-      port: 5432,
-      username: DB_USER,
-      password: DB_PASSWORD,
-      pool: {
-        max: 3,
-        min: 1,
-        idle: 10000,
-      },
-      dialectOptions: {
-        ssl: {
-          require: true,
-          // Ref.: https://github.com/brianc/node-postgres/issues/2009
-          rejectUnauthorized: false,
+        database: DB_NAME,
+        dialect: "postgres",
+        host: DB_HOST,
+        port: 5432,
+        username: DB_USER,
+        password: DB_PASSWORD,
+        pool: {
+          max: 3,
+          min: 1,
+          idle: 10000,
         },
-        keepAlive: true,
-      },
-      ssl: true,
-    })
+        dialectOptions: {
+          ssl: {
+            require: true,
+            // Ref.: https://github.com/brianc/node-postgres/issues/2009
+            rejectUnauthorized: false,
+          },
+          keepAlive: true,
+        },
+        ssl: true,
+      })
     : new Sequelize(
-      `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-      { logging: false, native: false }
-    );
+        `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+        { logging: false, native: false }
+      );
 
-const Configs = configsModel(sequelize);
-const Contacts = contactsModel(sequelize);
-const Messages = messagesModel(sequelize);
-const Category = categoryModel(sequelize);
-const Users = userModel(sequelize);
-const Receipts = receiptsModel(sequelize)
-// const Mess_Cont = (sequelize.models.contact_message)
+const User = userModel(sequelize);
+const Product = productModel(sequelize);
+const Family = familyModel(sequelize);
+const Order = orderModel(sequelize);
+const OrderLine = orderLineModel(sequelize);
+const Company = companyModel(sequelize);
+const Customer = customerModel(sequelize)
+const Supplier = supplierModel(sequelize)
+
+// const IP = ipmodels(sequelize) */
+const Prod_Cat = (sequelize.models.prod_cat)
+
+// Será necesario definir las relaciones
+
+Product.belongsToMany(Family, { through: 'prod_cat' });
+Family.belongsToMany(Product, { through: 'prod_cat' }); 
+
+// Brand.hasMany(Product)       // Una marca puede tener varios productos
+// Product.belongsTo(Brand);    // Un producto puede tener una sola marca (fabrica)
+
+Supplier.hasMany(Product)       // Una marca puede tener varios productos
+Product.belongsTo(Supplier);    // Un producto puede tener una sola marca (fabrica)
 
 
-Users.hasOne(Configs)       // Una usuario puede tener una config
-Configs.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
+Product.hasMany(OrderLine);
+OrderLine.belongsTo(Product);
 
-Users.hasOne(Category)       // Una usuario puede tener una config
-Category.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
+Order.hasMany(OrderLine);
+OrderLine.belongsTo(Order);
 
-Users.hasOne(Contacts)       // Una usuario puede tener un contacto
-Contacts.belongsTo(Users);    // Una contacto tener un solo usuario (fabrica)
+User.hasMany(Order);
+Order.belongsTo(User);
 
-Users.hasOne(Receipts)       // Una usuario puede tener una config
-Receipts.belongsTo(Users);    // Una config tener un solo usuario (fabrica)
- 
-// Contacts.belongsToMany(Users, { through: 'contact_user' });
-// Users.belongsToMany(Contacts, { through: 'contact_user' });  
+Product.belongsToMany(User, { through: 'favorites' });
+User.belongsToMany(Product, { through: 'favorites' });
 
-// Será necesario definir las relaciones segun necesite el sistema
-
-Contacts.hasMany(Messages)       // Una contacto puede tener varios mensages
-Messages.belongsTo(Contacts);    // Un mensaje puede tener un solo contacto/destinatario (fabrica)
-
-Contacts.belongsToMany(Category, { through: 'contact_category' });
-Category.belongsToMany(Contacts, { through: 'contact_category' }); 
-
-/* 
-Contacts.belongsToMany(Messages, { through: 'contact_message' });
-Messages.belongsToMany(Contacts, { through: 'contact_message' });  
-*/
+// console.log()
+// Exports models
 
 module.exports = {
   conn: sequelize,
-  Contacts,
-  Configs,
-  Messages,
-  Category,
-  Users,
-  Receipts,
-  Contact_Group: sequelize.models.contact_category,
-//  Mess_Cont/* : sequelize.models.contact_messages */,
-/*
-   Product,
-  Brand,
+  User,
+  Product,
+  Family,
+  // Brand,
   Order,
   OrderLine,
-  IP,
+  Company,
+  Supplier,
+  Customer,
+  // IP,
   Prod_Cat: sequelize.models.prod_cat,
- */  Sequelize: sequelize
+  Sequelize: sequelize
 };

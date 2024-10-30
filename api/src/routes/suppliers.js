@@ -1,44 +1,20 @@
 var express = require("express");
 
-// requiere bcrypt para asegurar user password
-
-const bcrypt = require("bcrypt");
-
 // Defino el modelo user para utilizarlo en las rutas correspondientes
-const { User } = require("../models/index");
+const { Supplier, Product } = require("../models/index");
 
 const { generateToken, validateToken } = require("../utils/token");
-const { where } = require("sequelize");
 
 var router = express.Router();
 
-//Obtener todos las usuarios
-router.get("/nodevs", /* validateToken, */ async (req, res) => {
-  try {
-    let getAllUsers = await User.findAll({
-      order: [["createdAt", "ASC"]],
-      where: {
-        dev: false
-      }
-    });
-    console.log(getAllUsers)
-    return res.send(getAllUsers);
-  } catch (err) {
-    return res.send({
-      message: "No se pudieron obtener usuarios" + err,
-    });
-  }
-});
-
-
-//Obtener todos las usuarios
+//Obtener todos las proveedores
 router.get("/", /* validateToken, */ async (req, res) => {
   try {
-    let getAllUsers = await User.findAll({
+    let getAllSuppliers = await Supplier.findAll({
       order: [["createdAt", "ASC"]],
     });
-    console.log(getAllUsers)
-    return res.send(getAllUsers);
+    // console.log("Proeedores", getAllSuppliers) 
+    return res.send(getAllSuppliers);
   } catch (err) {
     return res.send({
       message: "No se pudieron obtener usuarios" + err,
@@ -120,21 +96,23 @@ router.post("/login", async (req, res) => {
 
 
 // Actualizar datos de usuario
-router.put("/update", validateToken, async (req, res) => {
+router.put("/update", /* validateToken, */ async (req, res) => {
   // tomo todos los campos del form de registro de usuario
-  const { id, name, newpass, olduser, oldpass, email, token, address, cellphone, isAdmin } = req.body.user;
+  const {
+    id,
+    name,
+    address,
+    postal_code,
+    city,
+    phone,
+    cuit,
+    email,
+    web,
+    code } = req.body;
   // console.log(req.body.user);
   // chequeo que estén completos los 3 campos requeridos
   if (!id || id === "") {
     return res.status(400).json({ message: "Falta ingresar id de usuario" });
-  }
-  if (!olduser || olduser === "") {
-    return res.status(400).json({ message: "Falta ingresar nombre usuario" });
-  }
-  if (!oldpass || oldpass === "") {
-    return res
-      .status(400)
-      .json({ message: "Falta ingresar contraseña actual" });
   }
   if (!name || name === "") {
     return res
@@ -147,54 +125,46 @@ router.put("/update", validateToken, async (req, res) => {
       .json({ message: "Falta ingresar email correspondiente" });
   }
 
-  if (newpass) {
-    if (!oldpass || oldpass === "")
-      return res
-        .status(400)
-        .json({ message: "Falta ingresar password anterior" });
-  }
-
-  let existUser = await User.findOne({
+  let existSupp = await Supplier.findOne({
     where: {
-      username: olduser,
+      id,
     },
   });
 
-  if (!existUser)
+  if (!existSupp)
     return res
       .status(400)
-      .json({ message: "No tiene permisos para actualizar usuario" });
+      .json({ message: "Proveedor no encontrado" });
   // console.log("Objeto user modificar usuario creado")
   // armo el objeto
 
-  const validPassword = await bcrypt.compare(oldpass, existUser.password);
-  if (validPassword) {
-    const objUser = {
-      username: existUser.username,
+  // const validPassword = await bcrypt.compare(oldpass, existUser.password);
+  if (existSupp) {
+    const objSupp = {
+      id,
       name,
-      password: newpass ? newpass : existUser.password,
-      email,
-      token,
       address,
-      cellphone,
-      isAdmin,
-      id
+      postal_code,
+      city,
+      phone,
+      cuit,
+      email,
+      web,
+      code 
     };
 
     try {
       // envio los datos al modelo sequelize para que los guarde en la database
-      let newUser = await User.update(objUser, {
+      let editSupp = await Supplier.update(objSupp, {
         where: {
           id,
-/*           username: olduser,
-          password: oldpass, */
         },
       });
       // si todo sale bien devuelvo el objeto agregado
       // console.log("Objeto de usuario guardado")
       res
         .status(200)
-        .json({ message: "usuario modificado con éxito", user: objUser });
+        .json({ message: "Proveedor modificado con éxito", user: objSupp });
     } catch (error) {
       // en caso de error lo devuelvo al frontend
       // console.log(error)
@@ -211,17 +181,14 @@ router.post("/add", async (req, res) => {
   // tomo todos los campos del form de registro de usuario
   const {
     name,
-    birthdate,
-    email,
-    username,
-    password,
-    isAdmin,
-    cellphone,
     address,
+    postal_code,
     city,
-    zip,
-    province,
-    country,
+    phone,
+    cuit,
+    email,
+    web,
+    code
   } = req.body;
   let hash = "";
   // chequeo que estén completos los 3 campos requeridos
@@ -230,47 +197,35 @@ router.post("/add", async (req, res) => {
       .status(400)
       .json({ message: "Falta ingresar nombre correspondiente" });
   }
-  if (!username || username === "") {
+  if (!code || name === 0) {
     return res
       .status(400)
-      .json({ message: "Falta ingresar username correspondiente" });
+      .json({ message: "Falta ingresar codigo correspondiente" });
   }
-  if (!password || password === "") {
-    return res
-      .status(400)
-      .json({ message: "Falta ingresar password correspondiente" });
-  } else {
-    // hasheo password
-    hash = await bcrypt.hashSync(password, 8);
-  }
-  const objUser = {
+
+  const objSupplier = {
     name,
-    birthdate,
-    email,
-    username,
-    password: hash,
-    isAdmin,
-    cellphone,
     address,
+    postal_code,
+    phone,
     city,
-    zip,
-    province,
-    country,
-    active: false,
-    blocked: false,
+    cuit,
+    email,
+    web,
+    code
   };
   try {
     // envio los datos al modelo sequelize para que los guarde en la database
-    let newUser = await User.create(objUser);
+    let newSuplier = await Supplier.create(objSupplier);
     // si todo sale bien devuelvo el objeto agregado
-    console.log("Objeto de usuario guardado");
+    console.log("Proveeedor de productos guardado");
     res
       .status(200)
-      .json({ message: "Usuario admin generado correctamente", user: objUser });
+      .json({ message: "Proveeedor de productos guardado", user: objSupplier });
   } catch (error) {
     // en caso de error lo devuelvo al frontend
     console.log(error);
-    res.status(500).json({ message: "No se pudo crear el admin" + error });
+    res.status(500).json({ message: "No se pudo guardar Proeedor" + error });
   }
 });
 
@@ -323,5 +278,54 @@ router.post("/active", async (req, res) => {
   }
   // res.send("get user")
 });
+
+
+
+// Eliminarproveedor
+router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  if (!id) return res.status(400).send({ message: "Debe ingresar proveedor" });
+
+  let producSocios = await Supplier.findAll({
+      where: { id: id },
+      include: { model: Product },
+  }).then((s) => {
+      if (s[0] && s[0].products.length > 0) {
+          return s[0].products.length
+      } else return 0
+  });
+
+  const existCat = await Supplier.findOne({
+      where: {
+          id,
+      },
+  });
+
+  if (producSocios > 0) {
+      return res.status(400).json({ message: "No se puede eliminar, productos asociados" })
+  } else {
+      if (existCat) {
+          try {
+              let delSupp = await Supplier.destroy({
+                  where: {
+                      id,
+                  },
+              });
+              console.log(delSupp);
+              return res
+                  .status(200)
+                  .json({ message: "Proveedor eliminado correctamente" });
+          } catch (err) {
+              return res
+                  .status(500)
+                  .json({ message: "No se pudo eliminar el proveedor" + err });
+          }
+      } else {
+          return res.status(400).json({ message: "Proveedor inexistente" });
+      }
+  }
+});
+
 
 module.exports = router;

@@ -23,32 +23,32 @@ module.exports = function (sequelize) {
       allowNull: false,
     },
     isAdmin: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     cellphone: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     zip: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     province: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     active: {
       type: DataTypes.BOOLEAN,
@@ -56,31 +56,10 @@ module.exports = function (sequelize) {
     },
     blocked: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
+      allowNull: true,      
     },
-    backwa: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    vinculated: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    qrcode: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    autoreplys: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    autobots: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
+    dev: {
+      type: DataTypes.BOOLEAN,  
     }
   });
 };

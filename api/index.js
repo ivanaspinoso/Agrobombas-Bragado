@@ -2,12 +2,12 @@ const express = require("express");
 const morgan = require("morgan");
 // const cors = require("cors"); // para poder hacer peticiones desde cualquier punto (tambien se puede configurar de donde recibir las peticiones)
 const routes = require("./src/routes/index");
-const { PORT, FORZAR } = require("./src/utils/config/index.js");
-const errorHandler = require("./src/utils/middlewares/errorHandler.js");
-const setHeaders = require("./src/utils/middlewares/setHeaders.js");
-const { programador_tareas } = require('./src/scheduler.js')
 
 const app = express();
+const { PORT } = require("./src/utils/config/index.js");
+const errorHandler = require("./src/utils/middlewares/errorHandler.js");
+const setHeaders = require("./src/utils/middlewares/setHeaders.js");
+
 // app.use(cors()); // uso de cors definido anteriormente
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json({ limit: "50mb" }));
@@ -16,49 +16,84 @@ app.use(morgan("dev"));
 app.use(errorHandler);
 app.use(setHeaders);
 
-app.use("/wasystem", routes);
+app.use("/", routes);
 
 const {
   conn,
-  Contacts,
-  Messages,
-  Users,
+  User,
+  Product,
+  Order,
   Category,
-  Configs
+  Brand,
+  Prod_Cat,
+  OrderLine,
+  Configs,
+  Company,
+  Supplier,
+  Family,
+  Customer
 } = require("./src/models/index.js");
 
+
 const {
+  initialCategories,
+  initialProducts,
+  initialUsers,
+  initialOrders,
+  initialOrderlines,
   initialConfigs,
-  initialGroups,
-  initialUsers
+  categoryProducts,
+  initialBrands,
+  initialCompany,
+  initialSuppliers,
+  initialFamilies,
+  familyyProducts,
+  initialCustomers
 } = require("./src/seed.js");
 
-// clear console
-console.clear();
-console.log(typeof FORZAR);
+const forzar = true
+// false // true
 
-fuerce = FORZAR === "true" ? true : false;
-
-// Listening for the server
 conn
-  .sync({ force: fuerce })
+  .sync({ force: forzar })
   .then(() => {
     console.log("Connect");
     app.listen(PORT, () => {
-      console.log(`Listen on port ${PORT}, forzar es: ${fuerce}`)
-      //init scheduler
-      programador_tareas()
-    })
+      console.log(`Listen on port ${PORT}`);
+    });
+  }).then(async () => {
+    if (forzar === true) await Company.bulkCreate(initialCompany);
+  })
+   .then(async () => {
+    if (forzar === true) await User.bulkCreate(initialUsers);
   })
   .then(async () => {
-    if (fuerce === true) await Users.bulkCreate(initialUsers);
+    if (forzar === true) await Supplier.bulkCreate(initialSuppliers);
   })
   .then(async () => {
-    if (fuerce === true) await Configs.bulkCreate(initialConfigs);
+    if (forzar === true) await Family.bulkCreate(initialFamilies);
   })
   .then(async () => {
-    if (fuerce === true) await Category.bulkCreate(initialGroups);
+    if (forzar === true) await Product.bulkCreate(initialProducts);
   })
-  .catch((error) => {
-    console.log("Error en index", error);
-  });
+  .then(async () => {
+    if (forzar === true) await Prod_Cat.bulkCreate(familyyProducts);
+  })
+  .then(async () => {
+    if (forzar === true) await Customer.bulkCreate(initialCustomers);
+  })
+/*  
+  .then(async () => {
+    if (forzar === true) await Brand.bulkCreate(initialBrands);
+  })
+ */
+/*   .then(async () => {
+    if (forzar === true) await Order.bulkCreate(initialOrders);
+  })
+  .then(async () => {
+    if (forzar === true) await OrderLine.bulkCreate(initialOrderlines);
+  }) */
+  /* .then(async () => {
+    if (forzar === true) await Configs.bulkCreate(initialConfigs);
+  })
+  .catch((error) => console.log("Error al bulkcreate", error)); */
