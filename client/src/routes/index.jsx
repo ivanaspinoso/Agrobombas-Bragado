@@ -31,6 +31,7 @@ import EditCompany from "../features/company/EditCompany";
 import CustomersView from "../features/customers/CustomersView";
 import EditMessages from "../features/messages/EditMessage";
 import ProductsView from "../features/products/ProductsView";
+import AddProduct from "../features/products/AddProducts";
 
 const Layout = ({ children }) => {
   return (
@@ -53,6 +54,8 @@ const Index = () => {
           <Route path="/register" element={<Register />} />
 
           <Route path="/show-messages" element={<ProductsView />} />
+          <Route path="/add-product" element={<AddProduct />} />
+
           
           <Route path="/add-message" element={<AddMessage />} />
           <Route path="/queue-messages" element={<CustomersView />} />
