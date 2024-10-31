@@ -34,7 +34,7 @@ const EditGroup = () => {
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
-        Editar Grupo
+        Editar Proveedor
       </h2>
       <Formik
         validationSchema={schema}
@@ -98,7 +98,7 @@ const EditGroup = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Grupo:</label>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Código:</label>
                 <input
                   type="text"
                   className={`shadow form-input block w-full mt-1 ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded`}
