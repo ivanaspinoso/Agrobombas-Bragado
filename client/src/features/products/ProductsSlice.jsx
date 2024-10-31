@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint } from "../../app/consts/consts";
+import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint,addProductsEndpoint } from "../../app/consts/consts";
 
 const initialProductsState = {
   loading: 'idle',
@@ -14,6 +14,9 @@ const ProductsSlice = createSlice({
     setProducts: (state, action) => {
       state.products = action.payload;
     },
+    addProduct: (state, action) => {
+        state.products.push(action.payload);
+      },
     updateProduct: (state, action) => {
       const updatedProduct = action.payload;
       const index = state.products.findIndex(prod => prod.id === updatedProduct.id);
@@ -25,7 +28,7 @@ const ProductsSlice = createSlice({
   },
 });
 
-export const { setProducts, updateProduct, deleteProduct } = ProductsSlice.actions;
+export const { setProducts, updateProduct, deleteProduct,addProduct } = ProductsSlice.actions;
 
 // Thunks
 export const fetchProducts = () => async (dispatch) => {
@@ -36,6 +39,17 @@ export const fetchProducts = () => async (dispatch) => {
     console.error("Error fetching products:", error);
   }
 };
+
+export const createProduct = (product) => async (dispatch) => {
+    try {
+      const { data } = await axios.post(`${addProductsEndpoint}`, product);
+      dispatch(addProduct(data));
+      localStorage.setItem("productAdded", true); // Para manejar el éxito
+    } catch (error) {
+      localStorage.setItem("productAdded", JSON.stringify(error.response?.data?.message || error.message));
+      console.error("Error creating product:", error);
+    }
+  };
 
 export const updateProductDetails = (product) => async (dispatch) => {
   try {
