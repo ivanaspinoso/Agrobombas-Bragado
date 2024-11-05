@@ -12,7 +12,7 @@ const EditCustomers = () => {
   const dispatch = useDispatch();
   
   // Extracting customer details from location state
-  const { id, name, postal_code } = location.state;
+  const { id, name, postal_code,phone,address,city,cuit,web  } = location.state;
 
   const navigate = useNavigate();
 
@@ -27,12 +27,17 @@ const EditCustomers = () => {
       <h2 className="text-center text-xl uppercase m-5 font-semibold">Editar Cliente</h2>
       <Formik
         validationSchema={schema}
-        initialValues={{ name, postal_code }}
+        initialValues={{ name, postal_code,phone,address,city,cuit,web }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
             const customer = {
               id,
               name: values.name,
               postal_code: values.postal_code,
+              phone:values.phone,
+              address:values.address,
+              city:values.city,
+              cuit:values.cuit,
+              web:values.web,
             };
             const { success, error } = await dispatch(customersUpdate(customer));
           
@@ -118,7 +123,81 @@ const EditCustomers = () => {
                   <p className="mt-2 text-red-600">{errors.postal_code}</p>
                 )}
               </div>
-
+              <div className="mb-4">
+                <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">Teléfono:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="phone"
+                  name="phone"
+                  value={values.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.phone && touched.phone && (
+                  <p className="mt-2 text-red-600">{errors.phone}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Dirección:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="address"
+                  name="address"
+                  value={values.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.address && touched.address && (
+                  <p className="mt-2 text-red-600">{errors.address}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="city"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.city && touched.city && (
+                  <p className="mt-2 text-red-600">{errors.city}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="cuit" className="block text-sm font-medium text-gray-700">Cuit:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.cuit ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="cuit"
+                  name="cuit"
+                  value={values.cuit}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.cuit && touched.cuit && (
+                  <p className="mt-2 text-red-600">{errors.cuit}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="web" className="block text-sm font-medium text-gray-700">Web:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.web ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="web"
+                  name="web"
+                  value={values.web}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.web && touched.web && (
+                  <p className="mt-2 text-red-600">{errors.web}</p>
+                )}
+              </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
