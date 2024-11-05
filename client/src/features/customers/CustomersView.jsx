@@ -31,7 +31,7 @@ const CustomersView = () => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          dispatch(deleteCustomer(id)); // Cambia a la acción correcta
+          dispatch(deleteCustomer(id)); 
         }
       });
   };
@@ -58,8 +58,13 @@ const CustomersView = () => {
         <thead className="bg-[#0e6fa5] text-white">
         <tr>
           <th className="px-4 py-2 text-left">ID</th>
-          <th className="px-4 py-2 text-left">Name</th>
-          <th className="px-4 py-2 text-left">Postal Code</th>
+          <th className="px-4 py-2 text-left">Nombre</th>
+          <th className="px-4 py-2 text-left">Codigo Postal</th>
+          <th className="px-4 py-2 text-left">Teléfono</th>
+          <th className="px-4 py-2 text-left">Dirección</th>
+          <th className="px-4 py-2 text-left">Ciudad</th>
+          <th className="px-4 py-2 text-left">cuit</th>
+          <th className="px-4 py-2 text-left">web</th>
           <th className="px-4 py-2 text-left">Action</th>
         </tr>
       </thead>
@@ -70,6 +75,11 @@ const CustomersView = () => {
             <td className="px-4 py-2">{customer.id}</td>
             <td className="px-4 py-2">{customer.name}</td>
             <td className="px-4 py-2">{customer.postal_code}</td>
+            <td className="px-4 py-2">{customer.phone}</td>
+            <td className="px-4 py-2">{customer.address}</td>
+            <td className="px-4 py-2">{customer.city}</td>
+            <td className="px-4 py-2">{customer.cuit}</td>
+            <td className="px-4 py-2">{customer.web}</td>
              {/* <td>
               <button onClick={() => handleDelete(customer.id)}></button>
             </td>  */}
