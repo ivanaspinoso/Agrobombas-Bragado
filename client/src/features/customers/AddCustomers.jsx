@@ -1,58 +1,53 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { updateCustomer } from "./CustomerSlice"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import "../../App.css";
+import { customersAdd } from "../../app/actions/customers";
 
-const AddCustomer = () => {
+const AddCustomers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const login = useSelector((state) => state.usersReducer.login);
 
-  // Esquema de validación
   const schema = Yup.object().shape({
-    name: Yup.string().required("El nombre del cliente es requerido"),
-    postal_code: Yup.string().required("El código postal es requerido").min(4, "Debe tener al menos 4 caracteres"),
-    city: Yup.string().required("La ciudad es requerida"),
-    address: Yup.string().required("La dirección es requerida"),
+    name: Yup.string().required("El nombre de la familia es requerido"),
+    postal_code: Yup.number().required("Codigo postal es requerida").min(4, "Al menos 4 caracteres"),
   });
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-left text-xl font-bold uppercase mb-2 mx-8 my-5" style={{ letterSpacing: "2px" }}>
-        Agregar Cliente
+        Agregar Familia
       </h2>
       <Formik
         validationSchema={schema}
-        initialValues={{ name: "", postal_code: "", city: "", address: "" }}
+        initialValues={{ name: "", postal_code: "" }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const customer = {
+          const family = {
             name: values.name,
             postal_code: values.postal_code,
-            city: values.city,
-            address: values.address,
             userid: login.id
           };
-          await dispatch(updateCustomer(customer)); // Usar la acción de customerAdd
-          const success = JSON.parse(localStorage.getItem("customerAdded")); // Asegúrate de que tu lógica de cliente ajuste el valor de success
-          
+          await dispatch(customersAdd(family));
+          const success = JSON.parse(localStorage.getItem("customersAdd"));
+          console.log("Objeto", success);
           if (success && success === true) {
             Swal.fire({
               title: "Genial!",
-              text: "Cliente agregado \n ¿Desea seguir agregando?",
+              text: "Familia agregada \n ¿Desea seguir agregando?",
               icon: "success",
               showDenyButton: true,
               confirmButtonText: 'Sí',
               denyButtonText: 'No',
             }).then((result) => {
               if (result.isConfirmed) {
-                resetForm();
+                resetForm({ name: "", postal_code: "" });
               } else if (result.isDenied) {
-                navigate("/show-queue-messages"); // Redirigir a la vista de clientes
+                navigate("/queue-messages");
               }
             });
           } else {
@@ -68,6 +63,7 @@ const AddCustomer = () => {
         {props => {
           const {
             values,
+            touched,
             errors,
             isSubmitting,
             handleChange,
@@ -93,56 +89,26 @@ const AddCustomer = () => {
                 {errors.name ? <p className="text-red-500 text-xs italic">{errors.name}</p> : ""}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="postal_code">
-                  Código Postal:
-                </label>
-                <input
-                  type="text"
-                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="postal_code"
-                  name="postal_code"
-                  value={values.postal_code}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.postal_code ? <p className="text-red-500 text-xs italic">{errors.postal_code}</p> : ""}
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
-                  Ciudad:
-                </label>
-                <input
-                  type="text"
-                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="city"
-                  name="city"
-                  value={values.city}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.city ? <p className="text-red-500 text-xs italic">{errors.city}</p> : ""}
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
-                  Dirección:
-                </label>
-                <input
-                  type="text"
-                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="address"
-                  name="address"
-                  value={values.address}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.address ? <p className="text-red-500 text-xs italic">{errors.address}</p> : ""}
-              </div>
+  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="postal_code">
+    Codigo postal:
+  </label>
+  <input
+    type="text"
+    className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+    id="postal_code" 
+    name="postal_code" 
+    value={values.postal_code}
+    onChange={handleChange}
+    onBlur={handleBlur}
+  />
+  {errors.postal_code ? <p className="text-red-500 text-xs italic">{errors.postal_code}</p> : ""}
+</div>
+
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                disabled={isSubmitting}
               >
-                Agregar Cliente
+                Agregar Familia
               </button>
             </Form>
           );
@@ -152,4 +118,4 @@ const AddCustomer = () => {
   );
 };
 
-export default AddCustomer;
+export default AddCustomers;

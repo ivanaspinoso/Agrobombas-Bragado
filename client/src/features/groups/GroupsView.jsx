@@ -17,21 +17,29 @@ const GroupsView = () => {
     dispatch(getAllCategories()); 
   }, [dispatch]);
 
-  const handleDelete = (id, category) => {
-    swal
-      .fire({
-        title: "¿Desea eliminar el grupo " + category + "?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: `Sí`,
-        icon: "success",
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          dispatch(deleteCategory(id));
-        }
-      });
+  const handleDelete = async (id, name) => {
+    const result = await swal.fire({
+      title: `¿Desea eliminar el proveedor ${name}?`,
+      showDenyButton: true,
+      confirmButtonText: `Sí`,
+      icon: "warning",
+    });
+  
+    if (result.isConfirmed) { 
+      // Dispatch the delete action and wait for it to complete
+      await dispatch(deleteCategory(id));
+      
+      // Check if the deletion was successful (you can check localStorage or other flags here)
+      if (localStorage.getItem("categoryDeleted") === "true") {
+        swal.fire("Eliminado!", `El proveedor ${name} ha sido eliminado.`, "success");
+      } else {
+        swal.fire("Error!", `No se pudo eliminar el proveedor ${name}.`, "error");
+      }
+    }
   };
+  
+
+  
 
   return (
     <div className="flex flex-col flex-grow">

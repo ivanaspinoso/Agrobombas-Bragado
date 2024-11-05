@@ -28,7 +28,8 @@ export const groupsSlice = createSlice({
     deletegroup: (state, action) => {
       const id = action.payload;
       state.groups = state.groups.filter((group) => group.id !== id);
-    },
+    }, 
+       
     logoutGroups: (state, action) => {
       state.groups = action.payload
     },

@@ -40,24 +40,21 @@ const EditGroup = () => {
         validationSchema={schema}
         initialValues={{ category, description }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const category = {
+          const categoryData = {
             category: values.category,
             description: values.description,
-            id: id
+            id
           };
-          dispatch(updateCategory(category));
+          dispatch(updateCategory(categoryData));
           const success = JSON.parse(localStorage.getItem('categoryUpdated'));
-          console.log("objeto", success);
-          if (success && success === true) {
+          if (success) {
             Swal.fire({
               title: "Genial!",
               text: "Grupo de contactos modificado!",
               icon: "success",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                resetForm({ category: "", description: "" });
-                navigate("/show-groups", { replace: true });
-              }
+            }).then(() => {
+              resetForm({ category: "", description: "" });
+              navigate("/show-groups", { replace: true });
             });
           } else {
             Swal.fire({
@@ -68,6 +65,7 @@ const EditGroup = () => {
           }
           setSubmitting(false);
         }}
+        
       >
         {props => {
           const {

@@ -1,57 +1,94 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { allCustomersEndpoint,updateCustomerEndpoint, deleteCustomerEndpoint } from "../../app/consts/consts";
-const initialCustomersState = {
-  loading: 'idle',
+import {
+allCustomersEndpoint,
+  updateCustomerEndpoint,
+  deleteCustomerEndpoint,
+  addCustomerEndpoint, // Agrega este endpoint si no lo has definido aún
+} from "../../app/consts/consts";
+import swal from 'sweetalert2';
+
+const initialCustomers = {
+  loading: "idle",
   customers: [],
 };
 
 export const customersSlice = createSlice({
   name: "customers",
-  initialState: initialCustomersState,
+  initialState: initialCustomers,
   reducers: {
     setCustomers: (state, action) => {
       state.customers = action.payload;
     },
+    addCustomer: (state, action) => {
+      state.customers.push(action.payload);
+    },
     updateCustomer: (state, action) => {
-      const updatedCustomer = action.payload;
-      const index = state.customers.findIndex(cust => cust.id === updatedCustomer.id);
-      if (index >= 0) state.customers[index] = updatedCustomer;
+      const { id, name, postal_code } = action.payload;
+      const customerToUpdate = state.customers.find((customer) => customer.id === id);
+      if (customerToUpdate) {
+        customerToUpdate.name = name;
+        customerToUpdate.postal_code = postal_code;
+      }
     },
     deleteCustomer: (state, action) => {
-      state.customers = state.customers.filter(cust => cust.id !== action.payload);
+      const id = action.payload;
+      state.customers = state.customers.filter((customer) => customer.id !== id);
+    },
+    logoutCustomers: (state) => {
+      state.customers = [];
     },
   },
 });
 
-export const { setCustomers, updateCustomer, deleteCustomer } = customersSlice.actions;
+// Acciones
+export const { setCustomers, addCustomer, updateCustomer, deleteCustomer, logoutCustomers } = customersSlice.actions;
 
-// Asynchronous Thunks
+// Función asíncrona para obtener todos los clientes
 export const fetchCustomers = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(`${allCustomersEndpoint}`);
+    const { data } = await axios.get(allCustomersEndpoint);
     dispatch(setCustomers(data));
   } catch (error) {
     console.error("Error fetching customers:", error);
   }
 };
 
-export const updateCustomerDetails = (customer) => async (dispatch) => {
+// Función asíncrona para agregar un cliente
+export const addNewCustomer = (customer) => async (dispatch) => {
   try {
-    const { data } = await axios.put(`${updateCustomerEndpoint}` + customer.id, customer);
-    dispatch(updateCustomer(data));
+    const { data } = await axios.post(addCustomerEndpoint, customer);
+    dispatch(addCustomer(data));
   } catch (error) {
-    console.error("Error updating customer:", error);
+    console.error("Error adding customer:", error);
   }
 };
 
-export const deleteCustomerById = (id) => async (dispatch) => {
+// Función asíncrona para actualizar un cliente
+export const updateCustomerDetails = (customer) => async (dispatch) => {
   try {
-    await axios.delete(`${deleteCustomerEndpoint}` + id);
-    dispatch(deleteCustomer(id));
+    const { data } = await axios.put(`${updateCustomerEndpoint}${customer.id}`, customer);
+    dispatch(updateCustomer(data));
+    return { success: true };
   } catch (error) {
-    console.error("Error deleting customer:", error);
+    console.error("Error updating customer:", error);
+    return { success: false, error: error.message };
   }
 };
+
+
+export const customersDelete = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${deleteCustomerEndpoint}${id}`);
+    dispatch(deleteCustomer(id)); // Actualiza el estado de Redux
+    localStorage.setItem("customersDeleted", true);
+  } catch (err) {
+    localStorage.setItem("customersDeleted", false);
+    console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
+    // Puedes mostrar una alerta con el error
+    swal.fire("Error!", err?.response?.data?.message || err.message, "error");
+  }
+};
+
 
 export default customersSlice.reducer;

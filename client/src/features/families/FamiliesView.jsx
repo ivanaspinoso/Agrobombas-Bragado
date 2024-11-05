@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { familyDelete } from "../../app/actions/families";
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
+import { deleteFamily } from "./FamiliesSlice";
 
 const FamiliesView = () => {
   const { t } = useTranslation();
@@ -16,18 +16,20 @@ const FamiliesView = () => {
   const handleDelete = (id, name) => {
     swal
       .fire({
-        title: "¿Desea eliminar la familia " + name + "?",
+        title: `¿Desea eliminar al cliente ${name}?`,
         showDenyButton: true,
-        showCancelButton: false,
         confirmButtonText: `Sí`,
-        icon: "success",
+        icon: "warning",
       })
       .then((result) => {
         if (result.isConfirmed) {
-          dispatch(familyDelete(id));
+          dispatch(deleteFamily(id)); 
         }
       });
   };
+  
+  
+  
 
   return (
     <div className="flex flex-col flex-grow">

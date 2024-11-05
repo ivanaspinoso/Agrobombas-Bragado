@@ -4,21 +4,19 @@ import {
   addFamilyEndpoint,
   updateFamilyEndpoint,
   delFamilyEndpoint,
-} from "../consts/consts"; // Asegúrate de que esta ruta es correcta
+} from "../consts/consts"; 
 import {
   allFamilies,
   addFamily,
   updateFamily,
   deleteFamily,
-} from "../../features/families/FamiliesSlice"; // Asegúrate de que esta ruta es correcta
+} from "../../features/families/FamiliesSlice"; 
 
-// Obtener todas las familias
 export const getAllFamilies = () => async (dispatch) => {
   try {
     console.log("action get",allFamiliesEndpoint)
     const { data } = await axios.get(`${allFamiliesEndpoint}`);
     dispatch({ type: "families/allFamilies", payload: data });
-    // dispatch(allFamilies(data)); // Esto despacha la lista de familias al estado global
     console.table(data)
     localStorage.setItem("gettingFamilies", true);
   } catch (err) {
@@ -39,7 +37,6 @@ export const familyAdd = (family) => async (dispatch) => {
   }
 };
 
-// Actualizar una familia existente
 export const familyUpdate = (family) => async (dispatch) => {
   try {
     const { data } = await axios.put(updateFamilyEndpoint, family);
@@ -51,14 +48,16 @@ export const familyUpdate = (family) => async (dispatch) => {
   }
 };
 
-// Eliminar una familia
 export const familyDelete = (id) => async (dispatch) => {
   try {
-    await axios.delete(`${delFamilyEndpoint}${id}`);
-    dispatch(deleteFamily(id)); // Esto elimina la familia del estado global
+    const response = await axios.delete(`${delFamilyEndpoint}${id}`);
+    console.log('Response from delete:', response.data);
+    dispatch(deleteFamily(id));
     localStorage.setItem("familyDeleted", true);
   } catch (err) {
     localStorage.setItem("familyDeleted", false);
     console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
   }
 };
+
+

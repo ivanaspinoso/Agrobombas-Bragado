@@ -1,6 +1,7 @@
 import axios from "axios";
 import { allGroupsEndpoint, addGroupsEndpoint, delGroupsEndpoint, updGroupsEndpoint, userGroupsEndpoint } from "../consts/consts";
 // import { allgroups, addgroup, deletegroup, updategroup } from "../../features/groups/GroupsSlice";
+import swal from 'sweetalert2';
 
 export const getAllCategories = () => async (dispatch) => {
     /* dispatch({ type: USER_SIGNIN_REQUEST, payload: { username, password } }) */
@@ -66,21 +67,22 @@ export const getAllCategories = () => async (dispatch) => {
     }
   };
 
-  export function deleteCategory(id) {
-    return (dispatch) => {
-      return axios.delete(`${delGroupsEndpoint}${id}`).then((json) => {
-        dispatch({ type: "groups/deletegroup", payload: id });
-        localStorage.setItem("categoryDeleted",true)
-      }).catch(err => {
-        localStorage.setItem("categoryDeleted",err.response.data.message)
-        console.log(
-          err?.response && err?.response.data.message
-            ? err?.response.data.message
-            : err.message
-        )        
-      });
-    };
-  }
+  export const deleteCategory = (id) => async (dispatch) => {
+    try {
+      await axios.delete(`${delGroupsEndpoint}${id}`);
+      dispatch({ type: "groups/deletegroup", payload: id });
+      localStorage.setItem("categoryDeleted", true);
+      
+      // Llamar a getAllCategories para refrescar la lista
+      dispatch(getAllCategories());
+    } catch (err) {
+      localStorage.setItem("categoryDeleted", err.response?.data?.message);
+      swal.fire("Error!", err?.response?.data?.message || err.message, "error");
+    }
+  };
+  
+
+  
 
   export const updateCategory = (cate) => async (dispatch) => {
     /* console.log(cate) */
