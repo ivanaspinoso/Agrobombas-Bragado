@@ -1,49 +1,42 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { updateCategory } from "../../app/actions/categories";
-
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+// import { updategroup } from "./GroupsSlice";
+import { updateCategory } from "../../app/actions/categories";
 
 const EditGroup = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  console.log(location.state);
   const [id] = useState(location.state.id);
-  const [category, setCategory] = useState(location.state.category);
-  const [description, setDescription] = useState(location.state.description);
-
+  const [name] = useState(location.state.name);
+  const [code] = useState(location.state.code);
+  const [email] = useState(location.state.email || ""); // Agregar email con valor predeterminado si falta
   const navigate = useNavigate();
 
-  /*
-     const handleSubmit = (e) => {
-      e.preventDefault();
-      dispatch(updateCategory({ id, category, description }));
-      navigate("/show-groups", { replace: true });
-    };
-   */
-
   const schema = Yup.object().shape({
-    category: Yup.string().required("El grupo es requerido"),
-    description: Yup.string().required("Descripcion es requerida").min(4, "Al menos 4"),
+    name: Yup.string().required("El grupo es requerido"),
+    code: Yup.string().required("El código es requerido").min(2, "Al menos 2 caracteres"),
+    email: Yup.string().email("Debe ser un email válido").required("El email es requerido")
   });
-
+  
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
-        Editar Proveedor
+        Editar Grupo
       </h2>
       <Formik
         validationSchema={schema}
-        initialValues={{ category, description }}
+        initialValues={{ name, code, email}}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           const categoryData = {
-            category: values.category,
-            description: values.description,
-            id
+            name: values.name,
+            code: values.code,
+            email:values.email,
+            id: id,
           };
           dispatch(updateCategory(categoryData));
           const success = JSON.parse(localStorage.getItem('categoryUpdated'));
@@ -53,7 +46,7 @@ const EditGroup = () => {
               text: "Grupo de contactos modificado!",
               icon: "success",
             }).then(() => {
-              resetForm({ category: "", description: "" });
+              resetForm({ name: "", code: "" });
               navigate("/show-groups", { replace: true });
             });
           } else {
@@ -65,7 +58,6 @@ const EditGroup = () => {
           }
           setSubmitting(false);
         }}
-        
       >
         {props => {
           const {
@@ -81,38 +73,55 @@ const EditGroup = () => {
           return (
             <Form onSubmit={handleSubmit} className="border rounded p-4 max-w-xl w-full mx-auto">
               <div className="mb-4">
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700">Nombres:</label>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre:</label>
                 <input
                   type="text"
-                  className={`shadow form-input block w-full mt-1 ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded`}
-                  id="category"
-                  value={values.category}
+                  className={`shadow form-input block w-full mt-1 ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="name"
+                  name="name"
+                  value={values.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.category && touched.category && (
-                  <p className="mt-2 text-red-600">{errors.category}</p>
+                {errors.name && touched.name && (
+                  <p className="mt-2 text-red-600">{errors.name}</p>
                 )}
               </div>
 
               <div className="mb-4">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Código:</label>
+                <label htmlFor="code" className="block text-sm font-medium text-gray-700">Código:</label>
                 <input
                   type="text"
-                  className={`shadow form-input block w-full mt-1 ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded`}
-                  id="description"
-                  value={values.description}
+                  className={`shadow form-input block w-full mt-1 ${errors.code ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="code"
+                  name="code"
+                  value={values.code}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.description && touched.description && (
-                  <p className="mt-2 text-red-600">{errors.description}</p>
+                {errors.code && touched.code && (
+                  <p className="mt-2 text-red-600">{errors.code}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
+                <input
+                  type="email"
+                  className={`shadow form-input block w-full mt-1 ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.email && touched.email && (
+                  <p className="mt-2 text-red-600">{errors.email}</p>
                 )}
               </div>
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !values.name || !values.code || Object.keys(errors).length > 0}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 Editar Grupo
@@ -122,7 +131,6 @@ const EditGroup = () => {
         }}
       </Formik>
     </div>
-
   );
 };
 

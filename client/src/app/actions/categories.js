@@ -85,18 +85,13 @@ export const getAllCategories = () => async (dispatch) => {
   
 
   export const updateCategory = (cate) => async (dispatch) => {
-    /* console.log(cate) */
     try {
-        const { data } = await axios.put(`${updGroupsEndpoint}`, cate);
-        dispatch({ type: "groups/updategroup", payload: data });
-        localStorage.setItem("categoryUpdated",true)
-      }
-      catch(err) {
-        localStorage.setItem("categoryUpdated",err.response.data.message)
-        console.log(
-          err?.response && err?.response.data.message
-            ? err?.response.data.message
-            : err.message
-        )        
-    };
-  }
+      const { data } = await axios.put(`${updGroupsEndpoint}`, cate);
+      dispatch({ type: "groups/updategroup", payload: data });
+      localStorage.setItem("categoryUpdated", true);
+    } catch (err) {
+      const errorMessage = err?.response?.data?.message || "Error al actualizar la categoría";
+      localStorage.setItem("categoryUpdated", errorMessage);
+      console.log(errorMessage);
+    }
+  };

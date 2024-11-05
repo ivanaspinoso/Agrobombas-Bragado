@@ -17,18 +17,18 @@ export const groupsSlice = createSlice({
       state.groups.push(action.payload);
     },
     updategroup: (state, action) => {
-      const { id, category, description } = action.payload;
+      const { id, name, code } = action.payload;
       const isgroupExist = state.groups.filter((group) => group.id === id);
 
       if (isgroupExist) {
-        isgroupExist[0].category = category;
-        isgroupExist[0].description = description;
+        isgroupExist[0].name = name;
+        isgroupExist[0].code = code;
       }
     },
     deletegroup: (state, action) => {
       const id = action.payload;
       state.groups = state.groups.filter((group) => group.id !== id);
-    }, 
+    },
        
     logoutGroups: (state, action) => {
       state.groups = action.payload

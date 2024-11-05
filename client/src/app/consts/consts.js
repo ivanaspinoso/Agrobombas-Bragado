@@ -33,8 +33,8 @@ export const usrConfigsEndpoint = REACT_APP_API + 'configs/byuser/';
 export const allGroupsEndpoint = REACT_APP_API + 'suppliers';
 export const userGroupsEndpoint = REACT_APP_API + 'categories/byuser/'
 export const addGroupsEndpoint = REACT_APP_API + 'suppliers/add';
-export const delGroupsEndpoint = REACT_APP_API + 'categories/delete/';
-export const updGroupsEndpoint = REACT_APP_API + 'categories/update/';
+export const delGroupsEndpoint = REACT_APP_API + 'suppliers/delete/';
+export const updGroupsEndpoint = REACT_APP_API + 'suppliers/update/';
 
 //customers
 export const allCustomersEndpoint = REACT_APP_API + 'customers';

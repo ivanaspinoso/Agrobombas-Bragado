@@ -4,6 +4,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCategory, getAllCategories } from "../../app/actions/categories";
+import { deletegroup } from "./GroupsSlice";
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
 
@@ -26,19 +27,19 @@ const GroupsView = () => {
     });
   
     if (result.isConfirmed) { 
-      // Dispatch the delete action and wait for it to complete
       await dispatch(deleteCategory(id));
       
-      // Check if the deletion was successful (you can check localStorage or other flags here)
-      if (localStorage.getItem("categoryDeleted") === "true") {
+      const categoryDeleted = localStorage.getItem("categoryDeleted");
+      if (categoryDeleted === "true") {
+        dispatch(deletegroup(id)); 
         swal.fire("Eliminado!", `El proveedor ${name} ha sido eliminado.`, "success");
       } else {
-        swal.fire("Error!", `No se pudo eliminar el proveedor ${name}.`, "error");
+        swal.fire("Error!", `No se pudo eliminar el proveedor ${name}. ${categoryDeleted}`, "error");
       }
+      
+      localStorage.removeItem("categoryDeleted");
     }
   };
-  
-
   
 
   return (

@@ -105,18 +105,18 @@ const AddGroup = () => {
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-                  Descripción:
+                  Email:
                 </label>
                 <input
                   type="text"
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="description"
-                  name="description"
-                  value={values.description}
+                  id="email"
+                  name="email"
+                  value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.description && <p className="text-red-500 text-xs italic">{errors.description}</p>}
+                {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
               </div>
               <button
                 type="submit"
