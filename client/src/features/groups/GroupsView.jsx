@@ -4,6 +4,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCategory, getAllCategories } from "../../app/actions/categories";
+import { deletegroup } from "./GroupsSlice";
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
 
@@ -17,21 +18,29 @@ const GroupsView = () => {
     dispatch(getAllCategories()); 
   }, [dispatch]);
 
-  const handleDelete = (id, category) => {
-    swal
-      .fire({
-        title: "¿Desea eliminar el grupo " + category + "?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: `Sí`,
-        icon: "success",
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          dispatch(deleteCategory(id));
-        }
-      });
+  const handleDelete = async (id, name) => {
+    const result = await swal.fire({
+      title: `¿Desea eliminar el proveedor ${name}?`,
+      showDenyButton: true,
+      confirmButtonText: `Sí`,
+      icon: "warning",
+    });
+  
+    if (result.isConfirmed) { 
+      await dispatch(deleteCategory(id));
+      
+      const categoryDeleted = localStorage.getItem("categoryDeleted");
+      if (categoryDeleted === "true") {
+        dispatch(deletegroup(id)); 
+        swal.fire("Eliminado!", `El proveedor ${name} ha sido eliminado.`, "success");
+      } else {
+        swal.fire("Error!", `No se pudo eliminar el proveedor ${name}. ${categoryDeleted}`, "error");
+      }
+      
+      localStorage.removeItem("categoryDeleted");
+    }
   };
+  
 
   return (
     <div className="flex flex-col flex-grow">

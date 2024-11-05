@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "./CustomerSlice";
-import { deleteCustomerById } from "./CustomerSlice";
+import { deleteCustomer } from "./CustomerSlice";
+// import { deleteCustomers } from "./CustomerSlice";
 import { Tooltip } from 'react-tooltip';
 import { FcAddRow } from "react-icons/fc";
 import { Link,useNavigate } from "react-router-dom";
@@ -20,27 +21,26 @@ const CustomersView = () => {
 
   
 
-  const handleDelete = (id,name) => {
+  const handleDelete = (id, name) => {
     swal
-    .fire({
-      title: "¿Desea eliminar al cliente " + name + "?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: `Sí`,
-      icon: "success",
-    })
-    .then((result) => {
-      if (result.isConfirmed) {
-        dispatch(deleteCustomerById(id));
-      }
-    });
+      .fire({
+        title: `¿Desea eliminar al cliente ${name}?`,
+        showDenyButton: true,
+        confirmButtonText: `Sí`,
+        icon: "warning",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          dispatch(deleteCustomer(id)); // Cambia a la acción correcta
+        }
+      });
   };
+  
 
   return (
     <div className ="container mx-auto px-4 py-5 flex flex-col flex-grow">
         <div className="flex justify-between items-center ">
         <h2 className="text-xl font-semibold">
-          {/* {t('configuration.systemConfiguration')} */}
           Datos de clientes
         </h2>
 
@@ -70,19 +70,19 @@ const CustomersView = () => {
             <td className="px-4 py-2">{customer.id}</td>
             <td className="px-4 py-2">{customer.name}</td>
             <td className="px-4 py-2">{customer.postal_code}</td>
-            {/* <td>
-              <button onClick={() => handleDelete(customer.id)}>Delete</button>
-            </td> */}
+             {/* <td>
+              <button onClick={() => handleDelete(customer.id)}></button>
+            </td>  */}
             <td className="px-4 py-2 flex gap-2">
-            <Link to="/edit-customers"  >
+            <Link to="/edit-customers" state={{ id: customer.id, name: customer.name,  postal_code: customer.postal_code }}>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
                   <FaEdit />
                 </button>
               </Link>
               <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => handleDelete()}
-                      >
+            onClick={() => handleDelete(customer.id, customer.name)} 
+            >
                         <FaTrashAlt />
                       </button>
             </td>

@@ -14,7 +14,7 @@ import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
 // import MessagesView from "../features/messages/MessagesView";
 import Next from "../pages/Next";
-import AddMessage from "../features/messages/AddMessage";
+// import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../Components/LogIn";
 import Register from "../Components/Register";
 import UsersView from "../features/users/UsersView";
@@ -29,9 +29,12 @@ import EditFamily from "../features/families/EditFamilies";
 import CompanysView from "../features/company/CompanysView";
 import EditCompany from "../features/company/EditCompany";
 import CustomersView from "../features/customers/CustomersView";
-import EditMessages from "../features/messages/EditMessage";
+// import EditMessages from "../features/messages/EditMessage";
+import EditCustomers from "../features/customers/EditCustomers";
 import ProductsView from "../features/products/ProductsView";
 import AddProduct from "../features/products/AddProducts";
+// import EditCustomers from "../features/customers/EditCustomers";
+import AddCustomers from "../features/customers/AddCustomers";
 
 const Layout = ({ children }) => {
   return (
@@ -57,9 +60,9 @@ const Index = () => {
           <Route path="/add-product" element={<AddProduct />} />
 
           
-          <Route path="/add-message" element={<AddMessage />} />
+          <Route path="/add-message" element={<AddCustomers />} />
           <Route path="/queue-messages" element={<CustomersView />} />
-          <Route path="/edit-customers" element={<EditMessages />} />
+          <Route path="/edit-customers" element={<EditCustomers />} />
 
           <Route path="/sended-messages" element={<SendedView />} />
           <Route path="/edit-message" element={<EditMessage />} />

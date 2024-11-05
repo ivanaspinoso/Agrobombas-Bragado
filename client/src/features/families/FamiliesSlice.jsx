@@ -25,8 +25,7 @@ export const familiesSlice = createSlice({
       }
     },
     deleteFamily: (state, action) => {
-      const id = action.payload;
-      state.families = state.families.filter((family) => family.id !== id);
+      state.families = state.families.filter(family => family.id !== action.payload);
     },
     logoutFamilies: (state, action) => {
       state.families = action.payload
