@@ -31,7 +31,8 @@ const {
   Company,
   Supplier,
   Family,
-  Customer
+  Customer,
+  Cashflow
 } = require("./src/models/index.js");
 
 
@@ -48,7 +49,8 @@ const {
   initialSuppliers,
   initialFamilies,
   familyyProducts,
-  initialCustomers
+  initialCustomers,
+  initialCashflows
 } = require("./src/seed.js");
 
 const forzar = true
@@ -81,6 +83,9 @@ conn
   })
   .then(async () => {
     if (forzar === true) await Customer.bulkCreate(initialCustomers);
+  })
+  .then(async () => {
+    if (forzar === true) await Cashflow.bulkCreate(initialCashflows);
   })
 /*  
   .then(async () => {

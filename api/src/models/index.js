@@ -14,6 +14,7 @@ const orderLineModel = require("./orderline");
 const companyModel = require("./companys");
 const customerModel = require("./customers")
 const supplierModel = require("./suppliers")
+const cashflowModel = require("./cashflows")
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 let sequelize =
@@ -53,6 +54,7 @@ const OrderLine = orderLineModel(sequelize);
 const Company = companyModel(sequelize);
 const Customer = customerModel(sequelize)
 const Supplier = supplierModel(sequelize)
+const Cashflow = cashflowModel(sequelize)
 
 // const IP = ipmodels(sequelize) */
 const Prod_Cat = (sequelize.models.prod_cat)
@@ -95,6 +97,7 @@ module.exports = {
   Company,
   Supplier,
   Customer,
+  Cashflow,
   // IP,
   Prod_Cat: sequelize.models.prod_cat,
   Sequelize: sequelize

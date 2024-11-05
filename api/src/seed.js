@@ -120,6 +120,51 @@ const initialFamilies = [
     },
 ];
 
+const initialCashflows = [
+    {
+        date: "2024-11-04",
+        description: "compra de yerba negocio",
+        income: 0,
+        outflow: 2600,
+        user_asoc: 1
+    },
+    {
+        date: "2024-11-01",
+        description: "Entrega de dinero en efectivo",
+        income: 3000,
+        outflow: 0,
+        user_asoc: 1
+    },
+    {
+        date: "2024-11-04",
+        description: "compra de yerba negocio",
+        income: 0,
+        outflow: 1600,
+        user_asoc: 2
+    },
+    {
+        date: "2024-11-01",
+        description: "Entrega de dinero en efectivo",
+        income: 5000,
+        outflow: 0,
+        user_asoc: 2
+    },
+    {
+        date: "2024-11-02",
+        description: "compra de yerba negocio",
+        income: 0,
+        outflow: 1800,
+        user_asoc: 2
+    },
+    {
+        date: "2024-11-03",
+        description: "Entrega de dinero en efectivo",
+        income: 50000,
+        outflow: 0,
+        user_asoc: 2
+    },
+];
+
 const initialProducts = [
     {
         name: "Cooler C4",
@@ -167,5 +212,6 @@ module.exports = {
     initialSuppliers,
     initialUsers,
     initialCompany,
-    initialCustomers
+    initialCustomers,
+    initialCashflows
 };
