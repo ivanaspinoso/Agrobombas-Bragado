@@ -118,6 +118,21 @@ const EditGroup = () => {
                   <p className="mt-2 text-red-600">{errors.email}</p>
                 )}
               </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Provincia:</label>
+                <input
+                  type="province"
+                  className={`shadow form-input block w-full mt-1 ${errors.province ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="province"
+                  name="province"
+                  value={values.province}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.province && touched.province && (
+                  <p className="mt-2 text-red-600">{errors.province}</p>
+                )}
+              </div>
 
               <button
                 type="submit"

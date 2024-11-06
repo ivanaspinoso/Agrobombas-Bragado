@@ -17,10 +17,21 @@ const ProductsSlice = createSlice({
     addProduct: (state, action) => {
         state.products.push(action.payload);
       },
+    // updateProduct: (state, action) => {
+    //   const updatedProduct = action.payload;
+    //   const index = state.products.findIndex(prod => prod.id === updatedProduct.id);
+    //   if (index >= 0) state.products[index] = updatedProduct;
+    // },
     updateProduct: (state, action) => {
-      const updatedProduct = action.payload;
-      const index = state.products.findIndex(prod => prod.id === updatedProduct.id);
-      if (index >= 0) state.products[index] = updatedProduct;
+      const { id, name, description,price,cost } = action.payload;
+      const productToUpdate = state.products.find((product) => product.id === id);
+      if (productToUpdate) {
+        productToUpdate.name = name;
+        productToUpdate.description = description;
+        productToUpdate.price = price;
+        productToUpdate.cost = cost;
+
+      }
     },
     deleteProduct: (state, action) => {
       state.products = state.products.filter(prod => prod.id !== action.payload);
@@ -41,15 +52,28 @@ export const fetchProducts = () => async (dispatch) => {
 };
 
 export const createProduct = (product) => async (dispatch) => {
-    try {
-      const { data } = await axios.post(`${addProductsEndpoint}`, product);
-      dispatch(addProduct(data));
-      localStorage.setItem("productAdded", true); // Para manejar el éxito
-    } catch (error) {
-      localStorage.setItem("productAdded", JSON.stringify(error.response?.data?.message || error.message));
-      console.error("Error creating product:", error);
-    }
-  };
+  try {
+    const { data } = await axios.post(`${addProductsEndpoint}`, product);
+    console.log("Producto creado:", data); 
+
+    dispatch(addProduct(data));
+    localStorage.setItem("productAdded", JSON.stringify(true)); 
+  } catch (error) {
+    localStorage.setItem("productAdded", JSON.stringify(error.response?.data?.message || error.message));
+    console.error("Error creating product:", error);
+  }
+};
+
+// export const familyAdd = (family) => async (dispatch) => {
+//   try {
+//     const { data } = await axios.post(addFamilyEndpoint, family);
+//     dispatch(addFamily(data)); // Esto agrega la nueva familia al estado global
+//     localStorage.setItem("familyAdded", true);
+//   } catch (err) {
+//     localStorage.setItem("familyAdded", false);
+//     console.error("Error al agregar familia:", err?.response?.data?.message || err.message);
+//   }
+// };
 
 export const updateProductDetails = (product) => async (dispatch) => {
   try {

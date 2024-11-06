@@ -118,6 +118,21 @@ const AddGroup = () => {
                 />
                 {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
               </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="province">
+                  Provincia:
+                </label>
+                <input
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  id="province"
+                  name="province"
+                  value={values.province}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.province && <p className="text-red-500 text-xs italic">{errors.province}</p>}
+              </div>
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
