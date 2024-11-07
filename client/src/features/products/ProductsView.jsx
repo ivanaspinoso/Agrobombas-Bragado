@@ -10,9 +10,9 @@ const ProductsView = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.productsReducer.products);
-
+  
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts()); // Cargar productos al montar el componente
   }, [dispatch]);
 
   const handleDelete = (id, name) => {
@@ -47,20 +47,65 @@ const ProductsView = () => {
             <tr>
               <th className="px-4 py-2 text-left">ID</th>
               <th className="px-4 py-2 text-left">Nombre</th>
-              <th className="px-4 py-2 text-left">Descripcion</th>
+              <th className="px-4 py-2 text-left">Descripción</th>
+              <th className="px-4 py-2 text-left">Existencia</th>
+              <th className="px-4 py-2 text-left">Costo</th>
+              <th className="px-4 py-2 text-left">Porcentaje</th>
+              <th className="px-4 py-2 text-left">Precio</th>
+              <th className="px-4 py-2 text-left">Precio 1</th>
+              <th className="px-4 py-2 text-left">Precio 2</th>
+              <th className="px-4 py-2 text-left">IVA 21%</th>
+              <th className="px-4 py-2 text-left">IVA 10.5%</th>
+              <th className="px-4 py-2 text-left">Oferta</th>
+              <th className="px-4 py-2 text-left">Mostrar</th>
+              <th className="px-4 py-2 text-left">Proveedor</th>
+              <th className="px-4 py-2 text-left">Stock</th>
+              <th className="px-4 py-2 text-left">Familias</th>
               <th className="px-4 py-2 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {products?.map((product, index) => {
-              const { id, name, description } = product;
+              const {
+                id,
+                name,
+                description,
+                exist,
+                cost,
+                percent,
+                price,
+                price1,
+                price2,
+                iva21,
+                iva10,
+                isOfert,
+                show,
+                prov_code,
+                stock,
+                families,
+              } = product;
               return (
                 <tr key={id} className="hover:bg-gray-50">
                   <td className="px-4 py-2">{index + 1}</td>
                   <td className="px-4 py-2">{name}</td>
                   <td className="px-4 py-2">{description}</td>
+                  <td className="px-4 py-2">{exist ? "Sí" : "No"}</td>
+                  <td className="px-4 py-2">{cost}</td>
+                  <td className="px-4 py-2">{percent}</td>
+                  <td className="px-4 py-2">{price}</td>
+                  <td className="px-4 py-2">{price1}</td>
+                  <td className="px-4 py-2">{price2}</td>
+                  <td className="px-4 py-2">{iva21}</td>
+                  <td className="px-4 py-2">{iva10}</td>
+                  <td className="px-4 py-2">{isOfert ? "Sí" : "No"}</td>
+                  <td className="px-4 py-2">{show ? "Sí" : "No"}</td>
+                  <td className="px-4 py-2">{prov_code}</td>
+                  <td className="px-4 py-2">{stock}</td>
+                  <td className="px-4 py-2">{families?.join(", ")}</td>
                   <td className="px-4 py-2 flex gap-2">
-                    <Link to={`/edit-product`} state={{ id, name, description }}>
+                    <Link to={`/edit-product`} state={{ 
+                        id, name, description, exist, cost, percent, price, price1, price2, iva21, iva10, isOfert, show, prov_code, stock, families
+                      }}>
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
                         <FaEdit />
                       </button>
