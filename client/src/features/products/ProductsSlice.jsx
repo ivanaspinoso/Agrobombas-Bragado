@@ -53,16 +53,21 @@ export const fetchProducts = () => async (dispatch) => {
 
 export const createProduct = (product) => async (dispatch) => {
   try {
-    const { data } = await axios.post(`${addProductsEndpoint}`, product);
-    console.log("Producto creado:", data); 
-
-    dispatch(addProduct(data));
-    localStorage.setItem("productAdded", JSON.stringify(true)); 
+    // Enviar el producto a la API
+    const response = await axios.post(`${addProductsEndpoint}`, product);
+    
+    // Si la creación es exitosa, agregar el producto al estado local
+    dispatch(addProduct(response.data));
+    
+    localStorage.setItem("productAdded", JSON.stringify(true));
   } catch (error) {
-    localStorage.setItem("productAdded", JSON.stringify(error.response?.data?.message || error.message));
-    console.error("Error creating product:", error);
+    localStorage.setItem("productAdded", JSON.stringify(false));
+    console.error("Error al crear el producto:", error.message);
   }
 };
+
+
+
 
 // export const familyAdd = (family) => async (dispatch) => {
 //   try {
