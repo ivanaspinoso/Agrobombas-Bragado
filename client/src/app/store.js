@@ -15,7 +15,8 @@ import productsReducer from '../features/products/ProductsSlice'
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer","customersReducer","productsReducer"],
+  whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer","customersReducer"
+    ,"productsReducer"],
 }
 
 const rootReducer = combineReducers({

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, deleteProductById } from "./ProductsSlice";
+// 👉 por ahora no desactivada: import { fetchProducts, deleteProductById } from "./ProductsSlice";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,9 +11,12 @@ const ProductsView = () => {
   const navigate = useNavigate();
   const products = useSelector((state) => state.productsReducer.products);
   
-  useEffect(() => {
+/* 👇 por ahora no desactivada: ya que cargan en la linea anterior 👆
+useEffect(() => {
     dispatch(fetchProducts()); // Cargar productos al montar el componente
-  }, [dispatch]);
+  }, [dispatch]); 
+  
+  */
 
   const handleDelete = (id, name) => {
     Swal.fire({
@@ -24,7 +27,7 @@ const ProductsView = () => {
       icon: "warning",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteProductById(id));
+        // dispatch(deleteProductById(id));
       }
     });
   };

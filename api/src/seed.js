@@ -107,6 +107,19 @@ const initialSuppliers = [
     {
         name: "Fede OyB",
         code: 1,
+        address: "Saavedra 336",
+        city: "Bragado",
+        postal_code: "6640",
+        cuit: "20279528787",
+        province: "Bs As"
+    },{
+        name: "Ivana Spi",
+        code: 2,
+        address: "",
+        city: "Bahía Blanca",
+        postal_code: "",
+        cuit: "",
+        province: "Bs As"
     },]
 
 const initialFamilies = [

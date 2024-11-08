@@ -44,6 +44,7 @@ export const deleteCustomerEndpoint = REACT_APP_API + 'customers/delete/';
 
 
 //products
+
 export const allProductsEndpoint = REACT_APP_API + 'products';
 export const addProductsEndpoint = REACT_APP_API + 'products/add';
 export const updateProductsEndpoint = REACT_APP_API + 'products/update/';

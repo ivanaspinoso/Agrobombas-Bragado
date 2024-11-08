@@ -41,8 +41,8 @@ export const customersSlice = createSlice({
       const id = action.payload;
       state.customers = state.customers.filter((customer) => customer.id !== id);
     },
-    logoutCustomers: (state) => {
-      state.customers = [];
+    logoutCustomers: (state, action) => {
+      state.customers = action.payload
     },
   },
 });

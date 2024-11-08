@@ -27,7 +27,8 @@ import { getAllFamilies } from '../../app/actions/families';
 import { getCompany } from '../../app/actions/companys';
 import { getAllUsers } from '../../app/actions/users';
 // import { getAllProducts } from '../../app/actions/products';
-import { getAllMessagess } from '../../app/actions/messages';
+
+import { getAllProducts } from '../../app/actions/products';
 
 const Main = () => {
   const { t, } = useTranslation()
@@ -65,9 +66,9 @@ const Main = () => {
         if (companyResponse && companyResponse.data.company) {
           console.log('Empresa data:', companyResponse.data.company);
         } else {
-          console.error('No config family available');
+          console.error('No company available');
         }
-        
+
         const groupsResponse = await dispatch(getAllCategories());
         if (groupsResponse && groupsResponse.data.groups) {
           console.log('Empresa data:', groupsResponse.data.groups);
@@ -75,14 +76,26 @@ const Main = () => {
           console.error('No config family available');
         }
 
-        const productsResponse = await dispatch(getAllMessagess());
-        if (productsResponse && productsResponse.data.messages) {
-          console.log('Empresa data:', productsResponse.data.messages);
+        const productsResponse = await dispatch(getAllProducts());
+        if (productsResponse && productsResponse.data.products) {
+          console.log('Empresa data:', productsResponse.data.products);
         } else {
-          console.error('No config family available');
+          console.error('No products available');
         }
 
-        
+        // 👇 la desactivo, porque obtiene prooductos de messages ???
+
+        /*         const productsResponse = await dispatch(getAllMessagess());
+                if (productsResponse && productsResponse.data.messages) {
+                  console.log('Empresa data:', productsResponse.data.messages);
+                } else {
+                  console.error('No config family available');
+                }
+         */
+
+        // 👇 la desactivo, porque obtiene prooductos de messages ???
+
+
 
 
         /*        // Intenta obtener los datos
@@ -152,8 +165,8 @@ const Main = () => {
     <div className="container mx-auto px-4 md:px-12 my-12">
       <header className="text-center mb-8 flex flex-col gap-2 justify-between lg:flex-row lg:gap-0">
         <h1 className="hidden md:flex text-3xl font-bold">
-         Sistema de gestión de {companys.name}
-{/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
+          Sistema de gestión de {companys.name}
+          {/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
         </h1>
 
         <div className="flex items-center justify-center gap-10">

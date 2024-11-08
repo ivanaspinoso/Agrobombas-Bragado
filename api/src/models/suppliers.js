@@ -29,6 +29,9 @@ module.exports = function (sequelize) {
         },
         code: {
             type: DataTypes.INTEGER,
+        },
+        province: {
+            type: DataTypes.STRING,
         }
     })
 }

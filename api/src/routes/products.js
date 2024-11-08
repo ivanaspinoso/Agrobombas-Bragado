@@ -146,7 +146,7 @@ router.get("/search/:search", async (req, res) => {
 router.post("/add", async (req, res) => {
   const {
     name,
-    // description,
+    description,
     cost,
     exist,
     price,
@@ -166,29 +166,33 @@ router.post("/add", async (req, res) => {
     show,
     stock
   } = req.body;
-  console.log(req.body.categories);
+  const cero = 0
+  console.log(req.body);
   if (!name || name === "") {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese nombre de producto" });
   }
-  if (!cost || cost < 0) {
+  console.log(parseFloat(cost))
+  if (!cost) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese costo de producto" });
+  } else if (parseFloat(cost) < parseFloat(cero)) {
+    return res
+      .status(400)
+      .send({ message: "Por favor, ingrese costo 0 o mayor" });
   }
   if (!percent || percent < 0) {
     return res
       .status(400)
-      .send({ message: "Por favor, ingrese precio de producto" });
+      .send({ message: "Por favor, ingrese porcentaje de ganancia de producto" });
   }
-
   if (!price || price < 0) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese precio de producto" });
   }
-
   if (!price1 || price1 < 0) {
     return res
       .status(400)
@@ -205,25 +209,25 @@ router.post("/add", async (req, res) => {
       .status(400)
       .send({ message: "Por favor, ingrese familia/s del producto" });
   }
-/*   if (!units || units === "") {
-    return res
-      .status(400)
-      .send({ message: "Por favor, ingrese nombre de cantidad del producto" });
-  }
-  if (!minunit || minunit === 0) {
-    return res.status(400).send({
-      message: "Por favor, ingrese cantidad minima, a vender, del producto",
-    });
-  }
-  if (!stepunit || stepunit === 0) {
-    return res.status(400).send({
-      message:
-        "Por favor, ingrese de a cuanto incrementar la cantidad a vender, del producto",
-    });
-  }
-  const existencia = exist === "false" || exist === true ? true : false;
-  const esoferta = isOfert === "false" || isOfert === true ? true : false;
- */
+  /*   if (!units || units === "") {
+      return res
+        .status(400)
+        .send({ message: "Por favor, ingrese nombre de cantidad del producto" });
+    }
+    if (!minunit || minunit === 0) {
+      return res.status(400).send({
+        message: "Por favor, ingrese cantidad minima, a vender, del producto",
+      });
+    }
+    if (!stepunit || stepunit === 0) {
+      return res.status(400).send({
+        message:
+          "Por favor, ingrese de a cuanto incrementar la cantidad a vender, del producto",
+      });
+    }
+    const existencia = exist === "false" || exist === true ? true : false;
+    const esoferta = isOfert === "false" || isOfert === true ? true : false;
+   */
   const existProd = await Product.findOne({
     where: {
       name: name,
@@ -232,45 +236,45 @@ router.post("/add", async (req, res) => {
 
   if (!existProd) {
     try {
-/*       const result = await cloudinary.uploader.upload(image, {
-        folder: "products",
-        // width: 300,
-        // crop: "scale"
-    }) 
-   console.log(result)  */ 
-    const objProdAdd = {
-      name,
-      // description,
-      cost,
-      exist,
-      price,
-      price1,
-      price2,
-      image,
-      percent,
-      // isOfert,
-      families,
-      // brands,
-      // units,
-      // stockunits,
-      // capacity,
-      // capacityunit,
-      minunit,
-      stepunit,
-      show,
-      stock
-      // imageurl: result.secure_url,
-      // imagepid: result.public_id
-    };
+      /*       const result = await cloudinary.uploader.upload(image, {
+              folder: "products",
+              // width: 300,
+              // crop: "scale"
+          }) 
+         console.log(result)  */
+      const objProdAdd = {
+        name,
+        description,
+        cost,
+        exist,
+        price,
+        price1,
+        price2,
+        image,
+        percent,
+        // isOfert,
+        families,
+        // brands,
+        // units,
+        // stockunits,
+        // capacity,
+        // capacityunit,
+        minunit,
+        stepunit,
+        show,
+        stock
+        // imageurl: result.secure_url,
+        // imagepid: result.public_id
+      };
 
       let newProduct = await Product.create(objProdAdd); // envio los datos al modelo sequelize para que los guarde en la database
 
       await newProduct.setFamilies(families); // seteo el/los categorias para sincronizarlos en la tabla relacionada
-//      await newProduct.setBrands(brands); // seteo la marca para sincronizarla en la tabla relacionada
+      //      await newProduct.setBrands(brands); // seteo la marca para sincronizarla en la tabla relacionada
       return res.send(newProduct);
     } catch (err) {
       // en caso de error lo devuelvo al frontend
-      return res.send({
+      return res.status(400).send({
         message: "No se pudo guardar el producto - " + err,
       });
     }
@@ -284,7 +288,7 @@ router.put("/update", async (req, res) => {
   const {
     id,
     name,
-    // description,
+    description,
     cost,
     exist,
     price,
@@ -321,68 +325,68 @@ router.put("/update", async (req, res) => {
       .status(400)
       .send({ message: "Por favor, ingrese categoria/s del producto" });
   }
-/*   if (!units || units === "") {
-    return res
-      .status(400)
-      .send({ message: "Por favor, ingrese nombre de cantidad del producto" });
-  }
- */
+  /*   if (!units || units === "") {
+      return res
+        .status(400)
+        .send({ message: "Por favor, ingrese nombre de cantidad del producto" });
+    }
+   */
   // const existencia = exist === "false" || exist === true ? true : false;
   // const esoferta = isOfert === "false" || isOfert === true ? true : false;
   try {
 
-        // tomar producto previo a modificar, por si modifico la imagen   
-        const currentProduct = await Product.findByPk(id);
-        /* let objimage = {
-          public_id: imageurl,
-          url: imagepid
-        }
-        console.log("image",image) */
-        console.log("Producto encontrado",currentProduct)
-        //modify image conditionnally
-/*         if (image !== '') {
-          const ImgId = currentProduct.imagepid;
-          if (ImgId) {
-              await cloudinary.uploader.destroy(ImgId);
-          }
-
-          const newImage = await cloudinary.uploader.upload(image, {
-              folder: "products",
-              width: 1000,
-              crop: "scale"
-          });
-
-          objimage = {
-              public_id: newImage.public_id,
-              url: newImage.secure_url
-          }
-      }
- 
-      console.log("objImage",objimage) */
-
-      let objProdUpd = {
-        name,
-        // description,
-        cost,
-        exist,
-        price,
-        price1,
-        price2,
-        image,
-        percent,
-        // isOfert,
-        families,
-        // brands,
-        // units,
-        // stockunits,
-        // capacity,
-        // capacityunit,
-        minunit,
-        stepunit,
-        show,
-        stock
-      };
+    // tomar producto previo a modificar, por si modifico la imagen   
+    const currentProduct = await Product.findByPk(id);
+    /* let objimage = {
+      public_id: imageurl,
+      url: imagepid
+    }
+    console.log("image",image) */
+    console.log("Producto encontrado", currentProduct)
+    //modify image conditionnally
+    /*         if (image !== '') {
+              const ImgId = currentProduct.imagepid;
+              if (ImgId) {
+                  await cloudinary.uploader.destroy(ImgId);
+              }
     
+              const newImage = await cloudinary.uploader.upload(image, {
+                  folder: "products",
+                  width: 1000,
+                  crop: "scale"
+              });
+    
+              objimage = {
+                  public_id: newImage.public_id,
+                  url: newImage.secure_url
+              }
+          }
+     
+          console.log("objImage",objimage) */
+
+    let objProdUpd = {
+      name,
+      description,
+      cost,
+      exist,
+      price,
+      price1,
+      price2,
+      image,
+      percent,
+      // isOfert,
+      families,
+      // brands,
+      // units,
+      // stockunits,
+      // capacity,
+      // capacityunit,
+      minunit,
+      stepunit,
+      show,
+      stock
+    };
+
 
     // envio los datos al modelo sequelize para que los guarde en la database
     let updProd = await Product.update(objProdUpd, {
@@ -453,7 +457,7 @@ router.delete("/delete/:id", async (req, res) => {
         //retrieve current image ID
         const imgId = existProd.imagepid;
         if (imgId) {
-            await cloudinary.uploader.destroy(imgId);
+          await cloudinary.uploader.destroy(imgId);
         }
 
         let delProduct = await Product.destroy({

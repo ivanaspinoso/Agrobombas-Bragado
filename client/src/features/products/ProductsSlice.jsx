@@ -1,19 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint,addProductsEndpoint } from "../../app/consts/consts";
 
 const initialProductsState = {
   loading: 'idle',
   products: [],
 };
 
-const ProductsSlice = createSlice({
+const productsSlice = createSlice({
   name: "products",
   initialState: initialProductsState,
   reducers: {
+    allProducts: (state, action) => {
+      state.products = action.payload;
+    },
+    // 👇 no se que hace set products, pero por las dudas no lo borro
     setProducts: (state, action) => {
       state.products = action.payload;
     },
+    // 👆 no se que hace set products, pero por las dudas no lo borro
     addProduct: (state, action) => {
         state.products.push(action.payload);
       },
@@ -36,67 +39,11 @@ const ProductsSlice = createSlice({
     deleteProduct: (state, action) => {
       state.products = state.products.filter(prod => prod.id !== action.payload);
     },
+    logoutProducts: (state, action) => {
+      state.products = action.payload
+    }
   },
 });
 
-export const { setProducts, updateProduct, deleteProduct,addProduct } = ProductsSlice.actions;
-
-// Thunks
-export const fetchProducts = () => async (dispatch) => {
-  try {
-    const { data } = await axios.get(`${allProductsEndpoint}`);
-    dispatch(setProducts(data));
-  } catch (error) {
-    console.error("Error fetching products:", error);
-  }
-};
-
-export const createProduct = (product) => async (dispatch) => {
-  try {
-    // Enviar el producto a la API
-    const response = await axios.post(`${addProductsEndpoint}`, product);
-    
-    // Si la creación es exitosa, agregar el producto al estado local
-    dispatch(addProduct(response.data));
-    
-    localStorage.setItem("productAdded", JSON.stringify(true));
-  } catch (error) {
-    localStorage.setItem("productAdded", JSON.stringify(false));
-    console.error("Error al crear el producto:", error.message);
-  }
-};
-
-
-
-
-// export const familyAdd = (family) => async (dispatch) => {
-//   try {
-//     const { data } = await axios.post(addFamilyEndpoint, family);
-//     dispatch(addFamily(data)); // Esto agrega la nueva familia al estado global
-//     localStorage.setItem("familyAdded", true);
-//   } catch (err) {
-//     localStorage.setItem("familyAdded", false);
-//     console.error("Error al agregar familia:", err?.response?.data?.message || err.message);
-//   }
-// };
-
-export const updateProductDetails = (product) => async (dispatch) => {
-  try {
-    const { data } = await axios.put(`${updateProductsEndpoint}` + product.id, product);
-    dispatch(updateProduct(data));
-  } catch (error) {
-    console.error("Error updating product:", error);
-  }
-};
-
-export const deleteProductById = (id) => async (dispatch) => {
-  try {
-    await axios.delete(`${deleteProductsEndpoint}` + id);
-    dispatch(deleteProduct(id));
-  } catch (error) {
-    console.error("Error deleting product:", error);
-  }
-};
-
-
-export default ProductsSlice.reducer;
+export const { updateProduct, deleteProduct,addProduct } = productsSlice.actions;
+export default productsSlice.reducer;

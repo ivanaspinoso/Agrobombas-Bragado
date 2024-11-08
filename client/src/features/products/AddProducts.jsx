@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
-import { createProduct } from "./ProductsSlice";
+// 👉 por ahora no desactivada: import { createProduct } from "./ProductsSlice";
 import { getAllCategories } from "../../app/actions/categories";
 import { getAllFamilies } from "../../app/actions/families";
-import { fetchProducts } from "./ProductsSlice";
+// 👉 por ahora no desactivada: import { fetchProducts } from "./ProductsSlice";
 import "../../App.css";
+import { productAdd } from "../../app/actions/products";
 
 const AddProducts = () => {
   const dispatch = useDispatch();
@@ -18,10 +19,12 @@ const AddProducts = () => {
   const providers = useSelector((state) => state.groupsReducer.groups);
   const families = useSelector((state) => state.familiesReducer.families);
 
-  useEffect(() => {
-    dispatch(getAllCategories());
-    dispatch(getAllFamilies());
-  }, [dispatch]);
+  /* 👇 ya fueron obtenidos en main y por eso los tomo en las 2 lineas anteriores 👆
+    useEffect(() => {
+      dispatch(getAllCategories());
+      dispatch(getAllFamilies());
+    }, [dispatch]); 
+  */
 
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre del producto es requerido"),
@@ -48,55 +51,58 @@ const AddProducts = () => {
         initialValues={{
           name: "", description: "", stock: "", cost: "", percent: "", price: "", iva21: "", iva10: "", price1: "", price2: "", prov_code: "", families: []
         }}
-        
-onSubmit={async (values, { setSubmitting, resetForm }) => {
-  const productData = {
-    name: values.name,
-    description: values.description,
-    stock: values.stock,
-    cost: values.cost,
-    percent: values.percent,
-    price: values.price,
-    iva21: values.iva21,
-    iva10: values.iva10,
-    price1: values.price1,
-    price2: values.price2,
-    prov_code: values.prov_code,
-    families: values.families,
-    exist: true,           
-    isOfert: false,       
-    show: true,           
-    userid: login?.id,
-  };
 
-  try {
-    await dispatch(createProduct(productData));
-    await dispatch(fetchProducts());
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
+          const productData = {
+            name: values.name,
+            description: values.description,
+            stock: values.stock,
+            cost: values.cost,
+            percent: values.percent,
+            price: values.price,
+            iva21: values.iva21,
+            iva10: values.iva10,
+            price1: values.price1,
+            price2: values.price2,
+            prov_code: values.prov_code,
+            families: values.families,
+            exist: true,
+            isOfert: false,
+            show: true,
+            userid: login?.id,
+          };
 
-    Swal.fire({
-      title: "Genial!",
-      text: "Producto agregado. ¿Desea seguir agregando?",
-      icon: "success",
-      showDenyButton: true,
-      confirmButtonText: 'Sí',
-      denyButtonText: 'No',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        resetForm();
-      } else {
-        navigate("/show-messages");
-      }
-    });
-  } catch (error) {
-    Swal.fire({
-      title: "Error",
-      text: "Hubo un problema al agregar el producto.",
-      icon: "error",
-    });
-  } finally {
-    setSubmitting(false);
-  }
-}}
+//  👉 por ahora no desactivada ya que me manejo con el resultado de la action:        try {
+            await dispatch(productAdd(productData));
+            // 👉 por ahora no desactivada: await dispatch(fetchProducts());
+
+            const success = JSON.parse(localStorage.getItem("productAdded"));
+            console.log("Objeto", success);
+            if (success && success === true) {
+              Swal.fire({
+                title: "Genial!",
+                text: "Producto agregado. ¿Desea seguir agregando?",
+                icon: "success",
+                showDenyButton: true,
+                confirmButtonText: 'Sí',
+                denyButtonText: 'No',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resetForm();
+                } else {
+                  navigate("/show-products");
+                }
+              });
+            } /* /  👉 por ahora no desactivada ya que me manejo con el resultado de la action: catch (error) */ else {
+              Swal.fire({
+                title: "Error",
+                text: "Hubo un problema al agregar el producto.",
+                icon: "error",
+              });
+            }/* /  👉 por ahora no desactivada ya que me manejo con el resultado de la action: finally { */
+              setSubmitting(false);
+            /* } */
+          }}
 
      
         
@@ -172,7 +178,7 @@ onSubmit={async (values, { setSubmitting, resetForm }) => {
                 value={values.prov_code}
                 onChange={handleChange}
                 onBlur={handleBlur}
-               
+
                 className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
               >
                 <option value="">Seleccionar proveedor</option>

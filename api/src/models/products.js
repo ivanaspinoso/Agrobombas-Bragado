@@ -11,7 +11,6 @@ module.exports = function (sequelize) {
         },
         exist: {
             type: DataTypes.BOOLEAN,
-            allowNull: false
         },
         cost: {
             type: DataTypes.FLOAT,
@@ -60,11 +59,9 @@ module.exports = function (sequelize) {
         },
         minunit: {
             type: DataTypes.FLOAT,
-            allowNull: false
         },
         stepunit: {
             type: DataTypes.FLOAT,
-            allowNull: false
         },
         weigth: {
             type: DataTypes.FLOAT,
