@@ -12,7 +12,7 @@ const EditCustomers = () => {
   const dispatch = useDispatch();
   
   // Extracting customer details from location state
-  const { id, name, postal_code,phone,address,city,cuit,web  } = location.state;
+  const { id, name, postal_code,phone,address,city,cuit,web,province,email  } = location.state;
 
   const navigate = useNavigate();
 
@@ -27,16 +27,20 @@ const EditCustomers = () => {
       <h2 className="text-center text-xl uppercase m-5 font-semibold">Editar Cliente</h2>
       <Formik
         validationSchema={schema}
-        initialValues={{ name, postal_code,phone,address,city,cuit,web }}
+        initialValues={{ name, postal_code,phone,address,city,cuit,province,web,email }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
             const customer = {
               id,
               name: values.name,
-              postal_code: values.postal_code,
-              phone:values.phone,
+              cuit:values.cuit,
               address:values.address,
               city:values.city,
-              cuit:values.cuit,
+
+              postal_code: values.postal_code,
+              phone:values.phone,
+              province:values.province,
+              email:values.email,
+
               web:values.web,
             };
             const { success, error } = await dispatch(customersUpdate(customer));
@@ -91,7 +95,51 @@ const EditCustomers = () => {
                   <p className="mt-2 text-red-600">{errors.name}</p>
                 )}
               </div>
-
+              <div className="mb-4">
+                <label htmlFor="cuit" className="block text-sm font-medium text-gray-700">Cuit:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.cuit ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="cuit"
+                  name="cuit"
+                  value={values.cuit}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.cuit && touched.cuit && (
+                  <p className="mt-2 text-red-600">{errors.cuit}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Dirección:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="address"
+                  name="address"
+                  value={values.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.address && touched.address && (
+                  <p className="mt-2 text-red-600">{errors.address}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad:</label>
+                <input
+                  type="text"
+                  className={`shadow form-input block w-full mt-1 ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="city"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.city && touched.city && (
+                  <p className="mt-2 text-red-600">{errors.city}</p>
+                )}
+              </div>
               {/* <div className="mb-4">
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Descripción:</label>
                 <input
@@ -138,51 +186,39 @@ const EditCustomers = () => {
                   <p className="mt-2 text-red-600">{errors.phone}</p>
                 )}
               </div>
+              
               <div className="mb-4">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Dirección:</label>
+                <label htmlFor="province" className="block text-sm font-medium text-gray-700">Provincia:</label>
                 <input
                   type="text"
-                  className={`shadow form-input block w-full mt-1 ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded`}
-                  id="address"
-                  name="address"
-                  value={values.address}
+                  className={`shadow form-input block w-full mt-1 ${errors.province ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="province"
+                  name="province"
+                  value={values.province}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.address && touched.address && (
-                  <p className="mt-2 text-red-600">{errors.address}</p>
+                {errors.province && touched.province && (
+                  <p className="mt-2 text-red-600">{errors.province}</p>
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad:</label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
                 <input
                   type="text"
-                  className={`shadow form-input block w-full mt-1 ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded`}
-                  id="city"
-                  name="city"
-                  value={values.city}
+                  className={`shadow form-input block w-full mt-1 ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="email"
+                  name="email"
+                  value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.city && touched.city && (
-                  <p className="mt-2 text-red-600">{errors.city}</p>
+                {errors.email && touched.email && (
+                  <p className="mt-2 text-red-600">{errors.email}</p>
                 )}
               </div>
-              <div className="mb-4">
-                <label htmlFor="cuit" className="block text-sm font-medium text-gray-700">Cuit:</label>
-                <input
-                  type="text"
-                  className={`shadow form-input block w-full mt-1 ${errors.cuit ? 'border-red-500' : 'border-gray-300'} rounded`}
-                  id="cuit"
-                  name="cuit"
-                  value={values.cuit}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.cuit && touched.cuit && (
-                  <p className="mt-2 text-red-600">{errors.cuit}</p>
-                )}
-              </div>
+              
+              
               <div className="mb-4">
                 <label htmlFor="web" className="block text-sm font-medium text-gray-700">Web:</label>
                 <input

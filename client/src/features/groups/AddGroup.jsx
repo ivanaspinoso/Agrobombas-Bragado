@@ -14,10 +14,18 @@ const AddGroup = () => {
 
   // Ajustamos el esquema de validación
   const schema = Yup.object().shape({
-    name: Yup.string().required("El nombre del proveedor es requerido"),
-    code: Yup.number().required("El código es requerido").min(1, "El código debe ser un número positivo"),
-    description: Yup.string().optional(),
+    name: Yup.string().required("El grupo es requerido"),
+    code: Yup.string().required("El código es requerido").min(2, "Al menos 2 caracteres"),
+    email: Yup.string().email("Debe ser un email válido").required("El email es requerido"),
+    address: Yup.string(), // Campo de dirección opcional
+    city: Yup.string(), // Campo de ciudad opcional
+    phone: Yup.string()
+      .matches(/^[0-9]+$/, "Debe contener solo números")
+      .min(7, "Debe tener al menos 7 dígitos")
+      .optional(),
+    web: Yup.string().url("Debe ser una URL válida").optional(), // Campo de URL opcional
   });
+
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -26,12 +34,16 @@ const AddGroup = () => {
       </h2>
       <Formik
         validationSchema={schema}
-        initialValues={{ name: "", description: "", code: "" }}
+        initialValues={{name:"", code:"", email:"",address:"",city:"",phone:"",web:"" }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           const supplier = {
             name: values.name,
-            description: values.description,
             code: values.code,
+            email:values.email,
+            address:values.address,
+            city:values.city,
+            phone:values.phone,
+            web:values.web,
             userid: login.id
           };
           await dispatch(cateAdd(supplier)); 
@@ -47,7 +59,7 @@ const AddGroup = () => {
               denyButtonText: 'No',
             }).then((result) => {
               if (result.isConfirmed) {
-                resetForm({ name: "", description: "", code: "" });
+                resetForm({ name:"", code:"", email:"",address:"",city:"",phone:"",web:"" });
               } else {
                 navigate("/show-groups");
               }
@@ -68,7 +80,8 @@ const AddGroup = () => {
             errors,
             handleChange,
             handleBlur,
-            handleSubmit
+            handleSubmit,
+            touched,
           } = props;
 
           return (
@@ -132,6 +145,67 @@ const AddGroup = () => {
                   onBlur={handleBlur}
                 />
                 {errors.province && <p className="text-red-500 text-xs italic">{errors.province}</p>}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Dirección:</label>
+                <input
+                  type="address"
+                  className={`shadow form-input block w-full mt-1 ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="address"
+                  name="address"
+                  value={values.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.address && touched.address && (
+                  <p className="mt-2 text-red-600">{errors.address}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad:</label>
+                <input
+                  type="city"
+                  className={`shadow form-input block w-full mt-1 ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="city"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.city && touched.city && (
+                  <p className="mt-2 text-red-600">{errors.city}</p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Teléfono:</label>
+                <input
+                  type="phone"
+                  className={`shadow form-input block w-full mt-1 ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="phone"
+                  name="phone"
+                  value={values.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.phone && touched.phone && (
+                  <p className="mt-2 text-red-600">{errors.phone}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="web" className="block text-sm font-medium text-gray-700">Web:</label>
+                <input
+                  type="web"
+                  className={`shadow form-input block w-full mt-1 ${errors.web ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="web"
+                  name="web"
+                  value={values.web}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.web && touched.web && (
+                  <p className="mt-2 text-red-600">{errors.web}</p>
+                )}
               </div>
               <button
                 type="submit"

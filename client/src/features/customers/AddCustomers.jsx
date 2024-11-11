@@ -29,6 +29,14 @@ const AddCustomers = () => {
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           const family = {
             name: values.name,
+            cuit: values.cuit,
+            address: values.address,
+            city: values.city,
+            phone: values.phone,
+            province: values.province,
+            email: values.email,
+            web: values.web,
+
             postal_code: values.postal_code,
             userid: login.id
           };
@@ -89,6 +97,51 @@ const AddCustomers = () => {
                 {errors.name ? <p className="text-red-500 text-xs italic">{errors.name}</p> : ""}
               </div>
               <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cuit">
+                  Cuit:
+                </label>
+                <input
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  id="cuit"
+                  name="cuit"
+                  value={values.cuit}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.cuit ? <p className="text-red-500 text-xs italic">{errors.cuit}</p> : ""}
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
+                  Dirección:
+                </label>
+                <input
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  id="address"
+                  name="address"
+                  value={values.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.address ? <p className="text-red-500 text-xs italic">{errors.address}</p> : ""}
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
+                  Ciudad:
+                </label>
+                <input
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  id="city"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.city ? <p className="text-red-500 text-xs italic">{errors.city}</p> : ""}
+              </div>
+              <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="postal_code">
                   Codigo postal:
                 </label>
@@ -119,53 +172,35 @@ const AddCustomers = () => {
                 />
                 {errors.phone ? <p className="text-red-500 text-xs italic">{errors.phone}</p> : ""}
               </div>
-
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
-                  Dirección:
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="province">
+                  Provincia:
                 </label>
                 <input
                   type="text"
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="address"
-                  name="address"
-                  value={values.address}
+                  id="province"
+                  name="province"
+                  value={values.province}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.address ? <p className="text-red-500 text-xs italic">{errors.address}</p> : ""}
+                {errors.province ? <p className="text-red-500 text-xs italic">{errors.province}</p> : ""}
               </div>
-
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
-                  Ciudad:
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                  Email:
                 </label>
                 <input
                   type="text"
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="city"
-                  name="city"
-                  value={values.city}
+                  id="email"
+                  name="email"
+                  value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.city ? <p className="text-red-500 text-xs italic">{errors.city}</p> : ""}
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cuit">
-                  Cuit:
-                </label>
-                <input
-                  type="text"
-                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="cuit"
-                  name="cuit"
-                  value={values.cuit}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.cuit ? <p className="text-red-500 text-xs italic">{errors.cuit}</p> : ""}
+                {errors.email ? <p className="text-red-500 text-xs italic">{errors.email}</p> : ""}
               </div>
 
               <div className="mb-4">

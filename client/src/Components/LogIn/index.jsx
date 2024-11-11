@@ -14,7 +14,7 @@ import { eye } from 'react-icons-kit/feather/eye';
 import { useTranslation } from "react-i18next";
 import Spain from '../../assets/images/spain.jpg'
 import Usa from '../../assets/images/usa.jpg'
-import Agrobombas from '../../assets/images/agrobombas.logo.jpg'
+import Agrobombas from '../../assets/images/logonuevo.jpeg'
 
 
 const LogIn = () => {

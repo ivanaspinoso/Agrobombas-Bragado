@@ -35,6 +35,7 @@ import ProductsView from "../features/products/ProductsView";
 import AddProduct from "../features/products/AddProducts";
 // import EditCustomers from "../features/customers/EditCustomers";
 import AddCustomers from "../features/customers/AddCustomers";
+import EditProduct from "../features/products/EditProduct";
 
 const Layout = ({ children }) => {
   return (
@@ -58,6 +59,8 @@ const Index = () => {
 
           <Route path="/show-messages" element={<ProductsView />} />
           <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/edit-product" element={<EditProduct />} />
+
 
           
           <Route path="/add-message" element={<AddCustomers />} />

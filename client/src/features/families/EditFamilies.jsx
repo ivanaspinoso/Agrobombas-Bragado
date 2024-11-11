@@ -17,7 +17,7 @@ const EditFamily = () => {
 
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre de la familia es requerido"),
-    description: Yup.string().required("La descripción es requerida").min(4, "Al menos 4 caracteres"),
+    description: Yup.string().optional(),
   });
 
   return (

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint } from "../../app/consts/consts";
-
+import { deleteProduct } from "../../features/products/ProductsSlice";
 export const getAllProducts = () => async (dispatch) => {
     try {
         console.log("action get productos", allProductsEndpoint)
@@ -25,6 +25,15 @@ export const productAdd = (product) => async (dispatch) => {
     } catch (error) {
         localStorage.setItem("productAdded", JSON.stringify(false));
         console.error("Error al crear el producto:", error.message);
+    }
+};
+
+export const deleteProductById = (id) => async (dispatch) => {
+    try {
+        await axios.delete(`${deleteProductsEndpoint}${id}`);
+        dispatch(deleteProduct(id)); 
+    } catch (error) {
+        console.error("Error al eliminar el producto:", error.message);
     }
 };
 

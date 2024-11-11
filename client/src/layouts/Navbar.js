@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "../app/actions/users";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import Agrobombas from "../assets/images/agrobombas.logo.jpg";
+import Agrobombas from "../assets/images/logonuevo.jpeg";
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ const Navbar = () => {
             <img
               src={Agrobombas}
               alt="Logo Wapp Message System"
-              className="w-16 h-10 rounded-md"
+              className="w-18 h-10 rounded-md"
             />
             Agro Bombas Bragado
           </Link>

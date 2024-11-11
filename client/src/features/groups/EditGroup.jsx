@@ -13,29 +13,42 @@ const EditGroup = () => {
   const [id] = useState(location.state.id);
   const [name] = useState(location.state.name);
   const [code] = useState(location.state.code);
+  const [address] = useState(location.state.address);
   const [email] = useState(location.state.email || ""); // Agregar email con valor predeterminado si falta
   const navigate = useNavigate();
 
   const schema = Yup.object().shape({
     name: Yup.string().required("El grupo es requerido"),
     code: Yup.string().required("El código es requerido").min(2, "Al menos 2 caracteres"),
-    email: Yup.string().email("Debe ser un email válido").required("El email es requerido")
+    email: Yup.string().email("Debe ser un email válido").required("El email es requerido"),
+    address: Yup.string(), // Campo de dirección opcional
+    city: Yup.string(), // Campo de ciudad opcional
+    phone: Yup.string()
+      .matches(/^[0-9]+$/, "Debe contener solo números")
+      .min(7, "Debe tener al menos 7 dígitos")
+      .optional(),
+    web: Yup.string().url("Debe ser una URL válida").optional(), // Campo de URL opcional
   });
+  
   
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
-        Editar Grupo
+        Editar Proveedor
       </h2>
       <Formik
         validationSchema={schema}
-        initialValues={{ name, code, email}}
+        initialValues={{ name:"", code:"", email:"",address:"",city:"",phone:"",web:""}}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           const categoryData = {
             name: values.name,
             code: values.code,
             email:values.email,
+            address:values.address,
+            city:values.city,
+            phone:values.phone,
+            web:values.web,
             id: id,
           };
           dispatch(updateCategory(categoryData));
@@ -46,7 +59,7 @@ const EditGroup = () => {
               text: "Grupo de contactos modificado!",
               icon: "success",
             }).then(() => {
-              resetForm({ name: "", code: "" });
+              resetForm({ name: "", code: "",email:"",address:"",city:"",phone:"",web:"" });
               navigate("/show-groups", { replace: true });
             });
           } else {
@@ -119,18 +132,64 @@ const EditGroup = () => {
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Provincia:</label>
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Dirección:</label>
                 <input
-                  type="province"
-                  className={`shadow form-input block w-full mt-1 ${errors.province ? 'border-red-500' : 'border-gray-300'} rounded`}
-                  id="province"
-                  name="province"
-                  value={values.province}
+                  type="address"
+                  className={`shadow form-input block w-full mt-1 ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="address"
+                  name="address"
+                  value={values.address}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.province && touched.province && (
-                  <p className="mt-2 text-red-600">{errors.province}</p>
+                {errors.address && touched.address && (
+                  <p className="mt-2 text-red-600">{errors.address}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad:</label>
+                <input
+                  type="city"
+                  className={`shadow form-input block w-full mt-1 ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="city"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.city && touched.city && (
+                  <p className="mt-2 text-red-600">{errors.city}</p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Teléfono:</label>
+                <input
+                  type="phone"
+                  className={`shadow form-input block w-full mt-1 ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="phone"
+                  name="phone"
+                  value={values.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.phone && touched.phone && (
+                  <p className="mt-2 text-red-600">{errors.phone}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="web" className="block text-sm font-medium text-gray-700">Web:</label>
+                <input
+                  type="web"
+                  className={`shadow form-input block w-full mt-1 ${errors.web ? 'border-red-500' : 'border-gray-300'} rounded`}
+                  id="web"
+                  name="web"
+                  value={values.web}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.web && touched.web && (
+                  <p className="mt-2 text-red-600">{errors.web}</p>
                 )}
               </div>
 
@@ -139,7 +198,7 @@ const EditGroup = () => {
                 disabled={isSubmitting || !values.name || !values.code || Object.keys(errors).length > 0}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                Editar Grupo
+                Editar Proveedor
               </button>
             </Form>
           );
