@@ -10,7 +10,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const login = useSelector((state) => state.usersReducer.login);
-  // const [isDropdownOpen, setDropdownOpen] = useState(false);
+    // const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const handleMenuClick = () => {
     document.getElementById("navbarMobileMenu").classList.add("hidden");
@@ -21,8 +21,8 @@ const Navbar = () => {
   // };
 
   return (
-<nav className="bg-[#0e6fa5] p-4 shadow-lg">
-<div className="container mx-auto flex items-center justify-between">
+    <nav className="bg-[#0e6fa5] p-4 shadow-lg">
+      <div className="container mx-auto flex items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
           <Link
             to="/gestion"
@@ -63,92 +63,71 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center space-x-4 ml-auto">
           {login.id && (
             <>
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/gestion"
+              <Link 
+              className="text-white hover:text-gray-300 transition duration-300"
+              to="/gestion"
               >
                 {t("navbar.home")}
               </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-groups"
+               <Link 
+              className="text-white hover:text-gray-300 transition duration-300" 
+              to="/show-groups"
               >
                 {t("navbar.groups")}
               </Link>
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-families"
-              >
+              <Link 
+              className="text-white hover:text-gray-300 transition duration-300" 
+              to="/show-families">
                 {t("Familias")}
               </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-messages"
-              >
+              <Link 
+              className="text-white hover:text-gray-300 transition duration-300"
+               to="/show-messages">
                 {t("navbar.messages")}
               </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/queue-messages"
+              <Link 
+              className="text-white hover:text-gray-300 transition duration-300" 
+              to="/queue-messages"
               >
                 {t("navbar.stack")}
               </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-configs"
-              >
+              <Link 
+              className="text-white hover:text-gray-300 transition duration-300"
+               to="/show-configs"
+               >
                 {t("navbar.settings")}
               </Link>
-
               <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/sended-messages"
-              >
+               className="text-white hover:text-gray-300 transition duration-300" 
+               to="/sended-messages"
+               >
                 {t("navbar.sent")}
               </Link>
-
               <Link
-                className="text-white hover:text-gray-300 transition duration-300"
+               className="text-white hover:text-gray-300 transition duration-300"
                 to="/show-receipts"
-              >
+                >
                 {t("navbar.received")}
               </Link>
 
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-users"
-              >
-                {t("Usuarios")}
-              </Link>
-
-              <Link
-                className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-companys"
-              >
-                {t("navbar.contacts")}
-              </Link>
-
-              
-
-              
-
-             
-
-              
-
-              
-
-        
-
-              
-
-              
+              {/* Muestra Usuarios y Empresa solo si es admin y no es "mostrador" */}
+              {login.isAdmin && login.username !== "mostrador" && (
+                <>
+                  <Link 
+                  className="text-white hover:text-gray-300 transition duration-300"
+                   to="/show-users"
+                   >
+                    {t("Usuarios")}
+                  </Link>
+                  <Link 
+                  className="text-white hover:text-gray-300 transition duration-300"
+                   to="/show-companys"
+                   >
+                    {t("navbar.contacts")}
+                  </Link>
+                </>
+              )}
             </>
-            
           )}
           {login.id && (
             <button

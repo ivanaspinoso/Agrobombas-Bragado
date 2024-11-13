@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +16,6 @@ import receipts from '../../assets/images/recibidos.avif';
 import config from '../../assets/images/configuracion.webp';
 import proveedores from '../../assets/images/proveedores1.jpg';
 import clientes from '../../assets/images/clientes.jpg';
-
 import enviados from "../../assets/images/whatsapp-enviado.webp";
 // import autoreplys from "../../assets/images/autoreply.jpg";
 // import bots from "../../assets/images/botswapp.webp";
@@ -27,11 +25,10 @@ import { getAllFamilies } from '../../app/actions/families';
 import { getCompany } from '../../app/actions/companys';
 import { getAllUsers } from '../../app/actions/users';
 // import { getAllProducts } from '../../app/actions/products';
-
 import { getAllProducts } from '../../app/actions/products';
 
 const Main = () => {
-  const { t, } = useTranslation()
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const companys = useSelector((state) => state.companysReducer.companys);
@@ -44,7 +41,6 @@ const Main = () => {
     console.log("loginid", login.id)
     if (login.id) {
       try {
-
         // Relleno estado de usuarios
         const usersResponse = await dispatch(getAllUsers());
         if (usersResponse && usersResponse.data) {
@@ -82,7 +78,6 @@ const Main = () => {
         } else {
           console.error('No products available');
         }
-
         // 👇 la desactivo, porque obtiene prooductos de messages ???
 
         /*         const productsResponse = await dispatch(getAllMessagess());
@@ -161,49 +156,56 @@ const Main = () => {
     fetchData();
   }, []);
 
+  const menuItems = [
+    { src: proveedores, title: t("main.contactGroup"), text: t("main.contactGroupDescription"), link: '/show-groups' },
+    { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
+    { src: mensaje, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
+    { src: clientes, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
+    { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
+    { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
+    { src: receipts, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
+    ...(login.isAdmin && login.username !== "mostrador" ? [
+      { src: config, title: t("main.users"), text: t("main.usersDescription"), link: '/show-users?' },
+      { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-companys' },
+    ] : [])
+  ];
+
   return (
     <div className="container mx-auto px-4 md:px-12 my-12">
       <header className="text-center mb-8 flex flex-col gap-2 justify-between lg:flex-row lg:gap-0">
         <h1 className="hidden md:flex text-3xl font-bold">
           Sistema de gestión de {companys.name}
-          {/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
+                    {/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
+
         </h1>
 
         <div className="flex items-center justify-center gap-10">
           <div className="flex items-center justify-center">
             {/* <span>{!login.vinculated ? t("main.deniedVincMessage") : t("main.successVincMessage")} </span> */}
+
             {login.vinculated ? (
               // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-[#0e6fa5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              // </svg>
+                            // </svg>
+
             ) : (
-              // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              // </svg>
+                            // </svg>
+
             )}
           </div>
         </div>
       </header>
 
-
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
-        {[
-          { src: proveedores, title: t("main.contactGroup"), text: t("main.contactGroupDescription"), link: '/show-groups' },
-          { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
-          { src: mensaje, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
-          { src: clientes, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
-          { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
-          { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
-          { src: receipts, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
-          { src: config, title: t("main.users"), text: t("main.usersDescription"), link: '/show-users?' },
-
-          { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-companys' },
-          // { src: autoreplys, title: t("main.autoReply"), text: t("main.autoReplyDescription"), link: login.autoreplys ? '/building' : '/opcional' },
-          // { src: bots, title: t("main.bots"), text: t("main.botsDescription"), link: login.autobots ? '/building' : '/opcional' }
-        ].map((item, index) => (
+        {menuItems.map((item, index) => (
           <div
             key={index}
-            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}
+            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200"
+            style={{ minWidth: '400px' }}
           >
             <img className="w-full h-48 object-cover mb-4 rounded-md" src={item.src} alt={item.title} />
             <div className="w-full px-4 text-center">
@@ -228,7 +230,7 @@ const Main = () => {
             </div>
           </div>
         ))}
-        {/* {login.isAdmin && (
+         {/* {login.isAdmin && (
           <>
             <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}>
               <img className="w-full h-48 object-cover mb-4 rounded-md" src={contacto} alt="Usuarios" />
