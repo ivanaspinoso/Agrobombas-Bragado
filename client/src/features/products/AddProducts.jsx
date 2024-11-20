@@ -28,7 +28,7 @@ const AddProducts = () => {
 
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre del producto es requerido"),
-    description: Yup.string().optional(), // Campo opcional
+    description: Yup.string().optional(),
     stock: Yup.number().required("El stock es requerido").integer("Debe ser un número entero"),
     cost: Yup.number().required("El costo es requerido").positive("Debe ser un número positivo"),
     percent: Yup.number().positive("Debe ser un número positivo"),

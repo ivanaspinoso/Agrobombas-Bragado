@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // 👉 por ahora no desactivada: import { fetchProducts, deleteProductById } from "./ProductsSlice";
+
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,13 +11,16 @@ const ProductsView = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.productsReducer.products);
-  
-/* 👇 por ahora no desactivada: ya que cargan en la linea anterior 👆
+
+  /* 👇 por ahora no desactivada: ya que cargan en la linea anterior 👆
 useEffect(() => {
     dispatch(fetchProducts()); // Cargar productos al montar el componente
   }, [dispatch]); 
   
   */
+  const [searchName, setSearchName] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
+  const [searchArticleNumber, setSearchArticleNumber] = useState("");
 
   const handleDelete = (id, name) => {
     Swal.fire({
@@ -32,6 +36,21 @@ useEffect(() => {
     });
   };
 
+  const filteredProducts = products?.filter((product) => {
+    const matchesName = product.name
+      .toLowerCase()
+      .includes(searchName.toLowerCase());
+    const matchesCategory = product.families
+      ?.join(", ")
+      .toLowerCase()
+      .includes(searchCategory.toLowerCase());
+    const matchesArticleNumber = product.id
+      .toString()
+      .includes(searchArticleNumber);
+
+    return matchesName && matchesCategory && matchesArticleNumber;
+  });
+
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
@@ -44,6 +63,31 @@ useEffect(() => {
           Agregar Producto
         </button>
       </div>
+
+      <div className="mb-5 flex flex-wrap gap-4">
+        <input
+          type="text"
+          placeholder="Buscar nombre"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full sm:w-auto"
+        />
+        <input
+          type="text"
+          placeholder="Buscar rubro"
+          value={searchCategory}
+          onChange={(e) => setSearchCategory(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full sm:w-auto"
+        />
+        <input
+          type="text"
+          placeholder="Buscar número de artículo"
+          value={searchArticleNumber}
+          onChange={(e) => setSearchArticleNumber(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full sm:w-auto"
+        />
+      </div>
+
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
@@ -51,16 +95,10 @@ useEffect(() => {
               <th className="px-4 py-2 text-left">ID</th>
               <th className="px-4 py-2 text-left">Nombre</th>
               <th className="px-4 py-2 text-left">Descripción</th>
-              <th className="px-4 py-2 text-left">Existencia</th>
-              <th className="px-4 py-2 text-left">Costo</th>
-              <th className="px-4 py-2 text-left">Porcentaje</th>
               <th className="px-4 py-2 text-left">Precio</th>
               <th className="px-4 py-2 text-left">Precio 1</th>
               <th className="px-4 py-2 text-left">Precio 2</th>
               <th className="px-4 py-2 text-left">IVA 21%</th>
-              <th className="px-4 py-2 text-left">IVA 10.5%</th>
-              <th className="px-4 py-2 text-left">Oferta</th>
-              <th className="px-4 py-2 text-left">Mostrar</th>
               <th className="px-4 py-2 text-left">Proveedor</th>
               <th className="px-4 py-2 text-left">Stock</th>
               <th className="px-4 py-2 text-left">Familias</th>
@@ -68,21 +106,15 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {products?.map((product, index) => {
+            {filteredProducts?.map((product, index) => {
               const {
                 id,
                 name,
                 description,
-                exist,
-                cost,
-                percent,
                 price,
                 price1,
                 price2,
                 iva21,
-                iva10,
-                isOfert,
-                show,
                 prov_code,
                 stock,
                 families,
@@ -92,23 +124,29 @@ useEffect(() => {
                   <td className="px-4 py-2">{index + 1}</td>
                   <td className="px-4 py-2">{name}</td>
                   <td className="px-4 py-2">{description}</td>
-                  <td className="px-4 py-2">{exist ? "Sí" : "No"}</td>
-                  <td className="px-4 py-2">{cost}</td>
-                  <td className="px-4 py-2">{percent}</td>
                   <td className="px-4 py-2">{price}</td>
                   <td className="px-4 py-2">{price1}</td>
                   <td className="px-4 py-2">{price2}</td>
                   <td className="px-4 py-2">{iva21}</td>
-                  <td className="px-4 py-2">{iva10}</td>
-                  <td className="px-4 py-2">{isOfert ? "Sí" : "No"}</td>
-                  <td className="px-4 py-2">{show ? "Sí" : "No"}</td>
                   <td className="px-4 py-2">{prov_code}</td>
                   <td className="px-4 py-2">{stock}</td>
                   <td className="px-4 py-2">{families?.join(", ")}</td>
                   <td className="px-4 py-2 flex gap-2">
-                    <Link to={`/edit-product`} state={{ 
-                        id, name, description, exist, cost, percent, price, price1, price2, iva21, iva10, isOfert, show, prov_code, stock, families
-                      }}>
+                    <Link
+                      to={`/edit-product`}
+                      state={{
+                        id,
+                        name,
+                        description,
+                        price,
+                        price1,
+                        price2,
+                        iva21,
+                        prov_code,
+                        stock,
+                        families,
+                      }}
+                    >
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
                         <FaEdit />
                       </button>
