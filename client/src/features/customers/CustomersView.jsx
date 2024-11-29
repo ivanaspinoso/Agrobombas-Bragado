@@ -66,7 +66,7 @@ const CustomersView = () => {
           <th className="px-4 py-2 text-left">Teléfono</th>
           <th className="px-4 py-2 text-left">Provincia</th>
           <th className="px-4 py-2 text-left">Email</th>
-
+          <th className="px-4 py-2 text-left">Cumpleaños</th>
           <th className="px-4 py-2 text-left">web</th>
           <th className="px-4 py-2 text-left">Action</th>
         </tr>
@@ -85,12 +85,13 @@ const CustomersView = () => {
             <td className="px-4 py-2">{customer.province}</td>
             <td className="px-4 py-2">{customer.email}</td>
             <td className="px-4 py-2">{customer.web}</td>
+            <td className="px-4 py-2">{customer.birthday || 'N/A'}</td> 
 
              {/* <td>
               <button onClick={() => handleDelete(customer.id)}></button>
             </td>  */}
             <td className="px-4 py-2 flex gap-2">
-            <Link to="/edit-customers" state={{ id: customer.id, name: customer.name, cuit:customer.cuit,address:customer.address ,city: customer.city,postal_code: customer.postal_code,phone: customer.phone,province:customer.province,email: customer.email,web: customer.web}}>
+            <Link to="/edit-customers" state={{ id: customer.id, name: customer.name, cuit:customer.cuit,address:customer.address ,city: customer.city,postal_code: customer.postal_code,phone: customer.phone,province:customer.province,email: customer.email,web: customer.web,  birthday: customer.birthday,}}>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
                   <FaEdit />
                 </button>

@@ -139,7 +139,11 @@ const AddProducts = () => {
                 <Field name="percent" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
                 {errors.percent && <p className="text-red-500 text-xs italic">{errors.percent}</p>}
               </div>
-
+              <div>
+                <label htmlFor="iva21" className="block text-gray-700 text-sm font-bold mb-2">IVA 21%</label>
+                <Field name="iva21" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                {errors.iva21 && <p className="text-red-500 text-xs italic">{errors.iva21}</p>}
+              </div>
               <div>
                 <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio *</label>
                 <Field name="price" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
@@ -147,25 +151,21 @@ const AddProducts = () => {
               </div>
 
               <div>
-                <label htmlFor="iva21" className="block text-gray-700 text-sm font-bold mb-2">IVA 21%</label>
-                <Field name="iva21" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
-                {errors.iva21 && <p className="text-red-500 text-xs italic">{errors.iva21}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="iva10" className="block text-gray-700 text-sm font-bold mb-2">IVA 10.5%</label>
-                <Field name="iva10" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
-                {errors.iva10 && <p className="text-red-500 text-xs italic">{errors.iva10}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="price1" className="block text-gray-700 text-sm font-bold mb-2">Precio Alternativo 1</label>
+                <label htmlFor="price1" className="block text-gray-700 text-sm font-bold mb-2">% Tarjeta</label>
                 <Field name="price1" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
                 {errors.price1 && <p className="text-red-500 text-xs italic">{errors.price1}</p>}
               </div>
 
+              {/* <div>
+                <label htmlFor="iva10" className="block text-gray-700 text-sm font-bold mb-2">IVA 10.5%</label>
+                <Field name="iva10" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                {errors.iva10 && <p className="text-red-500 text-xs italic">{errors.iva10}</p>}
+              </div> */}
+
+              
+
               <div>
-                <label htmlFor="price2" className="block text-gray-700 text-sm font-bold mb-2">Precio Alternativo 2</label>
+                <label htmlFor="price2" className="block text-gray-700 text-sm font-bold mb-2">Precio Tarjeta 2</label>
                 <Field name="price2" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
                 {errors.price2 && <p className="text-red-500 text-xs italic">{errors.price2}</p>}
               </div>
@@ -190,29 +190,34 @@ const AddProducts = () => {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="families" className="block text-gray-700 text-sm font-bold mb-2">Rubro/Familia *</label>
-              <select
-                multiple
-                name="families"
-                value={values.families}
-                onChange={(e) => {
-                  const options = Array.from(e.target.selectedOptions, option => option.value);
-                  setFieldValue("families", options);
-                }}
-                className="form-input mt-1 block w-full border border-gray-300 rounded px-1 h-20"
-              >
-                {families.map(family => (
-                  <option key={family.id} value={family.id}>{family.name}</option>
-                ))}
-              </select>
-              {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
-            </div>
+  <label htmlFor="families" className="block text-gray-700 text-sm font-bold mb-2">
+    Rubro/Familia *
+  </label>
+  <select
+    name="families"
+    value={values.families} // Al ser un solo valor, manejar un único id
+    onChange={(e) => {
+      setFieldValue("families", [e.target.value]); // Convertir a array para mantener la compatibilidad
+    }}
+    onBlur={handleBlur}
+    className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+  >
+    <option value="">Seleccionar rubro/familia</option>
+    {families.map((family) => (
+      <option key={family.id} value={family.id}>
+        {family.name}
+      </option>
+    ))}
+  </select>
+  {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
+</div>
+
 
             <div className="mb-6">
               <label htmlFor="selectedFamilies" className="block text-gray-700 text-sm font-bold mb-2">Familias Seleccionadas:</label>
               <textarea
                 id="selectedFamilies"
-                className="form-input mt-1 block w-full border border-gray-300 rounded px-1 h-20"
+                className="form-input mt-1 block w-full border border-gray-300 rounded px-1 "
                 value={values.families.map(famId => families.find(f => f.id === parseInt(famId))?.name).join(', ')}
                 readOnly
               />
