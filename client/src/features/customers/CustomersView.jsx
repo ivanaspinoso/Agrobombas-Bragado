@@ -66,8 +66,9 @@ const CustomersView = () => {
           <th className="px-4 py-2 text-left">Teléfono</th>
           <th className="px-4 py-2 text-left">Provincia</th>
           <th className="px-4 py-2 text-left">Email</th>
-          <th className="px-4 py-2 text-left">Cumpleaños</th>
           <th className="px-4 py-2 text-left">web</th>
+          <th className="px-4 py-2 text-left">Cumpleaños</th>
+
           <th className="px-4 py-2 text-left">Action</th>
         </tr>
       </thead>
