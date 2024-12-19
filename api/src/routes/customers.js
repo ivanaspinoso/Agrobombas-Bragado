@@ -34,7 +34,8 @@ router.post("/add", async (req, res) => {
         phone,
         cuit,
         email,
-        web
+        web,
+        birthday
     } = req.body;
     // chequeo que estén completos los 3 campos requeridos
     if (!name || name === "") {
@@ -50,7 +51,8 @@ router.post("/add", async (req, res) => {
         phone,
         cuit,
         email,
-        web
+        web,
+        birthday
     };
     try {
         // envio los datos al modelo sequelize para que los guarde en la database
@@ -79,7 +81,8 @@ router.put("/update", /* validateToken, */ async (req, res) => {
         phone,
         cuit,
         email,
-        web } = req.body;
+        web,
+        birthday } = req.body;
     // console.log(req.body.user);
     // chequeo que estén completos los 3 campos requeridos
     if (!id || id === "") {
@@ -112,6 +115,7 @@ router.put("/update", /* validateToken, */ async (req, res) => {
         cuit,
         email,
         web,
+        birthday,
         id
     };
 

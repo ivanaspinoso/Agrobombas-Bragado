@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, DATE, DATEONLY } = require('sequelize');
 
 module.exports = function (sequelize) {
     return sequelize.define('customer', {
@@ -26,6 +26,9 @@ module.exports = function (sequelize) {
         },
         web: {
             type: DataTypes.STRING,
+        },
+        birthday: {
+            type: DataTypes.DATEONLY,
         }
     })
 }

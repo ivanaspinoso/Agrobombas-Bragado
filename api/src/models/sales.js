@@ -26,34 +26,6 @@ module.exports = function (sequelize) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        delivery: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true
-        },
-        sended: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true
-        },
-        delivered: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true
-        },
-        payd: {
-            type: DataTypes.BOOLEAN,
-            allownull: false
-        },
-        payd_idml: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        payd_mlstatus: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        merchant_order_idml: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         ordercart: {
             type: DataTypes.STRING,
             allowNull: true

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 import ContactsView from "../features/contacts/ContactsView";
 import Footer from "../layouts/Footer";
 import Navbar from "../layouts/Navbar";
@@ -36,6 +36,7 @@ import AddProduct from "../features/products/AddProducts";
 // import EditCustomers from "../features/customers/EditCustomers";
 import AddCustomers from "../features/customers/AddCustomers";
 import EditProduct from "../features/products/EditProduct";
+import Home from "../Components/Main/Home.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -47,11 +48,14 @@ const Layout = ({ children }) => {
   );
 };
 
+const excludedRoutes = ['/'];
+
 const Index = () => {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/gestion" element={<Main />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/building" element={<Next />} />
@@ -62,12 +66,12 @@ const Index = () => {
           <Route path="/edit-product" element={<EditProduct />} />
 
 
-          
+
           <Route path="/add-message" element={<AddCustomers />} />
           <Route path="/queue-messages" element={<CustomersView />} />
           <Route path="/edit-customers" element={<EditCustomers />} />
 
-          <Route path="/sended-messages" element={<SendedView />} />
+          <Route path="/sended-messages" element={<Next />} />
           <Route path="/edit-message" element={<EditMessage />} />
 
           <Route path="/show-groups" element={<GroupsView />} />
@@ -76,13 +80,13 @@ const Index = () => {
 
           <Route path="/show-families" element={<FamiliesView />} />
           <Route path="/add-families" element={<AddFamily />} />
-          <Route path="/edit-families" element={<EditFamily/>} />
+          <Route path="/edit-families" element={<EditFamily />} />
 
           <Route path="/show-contacts" element={<ContactsView />} />
           <Route path="/add-contact" element={<AddContact />} />
           <Route path="/edit-contact" element={<EditContact />} />
 
-          <Route path="/show-configs" element={<ConfigsView />} />
+          <Route path="/show-configs" element={<Next />} />
           <Route path="/edit-config" element={<EditConfig />} />
 
           <Route path="/show-companys" element={<CompanysView />} />
@@ -91,12 +95,12 @@ const Index = () => {
           <Route path="/show-users" element={<UsersView />} />
           <Route path="/edit-user" element={<EditUser />} />
 
-          <Route path="/show-receipts" element={<ReceiptsView />} />
+          <Route path="/show-receipts" element={<Next />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
       </Layout>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 };
 

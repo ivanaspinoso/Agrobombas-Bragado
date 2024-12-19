@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// 👉 por ahora no desactivada: import { fetchProducts, deleteProductById } from "./ProductsSlice";
+// 👉 por ahora no desactivada: 
+import { deleteProductById } from "../../app/actions/products";
 
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
@@ -20,7 +21,7 @@ useEffect(() => {
   */
   const [searchName, setSearchName] = useState("");
   const [searchCategory, setSearchCategory] = useState("");
-  const [searchArticleNumber, setSearchArticleNumber] = useState("");
+  const [searchArticle, setSearchArticle] = useState("");
 
   const handleDelete = (id, name) => {
     Swal.fire({
@@ -31,7 +32,7 @@ useEffect(() => {
       icon: "warning",
     }).then((result) => {
       if (result.isConfirmed) {
-        // dispatch(deleteProductById(id));
+        dispatch(deleteProductById(id));
       }
     });
   };
@@ -44,11 +45,11 @@ useEffect(() => {
       ?.join(", ")
       .toLowerCase()
       .includes(searchCategory.toLowerCase());
-    const matchesArticleNumber = product.id
+    const matchesArticle = product.article
       .toString()
-      .includes(searchArticleNumber);
+      .includes(searchArticle);
 
-    return matchesName && matchesCategory && matchesArticleNumber;
+    return matchesName && matchesCategory && matchesArticle;
   });
 
   return (
@@ -67,23 +68,23 @@ useEffect(() => {
       <div className="mb-5 flex flex-wrap gap-4">
         <input
           type="text"
-          placeholder="Buscar nombre"
+          placeholder="Buscar por nombre"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
           className="border px-3 py-2 rounded-md w-full sm:w-auto"
         />
         <input
           type="text"
-          placeholder="Buscar rubro"
+          placeholder="Buscar por rubro"
           value={searchCategory}
           onChange={(e) => setSearchCategory(e.target.value)}
           className="border px-3 py-2 rounded-md w-full sm:w-auto"
         />
         <input
           type="text"
-          placeholder="Buscar número de artículo"
-          value={searchArticleNumber}
-          onChange={(e) => setSearchArticleNumber(e.target.value)}
+          placeholder="Buscar por artículo"
+          value={searchArticle}
+          onChange={(e) => setSearchArticle(e.target.value)}
           className="border px-3 py-2 rounded-md w-full sm:w-auto"
         />
       </div>
@@ -94,14 +95,15 @@ useEffect(() => {
             <tr>
               <th className="px-4 py-2 text-left">ID</th>
               <th className="px-4 py-2 text-left">Nombre</th>
+              <th className="px-4 py-2 text-left">Articulo</th>
               <th className="px-4 py-2 text-left">Descripción</th>
-              <th className="px-4 py-2 text-left">Precio</th>
-              <th className="px-4 py-2 text-left">Precio 1</th>
-              <th className="px-4 py-2 text-left">Precio 2</th>
-              <th className="px-4 py-2 text-left">IVA 21%</th>
-              <th className="px-4 py-2 text-left">Proveedor</th>
+              <th className="px-4 py-2 text-left">$</th>
+{/*               <th className="px-4 py-2 text-left">% tarjeta</th> */}
+              <th className="px-4 py-2 text-left">$ tarjeta</th>
+{/*               <th className="px-4 py-2 text-left">IVA 21%</th>
+               <th className="px-4 py-2 text-left">Proveedor</th>  */}
               <th className="px-4 py-2 text-left">Stock</th>
-              <th className="px-4 py-2 text-left">Familias</th>
+              <th className="px-4 py-2 text-left">Modificado</th>
               <th className="px-4 py-2 text-left">Acciones</th>
             </tr>
           </thead>
@@ -118,19 +120,23 @@ useEffect(() => {
                 prov_code,
                 stock,
                 families,
+                article,
               } = product;
+              const date = new Date(product.updatedAt).toDateString();
+              const date1 = new Date(product.updatedAt).toLocaleDateString('es-AR')
               return (
                 <tr key={id} className="hover:bg-gray-50">
                   <td className="px-4 py-2">{index + 1}</td>
                   <td className="px-4 py-2">{name}</td>
+                  <td className="px-4 py-2">{article}</td>
                   <td className="px-4 py-2">{description}</td>
-                  <td className="px-4 py-2">{price}</td>
-                  <td className="px-4 py-2">{price1}</td>
-                  <td className="px-4 py-2">{price2}</td>
-                  <td className="px-4 py-2">{iva21}</td>
-                  <td className="px-4 py-2">{prov_code}</td>
+                  <td className="px-4 py-2">{price.toFixed(2).replace(".",",")}</td>
+{/*                   <td className="px-4 py-2">{price1}</td>
+ */}                  <td className="px-4 py-2">{price2.toFixed(2).replace(".",",")}</td>
+{/*                   <td className="px-4 py-2">{iva21}</td> 
+                  <td className="px-4 py-2">{prov_code}</td> */}
                   <td className="px-4 py-2">{stock}</td>
-                  <td className="px-4 py-2">{families?.join(", ")}</td>
+                  <td className="px-4 py-2">{date1}</td>
                   <td className="px-4 py-2 flex gap-2">
                     <Link
                       to={`/edit-product`}
@@ -145,6 +151,7 @@ useEffect(() => {
                         prov_code,
                         stock,
                         families,
+                        article
                       }}
                     >
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">

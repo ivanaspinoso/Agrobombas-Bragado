@@ -9,6 +9,9 @@ module.exports = function (sequelize) {
         description: {
             type: DataTypes.STRING
         },
+        article: {
+            type: DataTypes.STRING
+        },
         exist: {
             type: DataTypes.BOOLEAN,
         },
@@ -18,16 +21,19 @@ module.exports = function (sequelize) {
         percent: {
             type: DataTypes.FLOAT,
         },
+        iva21: {
+            type: DataTypes.FLOAT,
+        },
         price: {
+            type: DataTypes.FLOAT,
+        },
+        percent2: {
             type: DataTypes.FLOAT,
         },
         price1: {
             type: DataTypes.FLOAT,
         },
         price2: {
-            type: DataTypes.FLOAT,
-        },
-        iva21: {
             type: DataTypes.FLOAT,
         },
         iva10: {

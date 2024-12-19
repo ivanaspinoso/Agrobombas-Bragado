@@ -57,13 +57,13 @@ const forzar = true
 // false // true
 
 conn
-  .sync({ force: forzar })
+  .sync({ /* force: forzar */  alter: true  })
   .then(() => {
     console.log("Connect");
     app.listen(PORT, () => {
       console.log(`Listen on port ${PORT}`);
     });
-  }).then(async () => {
+  })/* .then(async () => {
     if (forzar === true) await Company.bulkCreate(initialCompany);
   })
    .then(async () => {
@@ -86,7 +86,7 @@ conn
   })
   .then(async () => {
     if (forzar === true) await Cashflow.bulkCreate(initialCashflows);
-  })
+  })*/
 /*  
   .then(async () => {
     if (forzar === true) await Brand.bulkCreate(initialBrands);

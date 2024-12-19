@@ -24,6 +24,9 @@ module.exports = function (sequelize) {
         },
         mov_asoc: {
             type: DataTypes.INTEGER,        
+        },
+        note: {
+            type: DataTypes.STRING,
         }
     })
 }

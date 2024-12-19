@@ -145,6 +145,7 @@ router.get("/search/:search", async (req, res) => {
 // Agregar producto
 router.post("/add", async (req, res) => {
   const {
+    article,
     name,
     description,
     cost,
@@ -155,6 +156,7 @@ router.post("/add", async (req, res) => {
     image,
     percent,
     // isOfert,
+    prov_code,
     families,
     // brands,
     // units,
@@ -164,7 +166,8 @@ router.post("/add", async (req, res) => {
     minunit,
     stepunit,
     show,
-    stock
+    stock,
+    iva21
   } = req.body;
   const cero = 0
   console.log(req.body);
@@ -193,16 +196,16 @@ router.post("/add", async (req, res) => {
       .status(400)
       .send({ message: "Por favor, ingrese precio de producto" });
   }
-  if (!price1 || price1 < 0) {
-    return res
-      .status(400)
-      .send({ message: "Por favor, ingrese precio1 de producto" });
-  }
-  if (!price2 || price2 < 0) {
-    return res
-      .status(400)
-      .send({ message: "Por favor, ingrese precio2 de producto" });
-  }
+  /*   if (!price1 || price1 < 0) {
+      return res
+        .status(400)
+        .send({ message: "Por favor, ingrese precio1 de producto" });
+    }
+    if (!price2 || price2 < 0) {
+      return res
+        .status(400)
+        .send({ message: "Por favor, ingrese precio2 de producto" });
+    } */
 
   if (!families || families.length === 0) {
     return res
@@ -243,6 +246,7 @@ router.post("/add", async (req, res) => {
           }) 
          console.log(result)  */
       const objProdAdd = {
+        article,
         name,
         description,
         cost,
@@ -262,16 +266,33 @@ router.post("/add", async (req, res) => {
         minunit,
         stepunit,
         show,
-        stock
+        stock,
+        prov_code,
+        iva21
         // imageurl: result.secure_url,
         // imagepid: result.public_id
       };
 
       let newProduct = await Product.create(objProdAdd); // envio los datos al modelo sequelize para que los guarde en la database
-
+      console.log("Product.Nuevo: ", newProduct, "ID: ", newProduct.id)
       await newProduct.setFamilies(families); // seteo el/los categorias para sincronizarlos en la tabla relacionada
       //      await newProduct.setBrands(brands); // seteo la marca para sincronizarla en la tabla relacionada
-      return res.send(newProduct);
+      let productAdded = await Product.findOne(
+        {
+          where: [
+            {
+              id: newProduct.id
+            }
+          ],
+          include: [
+            {
+              model: Family,
+              required: true,
+            }]
+        },
+)
+
+      return res.send(productAdded);
     } catch (err) {
       // en caso de error lo devuelvo al frontend
       return res.status(400).send({

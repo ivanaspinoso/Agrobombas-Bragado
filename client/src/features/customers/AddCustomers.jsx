@@ -15,7 +15,7 @@ const AddCustomers = () => {
 
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre de la familia es requerido"),
-    postal_code: Yup.number().required("Codigo postal es requerida").min(4, "Al menos 4 caracteres"),
+    // postal_code: Yup.number().required("Codigo postal es requerida").min(4, "Al menos 4 caracteres"),
   });
 
   return (
@@ -36,10 +36,11 @@ const AddCustomers = () => {
             province: values.province,
             email: values.email,
             web: values.web,
-
+            birthday: values.birthday,
             postal_code: values.postal_code,
             userid: login.id
           };
+          console.table(family)
           await dispatch(customersAdd(family));
           const success = JSON.parse(localStorage.getItem("customersAdd"));
           console.log("Objeto", success);
@@ -219,6 +220,21 @@ const AddCustomers = () => {
                 {errors.web ? <p className="text-red-500 text-xs italic">{errors.web}</p> : ""}
               </div>
 
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="web">
+                  Fecha nacimiento: (AAAA/MM/DD)
+                </label>
+                <input
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  id="bithday"
+                  name="birthday"
+                  value={values.birthday}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.birthday ? <p className="text-red-500 text-xs italic">{errors.birthday}</p> : ""}
+              </div>
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

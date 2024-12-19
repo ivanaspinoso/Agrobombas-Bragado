@@ -1,6 +1,7 @@
 import axios from "axios";
 import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint } from "../../app/consts/consts";
-import { deleteProduct } from "../../features/products/ProductsSlice";
+import { deleteProduct, addProduct } from "../../features/products/ProductsSlice";
+
 export const getAllProducts = () => async (dispatch) => {
     try {
         console.log("action get productos", allProductsEndpoint)
@@ -20,11 +21,11 @@ export const productAdd = (product) => async (dispatch) => {
         console.log("action add productos", addProductsEndpoint)
         const { data }  = await axios.post(addProductsEndpoint, product);
         console.log(data)
-        dispatch({ type: "products/addProduct", payload: data});
+        dispatch(addProduct(data));
         localStorage.setItem("productAdded", JSON.stringify(true));
     } catch (error) {
-        localStorage.setItem("productAdded", JSON.stringify(false));
-        console.error("Error al crear el producto:", error.message);
+        localStorage.setItem("productAdded", JSON.stringify(error?.response?.data?.message /* false */));
+        console.error("Error al crear el producto:", error?.response?.data?.message || error.message);
     }
 };
 

@@ -24,7 +24,7 @@ export const customersSlice = createSlice({
       state.customers.push(action.payload);
     },
     updateCustomer: (state, action) => {
-      const { id, name, postal_code,phone,address,city,cuit,web } = action.payload;
+      const { id, name, postal_code,phone,address,city,cuit,web, birthday } = action.payload;
       const customerToUpdate = state.customers.find((customer) => customer.id === id);
       if (customerToUpdate) {
         customerToUpdate.name = name;
@@ -34,7 +34,7 @@ export const customersSlice = createSlice({
         customerToUpdate.city = city;
         customerToUpdate.cuit = cuit;
         customerToUpdate.web = web;
-
+        customerToUpdate.birthday = birthday
       }
     },
     deleteCustomer: (state, action) => {

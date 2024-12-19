@@ -182,6 +182,7 @@ const initialProducts = [
     {
         name: "Cooler C4",
         description: "Cooler Citroen y Pugeot",
+        article: "10258",
         price: 3900,
         exist: true,
         imageurl:
@@ -195,6 +196,7 @@ const initialProducts = [
     {
         name: "Bomba de agua",
         description: "Bmba para autos",
+        article: "10223",
         price: 3900,
         exist: true,
         imageurl:
