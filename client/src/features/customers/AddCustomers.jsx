@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import "../../App.css";
 import { customersAdd } from "../../app/actions/customers";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; 
 
 const AddCustomers = () => {
   const dispatch = useDispatch();
@@ -77,7 +79,8 @@ const AddCustomers = () => {
             isSubmitting,
             handleChange,
             handleBlur,
-            handleSubmit
+            handleSubmit,
+            setFieldValue
           } = props;
 
           return (
@@ -221,20 +224,20 @@ const AddCustomers = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="web">
-                  Fecha nacimiento: (AAAA/MM/DD)
-                </label>
-                <input
-                  type="text"
-                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                  id="bithday"
-                  name="birthday"
-                  value={values.birthday}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.birthday ? <p className="text-red-500 text-xs italic">{errors.birthday}</p> : ""}
-              </div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="birthday">
+                Fecha de Nacimiento:
+              </label>
+              <DatePicker
+                selected={values.birthday}
+                onChange={(date) => setFieldValue("birthday", date)}
+                dateFormat="yyyy/MM/dd"
+                className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                placeholderText="Selecciona una fecha"
+              />
+              {errors.birthday && touched.birthday ? (
+                <p className="text-red-500 text-xs italic">{errors.birthday}</p>
+              ) : null}
+            </div>
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

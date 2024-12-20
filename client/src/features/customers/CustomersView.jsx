@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "./CustomerSlice";
 import { deleteCustomer } from "./CustomerSlice";
-// import { deleteCustomers } from "./CustomerSlice";
 import { Tooltip } from 'react-tooltip';
 import { FcAddRow } from "react-icons/fc";
 import { Link,useNavigate } from "react-router-dom";
@@ -27,6 +26,7 @@ const CustomersView = () => {
         title: `¿Desea eliminar al cliente ${name}?`,
         showDenyButton: true,
         confirmButtonText: `Sí`,
+        denyButtonText: `No`,
         icon: "warning",
       })
       .then((result) => {
@@ -35,6 +35,7 @@ const CustomersView = () => {
         }
       });
   };
+  
   
 
   return (
@@ -88,9 +89,7 @@ const CustomersView = () => {
             <td className="px-4 py-2">{customer.web}</td>
             <td className="px-4 py-2">{customer.birthday || 'N/A'}</td> 
 
-             {/* <td>
-              <button onClick={() => handleDelete(customer.id)}></button>
-            </td>  */}
+            
             <td className="px-4 py-2 flex gap-2">
             <Link to="/edit-customers" state={{ id: customer.id, name: customer.name, cuit:customer.cuit,address:customer.address ,city: customer.city,postal_code: customer.postal_code,phone: customer.phone,province:customer.province,email: customer.email,web: customer.web,  birthday: customer.birthday,}}>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
