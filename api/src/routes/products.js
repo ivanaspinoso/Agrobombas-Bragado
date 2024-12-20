@@ -233,7 +233,7 @@ router.post("/add", async (req, res) => {
    */
   const existProd = await Product.findOne({
     where: {
-      name: name,
+      article: article,
     },
   });
 
@@ -300,7 +300,7 @@ router.post("/add", async (req, res) => {
       });
     }
   } else {
-    return res.status(400).send({ message: "Producto existente" });
+    return res.status(400).send({ message: "Artículo de Producto existente" });
   }
 });
 

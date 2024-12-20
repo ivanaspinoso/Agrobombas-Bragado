@@ -145,8 +145,6 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
     const { id } = req.params;
     console.log(id);
     if (!id) return res.status(400).send({ message: "Debe ingresar cliente" });
-
-
     const existCust = await Customer.findOne({
         where: {
             id,
@@ -171,7 +169,6 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
     } else {
         return res.status(400).json({ message: "Cliente inexistente" });
     }
-
 });
 
 
