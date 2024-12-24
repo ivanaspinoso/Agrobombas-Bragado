@@ -2,17 +2,21 @@ const { DataTypes } = require('sequelize');
 
 module.exports = function (sequelize) {
     return sequelize.define('sale', {
+        fecha: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
         client: {
             type: DataTypes.STRING,
             allowNull: false
         },
         address: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         cellphone: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         noteclient: {
             type: DataTypes.STRING,
@@ -22,9 +26,13 @@ module.exports = function (sequelize) {
             type: DataTypes.FLOAT,
             allowNull: false
         },
+        total: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
         status: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         ordercart: {
             type: DataTypes.STRING,
