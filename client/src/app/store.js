@@ -12,11 +12,12 @@ import { persistReducer } from "redux-persist"
 import customersReducer from '../features/customers/CustomerSlice'
 // import { customersSlice } from "../features/customers/CustomerSlice";
 import productsReducer from '../features/products/ProductsSlice'
+import cashflowReducer from '../features/Caja/CashflowSlice'
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer","customersReducer"
-    ,"productsReducer"],
+    ,"productsReducer","cashflowReducer"],
 }
 
 const rootReducer = combineReducers({
@@ -30,7 +31,7 @@ const rootReducer = combineReducers({
   companysReducer: companysReducer,
   customersReducer:customersReducer,
   productsReducer: productsReducer,
-
+  cashflowReducer: cashflowReducer,
   // Nombre que usaremos en useSelector
 })
 

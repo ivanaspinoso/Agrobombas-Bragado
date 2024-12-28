@@ -13,7 +13,8 @@ import GroupsView from "../features/groups/GroupsView";
 import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
 // import MessagesView from "../features/messages/MessagesView";
-import Next from "../pages/Next";
+// import Next from "../pages/Next";
+import Next from '../pages/Next.jsx'
 // import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../Components/LogIn";
 import Register from "../Components/Register";
