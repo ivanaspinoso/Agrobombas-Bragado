@@ -1,8 +1,23 @@
 import logoagb from "../../assets/images/newlogo.png";
 import { FaInstagram } from "react-icons/fa";
+import Helmet from "react-helmet"
+
 
 const Home = () => {
-    return (
+    return (<>
+        <Helmet>
+            <title>AgroBombas Bragado</title>
+            <meta name="description" content="Sitio Web Oficial de empresa comercializadora de bombas." />
+            <meta name="keywords" content="bragado, acoples, bombas, accesorios, piletas, pileta, osmosis, accesorios, kit, distribucion" />
+            <meta property="og:url" content="agrobombas.com.ar" />
+            <meta property="og:site_name" content="AgroBombas Bragado" />
+            <meta property="og:locale" content="es_ES" />
+            <meta property="og:type" content="website" />
+            <meta property="og:image" content="https://agrobombasbragado.com.ar/" /> {/* aqui hay que indicar una imagen de logo  */}
+            <meta property="og:description" content="Sitio Web Oficial de empresa comercializadora de bombas." />
+            <link rel="canonical" href="://agrobombasbragado.com.ar" />
+
+        </Helmet>
         <div className="container mx-auto px-4 md:px-12 my-12 text-center" >
             <img
                 className="w-[300px] md:w-[400px] mx-auto"
@@ -28,6 +43,7 @@ const Home = () => {
                 </a>
             </div>
         </div>
+    </>
     );
 };
 
