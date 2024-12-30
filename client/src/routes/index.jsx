@@ -38,6 +38,8 @@ import AddProduct from "../features/products/AddProducts";
 import AddCustomers from "../features/customers/AddCustomers";
 import EditProduct from "../features/products/EditProduct";
 import Home from "../Components/Main/Home.jsx";
+import AddCashflow from "../features/Caja/AddCashflow.jsx";
+import EditCashflow from "../features/Caja/EditCashflow.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -73,6 +75,8 @@ const Index = () => {
           <Route path="/edit-customers" element={<EditCustomers />} />
 
           <Route path="/sended-messages" element={<Next />} />
+          <Route path="/cashflow/add" element={<AddCashflow />} />
+          <Route path="/cashflow/update" element={<EditCashflow />} />
           <Route path="/edit-message" element={<EditMessage />} />
 
           <Route path="/show-groups" element={<GroupsView />} />

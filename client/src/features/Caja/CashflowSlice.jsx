@@ -15,6 +15,8 @@ const cashflowSlice = createSlice({
       state.cashflows = action.payload;
     },
     addCashflow: (state, action) => {
+      console.log("Nuevo movimiento:", action.payload);
+
       state.cashflows.push(action.payload);
     },
     updateCashflow: (state, action) => {
@@ -31,11 +33,10 @@ const cashflowSlice = createSlice({
 export const { allCashflows, addCashflow, updateCashflow, deleteCashflow } = cashflowSlice.actions;
 export default cashflowSlice.reducer;
 
-// Acciones para Caja
 export const fetchAllCashflows = () => async (dispatch) => {
   try {
     const { data } = await axios.get("https://backend.sib-2000.com.ar/agb/cashflows/");
-    console.log("Datos obtenidos en fetchAllCashflows:", data); // Depuración
+    console.log("Datos obtenidos en fetchAllCashflows:", data); 
     dispatch(allCashflows(data));
   } catch (error) {
     console.error("Error al obtener movimientos de caja:", error);
@@ -47,6 +48,8 @@ export const addNewCashflow = (cashflow) => async (dispatch) => {
   try {
     const { data } = await axios.post("https://backend.sib-2000.com.ar/agb/cashflows/add", cashflow);
     dispatch(addCashflow(data));
+    dispatch(fetchAllCashflows());
+
   } catch (error) {
     console.error("Error al agregar movimiento de caja:", error);
   }
@@ -54,12 +57,16 @@ export const addNewCashflow = (cashflow) => async (dispatch) => {
 
 export const updateCashflowById = (cashflow) => async (dispatch) => {
   try {
+    console.log("Datos enviados en la petición PUT:", cashflow);
     const { data } = await axios.put("https://backend.sib-2000.com.ar/agb/cashflows/update", cashflow);
     dispatch(updateCashflow(data));
+    dispatch(fetchAllCashflows());
   } catch (error) {
-    console.error("Error al actualizar movimiento de caja:", error);
+    console.error("Error al actualizar movimiento de caja:", error.response?.data || error.message);
+    throw error; 
   }
 };
+
 
 export const deleteCashflowById = (id) => async (dispatch) => {
   try {
