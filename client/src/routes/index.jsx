@@ -8,21 +8,22 @@ import AddContact from "../features/contacts/AddContact";
 import Main from "../Components/Main";
 import EditContact from "../features/contacts/EditContact";
 import EditConfig from "../features/config/EditConfig";
-import ConfigsView from "../features/config/ConfigsView";
+// import ConfigsView from "../features/config/ConfigsView";
 import GroupsView from "../features/groups/GroupsView";
 import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
 // import MessagesView from "../features/messages/MessagesView";
 // import Next from "../pages/Next";
-import Next from '../pages/Next.jsx'
+import CashflowView from '../pages/CashflowView.jsx'
+import Next from "../pages/Next.jsx";
 // import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../Components/LogIn";
 import Register from "../Components/Register";
 import UsersView from "../features/users/UsersView";
 import EditUser from "../features/users/EditUser";
 // import QueuedView from "../features/messages/QueueView";
-import SendedView from "../features/messages/SendedView";
-import ReceiptsView from "../features/receipts/ReceiptsView";
+// import SendedView from "../features/messages/SendedView";
+// import ReceiptsView from "../features/receipts/ReceiptsView";
 import EditMessage from "../features/messages/EditMessage";
 import FamiliesView from "../features/families/FamiliesView";
 import AddFamily from "../features/families/AddFamilies";
@@ -74,7 +75,7 @@ const Index = () => {
           <Route path="/queue-messages" element={<CustomersView />} />
           <Route path="/edit-customers" element={<EditCustomers />} />
 
-          <Route path="/sended-messages" element={<Next />} />
+          <Route path="/sended-messages" element={<CashflowView />} />
           <Route path="/cashflow/add" element={<AddCashflow />} />
           <Route path="/cashflow/update" element={<EditCashflow />} />
           <Route path="/edit-message" element={<EditMessage />} />

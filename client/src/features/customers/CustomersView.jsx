@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "./CustomerSlice";
-import { deleteCustomer } from "./CustomerSlice";
+import { customersDelete } from "./CustomerSlice";
 import { Tooltip } from 'react-tooltip';
 import { FcAddRow } from "react-icons/fc";
 import { Link,useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ const CustomersView = () => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          dispatch(deleteCustomer(id)); 
+          dispatch(customersDelete(id)); 
         }
       });
   };
