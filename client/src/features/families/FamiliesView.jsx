@@ -16,19 +16,24 @@ const FamiliesView = () => {
   const handleDelete = (id, name) => {
     swal
       .fire({
-        title: `¿Desea eliminar al cliente ${name}?`,
+        title: `¿Desea eliminar la familia ${name}?`,
         showDenyButton: true,
         confirmButtonText: `Sí`,
+        denyButtonText: `No`,
         icon: "warning",
       })
       .then((result) => {
         if (result.isConfirmed) {
-          dispatch(deleteFamily(id)); 
+          dispatch(deleteFamily(id))
+            .then(() => {
+              swal.fire("Eliminado", "La familia ha sido eliminada correctamente.", "success");
+            })
+            .catch(() => {
+              swal.fire("Error", "Hubo un problema al eliminar la familia.", "error");
+            });
         }
       });
   };
-  
-  
   
 
   return (

@@ -1,5 +1,7 @@
 // src/features/families/familiesSlice.js
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import swal from 'sweetalert2';
 
 const initialFamilies = {
   loading: 'idle',
@@ -24,7 +26,7 @@ export const familiesSlice = createSlice({
         familyToUpdate.description = description;
       }
     },
-    deleteFamily: (state, action) => {
+    deleteFamilySuccess: (state, action) => {
       state.families = state.families.filter(family => family.id !== action.payload);
     },
     logoutFamilies: (state, action) => {
@@ -33,5 +35,17 @@ export const familiesSlice = createSlice({
   },
 });
 
-export const { allFamilies, addFamily, updateFamily, deleteFamily } = familiesSlice.actions;
-export default familiesSlice.reducer; // Asegúrate de exportar el reducer por defecto
+export const { allFamilies, addFamily, updateFamily, deleteFamilySuccess } = familiesSlice.actions;
+
+export const deleteFamily = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`https://backend.sib-2000.com.ar/agb/families/delete/${id}`);
+    dispatch(deleteFamilySuccess(id));
+    localStorage.setItem("familyDeleted", "true");
+  } catch (err) {
+    localStorage.setItem("familyDeleted", "false");
+    console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
+    swal.fire("Error!", err?.response?.data?.message || err.message, "error");
+  }
+};
+export default familiesSlice.reducer; 
