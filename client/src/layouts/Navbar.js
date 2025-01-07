@@ -159,56 +159,59 @@ const Navbar = () => {
         </div>
       </div>
       <div id="navbarMobileMenu" className="lg:hidden hidden">
-        <div className="px-6 pt-4 pb-6 space-y-4">
-          {login.id && (
-            <>
-              {[
-                { to: "/", text: t("navbar.home") },
-                { to: "/show-groups", text: t("navbar.groups") },
-                { to: "/show-families", text: t("navbar.families") },
-                { to: "/show-contacts", text: t("navbar.contacts") },
-                { to: "/queue-messages", text: t("navbar.stack") },
-                { to: "/show-messages", text: t("navbar.messages") },
-                { to: "/sended-messages", text: t("navbar.sent") },
-                { to: "/show-receipts", text: t("navbar.received") },
-                { to: "/show-configs", text: t("navbar.settings") },
-                { to: "/show-users", text: t("navbar.settings") },
-              ].map((link) => (
-                <Link
-                  key={link.to}
-                  className="block text-white hover:text-gray-300 transition duration-300 text-lg font-semibold"
-                  to={link.to}
-                  onClick={handleMenuClick}
-                >
-                  {link.text}
-                </Link>
-              ))}
-              <button
-                className="w-full text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full transition duration-300 shadow-md flex items-center justify-center"
-                onClick={() => {
-                  dispatch(logOut());
-                  navigate("/login");
-                }}
-              >
-                {t("navbar.logout")}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="ml-2 h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 16l4-4m0 0l-4-4m4 4H7"
-                  />
-                </svg>
-              </button>
-            </>
-          )}
-        </div>
+      <div className="px-6 pt-4 pb-6 space-y-4">
+    {login.id && (
+      <>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/" onClick={handleMenuClick}>
+          {t("navbar.home")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-groups" onClick={handleMenuClick}>
+          {t("navbar.groups")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-families" onClick={handleMenuClick}>
+          {t("navbar.families")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-messages" onClick={handleMenuClick}>
+          {t("navbar.messages")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/queue-messages" onClick={handleMenuClick}>
+          {t("navbar.stack")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-configs" onClick={handleMenuClick}>
+          {t("navbar.settings")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/sended-messages" onClick={handleMenuClick}>
+          {t("navbar.sent")}
+        </Link>
+        <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-receipts" onClick={handleMenuClick}>
+          {t("navbar.received")}
+        </Link>
+
+        {/* Muestra Usuarios y Empresa solo si es admin y no es "mostrador" */}
+        {login.isAdmin && login.username !== "mostrador" && (
+          <>
+            <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-users" onClick={handleMenuClick}>
+              {t("Usuarios")}
+            </Link>
+            <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-companys" onClick={handleMenuClick}>
+              {t("navbar.contacts")}
+            </Link>
+          </>
+        )}
+
+        <button className="w-full text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full transition duration-300 shadow-md flex items-center justify-center"
+          onClick={() => {
+            dispatch(logOut());
+            navigate("/login");
+          }}>
+          {t("navbar.logout")}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="ml-2 h-5 w-5">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" />
+          </svg>
+        </button>
+      </>
+    )}
+  </div>
       </div> 
     </nav>
   );

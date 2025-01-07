@@ -14,26 +14,33 @@ const FamiliesView = () => {
   const navigate = useNavigate();
 
   const handleDelete = (id, name) => {
+    console.log("ID enviado a la API:", id); // ✅ Agregar log para depurar
+
     swal
       .fire({
         title: `¿Desea eliminar la familia ${name}?`,
         showDenyButton: true,
-        confirmButtonText: `Sí`,
-        denyButtonText: `No`,
+        confirmButtonText: "Sí",
+        denyButtonText: "No",
         icon: "warning",
       })
-      .then((result) => {
+      .then(async (result) => {
         if (result.isConfirmed) {
-          dispatch(deleteFamily(id))
-            .then(() => {
+          await dispatch(deleteFamily(id)); 
+  
+          setTimeout(() => {
+            const success = JSON.parse(localStorage.getItem("familyDeleted"));
+            
+            if (success === true) {
               swal.fire("Eliminado", "La familia ha sido eliminada correctamente.", "success");
-            })
-            .catch(() => {
-              swal.fire("Error", "Hubo un problema al eliminar la familia.", "error");
-            });
+            } else {
+              swal.fire("Error", success, "error");
+            }
+          }, 100); 
         }
       });
   };
+  
   
 
   return (

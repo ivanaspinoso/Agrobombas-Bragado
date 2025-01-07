@@ -2,7 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import swal from 'sweetalert2';
-
+import { delFamilyEndpoint } from "../../app/consts/consts";
 const initialFamilies = {
   loading: 'idle',
   families: [],
@@ -38,14 +38,20 @@ export const familiesSlice = createSlice({
 export const { allFamilies, addFamily, updateFamily, deleteFamilySuccess } = familiesSlice.actions;
 
 export const deleteFamily = (id) => async (dispatch) => {
+  console.log("Intentando eliminar familia con ID:", id);
+
   try {
-    await axios.delete(`https://backend.sib-2000.com.ar/agb/families/delete/${id}`);
-    dispatch(deleteFamilySuccess(id));
-    localStorage.setItem("familyDeleted", "true");
+    const response = await axios.delete(`${delFamilyEndpoint}/${id}`);
+    
+    if (response.status === 200) {
+      dispatch(deleteFamilySuccess(id));
+      localStorage.setItem("familyDeleted", JSON.stringify(true)); 
+    }
   } catch (err) {
-    localStorage.setItem("familyDeleted", "false");
-    console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
-    swal.fire("Error!", err?.response?.data?.message || err.message, "error");
+    const errorMessage = err?.response?.data?.message || "Error desconocido";
+    localStorage.setItem("familyDeleted", JSON.stringify(errorMessage));
+    console.error("Error al eliminar familia:", errorMessage);
   }
 };
+
 export default familiesSlice.reducer; 
