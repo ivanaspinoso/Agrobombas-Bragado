@@ -27,7 +27,14 @@ const FamiliesView = () => {
       .then(async (result) => {
         if (result.isConfirmed) {
           await dispatch(deleteFamily(id)); 
-  
+          const success = JSON.parse(localStorage.getItem("familyDeleted"));  
+          if (success === true) {
+            swal.fire("Eliminado", "La familia ha sido eliminada correctamente.", "success");
+          } else {
+            swal.fire("Error", success, "error");
+          }
+
+/* 
           setTimeout(() => {
             const success = JSON.parse(localStorage.getItem("familyDeleted"));
             
@@ -36,7 +43,7 @@ const FamiliesView = () => {
             } else {
               swal.fire("Error", success, "error");
             }
-          }, 100); 
+          }, 100);  */
         }
       });
   };

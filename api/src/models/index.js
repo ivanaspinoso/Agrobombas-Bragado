@@ -73,9 +73,17 @@ Family.belongsToMany(Product, { through: 'prod_cat' });
 Supplier.hasMany(Product)       // Una marca puede tener varios productos
 Product.belongsTo(Supplier);    // Un producto puede tener una sola marca (fabrica)
 
+Customer.hasMany(Sales)         // A un cliente le podemos hacer varias ventas
+Sales.belongsTo(Customer)       // A una venta solo le podemos asignar un cliente
 
-Product.hasMany(OrderLine);
-OrderLine.belongsTo(Product);
+User.hasMany(Sales)             // Un usuario puede hacer varias ventas
+Sales.belongsTo(User)           // a Una venta solo le popodemos asignar un usuario
+
+User.hasMany(Cashflow)          // Un usuario puede hacer varias movimientos de caja
+Cashflow.belongsTo(User)        // a Un movimiento de caja solo le popodemos asignar un usuario
+
+Product.hasMany(OrderLine);      // Un producto puede tener varias lineas de venta
+OrderLine.belongsTo(Product);    // Una linea de venta solo puede tener un producto
 
 Order.hasMany(OrderLine);
 OrderLine.belongsTo(Order);

@@ -55,7 +55,7 @@ export const familyDelete = (id) => async (dispatch) => {
     dispatch(deleteFamily(id));
     localStorage.setItem("familyDeleted", true);
   } catch (err) {
-    localStorage.setItem("familyDeleted", false);
+    localStorage.setItem("familyDeleted", err?.response?.data?.message);
     console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
   }
 };

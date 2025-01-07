@@ -3,13 +3,13 @@ const bcrypt = require("bcrypt");
 const initialCompany = [
     {
         name: "Agro Bombas Bragado",
-        address: "Rivadavia 336",
+        address: "Rivadavia 2902",
         city: "Bragado",
         postal_code: 6640,
-        phone: "2342 513085",
+        phone: "2342 403462",
         cuit: "20-27952878-7",
         email: "sib2000@gmail.com",
-        web: "https://sib-2000.com.ar",
+        web: "https://agrobombasbragado.com.ar",
     },
 ];
 
@@ -82,7 +82,7 @@ const initialUsers = [
 
 const initialCustomers = [
     {
-        name: "Fede OyB",
+        name: "Cliente ejemplo 1",
         phone: "",
         email: "",
         address: "",
@@ -92,7 +92,7 @@ const initialCustomers = [
         web:""
     },
     {
-        name: "Ivana",
+        name: "Cliente Ejemplo 2",
         phone: "",
         email: "",
         address: "",
@@ -105,7 +105,7 @@ const initialCustomers = [
 
 const initialSuppliers = [
     {
-        name: "Fede OyB",
+        name: "Proveedor ejemplo 1",
         code: 1,
         address: "Saavedra 336",
         city: "Bragado",
@@ -113,7 +113,7 @@ const initialSuppliers = [
         cuit: "20279528787",
         province: "Bs As"
     },{
-        name: "Ivana Spi",
+        name: "Proveedor ejemplo 2",
         code: 2,
         address: "",
         city: "Bahía Blanca",
@@ -124,11 +124,11 @@ const initialSuppliers = [
 
 const initialFamilies = [
     {
-        name: "Bombas",
+        name: "Rubro ejemplo 1",
         description: "bombas de auto",
     },
     {
-        name: "Ventiladores",
+        name: "Rubro ejemplo 3",
         description: "coolers de auto",
     },
 ];
@@ -136,42 +136,42 @@ const initialFamilies = [
 const initialCashflows = [
     {
         date: "2024-11-04",
-        description: "compra de yerba negocio",
+        description: "Movimiento ejemplo 1",
         income: 0,
         outflow: 2600,
         user_asoc: 1
     },
     {
         date: "2024-11-01",
-        description: "Entrega de dinero en efectivo",
+        description: "Movimiento ejemplo 2",
         income: 3000,
         outflow: 0,
         user_asoc: 1
     },
     {
         date: "2024-11-04",
-        description: "compra de yerba negocio",
+        description: "Movimiento ejemplo 3",
         income: 0,
         outflow: 1600,
         user_asoc: 2
     },
     {
         date: "2024-11-01",
-        description: "Entrega de dinero en efectivo",
+        description: "Movimiento ejemplo 4",
         income: 5000,
         outflow: 0,
         user_asoc: 2
     },
     {
         date: "2024-11-02",
-        description: "compra de yerba negocio",
+        description: "Movimiento ejemplo 5",
         income: 0,
         outflow: 1800,
         user_asoc: 2
     },
     {
         date: "2024-11-03",
-        description: "Entrega de dinero en efectivo",
+        description: "Movimiento ejemplo 6",
         income: 50000,
         outflow: 0,
         user_asoc: 2
@@ -180,10 +180,11 @@ const initialCashflows = [
 
 const initialProducts = [
     {
-        name: "Cooler C4",
+        name: "Producto ejemplo 1",
         description: "Cooler Citroen y Pugeot",
         article: "10258",
         price: 3900,
+        price2: 0,
         exist: true,
         imageurl:
             "https://http2.mlstatic.com/D_NQ_NP_781587-MLA72382942241_102023-F.jpg",
@@ -194,10 +195,11 @@ const initialProducts = [
         prov_code: 1
     },
     {
-        name: "Bomba de agua",
-        description: "Bmba para autos",
+        name: "Producto ejemplo 2",
+        description: "Bomba para autos",
         article: "10223",
         price: 3900,
+        price2: 0,
         exist: true,
         imageurl:
             "https://http2.mlstatic.com/D_NQ_NP_781587-MLA72382942241_102023-F.jpg",

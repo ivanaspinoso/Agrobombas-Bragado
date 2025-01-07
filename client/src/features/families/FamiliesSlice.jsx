@@ -26,7 +26,7 @@ export const familiesSlice = createSlice({
         familyToUpdate.description = description;
       }
     },
-    deleteFamilySuccess: (state, action) => {
+    deleteFamily: (state, action) => {
       state.families = state.families.filter(family => family.id !== action.payload);
     },
     logoutFamilies: (state, action) => {
@@ -35,7 +35,10 @@ export const familiesSlice = createSlice({
   },
 });
 
-export const { allFamilies, addFamily, updateFamily, deleteFamilySuccess } = familiesSlice.actions;
+export const { allFamilies, addFamily, updateFamily, /* deleteFamilySuccess */ deleteFamily } = familiesSlice.actions;
+
+/* 
+ el codigo siguiente se comenta, ya que se encuentra previamente realizado en: agrobombas-bragado/client/src/app/actions/families.js , si bien bno está mal hacer las actions aquí lo ideal es que no se dupliquen
 
 export const deleteFamily = (id) => async (dispatch) => {
   console.log("Intentando eliminar familia con ID:", id);
@@ -52,6 +55,8 @@ export const deleteFamily = (id) => async (dispatch) => {
     localStorage.setItem("familyDeleted", JSON.stringify(errorMessage));
     console.error("Error al eliminar familia:", errorMessage);
   }
-};
+}; 
+
+*/
 
 export default familiesSlice.reducer; 
