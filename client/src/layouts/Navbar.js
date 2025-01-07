@@ -169,7 +169,7 @@ const Navbar = () => {
           {t("navbar.groups")}
         </Link>
         <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-families" onClick={handleMenuClick}>
-          {t("navbar.families")}
+          {t("Familias")}
         </Link>
         <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-messages" onClick={handleMenuClick}>
           {t("navbar.messages")}
@@ -187,7 +187,6 @@ const Navbar = () => {
           {t("navbar.received")}
         </Link>
 
-        {/* Muestra Usuarios y Empresa solo si es admin y no es "mostrador" */}
         {login.isAdmin && login.username !== "mostrador" && (
           <>
             <Link className="block text-white hover:text-gray-300 text-lg font-semibold" to="/show-users" onClick={handleMenuClick}>
