@@ -76,6 +76,13 @@ export const updCompanysEndpoint = REACT_APP_API + 'company/update/';
 export const usrCompanysEndpoint = REACT_APP_API + 'company/byuser/';
 export const getCompanysEndpoint = REACT_APP_API + 'company/';
 
+// Sales (Ventas)
+export const allSalesEndpoint = REACT_APP_API + 'sales';        
+export const addSalesEndpoint = REACT_APP_API + 'sales/add';     
+// export const updateSalesEndpoint = REACT_APP_API + 'sales/update/'; 
+// export const deleteSalesEndpoint = REACT_APP_API + 'sales/delete/'; 
+
+
 // receipts
 
 export const userReceiptsEndpoint = REACT_APP_API + 'receipts/byuser/'
