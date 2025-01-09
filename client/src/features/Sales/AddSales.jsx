@@ -1,0 +1,232 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { Select, Input, Button, Table } from "antd";
+import { format } from "date-fns";
+import Swal from "sweetalert2";
+import { submitSale } from "./salesSlice";
+import { getAllCustomers } from "../../app/actions/customers";
+import { getAllProducts } from "../../app/actions/products";
+import { FaTrashAlt } from "react-icons/fa";
+
+const { Option } = Select;
+
+const AddSales = () => {
+  const dispatch = useDispatch();
+  const customers = useSelector((state) => state.customersReducer?.customers);
+  const products = useSelector((state) => state.productsReducer.products);
+  const login = useSelector((state) => state.usersReducer.login);
+
+  const [orderlines, setOrderlines] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+
+  useEffect(() => {
+    dispatch(getAllCustomers());
+    dispatch(getAllProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setSubtotal(orderlines.reduce((sum, item) => sum + item.subtotal, 0));
+  }, [orderlines]);
+
+  const schema = Yup.object().shape({
+    fecha: Yup.string().required("La fecha es obligatoria"),
+    client: Yup.string().required("El cliente es obligatorio"),
+    modopago: Yup.string().required("Modo de pago requerido"),
+    paga: Yup.number().min(0, "Debe ser positivo"),
+  });
+
+  const addOrderline = (product) => {
+    const newOrderline = {
+      id: product.id,
+      article: product.article,
+      name: product.name,
+      cost: product.cost,
+      price: product.price1, 
+      quantity: 1,
+      subtotal: product.price1,
+    };
+    setOrderlines([...orderlines, newOrderline]);
+  };
+
+  const updateOrderline = (index, field, value) => {
+    const newOrderlines = [...orderlines];
+    newOrderlines[index][field] = value;
+    if (field === "quantity" || field === "price") {
+      newOrderlines[index].subtotal = newOrderlines[index].quantity * newOrderlines[index].price;
+    }
+    setOrderlines(newOrderlines);
+    setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
+  };
+
+  const removeOrderline = (index) => {
+    const newOrderlines = orderlines.filter((_, i) => i !== index);
+    setOrderlines(newOrderlines);
+    setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
+  };
+
+  return (
+    <Formik
+      validationSchema={schema}
+      initialValues={{
+        fecha: format(new Date(), "yyyy-MM-dd"),
+        client: "",
+        client_asoc: "",
+        address: "",
+        celphone: "",
+        modopago: "",
+        paga: 0,
+        resta: 0,
+      }}
+      onSubmit={(values) => {
+        const saleData = {
+          fecha: values.fecha,
+          customerId: values.client_asoc, 
+          address: values.address || "", 
+          phone: values.celphone || "", 
+          modopago: values.modopago,
+          paga: values.paga,
+          resta: values.resta,
+          subtotal,
+          total: subtotal,
+          orderlines,
+          user_asoc: login.id,
+        };
+        
+        dispatch(submitSale(saleData));
+        Swal.fire("Éxito", "Venta registrada", "success");
+      }}
+    >
+      {({ setFieldValue, values }) => (
+        <Form className="p-6 bg-white rounded shadow-md">
+          {/* 📌 SECCIÓN 1 - INFORMACIÓN DEL CLIENTE */}
+          <label>Fecha:</label>
+          <Input type="date" name="fecha" value={values.fecha} onChange={(e) => setFieldValue("fecha", e.target.value)} />
+
+          <label>Cliente:</label>
+          <Select
+            showSearch
+            placeholder="Seleccionar Cliente"
+            onChange={(value) => {
+              const selectedCustomer = customers.find((c) => c.id === value);
+              if (selectedCustomer) {
+                setFieldValue("client", selectedCustomer.name);
+                setFieldValue("client_asoc", selectedCustomer.id);
+                setFieldValue("address", selectedCustomer.address || "Sin dirección");
+                setFieldValue("celphone", selectedCustomer.phone || "Sin teléfono");
+              }
+            }}
+          >
+            {customers.map((c) => (
+              <Option key={c.id} value={c.id}>
+                {c.name}
+              </Option>
+            ))}
+          </Select>
+
+          <label>Dirección:</label>
+          <Field name="address" as={Input} readOnly />
+
+          <label>Celular:</label>
+          <Field name="celphone" as={Input} readOnly />
+
+          {/* 📌 SECCIÓN 2 - SELECCIÓN DE PRODUCTOS */}
+          <label>Productos:</label>
+          <div className="flex gap-2">
+            <Select
+              showSearch
+              placeholder="Agregar Producto"
+              onChange={(value) => {
+                const product = products.find((p) => p.id === value);
+                if (product) addOrderline(product);
+              }}
+            >
+              {products.map((p) => (
+                <Option key={p.id} value={p.id}>
+                  {p.name} - {p.article}
+                </Option>
+              ))}
+            </Select>
+            <Button type="primary" onClick={() => addOrderline({ id: "", name: "Nuevo Producto", price1: 0, quantity: 1 })}>
+              +
+            </Button>
+          </div>
+
+          <Table
+            dataSource={orderlines}
+            columns={[
+              {
+                title: "Producto",
+                dataIndex: "name",
+                render: (text, record, index) => (
+                  <Select
+                    showSearch
+                    defaultValue={text}
+                    onChange={(value) => {
+                      const product = products.find((p) => p.id === value);
+                      if (product) {
+                        updateOrderline(index, "id", product.id);
+                        updateOrderline(index, "name", product.name);
+                        updateOrderline(index, "price", product.price1);
+                      }
+                    }}
+                  >
+                    {products.map((p) => (
+                      <Option key={p.id} value={p.id}>{p.name}</Option>
+                    ))}
+                  </Select>
+                ),
+              },
+              {
+                title: "Precio",
+                dataIndex: "price",
+                render: (text, record, index) => (
+                  <Input type="number" value={text} onChange={(e) => updateOrderline(index, "price", Number(e.target.value))} />
+                ),
+              },
+              {
+                title: "Cantidad",
+                dataIndex: "quantity",
+                render: (text, record, index) => (
+                  <Input type="number" value={text} onChange={(e) => updateOrderline(index, "quantity", Number(e.target.value))} />
+                ),
+              },
+              {
+                title: "Subtotal",
+                dataIndex: "subtotal",
+                render: (text, record, index) => <Input type="number" value={text} readOnly />,
+              },
+              {
+                title: "Acciones",
+                dataIndex: "actions",
+                render: (_, __, index) => (
+                  <Button danger onClick={() => removeOrderline(index)}>
+                    <FaTrashAlt />
+                  </Button>
+                ),
+              },
+            ]}
+          />
+
+          {/* 📌 SECCIÓN 3 - TOTALES Y MEDIOS DE PAGO */}
+          <label>Subtotal:</label>
+          <Field name="subtotal" as={Input} type="number" value={subtotal} readOnly />
+
+          <label>Modo de Pago:</label>
+          <Field name="modopago" as={Input} />
+
+          <label>Paga:</label>
+          <Field name="paga" as={Input} type="number" onBlur={() => setFieldValue("resta", subtotal - values.paga)} />
+
+          <label>Resta:</label>
+          <Field name="resta" as={Input} type="number" readOnly />
+
+          <Button type="primary" htmlType="submit">Registrar Venta</Button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+export default AddSales;

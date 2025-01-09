@@ -42,6 +42,7 @@ import Home from "../Components/Main/Home.jsx";
 import AddCashflow from "../features/Caja/AddCashflow.jsx";
 import EditCashflow from "../features/Caja/EditCashflow.jsx";
 import SalesView from "../features/Sales/SalesView.jsx";
+import AddSales from "../features/Sales/AddSales.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -95,6 +96,8 @@ const Index = () => {
 
           <Route path="/show-configs" element={<SalesView />} />
           <Route path="/edit-config" element={<EditConfig />} />
+          <Route path="/sales/add" element={<AddSales />} />
+
           
           <Route path="/show-companys" element={<CompanysView />} />
           <Route path="/edit-company" element={<EditCompany />} />
@@ -104,7 +107,7 @@ const Index = () => {
 
           <Route path="/show-receipts" element={<Next />} />
 
-          <Route path="*" element={<Error />} />
+          {/* <Route path="*" element={<Error />} /> */}
         </Routes>
       </Layout>
     </BrowserRouter >

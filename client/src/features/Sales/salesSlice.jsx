@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { allSalesEndpoint, addSalesEndpoint, updateSalesEndpoint, deleteSalesEndpoint } from "../../app/consts/consts";
+import { allSalesEndpoint, addSalesEndpoint, updateSalesEndpoint, deleteSalesEndpoint,allCustomersEndpoint, allProductsEndpoint, } from "../../app/consts/consts";
 
 const initialSalesState = {
   sales: [],
@@ -39,6 +39,34 @@ export const fetchAllSales = () => async (dispatch) => {
     dispatch(allSales(data));
   } catch (error) {
     console.error("Error al obtener ventas:", error);
+  }
+};
+
+// export const fetchClients = () => async (dispatch) => {
+//   try {
+//     const { data } = await axios.get(allCustomersEndpoint);
+//     dispatch({ type: "FETCH_CLIENTS_SUCCESS", payload: data });
+//   } catch (error) {
+//     console.error("Error al obtener clientes:", error);
+//   }
+// };
+
+// export const fetchProducts = () => async (dispatch) => {
+//   try {
+//     const { data } = await axios.get(allProductsEndpoint);
+//     dispatch({ type: "FETCH_PRODUCTS_SUCCESS", payload: data });
+//   } catch (error) {
+//     console.error("Error al obtener productos:", error);
+//   }
+// };
+
+// Enviar nueva venta
+export const submitSale = (sale) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(addSalesEndpoint, sale);
+    dispatch({ type: "ADD_SALE_SUCCESS", payload: data });
+  } catch (error) {
+    console.error("Error al registrar la venta:", error);
   }
 };
 

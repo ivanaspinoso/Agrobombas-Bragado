@@ -64,10 +64,11 @@ const SalesView = () => {
               <tr key={sale.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2">{sale.id}</td>
                 <td className="px-4 py-2">{new Date(sale.fecha).toLocaleDateString()}</td>
-                <td className="px-4 py-2">{sale.client}</td>
-                <td className="px-4 py-2">{sale.address}</td>
-                <td className="px-4 py-2">{sale.subtotal}</td>
-                <td className="px-4 py-2">{sale.total}</td>
+                <td className="px-4 py-2">{sale.customer?.name || "Sin Cliente"}</td>
+                <td className="px-4 py-2">{sale.customer?.address || "Sin dirección"}</td>
+                <td className="px-4 py-2">{sale.subtotal || 0}</td>
+<td className="px-4 py-2">{sale.total || 0}</td>
+
                 <td className="px-4 py-2 flex gap-2">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
