@@ -89,7 +89,7 @@ const initialCustomers = [
         city: "",
         postal_code: "6640",
         cuit: "25952878",
-        web:""
+        web: ""
     },
     {
         name: "Cliente Ejemplo 2",
@@ -99,7 +99,7 @@ const initialCustomers = [
         city: "",
         postal_code: "6640",
         cuit: "20589632587",
-        web:""    
+        web: ""
     },
 ];
 
@@ -112,7 +112,7 @@ const initialSuppliers = [
         postal_code: "6640",
         cuit: "20279528787",
         province: "Bs As"
-    },{
+    }, {
         name: "Proveedor ejemplo 2",
         code: 2,
         address: "",
@@ -183,8 +183,11 @@ const initialProducts = [
         name: "Producto ejemplo 1",
         description: "Cooler Citroen y Pugeot",
         article: "10258",
+        cost: 500,
         price: 3900,
         price2: 0,
+        iva21: 21,
+        stock: 10,
         exist: true,
         imageurl:
             "https://http2.mlstatic.com/D_NQ_NP_781587-MLA72382942241_102023-F.jpg",
@@ -198,8 +201,11 @@ const initialProducts = [
         name: "Producto ejemplo 2",
         description: "Bomba para autos",
         article: "10223",
-        price: 3900,
+        cost: 1000,
+        price: 5900,
         price2: 0,
+        iva21: 21,
+        stock: 30,
         exist: true,
         imageurl:
             "https://http2.mlstatic.com/D_NQ_NP_781587-MLA72382942241_102023-F.jpg",
@@ -217,6 +223,35 @@ const familyyProducts = [
     { familyId: 1, productId: 2 },
 ];
 
+const initialSales = [
+    {
+        fecha: "2024-12-15",
+        client: "Federico",
+        address: "Saavedra 336",
+        cellphone: "2342513085",
+        subtotal: 1500,
+        total: 1500,
+        paga: 500,
+        resta: 1000,
+        userId: 3,
+        user_asoc: 3,
+        client_asoc: 1,
+        customerId: 1
+    },
+    {
+        fecha: "2025-01-05",
+        client: "Federico",
+        address: "Saavedra 336",
+        cellphone: "2342513085",
+        subtotal: 100,
+        total: 1000,
+        paga: 1000,
+        userId: 4,
+        user_asoc: 4,
+        client_asoc: 2,
+        customerId: 2
+    },
+]
 
 module.exports = {
     initialFamilies,
@@ -230,5 +265,6 @@ module.exports = {
     initialUsers,
     initialCompany,
     initialCustomers,
-    initialCashflows
+    initialCashflows,
+    initialSales
 };

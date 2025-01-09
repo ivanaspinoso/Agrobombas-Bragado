@@ -16,6 +16,7 @@ const customerModel = require("./customers")
 const supplierModel = require("./suppliers")
 const cashflowModel = require("./cashflows")
 const salesModel  = require("./sales")
+const caccountsModel = require("./caccounts.js")
 
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
@@ -58,6 +59,7 @@ const Customer = customerModel(sequelize)
 const Supplier = supplierModel(sequelize)
 const Cashflow = cashflowModel(sequelize)
 const Sales = salesModel(sequelize)
+const Caccounts = caccountsModel(sequelize)
 
 // const IP = ipmodels(sequelize) */
 const Prod_Cat = (sequelize.models.prod_cat)
@@ -91,6 +93,15 @@ OrderLine.belongsTo(Order);
 User.hasMany(Order);
 Order.belongsTo(User);
 
+User.hasMany(Caccounts)          // Un usuario puede hacer varias movimientos de cuentas corrientes
+Caccounts.belongsTo(User)        // a Un movimiento de cuenta corriente solo le popodemos asignar un usuario
+
+Customer.hasMany(Caccounts)      // Un cliente puede hacer varias movimientos de cuentas corrientes
+Caccounts.belongsTo(Customer)        // a Un movimiento de cuenta corriente solo le popodemos asignar un usuario
+
+Product.hasMany(OrderLine)         // Un producto puede estar en varias lineas de venta
+OrderLine.belongsTo(Product)        // Una linea de venta puede tener Un producto
+
 Product.belongsToMany(User, { through: 'favorites' });
 User.belongsToMany(Product, { through: 'favorites' });
 
@@ -110,6 +121,7 @@ module.exports = {
   Customer,
   Cashflow,
   Sales,
+  Caccounts,
   // IP,
   Prod_Cat: sequelize.models.prod_cat,
   Sequelize: sequelize

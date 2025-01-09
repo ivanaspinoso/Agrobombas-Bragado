@@ -45,6 +45,12 @@ module.exports = function (sequelize) {
         iporder: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+/*         paga: {
+            type: DataTypes.FLOAT,
+        },
+        resta: {
+            type: DataTypes.FLOAT,
         }
-    })
+ */    })
 }
