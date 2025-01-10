@@ -80,7 +80,7 @@ export const getCompanysEndpoint = REACT_APP_API + 'company/';
 export const allSalesEndpoint = REACT_APP_API + 'sales';        
 export const addSalesEndpoint = REACT_APP_API + 'sales/add';     
 // export const updateSalesEndpoint = REACT_APP_API + 'sales/update/'; 
-// export const deleteSalesEndpoint = REACT_APP_API + 'sales/delete/'; 
+ export const deleteSalesEndpoint = REACT_APP_API + 'sales/delete/'; 
 
 
 // receipts

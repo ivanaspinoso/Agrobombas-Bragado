@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllSales } from "./salesSlice";
+import { deleteSaleById, fetchAllSales } from "./salesSlice";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
@@ -15,20 +15,20 @@ const SalesView = () => {
     dispatch(fetchAllSales());
   }, [dispatch]);
 
-//   const handleDelete = (id, client) => {
-//     Swal.fire({
-//       title: `¿Desea eliminar la venta de: ${client}?`,
-//       showDenyButton: true,
-//       confirmButtonText: "Sí",
-//       denyButtonText: "No",
-//       icon: "warning",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         dispatch(deleteSaleById(id));
-//       }
-//     });
-//   };
-
+  const handleDelete = (id, customer) => {
+    Swal.fire({
+      title: `¿Desea eliminar la venta de: ${customer.name}?`,
+      showDenyButton: true,
+      confirmButtonText: "Sí",
+      denyButtonText: "No",
+      icon: "warning",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteSaleById(id));
+      }
+    });
+  };
+  
   const filteredSales = sales?.filter((sale) =>
     sale.client?.toLowerCase().includes(searchClient.toLowerCase())
   );
@@ -78,8 +78,8 @@ const SalesView = () => {
                   </button>
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    // onClick={() => handleDelete(sale.id, sale.client)}
-                  >
+                    onClick={() => handleDelete(sale.id, sale.customer)}
+                    >
                     <FaTrashAlt />
                   </button>
                 </td>

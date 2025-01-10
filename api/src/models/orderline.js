@@ -10,6 +10,10 @@ module.exports = function (sequelize) {
       type: DataTypes.STRING,
       allowNull:true,
     },
+    cost: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
     price: {
       type: DataTypes.FLOAT,
       allowNull: false,

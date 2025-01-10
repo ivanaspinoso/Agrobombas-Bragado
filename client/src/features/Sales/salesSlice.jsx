@@ -94,12 +94,13 @@ export const submitSale = (sale) => async (dispatch) => {
 //   }
 // };
 
-// // 🔹 Eliminar una venta
-//  export const deleteSaleById = (id) => async (dispatch) => {
-//    try {
-//      await axios.delete(`${deleteSalesEndpoint}${id}`);
-//      dispatch(deleteSale(id));
-//    } catch (error) {
-//      console.error("Error al eliminar venta:", error);
-//    }
-//  };
+export const deleteSaleById = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${deleteSalesEndpoint}${id}`);
+    dispatch(deleteSale(id));
+    dispatch(fetchAllSales()); 
+  } catch (error) {
+    console.error("Error al eliminar venta:", error);
+  }
+};
+
