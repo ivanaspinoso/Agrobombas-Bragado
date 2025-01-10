@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCashflows,deleteCashflowById } from "../features/Caja/CashflowSlice";
+import { fetchAllCashflows, deleteCashflowById } from "./CashflowSlice";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
@@ -13,10 +13,11 @@ const CashflowView = () => {
 
   const [searchDescription, setSearchDescription] = useState("");
 
-  useEffect(() => {
-    dispatch(fetchAllCashflows());
+/* 
+  useEffect(async () => {
+    await dispatch(fetchAllCashflows());
   }, [dispatch]); 
-  
+   */
 
   const handleDelete = (id, description) => {
     Swal.fire({
@@ -25,9 +26,9 @@ const CashflowView = () => {
       confirmButtonText: "Sí",
       denyButtonText: "No",
       icon: "warning",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(deleteCashflowById(id));
+        await dispatch(deleteCashflowById(id));
       }
     });
   };

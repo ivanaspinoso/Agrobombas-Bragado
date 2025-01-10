@@ -14,7 +14,7 @@ import AddGroup from "../features/groups/AddGroup";
 import EditGroup from "../features/groups/EditGroup";
 // import MessagesView from "../features/messages/MessagesView";
 // import Next from "../pages/Next";
-import CashflowView from '../pages/CashflowView.jsx'
+import CashflowView from '../features/Caja/CashflowView.jsx'
 import Next from "../pages/Next.jsx";
 // import AddMessage from "../features/messages/AddMessage";
 import LogIn from "../Components/LogIn";

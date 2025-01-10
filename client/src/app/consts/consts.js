@@ -82,6 +82,14 @@ export const addSalesEndpoint = REACT_APP_API + 'sales/add';
 // export const updateSalesEndpoint = REACT_APP_API + 'sales/update/'; 
  export const deleteSalesEndpoint = REACT_APP_API + 'sales/delete/'; 
 
+//
+
+//cashflows
+export const allCashflowEndpoint = REACT_APP_API + 'cashflows';
+export const addCashflowEndpoint = REACT_APP_API + 'cashflow/add';
+export const updCashflowEndpoint = REACT_APP_API + 'cashflow/update/';
+export const delCashflowEndpoint = REACT_APP_API + 'cashflows/delete/';
+
 
 // receipts
 

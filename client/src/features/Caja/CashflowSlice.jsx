@@ -2,8 +2,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import { allCashflowEndpoint, addCashflowEndpoint, updCashflowEndpoint, delCashflowEndpoint, } from "../../app/consts/consts";
+
 const initialCashFlowState = {
-  // loading: 'idle',
+  loading: 'idle',
   cashflows: [],
 };
 
@@ -35,8 +37,8 @@ export default cashflowSlice.reducer;
 
 export const fetchAllCashflows = () => async (dispatch) => {
   try {
-    const { data } = await axios.get("https://backend.sib-2000.com.ar/agb/cashflows/");
-    console.log("Datos obtenidos en fetchAllCashflows:", data); 
+    const { data } = await axios.get(allCashflowEndpoint);
+    console.log("Datos obtenidos en fetchAllCashflows:", data);
     dispatch(allCashflows(data));
   } catch (error) {
     console.error("Error al obtener movimientos de caja:", error);
@@ -46,7 +48,7 @@ export const fetchAllCashflows = () => async (dispatch) => {
 
 export const addNewCashflow = (cashflow) => async (dispatch) => {
   try {
-    const { data } = await axios.post("https://backend.sib-2000.com.ar/agb/cashflows/add", cashflow);
+    const { data } = await axios.post(addCashflowEndpoint, cashflow);
     dispatch(addCashflow(data));
     dispatch(fetchAllCashflows());
 
@@ -58,19 +60,19 @@ export const addNewCashflow = (cashflow) => async (dispatch) => {
 export const updateCashflowById = (cashflow) => async (dispatch) => {
   try {
     console.log("Datos enviados en la petición PUT:", cashflow);
-    const { data } = await axios.put("https://backend.sib-2000.com.ar/agb/cashflows/update", cashflow);
+    const { data } = await axios.put(updCashflowEndpoint, cashflow);
     dispatch(updateCashflow(data));
     dispatch(fetchAllCashflows());
   } catch (error) {
     console.error("Error al actualizar movimiento de caja:", error.response?.data || error.message);
-    throw error; 
+    throw error;
   }
 };
 
 
 export const deleteCashflowById = (id) => async (dispatch) => {
   try {
-    await axios.delete(`https://backend.sib-2000.com.ar/agb/cashflows/delete/${id}`);
+    await axios.delete(delCashflowEndpoint + id);
     dispatch(deleteCashflow(id));
   } catch (error) {
     console.error("Error al eliminar movimiento de caja:", error);

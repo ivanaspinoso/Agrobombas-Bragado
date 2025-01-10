@@ -95,7 +95,7 @@ const AddSales = () => {
           client_asoc: values.client_asoc,
           address: values.address || "",
           cellphone: values.celphone || "",
-          modopago: values.modopago,
+          notapaga: values.modopago,
           paga: pago,
           resta: resto,
           subtotal,
