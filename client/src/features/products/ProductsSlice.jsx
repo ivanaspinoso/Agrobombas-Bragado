@@ -26,14 +26,15 @@ const productsSlice = createSlice({
     //   if (index >= 0) state.products[index] = updatedProduct;
     // },
     updateProduct: (state, action) => {
-      const { id, name, description,price,cost } = action.payload;
+      const { id, name, description,price,cost ,percent,price1} = action.payload;
       const productToUpdate = state.products.find((product) => product.id === id);
       if (productToUpdate) {
         productToUpdate.name = name;
         productToUpdate.description = description;
         productToUpdate.price = price;
         productToUpdate.cost = cost;
-
+        productToUpdate.percent = percent; 
+        productToUpdate.price1 = price1; 
       }
     },
     deleteProduct: (state, action) => {
