@@ -130,7 +130,7 @@ export const addInstance = () => async (dispatch) => {
 export const getAllUsers = () => async (dispatch) => {
   try {
     const { data } = await axios.get(`${allUsersEndpoint}`);
-    // console.log("ejecutando action getallusers", data)
+    console.log("ejecutando action getallusers", data)
     dispatch({ type: "users/allUsers", payload: data });
     // localStorage.setItem("appConfig", JSON.stringify(data.config));
     localStorage.setItem("gettingUsers", true);

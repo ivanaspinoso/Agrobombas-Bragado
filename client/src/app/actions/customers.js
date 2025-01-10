@@ -5,20 +5,7 @@ import { addCustomer, updateCustomerDetails, deleteCustomer } from '../../featur
 
 // import { allCustomers,addCustomers,updateCustomers,deleteCustomers } from "../../features/customers/CustomerSlice";
 
-// Obtener todas las familias
-export const getAllCustomers = () => async (dispatch) => {
-  try {
-    console.log("action get",allCustomersEndpoint)
-    const { data } = await axios.get(`${allCustomersEndpoint}`);
-    dispatch({ type: "families/allCustomers", payload: data });
-    // dispatch(allFamilies(data)); // Esto despacha la lista de familias al estado global
-    console.table(data)
-    localStorage.setItem("gettingFamilies", true);
-  } catch (err) {
-    localStorage.setItem("gettingFamilies", false);
-    console.error("Error al obtener familias:", err?.response?.data?.message || err.message);
-  }
-};
+
 
 export const customersAdd = (customer) => async (dispatch) => {
     try {

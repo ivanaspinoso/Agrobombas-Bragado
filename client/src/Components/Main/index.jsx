@@ -26,6 +26,7 @@ import { getCompany } from '../../app/actions/companys';
 import { getAllUsers } from '../../app/actions/users';
 // import { getAllProducts } from '../../app/actions/products';
 import { getAllProducts } from '../../app/actions/products';
+import { getAllCustomers } from '../../features/customers/CustomerSlice';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -49,6 +50,8 @@ const Main = () => {
           console.error('No config users available');
         }
 
+        console.log("Usuarios log",usersResponse)
+
         // Relleno estado de familias
         const familyResponse = await dispatch(getAllFamilies());
         if (familyResponse && familyResponse.data) {
@@ -65,6 +68,7 @@ const Main = () => {
           console.error('No company available');
         }
 
+        // iniciar carga de familias reducer
         const groupsResponse = await dispatch(getAllCategories());
         if (groupsResponse && groupsResponse.data.groups) {
           console.log('Empresa data:', groupsResponse.data.groups);
@@ -72,9 +76,18 @@ const Main = () => {
           console.error('No config family available');
         }
 
+        // iniciar carga de productos reducer
         const productsResponse = await dispatch(getAllProducts());
         if (productsResponse && productsResponse.data.products) {
           console.log('Empresa data:', productsResponse.data.products);
+        } else {
+          console.error('No products available');
+        }
+
+        // iniciar carga de clientes reducer
+        const customersResponse = await dispatch(getAllCustomers());
+        if (customersResponse && customersResponse.data.customers) {
+          console.log('clientes:', customersResponse.data.customers);
         } else {
           console.error('No products available');
         }
@@ -175,7 +188,7 @@ const Main = () => {
       <header className="text-center mb-8 flex flex-col gap-2 justify-between lg:flex-row lg:gap-0">
         <h1 className="hidden md:flex text-3xl font-bold">
           Sistema de gestión de {companys.name}
-                    {/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
+          {/*           {i18n.language === 'en' ? `${configs?.business}'s Control Panel` : `Panel de control de ${configs?.business}`} */}
 
         </h1>
 
@@ -187,13 +200,13 @@ const Main = () => {
               // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-[#0e6fa5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
 
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                            // </svg>
+              // </svg>
 
             ) : (
-                            // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              // <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
 
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            // </svg>
+              // </svg>
 
             )}
           </div>
@@ -230,7 +243,7 @@ const Main = () => {
             </div>
           </div>
         ))}
-         {/* {login.isAdmin && (
+        {/* {login.isAdmin && (
           <>
             <div className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200" style={{ minWidth: '400px' }}>
               <img className="w-full h-48 object-cover mb-4 rounded-md" src={contacto} alt="Usuarios" />

@@ -6,7 +6,7 @@ import { Select, Input, Button, Table } from "antd";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { submitSale } from "./salesSlice";
-import { getAllCustomers } from "../../app/actions/customers";
+import { getAllCustomers } from "../customers/CustomerSlice"
 import { getAllProducts } from "../../app/actions/products";
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -14,12 +14,15 @@ const { Option } = Select;
 
 const AddSales = () => {
   const dispatch = useDispatch();
-  const customers = useSelector((state) => state.customersReducer?.customers);
+  const customers = useSelector((state) => state.customersReducer.customers);
   const products = useSelector((state) => state.productsReducer.products);
   const login = useSelector((state) => state.usersReducer.login);
 
   const [orderlines, setOrderlines] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+  const [resto, setResto] = useState(0);
+  const [pago, setPago] = useState(0);
+
 
   useEffect(() => {
     dispatch(getAllCustomers());
@@ -28,12 +31,13 @@ const AddSales = () => {
 
   useEffect(() => {
     setSubtotal(orderlines.reduce((sum, item) => sum + item.subtotal, 0));
+    setResto(subtotal - pago);
   }, [orderlines]);
 
   const schema = Yup.object().shape({
     fecha: Yup.string().required("La fecha es obligatoria"),
     client: Yup.string().required("El cliente es obligatorio"),
-    modopago: Yup.string().required("Modo de pago requerido"),
+    // modopago: Yup.string().required("Modo de pago requerido"),
     paga: Yup.number().min(0, "Debe ser positivo"),
   });
 
@@ -43,9 +47,9 @@ const AddSales = () => {
       article: product.article,
       name: product.name,
       cost: product.cost,
-      price: product.price1, 
+      price: product.price,
       quantity: 1,
-      subtotal: product.price1,
+      subtotal: product.price,
     };
     setOrderlines([...orderlines, newOrderline]);
   };
@@ -58,12 +62,14 @@ const AddSales = () => {
     }
     setOrderlines(newOrderlines);
     setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
+    setResto(subtotal - pago);
   };
 
   const removeOrderline = (index) => {
     const newOrderlines = orderlines.filter((_, i) => i !== index);
     setOrderlines(newOrderlines);
     setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
+    setResto(subtotal - pago);
   };
 
   return (
@@ -82,20 +88,28 @@ const AddSales = () => {
       onSubmit={(values) => {
         const saleData = {
           fecha: values.fecha,
-          customerId: values.client_asoc, 
-          address: values.address || "", 
-          phone: values.celphone || "", 
+          client: values.client,
+          client_asoc: values.client_asoc,
+          address: values.address || "",
+          cellphone: values.celphone || "",
           modopago: values.modopago,
-          paga: values.paga,
-          resta: values.resta,
+          paga: pago,
+          resta: resto,
           subtotal,
           total: subtotal,
           orderlines,
           user_asoc: login.id,
         };
-        
+        console.log(saleData)
         dispatch(submitSale(saleData));
-        Swal.fire("Éxito", "Venta registrada", "success");
+
+        const success = JSON.parse(localStorage.getItem("saleAdded"));
+        // console.log("Objeto", success);
+        if (success && success === true) {
+          Swal.fire("Éxito", "Venta registrada", "success");
+        }
+        else { Swal.fire("Error", success, "error"); }
+
       }}
     >
       {({ setFieldValue, values }) => (
@@ -113,8 +127,8 @@ const AddSales = () => {
               if (selectedCustomer) {
                 setFieldValue("client", selectedCustomer.name);
                 setFieldValue("client_asoc", selectedCustomer.id);
-                setFieldValue("address", selectedCustomer.address || "Sin dirección");
-                setFieldValue("celphone", selectedCustomer.phone || "Sin teléfono");
+                setFieldValue("address", selectedCustomer.address || "");
+                setFieldValue("celphone", selectedCustomer.phone || "");
               }
             }}
           >
@@ -148,9 +162,9 @@ const AddSales = () => {
                 </Option>
               ))}
             </Select>
-            <Button type="primary" onClick={() => addOrderline({ id: "", name: "Nuevo Producto", price1: 0, quantity: 1 })}>
+{/*             <Button type="primary" onClick={() => addOrderline({ id: "", name: "Nuevo Producto", price1: 0, quantity: 1 })}>
               +
-            </Button>
+            </Button> */}
           </div>
 
           <Table
@@ -168,7 +182,7 @@ const AddSales = () => {
                       if (product) {
                         updateOrderline(index, "id", product.id);
                         updateOrderline(index, "name", product.name);
-                        updateOrderline(index, "price", product.price1);
+                        updateOrderline(index, "price", product.price);
                       }
                     }}
                   >
@@ -213,14 +227,14 @@ const AddSales = () => {
           <label>Subtotal:</label>
           <Field name="subtotal" as={Input} type="number" value={subtotal} readOnly />
 
+          <label>Paga:</label>
+          <Field name="paga" as={Input} value={pago} type="number" onChange={(e) => setPago(e.target.value)} onBlur={() => setResto(/* "resta", */ subtotal - pago)} />
+
           <label>Modo de Pago:</label>
           <Field name="modopago" as={Input} />
 
-          <label>Paga:</label>
-          <Field name="paga" as={Input} type="number" onBlur={() => setFieldValue("resta", subtotal - values.paga)} />
-
-          <label>Resta:</label>
-          <Field name="resta" as={Input} type="number" readOnly />
+          <label>Resto:</label>
+          <Field name="resta" as={Input} type="number" value={resto} readOnly />
 
           <Button type="primary" htmlType="submit">Registrar Venta</Button>
         </Form>

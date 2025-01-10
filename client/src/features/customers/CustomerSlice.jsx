@@ -20,6 +20,9 @@ export const customersSlice = createSlice({
     setCustomers: (state, action) => {
       state.customers = action.payload;
     },
+    allCustomers: (state, action) => {
+      state.customers = action.payload;
+    },
     addCustomer: (state, action) => {
       state.customers.push(action.payload);
     },
@@ -48,7 +51,7 @@ export const customersSlice = createSlice({
 });
 
 // Acciones
-export const { setCustomers, addCustomer, updateCustomer, deleteCustomer, logoutCustomers } = customersSlice.actions;
+export const { setCustomers, addCustomer, updateCustomer, deleteCustomer, logoutCustomers, allCustomers } = customersSlice.actions;
 
 // Función asíncrona para obtener todos los clientes
 export const fetchCustomers = () => async (dispatch) => {
@@ -95,6 +98,28 @@ export const customersDelete = (id) => async (dispatch) => {
     swal.fire("Error!", err?.response?.data?.message || err.message, "error");
   }
 };
+
+// Obtener todas las clientes
+export const getAllCustomers = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(allCustomersEndpoint);
+    dispatch(setCustomers(data));
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+  }
+
+/*   try {
+    console.log("action get",allCustomersEndpoint)
+    const { data } = await axios.get(`${allCustomersEndpoint}`);
+    dispatch({ type: "customers/allCustomers", payload: data });
+ */    // dispatch(allFamilies(data)); // Esto despacha la lista de familias al estado global
+/*     console.table(data)
+    localStorage.setItem("gettingCustomers", true);
+  } catch (err) {
+    localStorage.setItem("gettingCustomers", false);
+    console.error("Error al obtener familias:", err?.response?.data?.message || err.message);
+  }
+ */};
 
 
 export default customersSlice.reducer;

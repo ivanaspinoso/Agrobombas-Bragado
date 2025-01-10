@@ -65,7 +65,9 @@ export const submitSale = (sale) => async (dispatch) => {
   try {
     const { data } = await axios.post(addSalesEndpoint, sale);
     dispatch({ type: "ADD_SALE_SUCCESS", payload: data });
+    localStorage.setItem("saleAdded", JSON.stringify(true));
   } catch (error) {
+    localStorage.setItem("saleAdded", JSON.stringify(error?.response?.data?.message));
     console.error("Error al registrar la venta:", error);
   }
 };
