@@ -5,7 +5,7 @@ import { FcAddRow } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import swal from 'sweetalert2';
-import { deleteFamily } from "./FamiliesSlice";
+import { familyDelete } from "../../app/actions/families";
 
 const FamiliesView = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const FamiliesView = () => {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          await dispatch(deleteFamily(id)); 
+          await dispatch(familyDelete(id)); 
           const success = JSON.parse(localStorage.getItem("familyDeleted"));  
           if (success === true) {
             swal.fire("Eliminado", "La familia ha sido eliminada correctamente.", "success");

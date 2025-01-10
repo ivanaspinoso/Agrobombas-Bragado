@@ -50,13 +50,13 @@ export const familyUpdate = (family) => async (dispatch) => {
 
 export const familyDelete = (id) => async (dispatch) => {
   try {
-    const response = await axios.delete(`${delFamilyEndpoint}${id}`);
+    const response = await axios.delete(delFamilyEndpoint + id);
     console.log('Response from delete:', response.data);
     dispatch(deleteFamily(id));
-    localStorage.setItem("familyDeleted", true);
-  } catch (err) {
-    localStorage.setItem("familyDeleted", err?.response?.data?.message);
-    console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
+    localStorage.setItem("familyDeleted", JSON.stringify(true));
+  } catch (error) {
+    localStorage.setItem("familyDeleted", JSON.stringify(error?.response?.data?.message));
+    console.error("Error al eliminar familia:", error?.response?.data?.message || error.message);
   }
 };
 
