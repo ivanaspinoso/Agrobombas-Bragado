@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteSaleById, fetchAllSales } from "./salesSlice";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { getAllProducts } from "../../app/actions/products";
+import { fetchAllCashflows } from "../Caja/CashflowSlice";
 
 const SalesView = () => {
   const dispatch = useDispatch();
@@ -22,17 +24,19 @@ const SalesView = () => {
       confirmButtonText: "Sí",
       denyButtonText: "No",
       icon: "warning",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(deleteSaleById(id));
+        await dispatch(deleteSaleById(id));
+        await dispatch(getAllProducts())
+        await dispatch(fetchAllCashflows())
       }
     });
   };
-  
+
   const filteredSales = sales?.filter((sale) =>
     sale.client?.toLowerCase().includes(searchClient.toLowerCase())
   );
-  
+
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -67,7 +71,7 @@ const SalesView = () => {
                 <td className="px-4 py-2">{sale.customer?.name || "Sin Cliente"}</td>
                 <td className="px-4 py-2">{sale.customer?.address || "Sin dirección"}</td>
                 <td className="px-4 py-2">{sale.subtotal || 0}</td>
-<td className="px-4 py-2">{sale.total || 0}</td>
+                <td className="px-4 py-2">{sale.total || 0}</td>
 
                 <td className="px-4 py-2 flex gap-2">
                   <button
@@ -79,7 +83,7 @@ const SalesView = () => {
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                     onClick={() => handleDelete(sale.id, sale.customer)}
-                    >
+                  >
                     <FaTrashAlt />
                   </button>
                 </td>

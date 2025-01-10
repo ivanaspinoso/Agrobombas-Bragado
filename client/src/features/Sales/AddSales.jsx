@@ -9,11 +9,14 @@ import { submitSale } from "./salesSlice";
 import { getAllCustomers } from "../customers/CustomerSlice"
 import { getAllProducts } from "../../app/actions/products";
 import { FaTrashAlt } from "react-icons/fa";
+import { fetchAllCashflows } from "../Caja/CashflowSlice";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 const AddSales = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const customers = useSelector((state) => state.customersReducer.customers);
   const products = useSelector((state) => state.productsReducer.products);
   const login = useSelector((state) => state.usersReducer.login);
@@ -85,7 +88,7 @@ const AddSales = () => {
         paga: 0,
         resta: 0,
       }}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         const saleData = {
           fecha: values.fecha,
           client: values.client,
@@ -101,12 +104,15 @@ const AddSales = () => {
           user_asoc: login.id,
         };
         console.log(saleData)
-        dispatch(submitSale(saleData));
+        await dispatch(submitSale(saleData));
 
         const success = JSON.parse(localStorage.getItem("saleAdded"));
         // console.log("Objeto", success);
         if (success && success === true) {
           Swal.fire("Éxito", "Venta registrada", "success");
+          await dispatch(getAllProducts())
+          await dispatch(fetchAllCashflows())
+          navigate("/show-configs");
         }
         else { Swal.fire("Error", success, "error"); }
 
