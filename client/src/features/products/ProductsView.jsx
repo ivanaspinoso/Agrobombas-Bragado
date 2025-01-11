@@ -30,9 +30,15 @@ useEffect(() => {
       confirmButtonText: "Sí",
       denyButtonText: "No",
       icon: "warning",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(deleteProductById(id));
+        await dispatch(deleteProductById(id));
+        const success = JSON.parse(localStorage.getItem("productDeleted"));
+        if (success === true) {
+          Swal.fire("Eliminado", "El producto ha sido eliminado correctamente.", "success");
+        } else {
+          Swal.fire("Error", success, "error");
+        }
       }
     });
   };
@@ -99,9 +105,9 @@ useEffect(() => {
               <th className="px-4 py-2 text-left">Articulo</th>
               <th className="px-4 py-2 text-left">Descripción</th>
               <th className="px-4 py-2 text-left">$</th>
-{/*               <th className="px-4 py-2 text-left">% tarjeta</th> */}
+              {/*               <th className="px-4 py-2 text-left">% tarjeta</th> */}
               <th className="px-4 py-2 text-left">$ tarjeta</th>
-{/*               <th className="px-4 py-2 text-left">IVA 21%</th>
+              {/*               <th className="px-4 py-2 text-left">IVA 21%</th>
                <th className="px-4 py-2 text-left">Proveedor</th>  */}
               <th className="px-4 py-2 text-left">Stock</th>
               <th className="px-4 py-2 text-left">Modificado</th>
@@ -131,10 +137,10 @@ useEffect(() => {
                   <td className="px-4 py-2">{name}</td>
                   <td className="px-4 py-2">{article}</td>
                   <td className="px-4 py-2">{description}</td>
-                  <td className=" py-2 ">{price.toFixed(2).replace(".",",")}</td>
-{/*                   <td className="px-4 py-2">{price1}</td>
- */}                  <td className="px-12 py-2">{price2.toFixed(2).replace(".",",")}</td>
-{/*                   <td className="px-4 py-2">{iva21}</td> 
+                  <td className=" py-2 ">{price.toFixed(2).replace(".", ",")}</td>
+                  {/*                   <td className="px-4 py-2">{price1}</td>
+ */}                  <td className="px-12 py-2">{price2.toFixed(2).replace(".", ",")}</td>
+                  {/*                   <td className="px-4 py-2">{iva21}</td> 
                   <td className="px-4 py-2">{prov_code}</td> */}
                   <td className=" py-2 text-center">{stock}</td>
                   <td className="px-4 py-2">{date1}</td>

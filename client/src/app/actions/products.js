@@ -33,7 +33,9 @@ export const deleteProductById = (id) => async (dispatch) => {
     try {
         await axios.delete(`${deleteProductsEndpoint}${id}`);
         dispatch(deleteProduct(id)); 
+        localStorage.setItem("productDeleted", JSON.stringify(true));
     } catch (error) {
+        localStorage.setItem("productDeleted", JSON.stringify(error?.response?.data?.message /* false */));
         console.error("Error al eliminar el producto:", error.message);
     }
 };

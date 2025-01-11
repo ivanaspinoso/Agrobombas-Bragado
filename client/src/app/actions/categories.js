@@ -71,17 +71,14 @@ export const getAllCategories = () => async (dispatch) => {
     try {
       await axios.delete(`${delGroupsEndpoint}${id}`);
       dispatch({ type: "groups/deletegroup", payload: id });
-      localStorage.setItem("categoryDeleted", true);
-      
+      localStorage.setItem("categoryDeleted", JSON.stringify(true));
       // Llamar a getAllCategories para refrescar la lista
-      dispatch(getAllCategories());
+      // dispatch(getAllCategories());
     } catch (err) {
-      localStorage.setItem("categoryDeleted", err.response?.data?.message);
+      localStorage.setItem("categoryDeleted", JSON.stringify(err.response?.data?.message));
       swal.fire("Error!", err?.response?.data?.message || err.message, "error");
     }
   };
-  
-
   
 
   export const updateCategory = (cate) => async (dispatch) => {

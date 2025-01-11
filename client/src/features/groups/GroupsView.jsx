@@ -29,13 +29,12 @@ const GroupsView = () => {
     if (result.isConfirmed) { 
       await dispatch(deleteCategory(id));
       
-      const categoryDeleted = localStorage.getItem("categoryDeleted");
-      if (categoryDeleted === "true") {
-        dispatch(deletegroup(id)); 
-        swal.fire("Eliminado!", `El proveedor ${name} ha sido eliminado.`, "success");
-      } else {
-        swal.fire("Error!", `No se pudo eliminar el proveedor ${name}. ${categoryDeleted}`, "error");
-      }
+        const success = JSON.parse(localStorage.getItem("categoryDeleted"));
+         if (success === true) {
+           swal.fire("Eliminado", "El proveedor ha sido eliminado correctamente.", "success");
+         } else {
+           swal.fire("Error", success, "error");
+         }
       
       localStorage.removeItem("categoryDeleted");
     }

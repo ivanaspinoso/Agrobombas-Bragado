@@ -164,17 +164,24 @@ router.post("/add", async (req, res) => {
 // Eliminar proveedor
 router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  console.log("proveedor a eliminar ",id);
   if (!id) return res.status(400).send({ message: "Debe ingresar proveedor" });
 
-  let producSocios = await Supplier.findAll({
+/*   let producSocios = await Supplier.findAll({
       where: { id: id },
-      include: { model: Product },
+      include: { model: Product,
+        where: {prov_code: id} },
   }).then((s) => {
       if (s[0] && s[0].products.length > 0) {
           return s[0].products.length
       } else return 0
-  });
+  }); */
+
+  let productSocios = await Product.findAll({
+    where: { prov_code: id },
+  })
+
+  console.log("Productos asociados al vendedor",productSocios.length)
 
   const existCat = await Supplier.findOne({
       where: {
@@ -182,8 +189,8 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
       },
   });
 
-  if (producSocios > 0) {
-      return res.status(400).json({ message: "No se puede eliminar, productos asociados" })
+  if (productSocios.length > 0) {
+      return res.status(400).json({ message: "No se puede eliminar proveedor, productos asociados" })
   } else {
       if (existCat) {
           try {

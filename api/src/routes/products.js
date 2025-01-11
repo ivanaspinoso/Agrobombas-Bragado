@@ -460,6 +460,7 @@ router.delete("/delete/:id", async (req, res) => {
       return s[0].orderlines.length;
     } else return 0;
   });
+  console.log(orderLineSocias)
   const existProd = await Product.findOne({
     where: {
       id,
@@ -469,7 +470,7 @@ router.delete("/delete/:id", async (req, res) => {
   if (orderLineSocias > 0) {
     return res
       .status(400)
-      .json({ message: "No se puede eliminar, porque tiene pedidos asociados" });
+      .json({ message: "No se puede eliminar, porque tiene ventas asociados" });
   } else {
     if (existProd) {
       try {

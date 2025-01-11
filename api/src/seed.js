@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 
+// datos iniciales de empresa propietaria
 const initialCompany = [
     {
         name: "Agro Bombas Bragado",
@@ -13,6 +14,8 @@ const initialCompany = [
     },
 ];
 
+
+// datos iniciales de usuarios de la webapp
 const initialUsers = [
     {
         name: "Fede OyB",
@@ -80,6 +83,7 @@ const initialUsers = [
     }
 ];
 
+// datos iniciales para prueba de clientes, con 1 bastará
 const initialCustomers = [
     {
         name: "Cliente ejemplo 1",
@@ -90,19 +94,10 @@ const initialCustomers = [
         postal_code: "6640",
         cuit: "25952878",
         web: ""
-    },
-    {
-        name: "Cliente Ejemplo 2",
-        phone: "",
-        email: "",
-        address: "",
-        city: "",
-        postal_code: "6640",
-        cuit: "20589632587",
-        web: ""
-    },
+    }
 ];
 
+// datos iniciales para prueba de proveedores, con 1 bastará
 const initialSuppliers = [
     {
         name: "Proveedor ejemplo 1",
@@ -112,16 +107,10 @@ const initialSuppliers = [
         postal_code: "6640",
         cuit: "20279528787",
         province: "Bs As"
-    }, {
-        name: "Proveedor ejemplo 2",
-        code: 2,
-        address: "",
-        city: "Bahía Blanca",
-        postal_code: "",
-        cuit: "",
-        province: "Bs As"
-    },]
+    }
+]
 
+// datos iniciales para prueba de rubros, con 2 bastará
 const initialFamilies = [
     {
         name: "Rubro ejemplo 1",
@@ -133,51 +122,7 @@ const initialFamilies = [
     },
 ];
 
-const initialCashflows = [
-    {
-        date: "2024-11-04",
-        description: "Movimiento ejemplo 1",
-        income: 0,
-        outflow: 2600,
-        user_asoc: 1
-    },
-    {
-        date: "2024-11-01",
-        description: "Movimiento ejemplo 2",
-        income: 3000,
-        outflow: 0,
-        user_asoc: 1
-    },
-    {
-        date: "2024-11-04",
-        description: "Movimiento ejemplo 3",
-        income: 0,
-        outflow: 1600,
-        user_asoc: 2
-    },
-    {
-        date: "2024-11-01",
-        description: "Movimiento ejemplo 4",
-        income: 5000,
-        outflow: 0,
-        user_asoc: 2
-    },
-    {
-        date: "2024-11-02",
-        description: "Movimiento ejemplo 5",
-        income: 0,
-        outflow: 1800,
-        user_asoc: 2
-    },
-    {
-        date: "2024-11-03",
-        description: "Movimiento ejemplo 6",
-        income: 50000,
-        outflow: 0,
-        user_asoc: 2
-    },
-];
-
+// datos iniciales para prueba de productos, con 2 bastará
 const initialProducts = [
     {
         name: "Producto ejemplo 1",
@@ -215,7 +160,6 @@ const initialProducts = [
         weigth: 0,
         prov_code: 1
     },
-
 ];
 
 const familyyProducts = [
@@ -223,6 +167,7 @@ const familyyProducts = [
     { familyId: 1, productId: 2 },
 ];
 
+// Probar ventas iniciales, 2
 const initialSales = [
     {
         fecha: "2024-12-15",
@@ -236,7 +181,7 @@ const initialSales = [
         userId: 3,
         user_asoc: 3,
         client_asoc: 1,
-        customerId: 1
+        // customerId: 1
     },
     {
         fecha: "2025-01-05",
@@ -249,9 +194,30 @@ const initialSales = [
         userId: 4,
         user_asoc: 4,
         client_asoc: 2,
-        customerId: 2
+        // customerId: 2
     },
 ]
+
+// datos iniciales para prueba de movimientos de caja, con 2 bastará
+const initialCashflows = [
+    {
+        date: "2024-11-04",
+        description: "Movimiento ejemplo 1, venta 1 de prueba",
+        income: 500,
+        outflow: 0,
+        user_asoc: 3,
+        venta_asoc: 1
+    },
+    {
+        date: "2024-11-01",
+        description: "Movimiento ejemplo 2, venta 2 de prueba",
+        income: 1000,
+        outflow: 0,
+        user_asoc: 4,
+        venta_asoc: 2
+    }
+];
+
 
 module.exports = {
     initialFamilies,
