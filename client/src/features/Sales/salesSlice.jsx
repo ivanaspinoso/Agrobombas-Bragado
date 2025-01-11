@@ -25,6 +25,9 @@ const salesSlice = createSlice({
     deleteSale: (state, action) => {
       state.sales = state.sales.filter(sale => sale.id !== action.payload);
     },
+    logoutSales: (state, action) => {
+      state.sales = action.payload
+    }
   },
 });
 

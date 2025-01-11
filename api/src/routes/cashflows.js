@@ -220,8 +220,10 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
     const existCashflow = await Cashflow.findOne({
         where: {
             id,
-        },
+            venta_asoc: null
+        }
     });
+
     if (existCashflow) {
         try {
             let delCashflow = await Cashflow.destroy({
@@ -239,7 +241,7 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
                 .json({ message: "No se pudo eliminar el movimiento" + err });
         }
     } else {
-        return res.status(400).json({ message: "Movimiento inexistente" });
+        return res.status(400).json({ message: "Movimiento inexistente o proveniente de una venta asociada" });
     }
 
 });

@@ -29,6 +29,9 @@ const cashflowSlice = createSlice({
     deleteCashflow: (state, action) => {
       state.cashflows = state.cashflows.filter(cf => cf.id !== action.payload);
     },
+    logoutCashflows: (state, action) => {
+      state.cashflows = action.payload
+    },
   },
 });
 

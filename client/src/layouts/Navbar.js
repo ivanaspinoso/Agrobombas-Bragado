@@ -80,7 +80,7 @@ const Navbar = () => {
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
                 to="/show-families">
-                {t("Familias")}
+                {t("navbar.families")}
               </Link>
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
@@ -107,7 +107,7 @@ const Navbar = () => {
               </Link>
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
-                to="/show-receipts"
+                to="/show-caccounts"
               >
                 {t("navbar.received")}
               </Link>

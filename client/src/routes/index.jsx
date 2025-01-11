@@ -43,6 +43,7 @@ import AddCashflow from "../features/Caja/AddCashflow.jsx";
 import EditCashflow from "../features/Caja/EditCashflow.jsx";
 import SalesView from "../features/Sales/SalesView.jsx";
 import AddSales from "../features/Sales/AddSales.jsx";
+import CaccountsView from "../features/Caccounts/CaccountsView.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -104,6 +105,10 @@ const Index = () => {
 
           <Route path="/show-users" element={<UsersView />} />
           <Route path="/edit-user" element={<EditUser />} />
+
+          <Route path="/show-caccounts" element={<CaccountsView />} />
+
+        
 
           <Route path="/show-receipts" element={<Next />} />
 
