@@ -14,11 +14,12 @@ import customersReducer from '../features/customers/CustomerSlice'
 import productsReducer from '../features/products/ProductsSlice'
 import cashflowReducer from '../features/Caja/CashflowSlice'
 import salesReducer from '../features/Sales/salesSlice'
+import caccountsReducer from '../features/Caccounts/CaccountsSlice'
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer","customersReducer"
-    ,"productsReducer","cashflowReducer","salesReducer"],
+    ,"productsReducer","cashflowReducer","salesReducer","caccountsReducer"],
 }
 
 const rootReducer = combineReducers({
@@ -34,6 +35,8 @@ const rootReducer = combineReducers({
   productsReducer: productsReducer,
   cashflowReducer: cashflowReducer,
   salesReducer: salesReducer,
+  caccountsReducer: caccountsReducer,
+
   // Nombre que usaremos en useSelector
 })
 

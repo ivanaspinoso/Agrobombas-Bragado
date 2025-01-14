@@ -1,97 +1,128 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-/* import { fetchAllCashflows, deleteCashflowById } from "./CashflowSlice"; */
+import axios from "axios";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { REACT_APP_API } from "../../app/consts/consts";
+import { fetchAllCaccounts } from "./CaccountsSlice";
 
 const CaccountsView = () => {
   const dispatch = useDispatch();
-  const caccounts = useSelector((state) => state.cashflowReducer?.caccounts);
-
   const navigate = useNavigate();
+  const caccounts = useSelector((state) => state.caccountReducer?.caccounts);
+  const customers = useSelector((state) => state.customersReducer.customers);
 
-  const [searchDescription, setSearchDescription] = useState("");
+  console.log("Cuentas del cliente desde Redux:", caccounts); 
 
-/* 
-  useEffect(async () => {
-    await dispatch(fetchAllCashflows());
-  }, [dispatch]); 
-   */
+  const [customerId, setCustomerId] = useState(null); // Cliente seleccionado
+  const [, setCustomers] = useState([]); // Lista de clientes
 
-/*   const handleDelete = (id, description) => {
-    Swal.fire({
-      title: `¿Desea eliminar el movimiento: ${description}?`,
-      showDenyButton: true,
-      confirmButtonText: "Sí",
-      denyButtonText: "No",
-      icon: "warning",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await dispatch(deleteCashflowById(id));
+  // Cargar lista de clientes al montar el componente
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const response = await axios.get(`${REACT_APP_API}customers`);
+        console.log("Datos obtenidos en fetchAllCaccounts:", response.data);  
+
+        setCustomers(response.data);
+      } catch (error) {
+        Swal.fire("Error", "No se pudo cargar la lista de clientes", "error");
+        console.error(error);
       }
-    });
-  };
+    };
 
-  const filteredCashflows = cashflows?.filter((cf) =>
-    cf.description.toLowerCase().includes(searchDescription.toLowerCase())
-  );
+    fetchCustomers();
+  }, []);
+
+  useEffect(() => {
+    if (customerId) {
+      // Si hay un cliente seleccionado, carga sus cuentas
+      dispatch(fetchAllCaccounts(customerId));
+    }
+  }, [customerId, dispatch]);
   
- */
-  return (
-    <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
-      <div className="flex justify-between items-center mb-10">
-        <h2 className="text-xl font-semibold">Movimientos de Corriente</h2>
+  const handleCustomerChange = (event) => {
+    setCustomerId(event.target.value);
+  };
+  
 
-{/*         <button
-          className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={() => navigate("/cashflow/add")}
+  // const handleDelete = (id) => {
+  //   dispatch(deleteCaccountById(id)); // Eliminar movimiento de cuenta
+  // };
+
+
+  return (
+    <div className="caccounts-view">
+      <h1>Movimientos por Cliente</h1>
+
+      {/* Selección de cliente */}
+      <div className="select-customer">
+        <label htmlFor="customer-select">Seleccionar Cliente:</label>
+        <select
+          id="customer-select"
+          value={customerId || ""}
+          // onChange={(e) => setCustomerId(e.target.value)}
+         onChange={handleCustomerChange}
+
         >
-          Agregar Movimiento
-        </button>
-      </div> */}
-          <div>Por favor seleccione cliente:</div>
-{/*    <div className="overflow-x-scroll">
-        <table className="w-full table-auto">
-          <thead className="bg-[#0e6fa5] text-white">
-            <tr>
-              <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">Fecha</th>
-              <th className="px-4 py-2 text-left">Descripción</th>
-              <th className="px-4 py-2 text-left">Ingreso</th>
-              <th className="px-4 py-2 text-left">Egreso</th>
-              <th className="px-4 py-2 text-left">Nota</th>
-              <th className="px-4 py-2 text-left">Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {filteredCashflows?.map((cf) => (
-              <tr key={cf.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{cf.id}</td>
-                <td className="px-4 py-2">{new Date(cf.date).toLocaleDateString()}</td>
-                <td className="px-4 py-2">{cf.description}</td>
-                <td className="px-4 py-2">{cf.income || "-"}</td>
-                <td className="px-4 py-2">{cf.outflow || "-"}</td>
-                <td className="px-4 py-2">{cf.note || "-"}</td>
-                <td className="px-4 py-2 flex gap-2">
+          <option value=""> Seleccione un cliente </option>
+          {customers.map((customer) => (
+            <option key={customer.id} value={customer.id}>
+              {customer.name} 
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Tabla de movimientos */}
+      <table className="w-full table-auto">
+        <thead className="bg-[#0e6fa5] text-white">
+          <tr>
+            <th className="px-4 py-2 text-left">ID</th>
+            <th className="px-4 py-2 text-left">Fecha</th>
+            <th className="px-4 py-2 text-left">Descripción</th>
+            <th className="px-4 py-2 text-left">Monto</th>
+            <th className="px-4 py-2 text-left">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {caccounts?.length > 0 ? (
+            caccounts.map((caccount) => (
+              <tr key={caccount.id}>
+                <td className="px-4 py-2">{caccount.id}</td>
+                <td className="px-4 py-2">{new Date(caccount.date).toLocaleDateString()}</td>
+                <td className="px-4 py-2">{caccount.description}</td>
+                <td className="px-4 py-2">{caccount.income}</td>
+                <td className="px-4 py-2">{caccount.outflow}</td>
+                <td className="px-4 py-2">{caccount.note}</td>
+
+
+                <td className="px-4 py-2 flex space-x-2">
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => navigate(`/cashflow/update`, { state: cf })}
+                    className="text-blue-500 hover:text-blue-700"
+                    // onClick={() => navigate(`/edit/${caccount.id}`)}
                   >
                     <FaEdit />
                   </button>
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => handleDelete(cf.id, cf.description)}
+                    className="text-red-500 hover:text-red-700"
+                    // onClick={() => handleDelete(caccount.id)}
                   >
                     <FaTrashAlt />
                   </button>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
- */}      </div>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" className="px-4 py-2 text-center text-gray-500">
+                No hay movimientos disponibles.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
