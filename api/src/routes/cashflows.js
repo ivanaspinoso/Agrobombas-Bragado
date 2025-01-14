@@ -220,7 +220,8 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
     const existCashflow = await Cashflow.findOne({
         where: {
             id,
-            venta_asoc: null
+            vta_asoc: null,
+            mov_asoc: null
         }
     });
 
