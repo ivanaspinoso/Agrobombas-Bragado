@@ -164,15 +164,16 @@ router.post("/add", async (req, res) => {
         let newCaccounts = await Caccounts.create(objCaccounts);
         // si todo sale bien devuelvo el objeto agregado
         console.log("Objeto de movimiento de caja guardado");
-        if (parseFloat(objCaccounts.income) > 0) {
+        if (parseFloat(objCaccounts.outflow) > 0) {
             let objCashflow = {
                 date: objCaccounts.date,
-                description: "Mov cta: " + newCaccounts.id + " - " + objCaccounts.description,
-                income: objCaccounts.income,
-                outflow: objCaccounts.outflow,
+                description: "Generado automaticamente x mov " + newCaccounts.id + " de cta cte",
+                income: objCaccounts.outflow,
                 user_asoc: objCaccounts.user_asoc,
                 userId: objCaccounts.user_asoc,
-                mov_asoc: newCaccounts.id
+                mov_asoc: newCaccounts.id,
+                note: objCaccounts.description
+
             }
             try {
                 // envio los datos al modelo sequelize para que los guarde en la database
