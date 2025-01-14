@@ -1,6 +1,6 @@
 var express = require("express");
 
-const { Caccounts } = require("../models/index");
+const { Caccounts, Cashflow } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
 
@@ -42,7 +42,26 @@ router.get("/byuser/:user", /* validateToken, */ async (req, res) => {
     }
 });
 
-//Obtener todos las movimientos de un usuario
+//Obtener todos las movimientos de un cliente
+router.get("/bycustomer/:customer", /* validateToken, */ async (req, res) => {
+    const { customer } = req.params
+    try {
+        let getAllCaccounts = await Caccounts.findAll({
+            order: [["date", "ASC"]],
+            where: {
+                client_asoc: customer
+            }
+        });
+        console.log(getAllCaccounts)
+        return res.send(getAllCaccounts);
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener clientes" + err,
+        });
+    }
+});
+
+//Obtener todos las movimientos de una fecha
 router.get("/bydate/:date", /* validateToken, */ async (req, res) => {
     const { date } = req.params
     try {
@@ -61,7 +80,7 @@ router.get("/bydate/:date", /* validateToken, */ async (req, res) => {
     }
 });
 
-//Obtener todos las movimientos de un usuario
+//Obtener todos las movimientos entre fechas
 router.get("/bedate/:date1/:date2", /* validateToken, */ async (req, res) => {
     const { date1, date2 } = req.params
     if (!date1 || date1 === "") {
@@ -82,8 +101,8 @@ router.get("/bedate/:date1/:date2", /* validateToken, */ async (req, res) => {
     try {
         let getAllCaccounts = await Caccounts.findAll({
             order: [["date", "ASC"]],
-            where: [{"date":  {[Op.between]: [date1, date2]}}
-        ]
+            where: [{ "date": { [Op.between]: [date1, date2] } }
+            ]
         });
         console.log(getAllCaccounts)
         return res.send(getAllCaccounts);
@@ -103,7 +122,7 @@ router.post("/add", async (req, res) => {
         outflow,
         vta_asoc,
         user_asoc,
-        mov_asoc
+        client_asoc
     } = req.body;
     // chequeo que estén completos los 3 campos requeridos
     if (!date || date === "") {
@@ -111,10 +130,25 @@ router.post("/add", async (req, res) => {
             .status(400)
             .json({ message: "Falta ingresar fecha para el movimiento" });
     }
+    if (!description || description === "") {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar Description para el movimiento" });
+    }
     if (!user_asoc || user_asoc === 0) {
         return res
             .status(400)
             .json({ message: "Falta ingresar usuario para el movimiento" });
+    }
+    if (!client_asoc || client_asoc === 0) {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar cliente para el movimiento" });
+    }
+    if ((!income && !outflow) || income === outflow === 0) {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar monto para el movimiento" });
     }
     const objCaccounts = {
         date,
@@ -123,13 +157,38 @@ router.post("/add", async (req, res) => {
         outflow,
         vta_asoc,
         user_asoc,
-        mov_asoc
+        client_asoc
     };
     try {
         // envio los datos al modelo sequelize para que los guarde en la database
         let newCaccounts = await Caccounts.create(objCaccounts);
         // si todo sale bien devuelvo el objeto agregado
         console.log("Objeto de movimiento de caja guardado");
+        if (parseFloat(objCaccounts.income) > 0) {
+            let objCashflow = {
+                date: objCaccounts.date,
+                description: "Mov cta: " + newCaccounts.id + " - " + objCaccounts.description,
+                income: objCaccounts.income,
+                outflow: objCaccounts.outflow,
+                user_asoc: objCaccounts.user_asoc,
+                userId: objCaccounts.user_asoc,
+                mov_asoc: newCaccounts.id
+            }
+            try {
+                // envio los datos al modelo sequelize para que los guarde en la database
+                let newCashflow = await Cashflow.create(objCashflow);
+                // si todo sale bien devuelvo el objeto agregado
+                console.log("Objeto de movimiento de caja guardado", newCashflow);
+                /* res
+                    .status(200)
+                    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow }); */
+            } catch (error) {
+                // en caso de error lo devuelvo al frontend
+                console.log(error);
+                res.status(500).json({ message: "No se pudo crear el movimiento" + error });
+            }
+            // let newCashflow = await Cashflow.create(objCashflow);
+        }
         res
             .status(200)
             .json({ message: "Movimiento generado correctamente", Caccounts: newCaccounts });

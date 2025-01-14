@@ -67,7 +67,8 @@ conn
       console.log(`Listen on port ${PORT}`);
     });
   })
-  /*
+  // si forzar = true habilitar estsos then 
+ /*
  .then(async () => {
     if (forzar === true) await Company.bulkCreate(initialCompany);
   })
@@ -96,20 +97,3 @@ conn
     if (forzar === true) await Sales.bulkCreate(initialSales);
   }) 
 */
-
-
-/*  
-  .then(async () => {
-    if (forzar === true) await Brand.bulkCreate(initialBrands);
-  })
- */
-/*   .then(async () => {
-    if (forzar === true) await Order.bulkCreate(initialOrders);
-  })
-  .then(async () => {
-    if (forzar === true) await OrderLine.bulkCreate(initialOrderlines);
-  }) */
-  /* .then(async () => {
-    if (forzar === true) await Configs.bulkCreate(initialConfigs);
-  })
-  .catch((error) => console.log("Error al bulkcreate", error)); */
