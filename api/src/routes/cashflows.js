@@ -242,7 +242,7 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
                 .json({ message: "No se pudo eliminar el movimiento" + err });
         }
     } else {
-        return res.status(400).json({ message: "Movimiento inexistente o proveniente de una venta asociada" });
+        return res.status(400).json({ message: "Movimiento inexistente o proveniente de una venta o mov de cuenta corriente asociada" });
     }
 
 });

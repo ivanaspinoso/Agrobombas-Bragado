@@ -4,9 +4,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-import { updateProduct } from "./ProductsSlice";
+// import { updateProduct } from "./ProductsSlice";
 import { getAllCategories } from "../../app/actions/categories";
 import { getAllFamilies } from "../../app/actions/families";
+import { productUpdate } from "../../app/actions/products";
 
 const EditProduct = () => {
   const location = useLocation();
@@ -69,15 +70,37 @@ const EditProduct = () => {
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
-      <h2 className="text-center text-xl uppercase m-5 font-semibold">Editar Producto</h2>
+      <h2 className="text-center text-xl uppercase m-5 font-semibold">
+        Editar Producto
+      </h2>
       <Formik
         initialValues={initialValues}
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
           const productData = { id, ...values, userid: login?.id };
-          dispatch(updateProduct(productData));
-
-          Swal.fire({
+          await dispatch(productUpdate(productData));
+          const success = JSON.parse(localStorage.getItem("productUpdated"));
+          console.log(success, productData);
+          
+          if (success && success === true) {
+            Swal.fire({
+              title: "Genial!",
+              text: "Producto modificada exitosamente!",
+              icon: "success",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // resetForm({ name: "", description: "" });
+                navigate("/show-families", { replace: true });
+              }
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: localStorage.getItem("productUpdated"),
+              icon: "error",
+            });
+          }
+          /*           Swal.fire({
             title: "Genial!",
             text: "Producto modificado exitosamente!",
             icon: "success",
@@ -85,92 +108,230 @@ const EditProduct = () => {
             if (result.isConfirmed) {
               navigate("/show-messages", { replace: true });
             }
-          });
+          }); */
 
           setSubmitting(false);
         }}
       >
-        {({ values, errors,touched, handleChange, handleBlur, setFieldValue }) => (
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          setFieldValue,
+        }) => (
           <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-6">
-              <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto *</label>
-              <Field name="name" type="text" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
-              {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
-
+              <label
+                htmlFor="name"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Nombre del Producto *
+              </label>
+              <Field
+                name="name"
+                type="text"
+                className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+              />
+              {errors.name && touched.name && (
+                <p className="text-red-500 text-xs italic">{errors.name}</p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label htmlFor="article" className="block text-gray-700 text-sm font-bold mb-2">Artículo *</label>
-                <Field name="article" type="text" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="article"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Artículo *
+                </label>
+                <Field
+                  name="article"
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
-                <Field name="description" type="text" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="description"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Descripción
+                </label>
+                <Field
+                  name="description"
+                  type="text"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label htmlFor="stock" className="block text-gray-700 text-sm font-bold mb-2">Stock *</label>
-                <Field name="stock" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
-                {errors.stock && touched.stock && <p className="text-red-500 text-xs italic">{errors.stock}</p>}
-
+                <label
+                  htmlFor="stock"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Stock *
+                </label>
+                <Field
+                  name="stock"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
+                {errors.stock && touched.stock && (
+                  <p className="text-red-500 text-xs italic">{errors.stock}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="cost" className="block text-gray-700 text-sm font-bold mb-2">Costo *</label>
-                <Field name="cost" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="cost"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Costo *
+                </label>
+                <Field
+                  name="cost"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
 
               <div>
-                <label htmlFor="iva21" className="block text-gray-700 text-sm font-bold mb-2">IVA 21%</label>
-                <Field name="iva21" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="iva21"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  IVA 21%
+                </label>
+                <Field
+                  name="iva21"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
 
               <div>
-                <label htmlFor="percent" className="block text-gray-700 text-sm font-bold mb-2">Porcentaje de Ganancia</label>
-                <Field name="percent" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="percent"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Porcentaje de Ganancia
+                </label>
+                <Field
+                  name="percent"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
 
               <div>
-                <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio *</label>
-                <Field name="price" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
-                {errors.price && touched.price && <p className="text-red-500 text-xs italic">{errors.price}</p>}
-
+                <label
+                  htmlFor="price"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Precio *
+                </label>
+                <Field
+                  name="price"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
+                {errors.price && touched.price && (
+                  <p className="text-red-500 text-xs italic">{errors.price}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="price1" className="block text-gray-700 text-sm font-bold mb-2">% Tarjeta</label>
-                <Field name="price1" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="price1"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  % Tarjeta
+                </label>
+                <Field
+                  name="price1"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
 
               <div>
-                <label htmlFor="price2" className="block text-gray-700 text-sm font-bold mb-2">Precio Tarjeta 2</label>
-                <Field name="price2" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" />
+                <label
+                  htmlFor="price2"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Precio Tarjeta 2
+                </label>
+                <Field
+                  name="price2"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
               </div>
             </div>
 
             <div className="mb-6">
-              <label htmlFor="prov_code" className="block text-gray-700 text-sm font-bold mb-2">Proveedor *</label>
-              <select name="prov_code" value={values.prov_code} onChange={handleChange} onBlur={handleBlur} className="form-input mt-1 block w-full border border-gray-300 rounded px-1">
+              <label
+                htmlFor="prov_code"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Proveedor *
+              </label>
+              <select
+                name="prov_code"
+                value={values.prov_code}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+              >
                 <option value="">Seleccionar proveedor</option>
-                {providers.map(provider => <option key={provider.id} value={provider.code}>{provider.name}</option>)}
+                {providers.map((provider) => (
+                  <option key={provider.id} value={provider.code}>
+                    {provider.name}
+                  </option>
+                ))}
               </select>
-              {errors.prov_code && touched.prov_code && <p className="text-red-500 text-xs italic">{errors.prov_code}</p>}
-
+              {errors.prov_code && touched.prov_code && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.prov_code}
+                </p>
+              )}
             </div>
 
             <div className="mb-6">
-              <label htmlFor="families" className="block text-gray-700 text-sm font-bold mb-2">Rubro/Familia *</label>
-              <select name="families" multiple value={values.families} onChange={(e) => setFieldValue("families", [...e.target.selectedOptions].map(o => o.value))} className="form-input mt-1 block w-full border border-gray-300 rounded px-1 h-20">
-                {familyOptions.map(family => <option key={family.id} value={family.id}>{family.name}</option>)}
+              <label
+                htmlFor="families"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Rubro/Familia *
+              </label>
+              <select
+                name="families"
+                multiple
+                value={values.families}
+                onChange={(e) =>
+                  setFieldValue(
+                    "families",
+                    [...e.target.selectedOptions].map((o) => o.value)
+                  )
+                }
+                className="form-input mt-1 block w-full border border-gray-300 rounded px-1 h-20"
+              >
+                {familyOptions.map((family) => (
+                  <option key={family.id} value={family.id}>
+                    {family.name}
+                  </option>
+                ))}
               </select>
-              {errors.families && touched.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
-
+              {errors.families && touched.families && (
+                <p className="text-red-500 text-xs italic">{errors.families}</p>
+              )}
             </div>
-
 
             <button
               type="submit"

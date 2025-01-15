@@ -1,6 +1,6 @@
 import axios from "axios";
 import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint } from "../../app/consts/consts";
-import { deleteProduct, addProduct } from "../../features/products/ProductsSlice";
+import { deleteProduct, addProduct, updateProduct } from "../../features/products/ProductsSlice";
 
 export const getAllProducts = () => async (dispatch) => {
     try {
@@ -26,6 +26,17 @@ export const productAdd = (product) => async (dispatch) => {
     } catch (error) {
         localStorage.setItem("productAdded", JSON.stringify(error?.response?.data?.message /* false */));
         console.error("Error al crear el producto:", error?.response?.data?.message || error.message);
+    }
+};
+
+export const productUpdate = (product) => async (dispatch) => {
+    try {
+        const { data } = await axios.put(`${updateProductsEndpoint}`, product);
+        dispatch(updateProduct(data));
+        localStorage.setItem("productUpdated", JSON.stringify(true));
+    } catch (error) {
+        localStorage.setItem("productUpdated", JSON.stringify(error?.response?.data?.message /* false */));
+        console.error("Error updating product:", error);
     }
 };
 
@@ -84,15 +95,6 @@ export const createProduct = (product) => async (dispatch) => {
     }
 };
 
-
-export const updateProductDetails = (product) => async (dispatch) => {
-    try {
-        const { data } = await axios.put(`${updateProductsEndpoint}` + product.id, product);
-        dispatch(updateProduct(data));
-    } catch (error) {
-        console.error("Error updating product:", error);
-    }
-};
 
 export const deleteProductById = (id) => async (dispatch) => {
     try {

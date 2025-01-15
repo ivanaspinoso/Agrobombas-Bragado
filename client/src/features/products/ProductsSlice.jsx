@@ -26,7 +26,7 @@ const productsSlice = createSlice({
     //   if (index >= 0) state.products[index] = updatedProduct;
     // },
     updateProduct: (state, action) => {
-      const { id, name, description,price,cost ,percent,price1} = action.payload;
+      const { id, name, description,price,cost ,percent,price1, stock, families} = action.payload;
       const productToUpdate = state.products.find((product) => product.id === id);
       if (productToUpdate) {
         productToUpdate.name = name;
@@ -34,7 +34,9 @@ const productsSlice = createSlice({
         productToUpdate.price = price;
         productToUpdate.cost = cost;
         productToUpdate.percent = percent; 
-        productToUpdate.price1 = price1; 
+        productToUpdate.price1 = price1;
+        productToUpdate.stock = stock;
+        productToUpdate.families = families;
       }
     },
     deleteProduct: (state, action) => {
@@ -46,5 +48,6 @@ const productsSlice = createSlice({
   },
 });
 
-export const { updateProduct, deleteProduct,addProduct } = productsSlice.actions;
+export const { updateProduct, deleteProduct, addProduct, logoutProducts } = productsSlice.actions;
+ 
 export default productsSlice.reducer;

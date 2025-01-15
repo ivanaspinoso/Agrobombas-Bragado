@@ -311,7 +311,7 @@ router.put("/update", async (req, res) => {
     name,
     description,
     cost,
-    exist,
+    // exist,
     price,
     price1,
     price2,
@@ -389,7 +389,7 @@ router.put("/update", async (req, res) => {
       name,
       description,
       cost,
-      exist,
+      // exist,
       price,
       price1,
       price2,
@@ -443,7 +443,7 @@ router.put("/update", async (req, res) => {
   } catch (err) {
     // en caso de error lo devuelvo al frontend
     console.log(err);
-    res.status(400).json({ error: err });
+    res.status(400).json({ message: "No se pudo actualizar el producto" + err });
   }
 });
 

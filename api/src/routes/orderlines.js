@@ -29,6 +29,29 @@ router.get("/", /* validateToken, */ async (req, res) => {
     }
 });
 
+//Obtener todos las movimientos
+router.get("/bysale/:id", /* validateToken, */ async (req, res) => {
+    const { id } = req.params;
+    try {
+        let getAllOrderlines = await OrderLine.findAll({
+            // order: [["fecha", "ASC"]],
+            where: {saleId: id},
+            include: [
+                {
+                    model: Product,
+                    required: true,
+                },
+            ]
+        });
+        console.log(getAllOrderlines)
+        return res.send(getAllOrderlines);
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener lineas de venta" + err,
+        });
+    }
+});
+
 
 // Eliminar orderlines from Administrrator
 router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
