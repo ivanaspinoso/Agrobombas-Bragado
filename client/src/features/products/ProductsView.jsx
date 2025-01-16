@@ -47,17 +47,16 @@ useEffect(() => {
     const matchesName = product.name
       .toLowerCase()
       .includes(searchName.toLowerCase());
-    const matchesCategory = product.families
-      ?.join(", ")
-      .toLowerCase()
-      .includes(searchCategory.toLowerCase());
+    const matchesDescription = product.description // Cambiar a 'description'
+      ?.toLowerCase()
+      .includes(searchCategory.toLowerCase()); // Reutiliza 'searchCategory'
     const matchesArticle = product.article
       ? product.article.toString().includes(searchArticle)
       : false;
-
-
-    return matchesName && matchesCategory && matchesArticle;
+  
+    return matchesName && matchesDescription && matchesArticle;
   });
+  
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -78,6 +77,13 @@ useEffect(() => {
           placeholder="Buscar por nombre"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full sm:w-auto"
+        />
+        <input
+          type="text"
+          placeholder="Buscar por descripcion"
+          value={searchCategory}
+          onChange={(e) => setSearchCategory(e.target.value)}
           className="border px-3 py-2 rounded-md w-full sm:w-auto"
         />
         <input

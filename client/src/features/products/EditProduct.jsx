@@ -77,7 +77,22 @@ const EditProduct = () => {
         initialValues={initialValues}
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
-          const productData = { id, ...values, userid: login?.id };
+          const productData = {
+            id,
+            name: values.name,
+            description: values.description,
+            article: values.article,
+            stock: parseInt(values.stock, 10),
+            cost: parseFloat(values.cost), 
+            percent: parseFloat(values.percent), 
+            price: parseFloat(values.price),
+            price1: parseFloat(values.price1), 
+            price2: parseFloat(values.price2), 
+            iva21: parseFloat(values.iva21),
+            prov_code: values.prov_code,
+            families: values.families.map((family) => parseInt(family, 10)), 
+            userid: login?.id, 
+          };
           await dispatch(productUpdate(productData));
           const success = JSON.parse(localStorage.getItem("productUpdated"));
           console.log(success, productData);
@@ -90,7 +105,7 @@ const EditProduct = () => {
             }).then((result) => {
               if (result.isConfirmed) {
                 // resetForm({ name: "", description: "" });
-                navigate("/show-families", { replace: true });
+                navigate("/show-messages", { replace: true });
               }
             });
           } else {
@@ -304,34 +319,91 @@ const EditProduct = () => {
             </div>
 
             <div className="mb-6">
-              <label
-                htmlFor="families"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Rubro/Familia *
-              </label>
-              <select
-                name="families"
-                multiple
-                value={values.families}
-                onChange={(e) =>
-                  setFieldValue(
-                    "families",
-                    [...e.target.selectedOptions].map((o) => o.value)
-                  )
-                }
-                className="form-input mt-1 block w-full border border-gray-300 rounded px-1 h-20"
-              >
-                {familyOptions.map((family) => (
-                  <option key={family.id} value={family.id}>
-                    {family.name}
-                  </option>
-                ))}
-              </select>
-              {errors.families && touched.families && (
-                <p className="text-red-500 text-xs italic">{errors.families}</p>
-              )}
-            </div>
+  <label htmlFor="families" className="block text-gray-700 text-sm font-bold mb-2">
+    Rubro/Familia *
+  </label>
+  {/* Selector de familias */}
+  <div className="relative">
+    <select
+      name="families"
+      value=""
+      onChange={(e) => {
+        const selectedId = e.target.value;
+        if (selectedId && !values.families.includes(selectedId)) {
+          setFieldValue("families", [...values.families, selectedId]); // Añadir nueva selección
+        }
+      }}
+      onBlur={handleBlur}
+      className="form-input mt-1 block w-full border border-gray-300 rounded px-1 bg-white"
+    >
+      <option value="" disabled>
+        Seleccionar rubro/familia
+      </option>
+      {familyOptions
+        .filter((family) => !values.families.includes(family.id.toString())) // Excluir familias ya seleccionadas
+        .map((family) => (
+          <option key={family.id} value={family.id}>
+            {family.name}
+          </option>
+        ))}
+    </select>
+  </div>
+
+  {/* Mostrar familias seleccionadas */}
+  <div className="mt-2">
+    <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
+      Familias Seleccionadas:
+    </label>
+    <div className="flex flex-wrap gap-2 mt-2">
+      {values.families.map((familyId) => {
+        const family = familyOptions.find((f) => f.id === parseInt(familyId, 10));
+        return (
+          <span
+            key={familyId}
+            className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
+          >
+            {family?.name || "Familia desconocida"}
+            {/* Botón para eliminar la selección */}
+            <button
+              type="button"
+              className="text-red-500 hover:text-red-700"
+              onClick={() => {
+                setFieldValue(
+                  "families",
+                  values.families.filter((id) => id !== familyId) // Eliminar la familia seleccionada
+                );
+              }}
+            >
+              &times;
+            </button>
+          </span>
+        );
+      })}
+    </div>
+  </div>
+
+  {errors.families && (
+    <p className="text-red-500 text-xs italic mt-2">{errors.families}</p>
+  )}
+</div>
+
+
+  {/* Mostrar familias seleccionadas como una lista
+  <div className="mt-2">
+    <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
+      Familias Seleccionadas:
+    </label>
+    <textarea
+      id="selectedFamilies"
+      className="form-input mt-1 block w-full border border-gray-300 rounded px-1 "
+      value={values.families
+        .map((familyId) => familyOptions.find((f) => f.id === parseInt(familyId, 10))?.name)
+        .join(", ")}
+      readOnly
+    />
+  </div>
+</div> */}
+
 
             <button
               type="submit"

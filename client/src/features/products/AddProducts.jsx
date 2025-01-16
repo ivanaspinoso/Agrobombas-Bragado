@@ -233,35 +233,65 @@ const AddProducts = () => {
               <label htmlFor="families" className="block text-gray-700 text-sm font-bold mb-2">
                 Rubro/Familia *
               </label>
-              <select
-                name="families"
-                value={values.families} // Al ser un solo valor, manejar un único id
-                /* onChange={handleChange} */
-                onChange={(e) => {
-                  setFieldValue("families", [e.target.value]); // Convertir a array para mantener la compatibilidad
-                }}
-                onBlur={handleBlur}
-                className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-              >
-                <option value="">Seleccionar rubro/familia</option>
-                {families.map((family) => (
-                  <option key={family.id} value={family.id}>
-                    {family.name}
+              {/* Selector múltiple */}
+              <div className="relative">
+                <select
+                  name="families"
+                  value="" // Siempre vacío para forzar selección nueva
+                  onChange={(e) => {
+                    const selectedId = e.target.value;
+                    if (selectedId && !values.families.includes(selectedId)) {
+                      setFieldValue("families", [...values.families, selectedId]); // Añadir selección
+                    }
+                  }}
+                  onBlur={handleBlur}
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1 bg-white"
+                >
+                  <option value="" disabled>
+                    Seleccionar rubro/familia
                   </option>
-                ))}
-              </select>
+                  {families
+                    .filter((family) => !values.families.includes(family.id.toString())) // Filtrar seleccionados
+                    .map((family) => (
+                      <option key={family.id} value={family.id}>
+                        {family.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              {/* Familias seleccionadas */}
+              <div className="mt-2">
+                <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
+                  Familias Seleccionadas:
+                </label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {values.families.map((familyId) => {
+                    const family = families.find((f) => f.id === parseInt(familyId, 10));
+                    return (
+                      <span
+                        key={familyId}
+                        className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
+                      >
+                        {family?.name || "Familia desconocida"}
+                        <button
+                          type="button"
+                          className="text-red-500 hover:text-red-700"
+                          onClick={() => {
+                            setFieldValue(
+                              "families",
+                              values.families.filter((id) => id !== familyId) // Eliminar familia seleccionada
+                            );
+                          }}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
               {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
-            </div>
-
-
-            <div className="mb-6">
-              <label htmlFor="selectedFamilies" className="block text-gray-700 text-sm font-bold mb-2">Familias Seleccionadas:</label>
-              <textarea
-                id="selectedFamilies"
-                className="form-input mt-1 block w-full border border-gray-300 rounded px-1 "
-                value={values.families.map(famId => families.find(f => f.id === parseInt(famId))?.name).join(', ')}
-                readOnly
-              />
             </div>
 
             <button
