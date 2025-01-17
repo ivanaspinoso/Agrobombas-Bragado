@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
@@ -13,6 +13,8 @@ const EditProduct = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log("location.state:", location.state);
+  const [loadingFamilies, setLoadingFamilies] = useState(true);
 
   const {
     id,
@@ -51,8 +53,10 @@ const EditProduct = () => {
     price1: price1 || "",
     price2: price2 || "",
     prov_code: prov_code || "",
-    families: families || [],
-  };
+    families: families?.map((family) =>
+      typeof family === "object" ? family.id : family
+    ) || [],
+      };
 
   const schema = Yup.object().shape({
     name: Yup.string().optional(),
@@ -68,6 +72,18 @@ const EditProduct = () => {
     families: Yup.array().optional(),
   });
 
+  useEffect(() => {
+    if (!setLoadingFamilies && familyOptions.length > 0) {
+      const validFamilies = initialValues.families.filter((familyId) =>
+        familyOptions.some((f) => f.id === parseInt(familyId, 10))
+      );
+      setLoadingFamilies("families", validFamilies);
+    }
+  }, [setLoadingFamilies, familyOptions, initialValues.families]);
+  
+  
+
+  
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
@@ -330,7 +346,7 @@ const EditProduct = () => {
       onChange={(e) => {
         const selectedId = e.target.value;
         if (selectedId && !values.families.includes(selectedId)) {
-          setFieldValue("families", [...values.families, selectedId]); // Añadir nueva selección
+          setFieldValue("families", [...values.families, selectedId]); 
         }
       }}
       onBlur={handleBlur}
@@ -340,7 +356,7 @@ const EditProduct = () => {
         Seleccionar rubro/familia
       </option>
       {familyOptions
-        .filter((family) => !values.families.includes(family.id.toString())) // Excluir familias ya seleccionadas
+        .filter((family) => !values.families.includes(family.id.toString())) 
         .map((family) => (
           <option key={family.id} value={family.id}>
             {family.name}
@@ -355,29 +371,30 @@ const EditProduct = () => {
       Familias Seleccionadas:
     </label>
     <div className="flex flex-wrap gap-2 mt-2">
-      {values.families.map((familyId) => {
-        const family = familyOptions.find((f) => f.id === parseInt(familyId, 10));
-        return (
-          <span
-            key={familyId}
-            className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
-          >
-            {family?.name || "Familia desconocida"}
-            {/* Botón para eliminar la selección */}
-            <button
-              type="button"
-              className="text-red-500 hover:text-red-700"
-              onClick={() => {
-                setFieldValue(
-                  "families",
-                  values.families.filter((id) => id !== familyId) // Eliminar la familia seleccionada
-                );
-              }}
-            >
-              &times;
-            </button>
-          </span>
-        );
+    {values.families.map((familyId) => {
+      const family = familyOptions?.find((f) => f.id === parseInt(familyId, 10));
+  console.log(family,"family")
+  return (
+    <span
+      key={familyId}
+      className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
+    >
+          {family?.name || "Cargando..."} 
+          <button
+        type="button"
+        className="text-red-500 hover:text-red-700"
+        onClick={() => {
+          setFieldValue(
+            "families",
+            values.families.filter((id) => id !== familyId)
+          );
+        }}
+      >
+        &times;
+      </button>
+    </span>
+  );
+
       })}
     </div>
   </div>

@@ -47,9 +47,9 @@ useEffect(() => {
     const matchesName = product.name
       .toLowerCase()
       .includes(searchName.toLowerCase());
-    const matchesDescription = product.description // Cambiar a 'description'
+    const matchesDescription = product.description 
       ?.toLowerCase()
-      .includes(searchCategory.toLowerCase()); // Reutiliza 'searchCategory'
+      .includes(searchCategory.toLowerCase()); 
     const matchesArticle = product.article
       ? product.article.toString().includes(searchArticle)
       : false;
@@ -134,6 +134,9 @@ useEffect(() => {
                 stock,
                 families,
                 article,
+                cost, 
+    percent, 
+    
               } = product;
               const date = new Date(product.updatedAt).toDateString();
               const date1 = new Date(product.updatedAt).toLocaleDateString('es-AR')
@@ -164,7 +167,9 @@ useEffect(() => {
                         prov_code,
                         stock,
                         families,
-                        article
+                        article,
+                        cost, 
+    percent, 
                       }}
                     >
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
