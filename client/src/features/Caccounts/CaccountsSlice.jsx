@@ -12,10 +12,8 @@ const caccountSlice = createSlice({
   initialState: initialCaccountState,
   reducers: {
     allCaccounts: (state, action) => {
-        console.log("Despatching allCaccounts with:", action.payload); // Verifica que los datos lleguen correctamente
-
-      state.caccounts = action.payload;
-    },
+           state.caccounts = action.payload || [];
+    },  
     addCaccount: (state, action) => {
       console.log("Nuevo movimiento de cuenta:", action.payload);
       state.caccounts.push(action.payload);
@@ -39,13 +37,10 @@ export default caccountSlice.reducer;
 
 // caccountSlice.js
 
-// Obtener todos los movimientos de cuenta para un cliente
 export const fetchAllCaccounts = (customerId) => async (dispatch) => {
     try {
-      console.log("Fetching accounts for customerId:", customerId); 
       const { data } = await axios.get(`${REACT_APP_API}caccounts/bycustomer/${customerId}`);
-      console.log("Datos obtenidos del backend:", data); 
-      dispatch(allCaccounts(data.response)); 
+      dispatch(allCaccounts(data)); 
     } catch (error) {
       console.error("Error al obtener las cuentas del cliente:", error.message);
     }
