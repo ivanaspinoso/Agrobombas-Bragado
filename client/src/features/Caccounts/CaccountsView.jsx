@@ -52,11 +52,11 @@ const CaccountsView = () => {
   };
   
   
-  useEffect(() => {
-    if (customerId) {
-      dispatch(fetchAllCaccounts(customerId));
-    }
-  }, [customerId, dispatch]);
+  // useEffect(() => {
+  //   if (customerId) {
+  //     dispatch(fetchAllCaccounts(customerId));
+  //   }
+  // }, [customerId, dispatch]);
   
   // const handleDelete = (id) => {
   //   dispatch(deleteCaccountById(id)); // Eliminar movimiento de cuenta
