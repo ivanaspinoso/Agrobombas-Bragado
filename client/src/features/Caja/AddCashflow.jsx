@@ -51,7 +51,7 @@ const AddCashflow = () => {
                 note: values.note || null,
                 user_asoc: 1, 
               };
-                
+            console.log(dataToSend)
             try {
               await dispatch(addNewCashflow(dataToSend));
               Swal.fire({

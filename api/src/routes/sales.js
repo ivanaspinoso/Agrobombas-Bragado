@@ -3,6 +3,8 @@ var express = require("express");
 const { Sales, Cashflow, Caccounts, User, Customer, OrderLine, Product } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
+const { where } = require("sequelize");
+const cashflows = require("../models/cashflows");
 
 var router = express.Router();
 
@@ -20,10 +22,57 @@ router.get("/", /* validateToken, */ async (req, res) => {
                     model: Customer,
                     required: true,
                 },
+                {
+                    model: OrderLine,
+                    required: true,
+                }, 
             ]
         });
         console.log(getAllSales)
         return res.send(getAllSales);
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener ventas" + err,
+        });
+    }
+});
+
+//Obtener una venta por id
+router.get("/byid/:id", /* validateToken, */ async (req, res) => {
+    const {id} = req.params
+    try {
+        let getAllSales = await Sales.findAll({
+            order: [["fecha", "ASC"]],
+            where: {id},
+            include: [
+                {
+                    model: User,
+                    required: true,
+                },
+                {
+                    model: Customer,
+                    required: true,
+                },
+                {
+                    model: OrderLine,
+                    required: true,
+                }, 
+            ]
+        });
+         let getAllCaccountsXSale = await Caccounts.findAll({
+            where: {vta_asoc: id}
+        })
+        let getAllCashflowXSale= await Cashflow.findAll({
+            where: {vta_asoc: id}
+        })
+        let ventaObj = {
+            venta: getAllSales
+        }
+        let addCaccounts = {...ventaObj, caccounts: getAllCaccountsXSale}
+        let addCashflows = {...addCaccounts, cashflow: getAllCashflowXSale} 
+        let objVentaTotal = addCashflows
+        // console.log(getSalesbyId)
+        return res.send(objVentaTotal);
     } catch (err) {
         return res.send({
             message: "No se pudieron obtener ventas" + err,
@@ -106,6 +155,7 @@ router.post("/add", async (req, res) => {
                 vta_asoc: newSale.id,
                 user_asoc: user_asoc,
                 userId: user_asoc,
+                saleId: newSale.id
             };
             try {
                 // envio los datos al modelo sequelize para que los guarde en la database
@@ -131,7 +181,8 @@ router.post("/add", async (req, res) => {
                 user_asoc: user_asoc,
                 client_asoc,
                 userId: user_asoc,
-                customerId: client_asoc
+                customerId: client_asoc,
+                saleId: newSale.id
             };
             try {
                 // envio los datos al modelo sequelize para que los guarde en la database

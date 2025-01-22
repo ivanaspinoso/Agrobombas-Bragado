@@ -87,8 +87,8 @@ Cashflow.belongsTo(User)        // a Un movimiento de caja solo le popodemos asi
 Product.hasMany(OrderLine);      // Un producto puede tener varias lineas de venta
 OrderLine.belongsTo(Product);    // Una linea de venta solo puede tener un producto
 
-Order.hasMany(OrderLine);
-OrderLine.belongsTo(Order);
+Sales.hasMany(OrderLine);
+OrderLine.belongsTo(Sales);
 
 User.hasMany(Order);
 Order.belongsTo(User);

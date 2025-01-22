@@ -6,7 +6,7 @@ const { validateToken } = require("../utils/token");
 
 var router = express.Router();
 
-const { Op, where } = require("sequelize")
+const { Op, where, fn, col } = require("sequelize")
 
 //Obtener todos las movimientos
 router.get("/", /* validateToken, */ async (req, res) => {
@@ -41,6 +41,34 @@ router.get("/byuser/:user", /* validateToken, */ async (req, res) => {
         });
     }
 });
+
+//Obtener sumatoria de campos
+router.get("/saldo", /* validateToken, */ async (req, res) => {
+    // const { user } = req.params
+    try {
+        let getAllCashflow = await Cashflow.findAll({
+            attributes: [
+                [fn('SUM', col('income')), 'ingreso'],
+                [fn('SUM', col('outflow')), 'egreso'],
+                //[fn('SUM', parseFloat(col('income')) - parseFloat(col('outflow'))), 'saldo']
+              ],        
+            });
+        let importe = Object.values(getAllCashflow[0].dataValues) // getAllCashflow.ingreso - getAllCashflow.egreso
+        let saldo = importe[0] - importe[1]
+        console.log("A ver:", importe, saldo)
+        objCaja = {
+            ingrsos: importe[0],
+            egresos: importe[1],
+            saldo
+        }
+        return res.send(objCaja);
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener clientes" + err,
+        });
+    }
+});
+
 
 //Obtener todos las movimientos de un usuario
 router.get("/bydate/:date", /* validateToken, */ async (req, res) => {

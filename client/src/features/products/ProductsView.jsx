@@ -146,11 +146,12 @@ useEffect(() => {
                   <td className="px-4 py-2">{name}</td>
                   <td className="px-4 py-2">{article}</td>
                   <td className="px-4 py-2">{description}</td>
-                  <td className=" py-2 ">{price.toFixed(2).replace(".", ",")}</td>
-                  {/*                   <td className="px-4 py-2">{price1}</td>
- */}                  <td className="px-12 py-2">{price2.toFixed(2).replace(".", ",")}</td>
-                  {/*                   <td className="px-4 py-2">{iva21}</td> 
-                  <td className="px-4 py-2">{prov_code}</td> */}
+                  
+                  
+                  <td className="py-2 text-right">{parseFloat(price).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-12 py-2 text-right">{parseFloat(price2).toFixed(2).replace(".", ",")}</td>
+              
+              
                   <td className=" py-2 text-center">{stock}</td>
                   <td className="px-4 py-2">{date1}</td>
                   <td className="px-4 py-2 flex gap-2">
