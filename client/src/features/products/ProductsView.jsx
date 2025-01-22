@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// 👉 por ahora no desactivada: 
 import { deleteProductById } from "../../app/actions/products";
-
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
+import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -13,15 +12,13 @@ const ProductsView = () => {
   const navigate = useNavigate();
   const products = useSelector((state) => state.productsReducer.products);
 
-  /* 👇 por ahora no desactivada: ya que cargan en la linea anterior 👆
-useEffect(() => {
-    dispatch(fetchProducts()); // Cargar productos al montar el componente
-  }, [dispatch]); 
-  
-  */
   const [searchName, setSearchName] = useState("");
   const [searchCategory, setSearchCategory] = useState("");
   const [searchArticle, setSearchArticle] = useState("");
+
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
 
   const handleDelete = (id, name) => {
     Swal.fire({
@@ -44,19 +41,41 @@ useEffect(() => {
   };
 
   const filteredProducts = products?.filter((product) => {
-    const matchesName = product.name
-      .toLowerCase()
-      .includes(searchName.toLowerCase());
-    const matchesDescription = product.description 
+    const matchesName = product.name.toLowerCase().includes(searchName.toLowerCase());
+    const matchesDescription = product.description
       ?.toLowerCase()
-      .includes(searchCategory.toLowerCase()); 
+      .includes(searchCategory.toLowerCase());
     const matchesArticle = product.article
       ? product.article.toString().includes(searchArticle)
       : false;
-  
+
     return matchesName && matchesDescription && matchesArticle;
   });
-  
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortConfig.key) {
+      const aValue = a[sortConfig.key]?.toString().toLowerCase() || "";
+      const bValue = b[sortConfig.key]?.toString().toLowerCase() || "";
+
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  const paginatedProducts = sortedProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -107,88 +126,126 @@ useEffect(() => {
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
               <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">Nombre</th>
-              <th className="px-4 py-2 text-left">Articulo</th>
-              <th className="px-4 py-2 text-left">Descripción</th>
+              <th
+                className="px-4 py-2 text-left cursor-pointer"
+                onClick={() => handleSort("name")}
+              >
+                Nombre{" "}
+                <span className="inline-flex">
+                  <AiOutlineArrowUp
+                    className={`text-[16px] ${
+                      sortConfig.key === "name" && sortConfig.direction === "asc"
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  <AiOutlineArrowDown
+                    className={`text-[16px] ${
+                      sortConfig.key === "name" && sortConfig.direction === "desc"
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  />
+                </span>
+              </th>
+              <th
+                className="px-4 py-2 text-left cursor-pointer"
+                onClick={() => handleSort("article")}
+              >
+                Artículo{" "}
+                <span className="inline-flex">
+                  <AiOutlineArrowUp
+                    className={`text-16px ${
+                      sortConfig.key === "article" && sortConfig.direction === "asc"
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  <AiOutlineArrowDown
+                    className={`text-16px ${
+                      sortConfig.key === "article" && sortConfig.direction === "desc"
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  />
+                </span>
+              </th>
+              <th
+                className="px-4 py-2 text-left cursor-pointer"
+                onClick={() => handleSort("description")}
+              >
+                Descripción{" "}
+                <span className="inline-flex">
+                  <AiOutlineArrowUp
+                    className={`text-16px ${
+                      sortConfig.key === "description" && sortConfig.direction === "asc"
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  <AiOutlineArrowDown
+                    className={`text-16px ${
+                      sortConfig.key === "description" && sortConfig.direction === "desc"
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  />
+                </span>
+              </th>
               <th className="px-4 py-2 text-left">$</th>
-              {/*               <th className="px-4 py-2 text-left">% tarjeta</th> */}
               <th className="px-4 py-2 text-left">$ tarjeta</th>
-              {/*               <th className="px-4 py-2 text-left">IVA 21%</th>
-               <th className="px-4 py-2 text-left">Proveedor</th>  */}
               <th className="px-4 py-2 text-left">Stock</th>
               <th className="px-4 py-2 text-left">Modificado</th>
               <th className="px-4 py-2 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredProducts?.map((product, index) => {
-              const {
-                id,
-                name,
-                description,
-                price,
-                price1,
-                price2,
-                iva21,
-                prov_code,
-                stock,
-                families,
-                article,
-                cost, 
-    percent, 
-    
-              } = product;
-              const date = new Date(product.updatedAt).toDateString();
-              const date1 = new Date(product.updatedAt).toLocaleDateString('es-AR')
-              return (
-                <tr key={id} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 ">{index + 1}</td>
-                  <td className="px-4 py-2">{name}</td>
-                  <td className="px-4 py-2">{article}</td>
-                  <td className="px-4 py-2">{description}</td>
-                  
-                  
-                  <td className="py-2 text-right">{parseFloat(price).toFixed(2).replace(".", ",")}</td>
-                  <td className="px-12 py-2 text-right">{parseFloat(price2).toFixed(2).replace(".", ",")}</td>
-              
-              
-                  <td className=" py-2 text-center">{stock}</td>
-                  <td className="px-4 py-2">{date1}</td>
-                  <td className="px-4 py-2 flex gap-2">
-                    <Link
-                      to={`/edit-product`}
-                      state={{
-                        id,
-                        name,
-                        description,
-                        price,
-                        price1,
-                        price2,
-                        iva21,
-                        prov_code,
-                        stock,
-                        families,
-                        article,
-                        cost, 
-    percent, 
-                      }}
-                    >
-                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={() => handleDelete(id, name)}
-                    >
-                      <FaTrashAlt />
+            {paginatedProducts.map((product, index) => (
+              <tr key={product.id} className="hover:bg-gray-50">
+                <td className="px-4 py-2">{index + 1}</td>
+                <td className="px-4 py-2">{product.name}</td>
+                <td className="px-4 py-2">{product.article}</td>
+                <td className="px-4 py-2">{product.description}</td>
+                <td className="py-2">{parseFloat(product.price).toFixed(2).replace(".", ",")}</td>
+                <td className="px-12 py-2">{parseFloat(product.price2).toFixed(2).replace(".", ",")}</td>
+                <td className="py-2 text-center">{product.stock}</td>
+                <td className="px-4 py-2">
+                  {new Date(product.updatedAt).toLocaleDateString("es-AR")}
+                </td>
+                <td className="px-4 py-2 flex gap-2">
+                  <Link
+                    to={`/edit-product`}
+                    state={product}
+                  >
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
+                      <FaEdit />
                     </button>
-                  </td>
-                </tr>
-              );
-            })}
+                  </Link>
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => handleDelete(product.id, product.name)}
+                  >
+                    <FaTrashAlt />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="mt-4 flex justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === index + 1 ? "bg-[#0e6fa5] text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
