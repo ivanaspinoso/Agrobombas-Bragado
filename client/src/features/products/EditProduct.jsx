@@ -32,6 +32,9 @@ const EditProduct = () => {
     families,
   } = location.state || {};
 
+  const [price0, setPrice0] = useState(price)
+  const [pricetarjeta, setPriceTarjeta] = useState(price2)
+
   const login = useSelector((state) => state.usersReducer.login);
   const providers = useSelector((state) => state.groupsReducer.groups);
   const familyOptions = useSelector((state) => state.familiesReducer.families);
@@ -82,6 +85,26 @@ const EditProduct = () => {
   }, [setLoadingFamilies, familyOptions, initialValues.families]);
   
   
+  const onChangePercent = () => {
+    var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
+    var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value);
+    var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
+    var siniva = costo * (percent / 100) + costo 
+    var precio = siniva * (iva21 / 100) + siniva
+    setPrice0(precio)
+ }
+
+ const onChangePercentT = () => {
+/*   var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
+  var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value); */
+  var percenTarje = document.getElementsByName('price1')[0].value === null ? 0 : parseFloat(document.getElementsByName('price1')[0].value); //price1 se usa para porcentaje tarjeta
+  /* var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
+  var siniva = costo * (percent / 100) + costo 
+  var precio = siniva * (iva21 / 100) + siniva */
+  var precioTarje = price0 * (percenTarje / 100)  + parseFloat(price0)
+  console.log(price0, percenTarje / 100)
+  setPriceTarjeta(precioTarje)
+}
 
   
   return (
@@ -101,9 +124,9 @@ const EditProduct = () => {
             stock: parseInt(values.stock, 10),
             cost: parseFloat(values.cost), 
             percent: parseFloat(values.percent), 
-            price: parseFloat(values.price),
+            price: parseFloat(price0),
             price1: parseFloat(values.price1), 
-            price2: parseFloat(values.price2), 
+            price2: parseFloat(pricetarjeta), 
             iva21: parseFloat(values.iva21),
             prov_code: values.prov_code,
             families: values.families.map((family) => parseInt(family, 10)), 
@@ -257,6 +280,7 @@ const EditProduct = () => {
                   name="percent"
                   type="number"
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  onBlur={(e) => onChangePercent(e)}
                 />
               </div>
 
@@ -270,7 +294,9 @@ const EditProduct = () => {
                 <Field
                   name="price"
                   type="number"
+                  value={price0}
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  onChange={(e) => setPrice0(e.target.value)}
                 />
                 {errors.price && touched.price && (
                   <p className="text-red-500 text-xs italic">{errors.price}</p>
@@ -288,6 +314,7 @@ const EditProduct = () => {
                   name="price1"
                   type="number"
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  onBlur={(e) => onChangePercentT(e)}
                 />
               </div>
 
@@ -301,7 +328,9 @@ const EditProduct = () => {
                 <Field
                   name="price2"
                   type="number"
+                  value={pricetarjeta}
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  onChange={(e) => setPriceTarjeta(e.target.value)}
                 />
               </div>
             </div>
