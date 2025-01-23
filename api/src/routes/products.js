@@ -409,7 +409,7 @@ router.put("/update", async (req, res) => {
       minunit,
       stepunit,
       show,
-      stock
+      stock,
     };
 
 
@@ -435,7 +435,10 @@ router.put("/update", async (req, res) => {
       }
       await Prod_Cat.create(relacion);
     });
-    objProdUpd = { ...objProdUpd, id: id }
+    objProdUpd = { 
+      id: id,
+      ...objProdUpd,
+    updatedAt: new Date }
 
 
     // seteo la relacion

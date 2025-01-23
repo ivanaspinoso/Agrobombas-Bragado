@@ -41,8 +41,6 @@ const productsSlice = createSlice({
         productToUpdate.article = article;
         productToUpdate.prov_code=prov_code;
         productToUpdate.iva21=iva21;
-
-
       }
     },
     deleteProduct: (state, action) => {

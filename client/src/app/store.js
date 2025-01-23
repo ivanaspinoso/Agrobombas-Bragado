@@ -15,6 +15,9 @@ import productsReducer from '../features/products/ProductsSlice'
 import cashflowReducer from '../features/Caja/CashflowSlice'
 import salesReducer from '../features/Sales/salesSlice'
 import caccountsReducer from '../features/Caccounts/CaccountsSlice'
+
+const devornot = process.env.REACT_APP_NODE_ENV
+
 const persistConfig = {
   key: "root",
   storage,
@@ -41,8 +44,8 @@ const rootReducer = combineReducers({
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
-
+const devs = devornot === "production" ? false : true
 export const store = configureStore({
   reducer: persistedReducer,
-  // devTools: true,
+  devTools: devs,
 });
