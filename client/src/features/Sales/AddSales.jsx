@@ -51,6 +51,7 @@ const AddSales = () => {
       name: product.name,
       cost: product.cost,
       price: product.price,
+      price2:product.price2,
       quantity: 1,
       subtotal: product.price,
     };
@@ -128,6 +129,7 @@ const AddSales = () => {
           <Select
             showSearch
             placeholder="Seleccionar Cliente"
+            style={{ width: "100%" }}
             onChange={(value) => {
               const selectedCustomer = customers.find((c) => c.id === value);
               if (selectedCustomer) {
@@ -137,6 +139,9 @@ const AddSales = () => {
                 setFieldValue("celphone", selectedCustomer.phone || "");
               }
             }}
+            filterOption={(input, option) =>
+              option?.children?.toLowerCase().includes(input.toLowerCase())
+            }
           >
             {customers.map((c) => (
               <Option key={c.id} value={c.id}>
@@ -154,80 +159,109 @@ const AddSales = () => {
           {/* 📌 SECCIÓN 2 - SELECCIÓN DE PRODUCTOS */}
           <label>Productos:</label>
           <div className="flex gap-2">
-            <Select
-              showSearch
-              placeholder="Agregar Producto"
-              onChange={(value) => {
-                const product = products.find((p) => p.id === value);
-                if (product) addOrderline(product);
-              }}
-            >
-              {products.map((p) => (
-                <Option key={p.id} value={p.id}>
-                  {p.name} - {p.article}
-                </Option>
-              ))}
-            </Select>
+          <Select
+            showSearch
+            placeholder="Agregar Producto"
+            style={{ width: "100%" }}
+            onChange={(value) => {
+              const product = products.find((p) => p.id === value);
+              if (product) addOrderline(product);
+            }}
+            filterOption={(input, option) =>
+              option?.label?.toLowerCase().includes(input.toLowerCase())
+            }
+            options={products.map((p) => ({
+              value: p.id, 
+              label: `${p.name} - ${p.article}`, 
+            }))}
+          />
+
 {/*             <Button type="primary" onClick={() => addOrderline({ id: "", name: "Nuevo Producto", price1: 0, quantity: 1 })}>
               +
             </Button> */}
           </div>
 
           <Table
-            dataSource={orderlines}
-            columns={[
-              {
-                title: "Producto",
-                dataIndex: "name",
-                render: (text, record, index) => (
-                  <Select
-                    showSearch
-                    defaultValue={text}
-                    onChange={(value) => {
-                      const product = products.find((p) => p.id === value);
-                      if (product) {
-                        updateOrderline(index, "id", product.id);
-                        updateOrderline(index, "name", product.name);
-                        updateOrderline(index, "price", product.price);
-                      }
-                    }}
-                  >
-                    {products.map((p) => (
-                      <Option key={p.id} value={p.id}>{p.name}</Option>
-                    ))}
-                  </Select>
-                ),
-              },
-              {
-                title: "Precio",
-                dataIndex: "price",
-                render: (text, record, index) => (
-                  <Input type="number" value={text} onChange={(e) => updateOrderline(index, "price", Number(e.target.value))} />
-                ),
-              },
-              {
-                title: "Cantidad",
-                dataIndex: "quantity",
-                render: (text, record, index) => (
-                  <Input type="number" value={text} onChange={(e) => updateOrderline(index, "quantity", Number(e.target.value))} />
-                ),
-              },
-              {
-                title: "Subtotal",
-                dataIndex: "subtotal",
-                render: (text, record, index) => <Input type="number" value={text} readOnly />,
-              },
-              {
-                title: "Acciones",
-                dataIndex: "actions",
-                render: (_, __, index) => (
-                  <Button danger onClick={() => removeOrderline(index)}>
-                    <FaTrashAlt />
-                  </Button>
-                ),
-              },
-            ]}
+  dataSource={orderlines}
+  columns={[
+    {
+      title: "Producto",
+      dataIndex: "name",
+      render: (text, record, index) => (
+        <Select
+          showSearch
+          defaultValue={text}
+          onChange={(value) => {
+            const product = products.find((p) => p.id === value);
+            if (product) {
+              updateOrderline(index, "id", product.id);
+              updateOrderline(index, "name", product.name);
+              updateOrderline(index, "price", product.price);
+              updateOrderline(index, "price2", product.price2); 
+            }
+          }}
+        >
+          {products.map((p) => (
+            <Option key={p.id} value={p.id}>{p.name}</Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: "Precio",
+      dataIndex: "price",
+      render: (text, record, index) => (
+        <div className="flex gap-2">
+          <Select
+            value={record.price} 
+            style={{ width: "150px" }}
+            onChange={(value) => updateOrderline(index, "price", Number(value))}
+          >
+            <Option value={record.price}>{`Precio 1: ${record.price}`}</Option>
+            <Option value={record.price2}>{`Precio 2: ${record.price2}`}</Option>
+            console.log(recor.price2)
+          </Select>
+
+          <Input
+            type="number"
+            value={record.price}
+            onChange={(e) => updateOrderline(index, "price", Number(e.target.value))}
+            style={{ width: "100px" }}
           />
+        </div>
+      ),
+    },
+    {
+      title: "Cantidad",
+      dataIndex: "quantity",
+      render: (text, record, index) => (
+        <Input
+          type="number"
+          value={text}
+          onChange={(e) => updateOrderline(index, "quantity", Number(e.target.value))}
+        />
+      ),
+    },
+    {
+      title: "Subtotal",
+      dataIndex: "subtotal",
+      render: (text, record, index) => (
+        <Input type="number" value={text} readOnly />
+      ),
+    },
+    {
+      title: "Acciones",
+      dataIndex: "actions",
+      render: (_, __, index) => (
+        <Button danger onClick={() => removeOrderline(index)}>
+          <FaTrashAlt />
+        </Button>
+      ),
+    },
+  ]}
+/>
+
+
 
           {/* 📌 SECCIÓN 3 - TOTALES Y MEDIOS DE PAGO */}
           <label>Subtotal:</label>
