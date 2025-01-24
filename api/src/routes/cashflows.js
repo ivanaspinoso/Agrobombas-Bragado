@@ -55,11 +55,16 @@ router.get("/saldo", /* validateToken, */ async (req, res) => {
             });
         let importe = Object.values(getAllCashflow[0].dataValues) // getAllCashflow.ingreso - getAllCashflow.egreso
         let saldo = importe[0] - importe[1]
+        let balance
+        if (saldo === 0) balance = ""
+        else if (saldo > 0) balance = "positivo"
+        else  balance = "negativo"
         console.log("A ver:", importe, saldo)
         objCaja = {
             ingrsos: importe[0],
             egresos: importe[1],
-            saldo
+            saldo,
+            balance
         }
         return res.send(objCaja);
     } catch (err) {

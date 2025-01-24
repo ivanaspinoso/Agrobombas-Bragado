@@ -6,7 +6,7 @@ const { validateToken } = require("../utils/token");
 
 var router = express.Router();
 
-const { Op, where } = require("sequelize")
+const { Op, where, fn, col } = require("sequelize")
 
 //Obtener todos las movimientos
 router.get("/", /* validateToken, */ async (req, res) => {
@@ -54,6 +54,50 @@ router.get("/bycustomer/:customer", /* validateToken, */ async (req, res) => {
         });
         console.log(getAllCaccounts)
         return res.send(getAllCaccounts);
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener clientes" + err,
+        });
+    }
+});
+
+//Obtener todos las movimientos de un cliente
+router.get("/saldobycusto/:customer", /* validateToken, */ async (req, res) => {
+    const { customer } = req.params
+
+    try {
+        let getAllCashflow = await Caccounts.findAll({
+            where: {customerId: customer},
+            attributes: [
+                [fn('SUM', col('income')), 'ingreso'],
+                [fn('SUM', col('outflow')), 'egreso'],
+                //[fn('SUM', parseFloat(col('income')) - parseFloat(col('outflow'))), 'saldo']
+              ],        
+            });
+        let importe = Object.values(getAllCashflow[0].dataValues) // getAllCashflow.ingreso - getAllCashflow.egreso
+        let saldo = importe[0] - importe[1]
+        let saldado 
+        if (saldo === 0) saldado = "saldado"
+        else if (saldo >= 0) saldado = "deudor"
+        else  saldado = "acreedor"
+        console.log("A ver:", importe, saldo)
+        objCaja = {
+            debe: importe[0],
+            paga: importe[1],
+            saldo,
+            saldado
+        }
+        return res.send(objCaja);
+
+/* 
+        let getAllCaccounts = await Caccounts.findAll({
+            order: [["date", "ASC"]],
+            where: {
+                client_asoc: customer
+            }
+        });
+        console.log(getAllCaccounts)
+        return res.send(getAllCaccounts); */
     } catch (err) {
         return res.send({
             message: "No se pudieron obtener clientes" + err,
