@@ -7,21 +7,27 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const CashflowView = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cashflows = useSelector((state) => state.cashflowReducer?.cashflows);
 
-  const navigate = useNavigate();
-
   const [searchDescription, setSearchDescription] = useState("");
-
+  const [totals, setTotals] = useState({ ingresos: 0, egresos: 0, saldo: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(fetchAllCashflows());
+      
+      try {
+        const response = await fetch("http://localhost:3009/agb/cashflows/saldo");
+        const data = await response.json();
+        setTotals(data); 
+      } catch (error) {
+        console.error("Error fetching totals:", error);
+      }
     };
-  
+
     fetchData();
   }, [dispatch]);
-  
 
   const handleDelete = (id, description) => {
     Swal.fire({
@@ -37,20 +43,27 @@ const CashflowView = () => {
     });
   };
 
-  console.log("Valor de searchDescription:", searchDescription);
-console.log("Datos sin filtrar:", cashflows);
-
-const filteredCashflows = cashflows?.filter((cf) =>
-  cf.description.toLowerCase().includes(searchDescription.toLowerCase())
-);
-
-console.log("Datos filtrados:", filteredCashflows);
-
+  const filteredCashflows = cashflows?.filter((cf) =>
+    cf.description.toLowerCase().includes(searchDescription.toLowerCase())
+  );
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
-        <h2 className="text-xl font-semibold">Movimientos de Caja</h2>
+        <div>
+          <h2 className="text-xl font-semibold">Movimientos de Caja</h2>
+          <div className="flex flex-col sm:flex-row sm:gap-4 mt-2">
+            <span className="text-sm font-medium text-gray-600">
+              <strong>Ingresos:</strong> ${totals.ingresos}
+            </span>
+            <span className="text-sm font-medium text-gray-600">
+              <strong>Egresos:</strong> ${totals.egresos}
+            </span>
+            <span className="text-sm font-medium text-gray-600">
+              <strong>Saldo:</strong> ${totals.saldo}
+            </span>
+          </div>
+        </div>
         <button
           className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           onClick={() => navigate("/cashflow/add")}
