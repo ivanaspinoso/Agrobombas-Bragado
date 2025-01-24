@@ -14,7 +14,7 @@ import mensaje from '../../assets/images/mensajes.jpg';
 // import reloj from '../../assets/images/reloj.jpg';
 import receipts from '../../assets/images/recibidos.avif';
 import config from '../../assets/images/configuracion.webp';
-import proveedores from '../../assets/images/proveedores1.jpg';
+import proveedores from '../../assets/images/provdeedoresActual';
 import clientes from '../../assets/images/clientes.jpg';
 import enviados from "../../assets/images/whatsapp-enviado.webp";
 // import autoreplys from "../../assets/images/autoreply.jpg";
