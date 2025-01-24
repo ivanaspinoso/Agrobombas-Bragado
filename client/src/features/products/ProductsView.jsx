@@ -200,40 +200,46 @@ const ProductsView = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {paginatedProducts.map((product, index) => (
-             <tr key={product.id} className="hover:bg-gray-50">
-             <td className="px-4 py-2">
-               {((currentPage - 1) * itemsPerPage) + index + 1}
-             </td>
-             <td className="px-4 py-2">{product.name}</td>
-             <td className="px-4 py-2">{product.article}</td>
-             <td className="px-4 py-2">{product.description}</td>
-             <td className="py-2 text-right">
-               {parseFloat(product.price).toFixed(2).replace(".", ",")}
-             </td>
-             <td className="px-12 py-2 text-right">
-               {parseFloat(product.price2).toFixed(2).replace(".", ",")}
-             </td>
-             <td className="py-2 text-center">{product.stock}</td>
-             <td className="px-4 py-2">
-               {new Date(product.updatedAt).toLocaleDateString("es-AR")}
-             </td>
-             <td className="px-4 py-2 flex gap-2">
-               <Link to={`/edit-product`} state={product}>
-                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
-                   <FaEdit />
-                 </button>
-               </Link>
-               <button
-                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                 onClick={() => handleDelete(product.id, product.name)}
-               >
-                 <FaTrashAlt />
-               </button>
-             </td>
-           </tr>           
-            ))}
-          </tbody>
+  {paginatedProducts.map((product, index) => (
+    <tr
+      key={product.id}
+      className={`hover:bg-gray-50 ${
+        product.stock === 0 ? "bg-red-100" : ""
+      }`}
+    >
+      <td className="px-4 py-2">
+        {currentPage * itemsPerPage - itemsPerPage + index + 1}
+      </td>
+      <td className="px-4 py-2">{product.name}</td>
+      <td className="px-4 py-2">{product.article}</td>
+      <td className="px-4 py-2">{product.description}</td>
+      <td className="py-2 text-right">
+        {parseFloat(product.price).toFixed(2).replace(".", ",")}
+      </td>
+      <td className="px-12 py-2 text-right">
+        {parseFloat(product.price2).toFixed(2).replace(".", ",")}
+      </td>
+      <td className="py-2 text-center">{product.stock}</td>
+      <td className="px-4 py-2">
+        {new Date(product.updatedAt).toLocaleDateString("es-AR")}
+      </td>
+      <td className="px-4 py-2 flex gap-2">
+        <Link to={`/edit-product`} state={product}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <FaEdit />
+          </button>
+        </Link>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => handleDelete(product.id, product.name)}
+        >
+          <FaTrashAlt />
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       </div>
 
