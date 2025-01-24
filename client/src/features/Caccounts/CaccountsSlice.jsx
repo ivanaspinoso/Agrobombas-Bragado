@@ -2,9 +2,10 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { REACT_APP_API } from "../../app/consts/consts";
+import { cusCaccountflowEndpoint, REACT_APP_API, salCaccountflowEndpoint } from "../../app/consts/consts";
 const initialCaccountState = {
   caccounts: [],
+  saldo: {}
 };
 
 const caccountSlice = createSlice({
@@ -13,7 +14,10 @@ const caccountSlice = createSlice({
   reducers: {
     allCaccounts: (state, action) => {
            state.caccounts = action.payload || [];
-    },  
+    }, 
+    getSaldo: (state, action) =>{
+      state.saldo = action.payload;
+    }, 
     addCaccount: (state, action) => {
       console.log("Nuevo movimiento de cuenta:", action.payload);
       state.caccounts.push(action.payload);
@@ -32,17 +36,27 @@ const caccountSlice = createSlice({
   },
 });
 
-export const { allCaccounts, addCaccount, updateCaccount, deleteCaccount } = caccountSlice.actions;
+export const { allCaccounts, addCaccount, updateCaccount, deleteCaccount, getSaldo } = caccountSlice.actions;
 export default caccountSlice.reducer;
 
 // caccountSlice.js
 
 export const fetchAllCaccounts = (customerId) => async (dispatch) => {
     try {
-      const { data } = await axios.get(`${REACT_APP_API}caccounts/bycustomer/${customerId}`);
+      const { data } = await axios.get(`${cusCaccountflowEndpoint}${customerId}`);
       dispatch(allCaccounts(data)); 
     } catch (error) {
       console.error("Error al obtener las cuentas del cliente:", error.message);
+    }
+  };
+
+  export const obtenerSaldo = (customer) => async (dispatch) => {
+    try {
+      const { data } = await axios.get(salCaccountflowEndpoint + customer);
+      console.log("Datos obtenidos en saldos:", data);
+      dispatch(getSaldo(data));
+    } catch (error) {
+      console.error("Error al obtener movimientos de caja:", error);
     }
   };
   

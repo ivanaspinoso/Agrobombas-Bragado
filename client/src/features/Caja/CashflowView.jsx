@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCashflows, deleteCashflowById } from "./CashflowSlice";
+import { fetchAllCashflows, deleteCashflowById, obtenerSaldo } from "./CashflowSlice";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
@@ -9,21 +9,22 @@ const CashflowView = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cashflows = useSelector((state) => state.cashflowReducer?.cashflows);
+  const saldoscash = useSelector((state) => state.cashflowReducer?.saldo);
 
   const [searchDescription, setSearchDescription] = useState("");
-  const [totals, setTotals] = useState({ ingresos: 0, egresos: 0, saldo: 0 });
+  /* const [totals, setTotals] = useState({ ingresos: 0, egresos: 0, saldo: 0 }); */
 
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(fetchAllCashflows());
-      
-      try {
+      await dispatch(obtenerSaldo())
+/*       try {
         const response = await fetch("http://localhost:3009/agb/cashflows/saldo");
         const data = await response.json();
         setTotals(data); 
       } catch (error) {
         console.error("Error fetching totals:", error);
-      }
+      } */
     };
 
     fetchData();
@@ -52,17 +53,17 @@ const CashflowView = () => {
       <div className="flex justify-between items-center mb-10">
         <div>
           <h2 className="text-xl font-semibold">Movimientos de Caja</h2>
-          <div className="flex flex-col sm:flex-row sm:gap-4 mt-2">
+           <div className="flex flex-col sm:flex-row sm:gap-4 mt-2">
             <span className="text-sm font-medium text-gray-600">
-              <strong>Ingresos:</strong> ${totals.ingresos}
+              <strong>Ingresos:</strong> ${saldoscash.ingresos}
             </span>
             <span className="text-sm font-medium text-gray-600">
-              <strong>Egresos:</strong> ${totals.egresos}
+              <strong>Egresos:</strong> ${saldoscash.egresos}
             </span>
             <span className="text-sm font-medium text-gray-600">
-              <strong>Saldo:</strong> ${totals.saldo}
+              <strong>Saldo:</strong> ${saldoscash.saldo}
             </span>
-          </div>
+          </div> 
         </div>
         <button
           className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -91,8 +92,8 @@ const CashflowView = () => {
                 <td className="px-4 py-2">{cf.id}</td>
                 <td className="px-4 py-2">{new Date(cf.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{cf.description}</td>
-                <td className="px-4 py-2">{cf.income || "-"}</td>
-                <td className="px-4 py-2">{cf.outflow || "-"}</td>
+                <td className="px-4 py-2 text-right"> {parseFloat(cf.income).toFixed(2).replace(".", ",")}</td>
+                <td className="px-4 py-2 text-right"> {parseFloat(cf.outflow).toFixed(2).replace(".", ",")}</td>
                 <td className="px-4 py-2">{cf.note || "-"}</td>
                 <td className="px-4 py-2 flex gap-2">
                   <button

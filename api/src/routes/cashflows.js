@@ -61,7 +61,7 @@ router.get("/saldo", /* validateToken, */ async (req, res) => {
         else  balance = "negativo"
         console.log("A ver:", importe, saldo)
         objCaja = {
-            ingrsos: importe[0],
+            ingresos: importe[0],
             egresos: importe[1],
             saldo,
             balance

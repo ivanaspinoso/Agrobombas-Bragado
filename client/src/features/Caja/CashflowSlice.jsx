@@ -2,11 +2,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { allCashflowEndpoint, addCashflowEndpoint, updCashflowEndpoint, delCashflowEndpoint, } from "../../app/consts/consts";
+import { allCashflowEndpoint, addCashflowEndpoint, updCashflowEndpoint, delCashflowEndpoint, salCashflowEndpoint, } from "../../app/consts/consts";
 
 const initialCashFlowState = {
   loading: 'idle',
   cashflows: [],
+  saldo: {}
 };
 
 const cashflowSlice = createSlice({
@@ -15,6 +16,9 @@ const cashflowSlice = createSlice({
   reducers: {
     allCashflows: (state, action) => {
       state.cashflows = action.payload;
+    },
+    getSaldo: (state, action) =>{
+      state.saldo = action.payload;
     },
     addCashflow: (state, action) => {
       console.log("Nuevo movimiento:", action.payload);
@@ -35,7 +39,7 @@ const cashflowSlice = createSlice({
   },
 });
 
-export const { allCashflows, addCashflow, updateCashflow, deleteCashflow } = cashflowSlice.actions;
+export const { allCashflows, addCashflow, updateCashflow, deleteCashflow, getSaldo } = cashflowSlice.actions;
 export default cashflowSlice.reducer;
 
 export const fetchAllCashflows = () => async (dispatch) => {
@@ -48,6 +52,15 @@ export const fetchAllCashflows = () => async (dispatch) => {
   }
 };
 
+export const obtenerSaldo = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(salCashflowEndpoint);
+    console.log("Datos obtenidos en saldos:", data);
+    dispatch(getSaldo(data));
+  } catch (error) {
+    console.error("Error al obtener movimientos de caja:", error);
+  }
+};
 
 export const addNewCashflow = (cashflow) => async (dispatch) => {
   try {
