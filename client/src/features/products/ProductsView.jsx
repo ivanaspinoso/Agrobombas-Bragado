@@ -46,11 +46,12 @@ const ProductsView = () => {
       ?.toLowerCase()
       .includes(searchCategory.toLowerCase());
     const matchesArticle = product.article
-      ? product.article.toString().includes(searchArticle)
+      ? product.article.toString().toLowerCase().includes(searchArticle.trim().toLowerCase())
       : false;
-
+  
     return matchesName && matchesDescription && matchesArticle;
   });
+  
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortConfig.key) {
