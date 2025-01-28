@@ -81,7 +81,7 @@ export const getCompanysEndpoint = REACT_APP_API + 'company/';
 export const allSalesEndpoint = REACT_APP_API + 'sales';        
 export const addSalesEndpoint = REACT_APP_API + 'sales/add';     
 // export const updateSalesEndpoint = REACT_APP_API + 'sales/update/'; 
- export const deleteSalesEndpoint = REACT_APP_API + 'sales/delete/'; 
+export const deleteSalesEndpoint = REACT_APP_API + 'sales/delete/'; 
 
 //
 
@@ -104,6 +104,10 @@ export const salCaccountflowEndpoint = REACT_APP_API + 'caccounts/saldobycusto/'
 
 export const userReceiptsEndpoint = REACT_APP_API + 'receipts/byuser/'
 export const delReceiptsEndpoint = REACT_APP_API + 'receipts/delete/';
+
+// orderLines
+export const allOrderLineEndpoint = REACT_APP_API + 'orderlines';
+export const salOrderlineEndpoint = REACT_APP_API + 'orderlines/bysale/';
 
 // Sorts
 

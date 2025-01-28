@@ -229,7 +229,13 @@ export const logOut = () => async (dispatch) => {
     await dispatch({ type: "company/logoutCompany", payload: [] });
     await dispatch({ type: "customers/logoutCustomers", payload: [] });
     await dispatch({ type: "products/logoutProducts", payload: [] });
+
     await dispatch({ type: "cashflows/logoutCashflows", payload: [] });
+    await dispatch({ type: "cashflows/logOutSaldo", payload: [] });
+
+    await dispatch({ type: "caccounts/logoutCaccounts", payload: [] });
+    await dispatch({ type: "caccounts/logOutSaldo", payload: [] });
+
     await dispatch({ type: "sales/logoutSales", payload: [] });
     console.log("saliendo");
   } catch (err) {

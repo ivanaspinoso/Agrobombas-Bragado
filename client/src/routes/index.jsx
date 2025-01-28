@@ -44,6 +44,8 @@ import EditCashflow from "../features/Caja/EditCashflow.jsx";
 import SalesView from "../features/Sales/SalesView.jsx";
 import AddSales from "../features/Sales/AddSales.jsx";
 import CaccountsView from "../features/Caccounts/CaccountsView.jsx";
+import SalePrint from "../features/Sales/SalePrint.jsx";
+import SaleEdit from "../features/Sales/EditSale.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -73,42 +75,50 @@ const Index = () => {
           <Route path="/edit-product" element={<EditProduct />} />
 
 
-
+          {/* Rutas para mensajes ? */}
           <Route path="/add-message" element={<AddCustomers />} />
           <Route path="/queue-messages" element={<CustomersView />} />
           <Route path="/edit-customers" element={<EditCustomers />} />
 
+          {/* Rutas para movimientos de caja */}    
           <Route path="/sended-messages" element={<CashflowView />} />
           <Route path="/cashflow/add" element={<AddCashflow />} />
           <Route path="/cashflow/update" element={<EditCashflow />} />
           <Route path="/edit-message" element={<EditMessage />} />
 
+          {/* Rutas para grupos? */}
           <Route path="/show-groups" element={<GroupsView />} />
           <Route path="/add-group" element={<AddGroup />} />
           <Route path="/edit-group" element={<EditGroup />} />
 
+          {/* Rutas para rubros */}
           <Route path="/show-families" element={<FamiliesView />} />
           <Route path="/add-families" element={<AddFamily />} />
           <Route path="/edit-families" element={<EditFamily />} />
 
+          {/* Rutas para contactos? */}
           <Route path="/show-contacts" element={<ContactsView />} />
           <Route path="/add-contact" element={<AddContact />} />
           <Route path="/edit-contact" element={<EditContact />} />
 
+          {/* Rutas para ventas */}
           <Route path="/show-configs" element={<SalesView />} />
           <Route path="/edit-config" element={<EditConfig />} />
-          <Route path="/sales/add" element={<AddSales />} />
-
+          <Route path="/add-sale" element={<AddSales />} />
+          <Route path="/edit-sale" element={<SaleEdit />} />
+          <Route path="/print-sale" element={<SalePrint />} />
           
+          {/* Rutas para empresa propietaria */}
           <Route path="/show-companys" element={<CompanysView />} />
           <Route path="/edit-company" element={<EditCompany />} />
 
+          {/* Rutas para usuarios */}
           <Route path="/show-users" element={<UsersView />} />
           <Route path="/edit-user" element={<EditUser />} />
 
+          {/* Rutas para cuentas corrientes */}
           <Route path="/show-caccounts" element={<CaccountsView />} />
-
-        
+     
 
           <Route path="/show-receipts" element={<Next />} />
 

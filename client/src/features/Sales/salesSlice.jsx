@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { allSalesEndpoint, addSalesEndpoint, updateSalesEndpoint, deleteSalesEndpoint,allCustomersEndpoint, allProductsEndpoint, } from "../../app/consts/consts";
+import { allSalesEndpoint, addSalesEndpoint, updateSalesEndpoint, deleteSalesEndpoint,allCustomersEndpoint, allProductsEndpoint, salOrderlineEndpoint, } from "../../app/consts/consts";
 
 const initialSalesState = {
   sales: [],
@@ -25,13 +25,13 @@ const salesSlice = createSlice({
     deleteSale: (state, action) => {
       state.sales = state.sales.filter(sale => sale.id !== action.payload);
     },
-    logoutSales: (state, action) => {
+        logoutSales: (state, action) => {
       state.sales = action.payload
     }
   },
 });
 
-export const { allSales, addSale, updateSale, deleteSale } = salesSlice.actions;
+export const { allSales, addSale, updateSale, deleteSale, getOrderLines } = salesSlice.actions;
 export default salesSlice.reducer;
 
 // 🔹 Obtener todas las ventas

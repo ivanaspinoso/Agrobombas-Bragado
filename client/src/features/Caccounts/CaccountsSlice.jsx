@@ -15,9 +15,6 @@ const caccountSlice = createSlice({
     allCaccounts: (state, action) => {
            state.caccounts = action.payload || [];
     }, 
-    getSaldo: (state, action) =>{
-      state.saldo = action.payload;
-    }, 
     addCaccount: (state, action) => {
       console.log("Nuevo movimiento de cuenta:", action.payload);
       state.caccounts.push(action.payload);
@@ -33,10 +30,16 @@ const caccountSlice = createSlice({
     logoutCaccounts: (state, action) => {
       state.caccounts = action.payload;
     },
+    getSaldo: (state, action) =>{
+      state.saldo = action.payload;
+    }, 
+    logOutSaldo: (state, action) =>{
+      state.saldo = action.payload;
+    }, 
   },
 });
 
-export const { allCaccounts, addCaccount, updateCaccount, deleteCaccount, getSaldo } = caccountSlice.actions;
+export const { allCaccounts, addCaccount, updateCaccount, deleteCaccount, getSaldo, logOutSaldo } = caccountSlice.actions;
 export default caccountSlice.reducer;
 
 // caccountSlice.js

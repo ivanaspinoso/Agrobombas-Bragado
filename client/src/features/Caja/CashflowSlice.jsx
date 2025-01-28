@@ -17,9 +17,6 @@ const cashflowSlice = createSlice({
     allCashflows: (state, action) => {
       state.cashflows = action.payload;
     },
-    getSaldo: (state, action) =>{
-      state.saldo = action.payload;
-    },
     addCashflow: (state, action) => {
       console.log("Nuevo movimiento:", action.payload);
 
@@ -36,10 +33,16 @@ const cashflowSlice = createSlice({
     logoutCashflows: (state, action) => {
       state.cashflows = action.payload
     },
+    getSaldo: (state, action) =>{
+      state.saldo = action.payload;
+    },
+    logOutSaldo: (state, action) =>{
+      state.saldo = action.payload;
+    }, 
   },
 });
 
-export const { allCashflows, addCashflow, updateCashflow, deleteCashflow, getSaldo } = cashflowSlice.actions;
+export const { allCashflows, addCashflow, updateCashflow, deleteCashflow, getSaldo, logOutSaldo } = cashflowSlice.actions;
 export default cashflowSlice.reducer;
 
 export const fetchAllCashflows = () => async (dispatch) => {

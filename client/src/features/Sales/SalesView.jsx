@@ -3,15 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSaleById, fetchAllSales } from "./salesSlice";
 import Swal from "sweetalert2";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaPrint, FaEye } from "react-icons/fa";
 import { getAllProducts } from "../../app/actions/products";
 import { fetchAllCashflows } from "../Caja/CashflowSlice";
+import ViewLinesSale from "./ViewLinesSale";
 
 const SalesView = () => {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.salesReducer?.sales);
   const navigate = useNavigate();
   const [searchClient, setSearchClient] = useState("");
+  const [viewLines, setViewLines] = useState(false)  
+  const [saleid, setSaleId] = useState(0)
 
   useEffect(() => {
     dispatch(fetchAllSales());
@@ -54,7 +57,7 @@ const SalesView = () => {
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-2 text-left">ID</th>
+              <th className="px-4 py-2 text-left">#</th>
               <th className="px-4 py-2 text-left">Fecha</th>
               <th className="px-4 py-2 text-left">Cliente</th>
               <th className="px-4 py-2 text-left">Dirección</th>
@@ -64,19 +67,31 @@ const SalesView = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredSales?.map((sale) => (
+            {filteredSales?.map((sale, index) => (
               <tr key={sale.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{sale.id}</td>
+                <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{new Date(sale.fecha).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{sale.customer?.name || "Sin Cliente"}</td>
                 <td className="px-4 py-2">{sale.customer?.address || "Sin dirección"}</td>
-                <td className="px-4 py-2">{sale.subtotal || 0}</td>
-                <td className="px-4 py-2">{sale.total || 0}</td>
+                <td className="px-4 py-2 text-right">{parseFloat(sale.subtotal).toFixed(2).replace(".",",") || 0}</td>
+                <td className="px-4 py-2 text-right">{parseFloat(sale.total).toFixed(2).replace(".",",")  || 0}</td>
 
                 <td className="px-4 py-2 flex gap-2">
+                <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => {setViewLines(!viewLines); setSaleId(sale.id) }}
+                  >
+                    <FaEye />
+                  </button>
+                <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => navigate(`/print-sale`, { state: sale })}
+                  >
+                    <FaPrint />
+                  </button>
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => navigate(`/sales/update`, { state: sale })}
+                    onClick={() => navigate(`/edit-sale`, { state: sale })}
                   >
                     <FaEdit />
                   </button>
@@ -87,6 +102,7 @@ const SalesView = () => {
                     <FaTrashAlt />
                   </button>
                 </td>
+                <tr><td>{ viewLines ? <ViewLinesSale venta={sale.id} /> : <></>}</td></tr>
               </tr>
             ))}
           </tbody>
