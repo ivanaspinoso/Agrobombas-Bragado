@@ -19,16 +19,13 @@ const CaccountsView = () => {
 
   useEffect(() => {
     const fetchCustomers = async () => {
-      // ⬇️ begin refactorizar y cambiar por la action getallcustomer
       try {
         const response = await axios.get(`${REACT_APP_API}customers`);
-
         setCustomers(response.data);
       } catch (error) {
         Swal.fire("Error", "No se pudo cargar la lista de clientes", "error");
         console.error(error);
       }
-      // ⬆️ end refactorizar y cambiar por la action getallcustomer
     };
 
     fetchCustomers();
@@ -38,7 +35,6 @@ const CaccountsView = () => {
     if (customerId) {
       dispatch(fetchAllCaccounts(customerId));
       dispatch(obtenerSaldo(customerId));
-      console.log(saldoscac);
     }
   }, [customerId, dispatch]);
 
@@ -49,71 +45,25 @@ const CaccountsView = () => {
       setCustomerId(null);
       dispatch(fetchAllCaccounts([]));
     } else {
-      console.log("Cliente seleccionado:", selectedId);
       setCustomerId(selectedId);
     }
   };
-
-  // useEffect(() => {
-  //   if (customerId) {
-  //     dispatch(fetchAllCaccounts(customerId));
-  //   }
-  // }, [customerId, dispatch]);
-
-  // const handleDelete = (id) => {
-  //   dispatch(deleteCaccountById(id)); // Eliminar movimiento de cuenta
-  // };
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-xl font-semibold">Movimientos por Cliente</h2>
-        {customerId ? (
-          <div>
-            {" "}
-            <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8 mt-2">
-            <div className="text-lg font-semibold text-gray-600 text-center">
-              <span className="text-lg font-semibold text-gray-600 text-center">
-                <strong>Debe:</strong>               
-                <span className="text-green-600">${saldoscac?.debe?.toFixed(2)}</span>
-
-              </span>
-              <span className="text-lg font-semibold text-gray-600 text-center">
-                <strong>Paga:</strong> <span className="text-red-600">${saldoscac?.paga?.toFixed(2)}</span>
-              </span>
-              <div className="text-lg font-semibold text-gray-600 text-center">
-              <strong>Saldo:</strong>{" "}
-              <span
-                className={`${
-                  saldoscac?.saldo >= 0 ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                ${saldoscac?.saldo.toFixed(2)}
-              </span>
-            </div>
-            </div>
-            </div>
-
-          </div>
-        ) : (
-          <></>
-        )}
 
         {/* Selección de cliente */}
-        <div className="text-left text-xl font-bold uppercase ">
-          <label htmlFor="text-left text-xl font-bold uppercase ">
-            Seleccionar Cliente:
-          </label>
+        <div className="text-left text-xl font-bold uppercase">
+          <label htmlFor="customer-select">Seleccionar Cliente:</label>
           <select
             id="customer-select"
             value={customerId || ""}
-            // onChange={(e) => setCustomerId(e.target.value)}
             onChange={handleCustomerChange}
+            className="border px-3 py-2 rounded-md"
           >
-            <option value="" className=" text-xl  uppercase ">
-              {" "}
-              Seleccione un cliente{" "}
-            </option>
+            <option value="">Seleccione un cliente</option>
             {customers.map((customer) => (
               <option key={customer.id} value={customer.id}>
                 {customer.name}
@@ -122,6 +72,38 @@ const CaccountsView = () => {
           </select>
         </div>
       </div>
+
+      {/* Contenedor de Saldos Mejorado */}
+      {customerId && (
+        <div className="flex flex-col items-center mb-6">
+        <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8">
+          <div className="text-lg font-semibold text-gray-600 text-center">
+            <strong>Debe:</strong>{" "}
+            <span className="text-red-600">${saldoscac?.debe?.toFixed(2)}</span>
+          </div>
+          <div className="text-lg font-semibold text-gray-600 text-center">
+            <strong>Paga:</strong>{" "}
+            <span className="text-green-600">${saldoscac?.paga?.toFixed(2)}</span>
+          </div>
+          <div className="text-lg font-semibold text-gray-600 text-center">
+            <strong>Saldo:</strong>{" "}
+            <span className={`${saldoscac?.saldo >= 0 ? "text-green-600" : "text-red-600"}`}>
+              ${saldoscac?.saldo.toFixed(2)}
+            </span>
+          </div>
+        </div>
+      
+        {/* Botón para agregar movimiento, alineado a la derecha */}
+        <div className="mt-4 self-end">
+          <button
+            className="px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            onClick={() => navigate(`/caccounts/add/${customerId}`)}
+          >
+            Agregar Movimiento
+          </button>
+        </div>
+      </div>
+      )}
 
       {/* Tabla de movimientos */}
       <table className="w-full table-auto border border-gray-200">
@@ -145,11 +127,9 @@ const CaccountsView = () => {
                 </td>
                 <td className="px-4 py-2">{caccount1.description}</td>
                 <td className="px-4 py-2 text-right">
-                  {" "}
                   {parseFloat(caccount1.income).toFixed(2).replace(".", ",")}
                 </td>
                 <td className="px-4 py-2 text-right">
-                  {" "}
                   {parseFloat(caccount1.outflow).toFixed(2).replace(".", ",")}
                 </td>
                 <td className="px-4 py-2 text-center">
@@ -157,6 +137,7 @@ const CaccountsView = () => {
                     <button
                       className="text-blue-500 hover:text-blue-700"
                       title="Editar"
+                      onClick={() => navigate(`/caccounts/edit/${caccount1.id}`)}
                     >
                       <FaEdit />
                     </button>
@@ -172,7 +153,7 @@ const CaccountsView = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="px-4 py-2 text-center text-gray-500">
+              <td colSpan="6" className="px-4 py-2 text-center text-gray-500">
                 {customerId
                   ? "No hay movimientos disponibles para este cliente."
                   : "Seleccione un cliente para ver los movimientos."}
