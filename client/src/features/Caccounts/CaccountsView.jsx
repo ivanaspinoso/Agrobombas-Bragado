@@ -69,20 +69,32 @@ const CaccountsView = () => {
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-xl font-semibold">Movimientos por Cliente</h2>
         {customerId ? (
-          <>
+          <div>
             {" "}
-            <div className="flex flex-col sm:flex-row sm:gap-4 mt-2">
-              <span className="text-sm font-medium text-gray-600">
-                <strong>Debe:</strong> ${saldoscac.debe}
+            <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8 mt-2">
+            <div className="text-lg font-semibold text-gray-600 text-center">
+              <span className="text-lg font-semibold text-gray-600 text-center">
+                <strong>Debe:</strong>               
+                <span className="text-green-600">${saldoscac?.debe?.toFixed(2)}</span>
+
               </span>
-              <span className="text-sm font-medium text-gray-600">
-                <strong>Paga:</strong> ${saldoscac.paga}
+              <span className="text-lg font-semibold text-gray-600 text-center">
+                <strong>Paga:</strong> <span className="text-red-600">${saldoscac?.paga?.toFixed(2)}</span>
               </span>
-              <span className="text-sm font-medium text-gray-600">
-                <strong>Saldo:</strong> ${saldoscac.saldo}
+              <div className="text-lg font-semibold text-gray-600 text-center">
+              <strong>Saldo:</strong>{" "}
+              <span
+                className={`${
+                  saldoscac?.saldo >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                ${saldoscac?.saldo.toFixed(2)}
               </span>
             </div>
-          </>
+            </div>
+            </div>
+
+          </div>
         ) : (
           <></>
         )}

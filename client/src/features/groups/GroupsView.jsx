@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FcAddRow } from "react-icons/fc";
@@ -13,6 +13,23 @@ const GroupsView = () => {
   const groups = useSelector((state) => state.groupsReducer.groups);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchName, setSearchName] = useState("");
+  
+  const itemsPerPage = 10;
+  
+  // Filtrar grupos por nombre
+  const filteredGroups = groups.filter((group) =>
+    group.name.toLowerCase().includes(searchName.toLowerCase())
+  );
+  
+  // Lógica de paginación
+  const totalPages = Math.ceil(filteredGroups.length / itemsPerPage);
+  const paginatedGroups = filteredGroups.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );  
 
   useEffect(() => {
     dispatch(getAllCategories()); 
@@ -62,11 +79,13 @@ const GroupsView = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {groups?.map((group, index) => {
+              {paginatedGroups?.map((group, index) => {
                 const { id, code , name } = group;
                 return (
                   <tr key={id}>
-                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </td>
                     <td className="px-4 py-2">{name}</td>
                     <td className="px-4 py-2">{code}</td>
                     <td className="px-4 py-2 flex gap-2">
@@ -87,6 +106,22 @@ const GroupsView = () => {
               })}
             </tbody>
           </table>
+        </div>
+          {/* Paginación */}
+          <div className="mt-4 flex justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`px-3 py-1 rounded-md ${
+                currentPage === index + 1
+                  ? "bg-[#0e6fa5] text-white"
+                  : "bg-gray-200"
+              }`}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       </div>
     </div>

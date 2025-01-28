@@ -126,7 +126,7 @@ const ProductsView = () => {
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-2 text-left">ID</th>
+              <th className="px-4 py-2 text-left">#</th>
               <th
                 className="px-4 py-2 text-left cursor-pointer"
                 onClick={() => handleSort("name")}
