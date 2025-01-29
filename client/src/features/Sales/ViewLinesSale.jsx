@@ -1,22 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getOrderBySale, getOrderLines } from "./salesSlice";
-
-
 const ViewLinesSale = (props) => {
-const { venta } = props
-const dispatch = useDispatch()
 
-/* useEffect (() => {
-    const fetchData = async () => {
-        await dispatch(getOrderBySale(venta))
-    }
-    fetchData()
-},[dispatch]) */
+const { orderlines } = props
 
 return (
-    <>
-      <>Venta {venta}</>
+    <>Cant. - Articulo - Producto - Precio - Subtotal<br/>
+    { orderlines && orderlines.map((line,index) => {
+      return(<>{line.quantity} - {line.article} - {line.name} - {line.price} - {line.subtotal}<br/></>)
+    })}
     </>
   );
 };
