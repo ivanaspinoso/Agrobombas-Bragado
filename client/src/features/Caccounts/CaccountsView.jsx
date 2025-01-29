@@ -15,13 +15,13 @@ const CaccountsView = () => {
   const customers = useSelector((state) => state.customersReducer.customers);
 
   const [customerId, setCustomerId] = useState(null);
-  const [, setCustomers] = useState([]);
+  const [showSaldo, setShowSaldo] = useState(false); // Nuevo estado para ocultar los saldos
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const response = await axios.get(`${REACT_APP_API}customers`);
-        setCustomers(response.data);
+        setCustomerId(response.data);
       } catch (error) {
         Swal.fire("Error", "No se pudo cargar la lista de clientes", "error");
         console.error(error);
@@ -35,28 +35,53 @@ const CaccountsView = () => {
     if (customerId) {
       dispatch(fetchAllCaccounts(customerId));
       dispatch(obtenerSaldo(customerId));
+      setShowSaldo(true);
+    } else {
+      setShowSaldo(false); // Oculta los saldos si no hay cliente seleccionado
     }
   }, [customerId, dispatch]);
 
   const handleCustomerChange = (event) => {
     const selectedId = event.target.value;
-
-    if (selectedId === "") {
-      setCustomerId(null);
-      dispatch(fetchAllCaccounts([]));
-    } else {
-      setCustomerId(selectedId);
-    }
+    setCustomerId(selectedId || null);
+    setShowSaldo(selectedId ? true : false); // Muestra los saldos solo si hay un cliente
   };
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
-      <div className="flex justify-between items-center mb-10">
+      {/* Encabezado: Título, Selector y Saldo alineado */}
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Movimientos por Cliente</h2>
 
-        {/* Selección de cliente */}
-        <div className="text-left text-xl font-bold uppercase">
-          <label htmlFor="customer-select">Seleccionar Cliente:</label>
+        {/* Contenedor de Saldos (Se oculta si no hay cliente seleccionado) */}
+        {showSaldo && (
+          <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8">
+            <div className="text-lg font-semibold text-gray-600 text-center">
+              <strong>Debe:</strong>{" "}
+              <span className="text-red-600">
+                ${parseFloat(saldoscac?.debe || 0).toFixed(2)}
+              </span>
+            </div>
+            <div className="text-lg font-semibold text-gray-600 text-center">
+              <strong>Paga:</strong>{" "}
+              <span className="text-green-600">
+                ${parseFloat(saldoscac?.paga || 0).toFixed(2)}
+              </span>
+            </div>
+            <div className="text-lg font-semibold text-gray-600 text-center">
+              <strong>Saldo:</strong>{" "}
+              <span className={`${parseFloat(saldoscac?.saldo || 0) >= 0 ? "text-green-600" : "text-red-600"}`}>
+                ${parseFloat(saldoscac?.saldo || 0).toFixed(2)}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Selector de Cliente */}
+        <div className="flex items-center gap-4">
+          <label htmlFor="customer-select" className="text-lg font-bold uppercase">
+            Seleccionar Cliente:
+          </label>
           <select
             id="customer-select"
             value={customerId || ""}
@@ -73,28 +98,9 @@ const CaccountsView = () => {
         </div>
       </div>
 
-      {/* Contenedor de Saldos Mejorado */}
+      {/* Botón de agregar movimiento, alineado a la derecha */}
       {customerId && (
-        <div className="flex flex-col items-center mb-6">
-        <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-4">
-          <div className="text-lg font-semibold text-gray-600 text-center flex gap-2">
-            <strong>Debe:</strong>
-            <span className="text-red-600">${parseFloat(saldoscac?.debe).toFixed(2)}</span>
-            <strong>Paga:</strong>
-            <span className="text-green-600">${parseFloat(saldoscac?.paga).toFixed(2)}</span>
-          </div>
-          <div className="text-lg font-semibold text-gray-600 text-center">
-            <strong>Saldo:</strong>
-            <span className={`${parseFloat(saldoscac?.saldo) >= 0 ? "text-green-600" : "text-red-600"}`}>
-              ${parseFloat(saldoscac?.saldo).toFixed(2)}
-            </span>
-          </div>
-        </div>
-    
-      
-      
-        {/* Botón para agregar movimiento, alineado a la derecha */}
-        <div className="mt-4 self-end">
+        <div className="mb-4 flex justify-end">
           <button
             className="px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             onClick={() => navigate(`/caccounts/add/${customerId}`)}
@@ -102,7 +108,6 @@ const CaccountsView = () => {
             Agregar Movimiento
           </button>
         </div>
-      </div>
       )}
 
       {/* Tabla de movimientos */}
@@ -122,9 +127,7 @@ const CaccountsView = () => {
             caccounts.map((caccount1) => (
               <tr key={caccount1.id} className="border-b">
                 <td className="px-4 py-2">{caccount1.id}</td>
-                <td className="px-4 py-2">
-                  {new Date(caccount1.date).toLocaleDateString()}
-                </td>
+                <td className="px-4 py-2">{new Date(caccount1.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{caccount1.description}</td>
                 <td className="px-4 py-2 text-right">
                   {parseFloat(caccount1.income).toFixed(2).replace(".", ",")}
@@ -141,10 +144,7 @@ const CaccountsView = () => {
                     >
                       <FaEdit />
                     </button>
-                    <button
-                      className="text-red-500 hover:text-red-700"
-                      title="Eliminar"
-                    >
+                    <button className="text-red-500 hover:text-red-700" title="Eliminar">
                       <FaTrashAlt />
                     </button>
                   </div>
@@ -154,9 +154,7 @@ const CaccountsView = () => {
           ) : (
             <tr>
               <td colSpan="6" className="px-4 py-2 text-center text-gray-500">
-                {customerId
-                  ? "No hay movimientos disponibles para este cliente."
-                  : "Seleccione un cliente para ver los movimientos."}
+                {customerId ? "No hay movimientos disponibles para este cliente." : "Seleccione un cliente para ver los movimientos."}
               </td>
             </tr>
           )}

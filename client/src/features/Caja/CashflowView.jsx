@@ -60,7 +60,7 @@ const CashflowView = () => {
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Saldo:</strong>{" "}
               <span className={`${parseFloat(saldoscash?.saldo) >= 0 ? "text-green-600" : "text-red-600"}`}>
-      ${parseFloat(saldoscash?.saldo).toFixed(2)}
+      ${parseFloat(saldoscash?.saldo || 0).toFixed(2)}
     </span>
             </div>
           </div>
