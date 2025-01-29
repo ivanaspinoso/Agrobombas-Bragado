@@ -121,15 +121,16 @@ const SalesView = () => {
                             <div className="flex items-center gap-2">
                               <FaBoxOpen className="text-blue-500 " />
                               <span className="text-sm">{item.quantity}x</span>
-                              <span className="mr-6 text-sm font-medium">{item.name}x</span>
                               <span className="text-sm">{item.article}</span> 
-                              <span>- {item.product}</span>
+                              <span className="mr-6 text-sm font-medium">{item.name}</span>
+                              {/* <span>- {item.product}</span> */}
                             </div>
                             <div className="text-right font-regular flex gap-2">
                               <span className="text-green-600 text-sm">
-                                Total: <FaDollarSign className="inline-block " /> {parseFloat(item.price).toFixed(2)}
+                                <FaDollarSign className="inline-block " /> {parseFloat(item.price).toFixed(2).replace(".", ",")}
                               </span>
-                              <span className="text-sm font-medium">Subtotal: {parseFloat(item.subtotal).toFixed(2)}</span>
+                              <span className="text-sm font-medium">
+                              <FaDollarSign className="inline-block " /> {parseFloat(item.subtotal).toFixed(2).replace(".", ",")}</span>
                             </div>
                           </div>
                         ))}
