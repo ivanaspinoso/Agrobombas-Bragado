@@ -51,21 +51,17 @@ const CashflowView = () => {
           <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8 mt-2">
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Ingresos:</strong>{" "}
-              <span className="text-green-600">${saldoscash?.ingresos?.toFixed(2)}</span>
+              <span className="text-green-600">${parseFloat(saldoscash?.ingresos).toFixed(2)}</span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Egresos:</strong>{" "}
-              <span className="text-red-600">${saldoscash?.egresos?.toFixed(2)}</span>
+              <span className="text-red-600">${parseFloat(saldoscash?.egresos).toFixed(2)}</span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Saldo:</strong>{" "}
-              <span
-                className={`${
-                  saldoscash?.saldo >= 0 ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                ${saldoscash?.saldo.toFixed(2)}
-              </span>
+              <span className={`${parseFloat(saldoscash?.saldo) >= 0 ? "text-green-600" : "text-red-600"}`}>
+      ${parseFloat(saldoscash?.saldo).toFixed(2)}
+    </span>
             </div>
           </div>
         </div>

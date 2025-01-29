@@ -76,22 +76,22 @@ const CaccountsView = () => {
       {/* Contenedor de Saldos Mejorado */}
       {customerId && (
         <div className="flex flex-col items-center mb-6">
-        <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8">
-          <div className="text-lg font-semibold text-gray-600 text-center">
-            <strong>Debe:</strong>{" "}
-            <span className="text-red-600">${saldoscac?.debe?.toFixed(2)}</span>
+        <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-4">
+          <div className="text-lg font-semibold text-gray-600 text-center flex gap-2">
+            <strong>Debe:</strong>
+            <span className="text-red-600">${parseFloat(saldoscac?.debe).toFixed(2)}</span>
+            <strong>Paga:</strong>
+            <span className="text-green-600">${parseFloat(saldoscac?.paga).toFixed(2)}</span>
           </div>
           <div className="text-lg font-semibold text-gray-600 text-center">
-            <strong>Paga:</strong>{" "}
-            <span className="text-green-600">${saldoscac?.paga?.toFixed(2)}</span>
-          </div>
-          <div className="text-lg font-semibold text-gray-600 text-center">
-            <strong>Saldo:</strong>{" "}
-            <span className={`${saldoscac?.saldo >= 0 ? "text-green-600" : "text-red-600"}`}>
-              ${saldoscac?.saldo.toFixed(2)}
+            <strong>Saldo:</strong>
+            <span className={`${parseFloat(saldoscac?.saldo) >= 0 ? "text-green-600" : "text-red-600"}`}>
+              ${parseFloat(saldoscac?.saldo).toFixed(2)}
             </span>
           </div>
         </div>
+    
+      
       
         {/* Botón para agregar movimiento, alineado a la derecha */}
         <div className="mt-4 self-end">

@@ -13,8 +13,7 @@ const SalesView = () => {
   const sales = useSelector((state) => state.salesReducer?.sales);
   const navigate = useNavigate();
   const [searchClient, setSearchClient] = useState("");
-  const [viewLines, setViewLines] = useState(false)  
-  const [saleid, setSaleId] = useState(0)
+  const [saleid, setSaleId] = useState(null); // Maneja la venta expandida
 
   useEffect(() => {
     dispatch(fetchAllSales());
@@ -30,16 +29,19 @@ const SalesView = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await dispatch(deleteSaleById(id));
-        await dispatch(getAllProducts())
-        await dispatch(fetchAllCashflows())
+        await dispatch(getAllProducts());
+        await dispatch(fetchAllCashflows());
       }
     });
+  };
+
+  const toggleViewLines = (id) => {
+    setSaleId(saleid === id ? null : id); // Alternar visibilidad
   };
 
   const filteredSales = sales?.filter((sale) =>
     sale.client?.toLowerCase().includes(searchClient.toLowerCase())
   );
-
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -54,7 +56,7 @@ const SalesView = () => {
       </div>
 
       <div className="overflow-x-scroll">
-        <table className="w-full table-auto">
+        <table className="w-full table-auto border border-gray-200">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
@@ -68,42 +70,61 @@ const SalesView = () => {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredSales?.map((sale, index) => (
-              <tr key={sale.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">{new Date(sale.fecha).toLocaleDateString()}</td>
-                <td className="px-4 py-2">{sale.customer?.name || "Sin Cliente"}</td>
-                <td className="px-4 py-2">{sale.customer?.address || "Sin dirección"}</td>
-                <td className="px-4 py-2 text-right">{parseFloat(sale.subtotal).toFixed(2).replace(".",",") || 0}</td>
-                <td className="px-4 py-2 text-right">{parseFloat(sale.total).toFixed(2).replace(".",",")  || 0}</td>
+              <React.Fragment key={sale.id}>
+                {/* Fila de la Venta */}
+                <tr className={`hover:bg-gray-50 ${saleid === sale.id ? "bg-blue-100" : ""}`}>
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{new Date(sale.fecha).toLocaleDateString()}</td>
+                  <td className="px-4 py-2">{sale.customer?.name || "Sin Cliente"}</td>
+                  <td className="px-4 py-2">{sale.customer?.address || "Sin dirección"}</td>
+                  <td className="px-4 py-2 text-right">
+                    {parseFloat(sale.subtotal || 0).toFixed(2).replace(".", ",")}
+                  </td>
+                  <td className="px-4 py-2 text-right">
+                    {parseFloat(sale.total || 0).toFixed(2).replace(".", ",")}
+                  </td>
+                  <td className="px-4 py-2 flex gap-2">
+                    {/* Botón de Visualización con cambio de color cuando está activo */}
+                    <button
+                      className={`font-bold py-2 px-4 rounded ${
+                        saleid === sale.id
+                          ? "bg-green-600 text-white hover:bg-green-700"
+                          : "bg-blue-500 hover:bg-blue-700 text-white"
+                      }`}
+                      onClick={() => toggleViewLines(sale.id)}
+                    >
+                      <FaEye />
+                    </button>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => navigate(`/print-sale`, { state: sale })}
+                    >
+                      <FaPrint />
+                    </button>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => navigate(`/edit-sale`, { state: sale })}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => handleDelete(sale.id, sale.customer)}
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </td>
+                </tr>
 
-                <td className="px-4 py-2 flex gap-2">
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => {setViewLines(!viewLines); setSaleId(sale.id) }}
-                  >
-                    <FaEye />
-                  </button>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => navigate(`/print-sale`, { state: sale })}
-                  >
-                    <FaPrint />
-                  </button>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => navigate(`/edit-sale`, { state: sale })}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => handleDelete(sale.id, sale.customer)}
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </td>
-                <tr><td>{ viewLines ? <ViewLinesSale venta={sale.id} /> : <></>}</td></tr>
-              </tr>
+                {/* Fila extra para mostrar las líneas de la venta */}
+                {saleid === sale.id && (
+                  <tr>
+                    <td colSpan="7" className="bg-gray-50 p-4 border border-gray-200">
+                      <ViewLinesSale orderlines={sale.orderlines} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
