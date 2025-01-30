@@ -59,13 +59,13 @@ const SalesView = () => {
           {/* Encabezados de la tabla */}
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-3 text-center border-r border-gray-300">#</th>
+              <th className="px-2 py-3 text-center border-r border-gray-300 w-10">#</th>
               <th className="px-4 py-3 text-center border-r border-gray-300">Fecha</th>
-              <th className="px-4 py-3 text-center border-r border-gray-300">Cliente</th>
-              <th className="px-4 py-3 text-center border-r border-gray-300">Dirección</th>
+              <th className="px-4 py-3 text-center border-r border-gray-300 w-1/4">Cliente</th>
+              <th className="px-4 py-3 text-center border-r border-gray-300 w-1/4">Dirección</th>
               <th className="px-4 py-3 text-center border-r border-gray-300">Subtotal</th>
               <th className="px-4 py-3 text-center border-r border-gray-300">Total</th>
-              <th className="px-6 py-3 text-center">Acciones</th>
+              <th className="px-2 py-3 text-center w-28">Acciones</th>
             </tr>
           </thead>
 
@@ -73,17 +73,17 @@ const SalesView = () => {
             {filteredSales?.map((sale, index) => (
               <React.Fragment key={sale.id}>
                 {/* Fila de la Venta */}
-                <tr className="border-b border-gray-300 text-center">
-                  <td className="px-4 py-4">{index + 1}</td>
-                  <td className="px-4 py-4">{new Date(sale.fecha).toLocaleDateString()}</td>
-                  <td className="px-4 py-4">{sale.customer?.name || "Sin Cliente"}</td>
-                  <td className="px-4 py-4">{sale.customer?.address || "Sin dirección"}</td>
-                  <td className="px-4 py-4">{parseFloat(sale.subtotal || 0).toFixed(2).replace(".", ",")}</td>
-                  <td className="px-4 py-4">{parseFloat(sale.total || 0).toFixed(2).replace(".", ",")}</td>
-                  <td className="px-6 py-4 text-center">
+                <tr className="border-b border-gray-300">
+                  <td className="px-2 py-4 text-center">{index + 1}</td>
+                  <td className="px-4 py-4 text-center">{new Date(sale.fecha).toLocaleDateString()}</td>
+                  <td className="px-4 py-4 text-left">{sale.customer?.name || ""}</td>
+                  <td className="px-4 py-4 text-left">{sale.customer?.address || ""}</td>
+                  <td className="px-4 py-4 text-right">{parseFloat(sale.subtotal || 0).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-4 py-4 text-right">{parseFloat(sale.total || 0).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-2 py-4 text-center">
                     <div className="flex justify-center gap-2">
                       <button
-                        className={`font-bold py-2 px-4 rounded ${
+                        className={`font-bold py-2 px-3 rounded ${
                           saleid === sale.id ? "bg-green-600 text-white hover:bg-green-700" : "bg-blue-500 hover:bg-blue-700 text-white"
                         }`}
                         onClick={() => toggleViewLines(sale.id)}
@@ -91,19 +91,19 @@ const SalesView = () => {
                         <FaEye />
                       </button>
                       <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded"
                         onClick={() => navigate(`/print-sale`, { state: sale })}
                       >
                         <FaPrint />
                       </button>
                       <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded"
                         onClick={() => navigate(`/edit-sale`, { state: sale })}
                       >
                         <FaEdit />
                       </button>
                       <button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded"
                         onClick={() => handleDelete(sale.id, sale.customer)}
                       >
                         <FaTrashAlt />
@@ -114,7 +114,7 @@ const SalesView = () => {
 
                 {/* Detalle de la venta */}
                 {saleid === sale.id && (
-                  <tr className="text-center">
+                  <tr>
                     <td colSpan="7" className="bg-gray-50 p-4 border-t border-gray-300">
                       <div className="space-y-1">
                         {sale.orderlines.map((item, idx) => (
