@@ -194,7 +194,7 @@ const ProductsView = () => {
                 </span>
               </th>
               <th className="px-4 py-2 text-center border-r border-gray-300">$</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">$ tarjeta</th>
+              <th className=" py-2 text-center border-r border-gray-300">$ tarjeta</th>
               <th className="px-4 py-2 text-center border-r border-gray-300">Stock</th>
               <th className="px-4 py-2 text-center border-r border-gray-300">Modificado</th>
               <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>

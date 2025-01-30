@@ -60,14 +60,14 @@ const CustomersView = () => {
         <tr>
           <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
           <th className="px-4 py-2 text-center border-r border-gray-300">Nombre</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">cuit</th>
+          {/* <th className="px-4 py-2 text-center border-r border-gray-300">cuit</th> */}
           <th className="px-4 py-2 text-center border-r border-gray-300">Dirección</th>
           <th className="px-4 py-2 text-center border-r border-gray-300">Ciudad</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">Codigo Postal</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">Teléfono</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">Provincia</th>
+          {/* <th className="px-4 py-2 text-center border-r border-gray-300">Codigo Postal</th> */}
+          {/* <th className="px-4 py-2 text-center border-r border-gray-300">Teléfono</th> */}
+          {/* <th className="px-4 py-2 text-center border-r border-gray-300">Provincia</th> */}
           <th className="px-4 py-2 text-center border-r border-gray-300">Email</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">web</th>
+          {/* <th className="px-4 py-2 text-center border-r border-gray-300">web</th> */}
           <th className="px-4 py-2 text-center border-r border-gray-300">Cumpleaños</th>
 
           <th className="px-4 py-2 text-center border-r border-gray-300">Action</th>
@@ -79,14 +79,14 @@ const CustomersView = () => {
           <tr key={customer.id} className="border-b" >
             <td className="px-4 py-2">{customer.id}</td>
             <td className="px-4 py-2">{customer.name}</td>
-            <td className="px-4 py-2">{customer.cuit}</td>
+            {/* <td className="px-4 py-2">{customer.cuit}</td> */}
             <td className="px-4 py-2">{customer.address}</td>
             <td className="px-4 py-2">{customer.city}</td>
-            <td className="px-4 py-2">{customer.postal_code}</td>
-            <td className="px-4 py-2">{customer.phone}</td>
-            <td className="px-4 py-2">{customer.province}</td>
+            {/* <td className="px-4 py-2">{customer.postal_code}</td> */}
+            {/* <td className="px-4 py-2">{customer.phone}</td> */}
+            {/* <td className="px-4 py-2">{customer.province}</td> */}
             <td className="px-4 py-2">{customer.email}</td>
-            <td className="px-4 py-2">{customer.web}</td>
+            {/* <td className="px-4 py-2">{customer.web}</td> */}
             <td className="px-4 py-2">{customer.birthday || 'N/A'}</td> 
 
             

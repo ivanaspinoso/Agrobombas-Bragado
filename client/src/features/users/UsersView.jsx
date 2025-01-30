@@ -57,7 +57,7 @@ const UsersView = () => {
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
               <th className="px-4 py-2 text-center border-r border-gray-300">N</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Id</th>
+              {/* <th className="px-4 py-2 text-center border-r border-gray-300">Id</th> */}
               <th className="px-4 py-2 text-center border-r border-gray-300">Nombre</th>
               {/* <th className="px-4 py-2 text-center border-r border-gray-300">Numero WA - Sync</th> */}
               <th className="px-4 py-2 text-center border-r border-gray-300">Usuario</th>
@@ -72,12 +72,12 @@ const UsersView = () => {
                 return (
                   <tr key={id} className="hover:bg-gray-50 text-left">
                     <th className=" px-4 py-2 text-center">{index + 1}</th>
-                    <th className=" px-4 py-2">{id}</th>
+                    {/* <th className=" px-4 py-2">{id}</th> */}
                     <td className=" px-4 py-2">{name}</td>
                     {/* <td className=" px-4 py-2">{cellphone} - {vinculated === true ? "si" : "no"} </td> */}
                     <td className=" px-4 py-2">{username}</td>
                     {/* <td className=" px-4 py-2">{isAdmin === true ? "si" : "no"}</td> */}
-                    <td className=" px-4 py-2 flex space-x-4 justify-end">
+                    <td className=" px-4 py-2 flex space-x-4 justify-center">
                       <Link to="/edit-user" state={{ id, name, country, username, backwa,  vinculated, qrcode }}>
                         <button className="text-blue-500 hover:text-blue-700" data-tooltip-id="my-tooltip" data-tooltip-content="Editar Usuario">
                           <FaEdit />
