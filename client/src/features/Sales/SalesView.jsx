@@ -48,7 +48,7 @@ const SalesView = () => {
         <h2 className="text-xl font-semibold">Ventas</h2>
         <button
           className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={() => navigate("/sales/add")}
+          onClick={() => navigate("/add-sale")}
         >
           Agregar Venta
         </button>

@@ -18,7 +18,8 @@ router.get("/", (req, res, next) => {
 /*       {
         model: Brand,
         required: true,
-      } */]
+      } */],
+      order: [["name", "ASC"]],
   })
     .then((products) => {
       res.send(products);

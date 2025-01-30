@@ -215,10 +215,10 @@ const ProductsView = () => {
       <td className="px-4 py-2">{product.article}</td>
       <td className="px-4 py-2">{product.description}</td>
       <td className="py-2 text-right">
-        {parseFloat(product.price).toFixed(2).replace(".", ",")}
+        {product.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
       <td className="px-12 py-2 text-right">
-        {parseFloat(product.price2).toFixed(2).replace(".", ",")}
+        {product.price2.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
       <td className="py-2 text-center">{product.stock}</td>
       <td className="px-4 py-2">
