@@ -77,10 +77,10 @@ const SalesView = () => {
                 <tr className="border-b border-gray-300 text-center">
                   <td className="px-4 py-4">{index + 1}</td>
                   <td className="px-4 py-4">{new Date(sale.fecha).toLocaleDateString()}</td>
-                  <td className="px-4 py-4">{sale.customer?.name || "Sin Cliente"}</td>
-                  <td className="px-4 py-4">{sale.customer?.address || "Sin dirección"}</td>
-                  <td className="px-4 py-4">{parseFloat(sale.subtotal || 0).toFixed(2).replace(".", ",")}</td>
-                  <td className="px-4 py-4">{parseFloat(sale.total || 0).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-4 py-4">{sale.customer?.name}</td>
+                  <td className="px-4 py-4">{sale.customer?.address}</td>
+                  <td className="px-4 py-4">{sale.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2}) || "0".toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
+                  <td className="px-4 py-4">{sale.total.toLocaleString(undefined,{minimumFractionDigits: 2}) || "0".toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex justify-center gap-2">
                       <button
@@ -128,18 +128,11 @@ const SalesView = () => {
                             </div>
                             <div className="text-right font-regular flex gap-2">
                               <span className="text-green-600 text-sm">
-<<<<<<< HEAD
-                                <FaDollarSign className="inline-block " /> {item.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                                <FaDollarSign className="inline-block" /> {item.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
                               </span>
                               <span className="text-sm font-medium">
-                              <FaDollarSign className="inline-block " /> {item.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2})}</span>
-=======
-                                <FaDollarSign className="inline-block" /> {parseFloat(item.price).toFixed(2).replace(".", ",")}
+                                <FaDollarSign className="inline-block" /> {item.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2})}
                               </span>
-                              <span className="text-sm font-medium">
-                                <FaDollarSign className="inline-block" /> {parseFloat(item.subtotal).toFixed(2).replace(".", ",")}
-                              </span>
->>>>>>> 4b081fde2870edd882595d3f70a21fbd0cb75654
                             </div>
                           </div>
                         ))}
