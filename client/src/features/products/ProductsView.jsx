@@ -126,9 +126,9 @@ const ProductsView = () => {
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-2 text-left">#</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">#</th>
               <th
-                className="px-4 py-2 text-left cursor-pointer"
+                className="px-4 py-2 text-center border-r border-gray-300 "
                 onClick={() => handleSort("name")}
               >
                 Nombre{" "}
@@ -150,7 +150,7 @@ const ProductsView = () => {
                 </span>
               </th>
               <th
-                className="px-4 py-2 text-left cursor-pointer"
+                className="px-4 py-2 text-center border-r border-gray-300"
                 onClick={() => handleSort("article")}
               >
                 Artículo{" "}
@@ -172,7 +172,7 @@ const ProductsView = () => {
                 </span>
               </th>
               <th
-                className="px-4 py-2 text-left cursor-pointer"
+                className="px-4 py-2 text-center border-r border-gray-300"
                 onClick={() => handleSort("description")}
               >
                 Descripción{" "}
@@ -193,11 +193,11 @@ const ProductsView = () => {
                   />
                 </span>
               </th>
-              <th className="px-4 py-2 text-left">$</th>
-              <th className="px-4 py-2 text-left">$ tarjeta</th>
-              <th className="px-4 py-2 text-left">Stock</th>
-              <th className="px-4 py-2 text-left">Modificado</th>
-              <th className="px-4 py-2 text-left">Acciones</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">$</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">$ tarjeta</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Stock</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Modificado</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">

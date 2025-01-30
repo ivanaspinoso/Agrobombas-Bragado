@@ -79,19 +79,19 @@ const CashflowView = () => {
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">Fecha</th>
-              <th className="px-4 py-2 text-left">Descripción</th>
-              <th className="px-4 py-2 text-left">Ingreso</th>
-              <th className="px-4 py-2 text-left">Egreso</th>
-              <th className="px-4 py-2 text-left">Nota</th>
-              <th className="px-4 py-2 text-left">Acciones</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Fecha</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Descripción</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Ingreso</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Egreso</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Nota</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredCashflows?.map((cf) => (
               <tr key={cf.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{cf.id}</td>
+                <td className="px-4 py-2 text-center">{cf.id}</td>
                 <td className="px-4 py-2">{new Date(cf.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{cf.description}</td>
                 <td className="px-4 py-2 text-right">
@@ -101,7 +101,7 @@ const CashflowView = () => {
                   {parseFloat(cf.outflow).toFixed(2).replace(".", ",")}
                 </td>
                 <td className="px-4 py-2">{cf.note || "-"}</td>
-                <td className="px-4 py-2 flex gap-2">
+                <td className="px-4 py-2 flex gap-2 flex justify-end">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     onClick={() => navigate(`/cashflow/update`, { state: cf })}

@@ -155,11 +155,11 @@ const ContactsView = () => {
         <table className="w-full table-auto">
           <thead className="bg-green-500 text-white">
             <tr>
-              <th className="px-4 py-2 text-left">#</th>
-              <th className="px-4 py-2 text-left">{t('contactsView.name')}</th>
-              <th className="px-4 py-2 text-left">{t('contactsView.group')}</th>
-              <th className="px-4 py-2 text-left">{t('contactsView.wanumber')}</th>
-              <th className="px-4 py-2 text-left">{t('contactsView.actions')}</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">#</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">{t('contactsView.name')}</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">{t('contactsView.group')}</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">{t('contactsView.wanumber')}</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">{t('contactsView.actions')}</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">

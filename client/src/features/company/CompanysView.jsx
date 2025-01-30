@@ -46,18 +46,18 @@ const CompanysView = () => {
       <table className="table-auto w-full mb-10">
         <thead className="bg-[#0e6fa5] text-white">
           <tr>
-            <th className="px-4 py-2 text-left">ID</th>
-            <th className="px-4 py-2 text-left">{t('config.bussiness')}</th>
-            <th className="px-4 py-2 text-left">{t('config.slogan')}</th>
-            <th className="px-4 py-2 text-left">{t('config.action')}</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">{t('config.bussiness')}</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">{t('config.slogan')}</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">{t('config.action')}</th>
           </tr>
         </thead>
         <tbody>
           <tr key={companys.id} className="border-b">
-            <td className="px-4 py-2">{1}</td>
+            <td className="px-4 py-2 text-center">{1}</td>
             <td className="px-4 py-2">{companys.name}</td>
             <td className="px-4 py-2">{companys.address}</td>
-            <td className="px-4 py-2 flex gap-2">
+            <td className="px-4 py-2 flex gap-2 flex justify-end">
               <Link to="/edit-company" state={objCompany}>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
                   <FaEdit />

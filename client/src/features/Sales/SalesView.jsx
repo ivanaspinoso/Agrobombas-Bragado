@@ -127,10 +127,10 @@ const SalesView = () => {
                             </div>
                             <div className="text-right font-regular flex gap-2">
                               <span className="text-green-600 text-sm">
-                                <FaDollarSign className="inline-block" /> {parseFloat(item.price).toFixed(2).replace(".", ",")}
+                                <FaDollarSign className="inline-block" /> {item.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
                               </span>
                               <span className="text-sm font-medium">
-                                <FaDollarSign className="inline-block" /> {parseFloat(item.subtotal).toFixed(2).replace(".", ",")}
+                                <FaDollarSign className="inline-block" /> {item.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2})}
                               </span>
                             </div>
                           </div>

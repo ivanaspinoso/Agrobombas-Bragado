@@ -72,10 +72,10 @@ const GroupsView = () => {
           <table className="w-full table-auto">
             <thead className="bg-[#0e6fa5] text-white">
               <tr>
-                <th className="px-4 py-2 text-left">#</th>
-                <th className="px-4 py-2 text-left">{t('groupView.name')} </th>
-                <th className="px-4 py-2 text-left">Codigo</th>
-                <th className="px-4 py-2 text-left">{t('groupView.actions')}</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">#</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">{t('groupView.name')} </th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Codigo</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">{t('groupView.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -83,19 +83,19 @@ const GroupsView = () => {
                 const { id, code , name } = group;
                 return (
                   <tr key={id}>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 text-center">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                    <td className="px-4 py-2">{name}</td>
+                    <td className="px-4 py-2  ">{name}</td>
                     <td className="px-4 py-2">{code}</td>
-                    <td className="px-4 py-2 flex gap-2">
+                    <td className="px-4 py-2 flex gap-2 flex justify-end">
                       <Link to={`/edit-group`} state={{ id,name, code }}>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " >
                           <FaEdit />
                         </button>
                       </Link>
                       <button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
                         onClick={() => handleDelete(id, name)}
                       >
                         <FaTrashAlt />

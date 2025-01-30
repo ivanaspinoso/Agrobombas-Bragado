@@ -79,21 +79,21 @@ const FamiliesView = () => {
           <table className="w-full table-auto">
             <thead className="bg-[#0e6fa5] text-white">
               <tr>
-                <th className="px-4 py-2 text-left">#</th>
-                <th className="px-4 py-2 text-left">{t("name")}</th>
-                <th className="px-4 py-2 text-left">{t("description")}</th>
-                <th className="px-4 py-2 text-left">{t("actions")}</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">#</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">{t("name")}</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">{t("description")}</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">{t("actions")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {paginatedFamilies.map((family, index) => (
                 <tr key={family.id}>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 text-center">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
                   <td className="px-4 py-2">{family.name}</td>
                   <td className="px-4 py-2">{family.description}</td>
-                  <td className="px-4 py-2 flex gap-2">
+                  <td className="px-4 py-2 flex gap-2 flex justify-end">
                     <Link
                       to={`/edit-families`}
                       state={{

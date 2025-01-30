@@ -58,19 +58,19 @@ const CustomersView = () => {
         <table className="table-auto w-full mb-10">
         <thead className="bg-[#0e6fa5] text-white">
         <tr>
-          <th className="px-4 py-2 text-left">ID</th>
-          <th className="px-4 py-2 text-left">Nombre</th>
-          <th className="px-4 py-2 text-left">cuit</th>
-          <th className="px-4 py-2 text-left">Dirección</th>
-          <th className="px-4 py-2 text-left">Ciudad</th>
-          <th className="px-4 py-2 text-left">Codigo Postal</th>
-          <th className="px-4 py-2 text-left">Teléfono</th>
-          <th className="px-4 py-2 text-left">Provincia</th>
-          <th className="px-4 py-2 text-left">Email</th>
-          <th className="px-4 py-2 text-left">web</th>
-          <th className="px-4 py-2 text-left">Cumpleaños</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Nombre</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">cuit</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Dirección</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Ciudad</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Codigo Postal</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Teléfono</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Provincia</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Email</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">web</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Cumpleaños</th>
 
-          <th className="px-4 py-2 text-left">Action</th>
+          <th className="px-4 py-2 text-center border-r border-gray-300">Action</th>
         </tr>
       </thead>
       <tbody>

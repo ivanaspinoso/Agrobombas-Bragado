@@ -114,19 +114,19 @@ const CaccountsView = () => {
       <table className="w-full table-auto border border-gray-200">
         <thead className="bg-[#0e6fa5] text-white">
           <tr>
-            <th className="px-4 py-2 text-left">ID</th>
-            <th className="px-4 py-2 text-left">Fecha</th>
-            <th className="px-4 py-2 text-left">Descripción</th>
-            <th className="px-4 py-2 text-left">Debe</th>
-            <th className="px-4 py-2 text-left">Paga</th>
-            <th className="px-4 py-2 text-center">Acciones</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">Fecha</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">Descripción</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">Debe</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">Paga</th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {customerId && caccounts?.length > 0 ? (
             caccounts.map((caccount1) => (
               <tr key={caccount1.id} className="border-b">
-                <td className="px-4 py-2">{caccount1.id}</td>
+                <td className="px-4 py-2 text-center">{caccount1.id}</td>
                 <td className="px-4 py-2">{new Date(caccount1.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{caccount1.description}</td>
                 <td className="px-4 py-2 text-right">
