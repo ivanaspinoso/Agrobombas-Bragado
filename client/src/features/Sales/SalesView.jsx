@@ -76,8 +76,8 @@ const SalesView = () => {
                   <td className="px-4 py-2">{new Date(sale.fecha).toLocaleDateString()}</td>
                   <td className="px-4 py-2">{sale.customer?.name || "Sin Cliente"}</td>
                   <td className="px-4 py-2">{sale.customer?.address || "Sin dirección"}</td>
-                  <td className="px-4 py-2 text-right">{parseFloat(sale.subtotal || 0).toFixed(2).replace(".", ",")}</td>
-                  <td className="px-4 py-2 text-right">{parseFloat(sale.total || 0).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-4 py-2 text-right">{parseFloat(sale.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2}) || 0).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-4 py-2 text-right">{parseFloat(sale.total.toLocaleString(undefined,{minimumFractionDigits: 2}) || 0).toFixed(2).replace(".", ",")}</td>
                   <td className="px-6 py-2 text-right"> {/* Alineado a la derecha */}
                     <div className="flex justify-end gap-2"> {/* Botones empujados a la derecha */}
                       <button
@@ -127,10 +127,10 @@ const SalesView = () => {
                             </div>
                             <div className="text-right font-regular flex gap-2">
                               <span className="text-green-600 text-sm">
-                                <FaDollarSign className="inline-block " /> {parseFloat(item.price).toFixed(2).replace(".", ",")}
+                                <FaDollarSign className="inline-block " /> {item.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
                               </span>
                               <span className="text-sm font-medium">
-                              <FaDollarSign className="inline-block " /> {parseFloat(item.subtotal).toFixed(2).replace(".", ",")}</span>
+                              <FaDollarSign className="inline-block " /> {item.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2})}</span>
                             </div>
                           </div>
                         ))}
