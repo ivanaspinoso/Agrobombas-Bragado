@@ -67,7 +67,7 @@ router.get("/saldobycusto/:customer", /* validateToken, */ async (req, res) => {
 
     try {
         let getAllCashflow = await Caccounts.findAll({
-            where: {customerId: customer},
+            where: {client_asoc: customer},
             attributes: [
                 [fn('SUM', col('income')), 'ingreso'],
                 [fn('SUM', col('outflow')), 'egreso'],
@@ -75,7 +75,9 @@ router.get("/saldobycusto/:customer", /* validateToken, */ async (req, res) => {
               ],        
             });
         let importe = Object.values(getAllCashflow[0].dataValues) // getAllCashflow.ingreso - getAllCashflow.egreso
+        console.log(getAllCashflow)
         let saldo = importe[0] - importe[1]
+
         let saldado 
         if (saldo === 0) saldado = "saldado"
         else if (saldo >= 0) saldado = "deudor"
@@ -207,6 +209,7 @@ router.post("/add", async (req, res) => {
         // envio los datos al modelo sequelize para que los guarde en la database
         let newCaccounts = await Caccounts.create(objCaccounts);
         // si todo sale bien devuelvo el objeto agregado
+        await newCaccounts.setCustomer(client_asoc); 
         console.log("Objeto de movimiento de caja guardado");
         if (parseFloat(objCaccounts.outflow) > 0) {
             let objCashflow = {

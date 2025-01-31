@@ -93,12 +93,12 @@ export const delCashflowEndpoint = REACT_APP_API + 'cashflows/delete/';
 export const salCashflowEndpoint = REACT_APP_API + 'cashflows/saldo';
 
 // caccounts
-export const allCaccountflowEndpoint = REACT_APP_API + 'caccounts';
-export const cusCaccountflowEndpoint = REACT_APP_API + 'caccounts/bycustomer/';
-export const addCaccountflowEndpoint = REACT_APP_API + 'caccounts/add';
-export const updCaccountflowEndpoint = REACT_APP_API + 'caccounts/update/';
-export const delCaccountflowEndpoint = REACT_APP_API + 'caccounts/delete/';
-export const salCaccountflowEndpoint = REACT_APP_API + 'caccounts/saldobycusto/';
+export const allCaccountEndpoint = REACT_APP_API + 'caccounts';
+export const cusCaccountEndpoint = REACT_APP_API + 'caccounts/bycustomer/';
+export const addCaccountEndpoint = REACT_APP_API + 'caccounts/add';
+export const updCaccountEndpoint = REACT_APP_API + 'caccounts/update/';
+export const delCaccountEndpoint = REACT_APP_API + 'caccounts/delete/';
+export const salCaccountEndpoint = REACT_APP_API + 'caccounts/saldobycusto/';
 
 // receipts
 

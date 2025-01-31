@@ -103,7 +103,7 @@ const CaccountsView = () => {
         <div className="mb-4 flex justify-end">
           <button
             className="px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            onClick={() => navigate(`/caccounts/add/${customerId}`)}
+            onClick={() => navigate(`/add-caccount`,{state: customerId})} ///${customerId}
           >
             Agregar Movimiento
           </button>
@@ -140,7 +140,7 @@ const CaccountsView = () => {
                     <button
                       className="text-blue-500 hover:text-blue-700"
                       title="Editar"
-                      onClick={() => navigate(`/caccounts/edit/${caccount1.id}`)}
+                      onClick={() => navigate(`/edit-caccount`)} ///${caccount1.id}
                     >
                       <FaEdit />
                     </button>

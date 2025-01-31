@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AddCashflow = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const login = useSelector((state) => state.usersReducer.login);
   
     const schema = Yup.object().shape({
       date: Yup.date().required("La fecha es requerida"),
@@ -49,7 +50,7 @@ const AddCashflow = () => {
                 income: values.income > 0 ? values.income : null,
                 outflow: values.outflow > 0 ? values.outflow : null,
                 note: values.note || null,
-                user_asoc: 1, 
+                user_asoc: login.id, 
               };
             console.log(dataToSend)
             try {

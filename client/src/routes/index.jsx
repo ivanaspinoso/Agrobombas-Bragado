@@ -46,6 +46,8 @@ import AddSales from "../features/Sales/AddSales.jsx";
 import CaccountsView from "../features/Caccounts/CaccountsView.jsx";
 import SalePrint from "../features/Sales/SalePrint.jsx";
 import SaleEdit from "../features/Sales/EditSale.jsx";
+import AddCaccount from "../features/Caccounts/AddCaccount.jsx";
+import EditCaccount from "../features/Caccounts/EditCaccount.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -118,7 +120,8 @@ const Index = () => {
 
           {/* Rutas para cuentas corrientes */}
           <Route path="/show-caccounts" element={<CaccountsView />} />
-     
+          <Route path="/add-caccount" element={<AddCaccount />} />
+          <Route path="/edit-caccount" element={<EditCaccount />} />
 
           <Route path="/show-receipts" element={<Next />} />
 
