@@ -83,7 +83,7 @@ const Index = () => {
           <Route path="/edit-customers" element={<EditCustomers />} />
 
           {/* Rutas para movimientos de caja */}    
-          <Route path="/sended-messages" element={<CashflowView />} />
+          <Route path="/show-cashflows" element={<CashflowView />} />
           <Route path="/add-cashflow" element={<AddCashflow />} />
           <Route path="/edit-cashflow" element={<EditCashflow />} />
           <Route path="/edit-message" element={<EditMessage />} />

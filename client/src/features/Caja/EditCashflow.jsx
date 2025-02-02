@@ -75,25 +75,18 @@ const EditCashflow = () => {
           console.log("Payload enviado:", cashflowData);
 
           console.log("Datos a enviar para actualizar:", cashflowData);
-
-          try {
             await dispatch(updateCashflowById(cashflowData));
+            const success = JSON.parse(
+              localStorage.getItem("cashflowUpdated")
+            );         
+            if (success === true) {  
             Swal.fire({
               title: "Genial!",
               text: "Movimiento modificado exitosamente!",
               icon: "success",
             }).then(() => {
-              navigate("/sended-messages", { replace: true });
-            });
-          } catch (error) {
-            Swal.fire({
-              title: "Error",
-              text: "Hubo un problema al actualizar el movimiento",
-              icon: "error",
-            });
-          } finally {
-            setSubmitting(false);
-          }
+              navigate("/show-cashflows", { replace: true });
+            });} else {Swal.fire("Error",success,"error")}
         }}
       >
         {({ errors, touched }) => (

@@ -81,25 +81,25 @@ const CashflowView = () => {
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Ingresos:</strong>{" "}
               <span className="text-green-600">
-                ${parseFloat(saldoscash?.ingresos).toFixed(2)}
+                $ {saldoscash?.ingresos === null ? "0,00" : saldoscash?.ingresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Egresos:</strong>{" "}
               <span className="text-red-600">
-                ${parseFloat(saldoscash?.egresos).toFixed(2)}
+                $ {saldoscash?.egresos === null ? "0,00" : saldoscash?.egresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Saldo:</strong>{" "}
               <span
                 className={`${
-                  parseFloat(saldoscash?.saldo) >= 0
+                  saldoscash?.balance === "positivo"
                     ? "text-green-600"
                     : "text-red-600"
                 }`}
               >
-                ${parseFloat(saldoscash?.saldo || 0).toFixed(2)}
+                $ {saldoscash?.saldo === null ? "0,00" : saldoscash?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
           </div>
@@ -150,12 +150,12 @@ const CashflowView = () => {
                 </td>
                 <td className="px-4 py-2">{cf.description}</td>
                 <td className="px-4 py-2 text-right">
-                  {parseFloat(cf.income).toFixed(2).replace(".", ",")}
+                  {cf.income === null ? "0,00" : cf.income.toLocaleString(undefined,{minimumFractionDigits: 2})}
                 </td>
                 <td className="px-4 py-2 text-right">
-                  {parseFloat(cf.outflow).toFixed(2).replace(".", ",")}
+                  {cf.outflow === null ? "0,00" : cf.outflow.toLocaleString(undefined,{minimumFractionDigits: 2})}
                 </td>
-                <td className="px-4 py-2">{cf.note || "-"}</td>
+                <td className="px-4 py-2">{cf.note}</td>
                 <td className="px-4 py-2 flex gap-2 flex justify-end">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

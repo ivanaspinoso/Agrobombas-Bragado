@@ -78,8 +78,8 @@ const SalesView = () => {
                   <td className="px-4 py-2 text-center">{new Date(sale.fecha).toLocaleDateString()}</td>
                   <td className="px-4 py-2 text-left">{sale.customer?.name || ""}</td>
                   <td className="px-4 py-2 text-left">{sale.customer?.address || ""}</td>
-                  <td className="px-4 py-2 text-right">{parseFloat(sale.subtotal || 0).toFixed(2).replace(".", ",")}</td>
-                  <td className="px-4 py-2 text-right">{parseFloat(sale.total || 0).toFixed(2).replace(".", ",")}</td>
+                  <td className="px-4 py-2 text-right">{sale.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
+                  <td className="px-4 py-2 text-right">{sale.total.toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
                   <td className="px-2 py-2 text-center">
                     <div className="flex justify-center gap-2">
                       <button

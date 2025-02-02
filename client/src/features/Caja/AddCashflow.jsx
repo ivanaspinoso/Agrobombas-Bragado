@@ -53,8 +53,12 @@ const AddCashflow = () => {
                 user_asoc: login.id, 
               };
             console.log(dataToSend)
-            try {
+
               await dispatch(addNewCashflow(dataToSend));
+              const success = JSON.parse(
+                localStorage.getItem("cashflowAdded")
+              );
+              if (success === true) {
               Swal.fire({
                 title: "Movimiento agregado con éxito",
                 text: "¿Desea agregar otro movimiento?",
@@ -66,19 +70,10 @@ const AddCashflow = () => {
                 if (result.isConfirmed) {
                   resetForm();
                 } else {
-                  navigate("/sended-messages");
+                  navigate("/show-cashflows");
                 }
-              });
-            } catch (error) {
-              console.error("Error al agregar movimiento:", error.response?.data || error.message);
-              Swal.fire({
-                title: "Error",
-                text: error.response?.data?.message || "Hubo un problema al agregar el movimiento",
-                icon: "error",
-              });
-            } finally {
+              })} else {Swal.fire("Error",success,"error")}
               setSubmitting(false);
-            }
           }}
         >
           {({ errors, touched }) => (

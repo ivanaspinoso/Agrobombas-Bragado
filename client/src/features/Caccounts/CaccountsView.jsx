@@ -59,19 +59,19 @@ const CaccountsView = () => {
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Debe:</strong>{" "}
               <span className="text-red-600">
-                ${parseFloat(saldoscac?.debe || 0).toFixed(2)}
+                ${!saldoscac?.debe || saldoscac?.debe === null ? "0,00" : saldoscac?.debe.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Paga:</strong>{" "}
               <span className="text-green-600">
-                ${parseFloat(saldoscac?.paga || 0).toFixed(2)}
+                ${!saldoscac?.debe || saldoscac?.paga === null ? "0,00" : saldoscac?.paga.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Saldo:</strong>{" "}
-              <span className={`${parseFloat(saldoscac?.saldo || 0) >= 0 ? "text-green-600" : "text-red-600"}`}>
-                ${parseFloat(saldoscac?.saldo || 0).toFixed(2)}
+              <span className={`${saldoscac?.saldado != "deudor" ? "text-green-600" : "text-red-600"}`}>
+                ${!saldoscac?.debe || saldoscac?.saldo === null ? "0,00" : saldoscac?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
           </div>
@@ -130,10 +130,10 @@ const CaccountsView = () => {
                 <td className="px-4 py-2">{new Date(caccount1.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{caccount1.description}</td>
                 <td className="px-4 py-2 text-right">
-                  {parseFloat(caccount1.income).toFixed(2).replace(".", ",")}
+                  {!caccount1.income || caccount1.income === null ? "0,00" : caccount1.income.toLocaleString(undefined,{minimumFractionDigits: 2})}
                 </td>
                 <td className="px-4 py-2 text-right">
-                  {parseFloat(caccount1.outflow).toFixed(2).replace(".", ",")}
+                  {!caccount1.outflow || caccount1.outflow === null ? "0,00" : caccount1.outflow.toLocaleString(undefined,{minimumFractionDigits: 2})}
                 </td>
                 <td className="px-4 py-2 text-center">
                   <div className="flex justify-center space-x-2">

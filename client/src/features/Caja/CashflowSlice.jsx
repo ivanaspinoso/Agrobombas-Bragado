@@ -71,7 +71,9 @@ export const addNewCashflow = (cashflow) => async (dispatch) => {
     dispatch(addCashflow(data));
     dispatch(fetchAllCashflows());
 
+    localStorage.setItem("cashflowAdded", JSON.stringify(true));
   } catch (error) {
+      localStorage.setItem("cashflowAdded", JSON.stringify(error?.response?.data?.message));
     console.error("Error al agregar movimiento de caja:", error);
   }
 };
@@ -82,7 +84,9 @@ export const updateCashflowById = (cashflow) => async (dispatch) => {
     const { data } = await axios.put(updCashflowEndpoint, cashflow);
     dispatch(updateCashflow(data));
     dispatch(fetchAllCashflows());
+    localStorage.setItem("cashflowUpdated", JSON.stringify(true));
   } catch (error) {
+      localStorage.setItem("cashflowUpdated", JSON.stringify(error?.response?.data?.message));
     console.error("Error al actualizar movimiento de caja:", error.response?.data || error.message);
     throw error;
   }

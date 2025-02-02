@@ -101,7 +101,7 @@ const Navbar = () => {
               </Link>
               <Link
                 className="text-white hover:text-gray-300 transition duration-300"
-                to="/sended-messages"
+                to="/show-cashflows"
               >
                 {t("navbar.sent")}
               </Link>
