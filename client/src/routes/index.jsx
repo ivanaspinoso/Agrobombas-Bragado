@@ -84,8 +84,8 @@ const Index = () => {
 
           {/* Rutas para movimientos de caja */}    
           <Route path="/sended-messages" element={<CashflowView />} />
-          <Route path="/cashflow/add" element={<AddCashflow />} />
-          <Route path="/cashflow/update" element={<EditCashflow />} />
+          <Route path="/add-cashflow" element={<AddCashflow />} />
+          <Route path="/edit-cashflow" element={<EditCashflow />} />
           <Route path="/edit-message" element={<EditMessage />} />
 
           {/* Rutas para grupos? */}

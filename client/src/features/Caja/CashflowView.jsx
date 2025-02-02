@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCashflows, deleteCashflowById, obtenerSaldo } from "./CashflowSlice";
+import {
+  fetchAllCashflows,
+  deleteCashflowById,
+  obtenerSaldo,
+  getSaldo,
+} from "./CashflowSlice";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
@@ -22,18 +27,43 @@ const CashflowView = () => {
     fetchData();
   }, [dispatch]);
 
-  const handleDelete = (id, description) => {
-    Swal.fire({
-      title: `¿Desea eliminar el movimiento: ${description}?`,
-      showDenyButton: true,
-      confirmButtonText: "Sí",
-      denyButtonText: "No",
-      icon: "warning",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await dispatch(deleteCashflowById(id));
-      }
-    });
+  const handleDelete = (id, description, vta, mov) => {
+    console.log(vta, mov);
+    {
+      (vta === null || vta === undefined) && (mov === null || mov === undefined)
+        ? Swal.fire({
+            title: `¿Desea eliminar el movimiento: ${description}?`,
+            showDenyButton: true,
+            confirmButtonText: "Sí",
+            denyButtonText: "No",
+            icon: "warning",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              await dispatch(deleteCashflowById(id));
+
+              const success = JSON.parse(
+                localStorage.getItem("cashflowDeleted")
+              );
+              if (success === true) {
+                Swal.fire(
+                  "Eliminado",
+                  "El movimiento ha sido eliminado correctamente.",
+                  "success"
+                );
+                await dispatch(obtenerSaldo())
+              } else {
+                Swal.fire("Error", success, "error");
+              }
+            }
+          })
+        : Swal.fire(
+            "Movimiento asociado",
+            "No se puede eliminar movimiento: " +
+              description +
+              ". Asociado a venta o movimiento de cuenta",
+            "error"
+          );
+    }
   };
 
   const filteredCashflows = cashflows?.filter((cf) =>
@@ -43,25 +73,34 @@ const CashflowView = () => {
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
-      <h2 className="text-2xl font-semibold">Movimientos de Caja</h2>
+        <h2 className="text-2xl font-semibold">Movimientos de Caja</h2>
 
         <div>
-
           {/* Contenedor de Saldos Mejorado */}
           <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8 mt-2">
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Ingresos:</strong>{" "}
-              <span className="text-green-600">${parseFloat(saldoscash?.ingresos).toFixed(2)}</span>
+              <span className="text-green-600">
+                ${parseFloat(saldoscash?.ingresos).toFixed(2)}
+              </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Egresos:</strong>{" "}
-              <span className="text-red-600">${parseFloat(saldoscash?.egresos).toFixed(2)}</span>
+              <span className="text-red-600">
+                ${parseFloat(saldoscash?.egresos).toFixed(2)}
+              </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Saldo:</strong>{" "}
-              <span className={`${parseFloat(saldoscash?.saldo) >= 0 ? "text-green-600" : "text-red-600"}`}>
-      ${parseFloat(saldoscash?.saldo || 0).toFixed(2)}
-    </span>
+              <span
+                className={`${
+                  parseFloat(saldoscash?.saldo) >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                ${parseFloat(saldoscash?.saldo || 0).toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
@@ -69,7 +108,7 @@ const CashflowView = () => {
         {/* Mantiene el botón en su lugar original */}
         <button
           className="ml-2 px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={() => navigate("/cashflow/add")}
+          onClick={() => navigate("/add-cashflow")}
         >
           Agregar Movimiento
         </button>
@@ -79,20 +118,36 @@ const CashflowView = () => {
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Fecha</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Descripción</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Ingreso</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Egreso</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Nota</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                #
+              </th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                Fecha
+              </th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                Descripción
+              </th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                Ingreso
+              </th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                Egreso
+              </th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                Nota
+              </th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredCashflows?.map((cf) => (
               <tr key={cf.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 text-center">{cf.id}</td>
-                <td className="px-4 py-2">{new Date(cf.date).toLocaleDateString()}</td>
+                <td className="px-4 py-2">
+                  {new Date(cf.date).toLocaleDateString()}
+                </td>
                 <td className="px-4 py-2">{cf.description}</td>
                 <td className="px-4 py-2 text-right">
                   {parseFloat(cf.income).toFixed(2).replace(".", ",")}
@@ -104,13 +159,20 @@ const CashflowView = () => {
                 <td className="px-4 py-2 flex gap-2 flex justify-end">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => navigate(`/cashflow/update`, { state: cf })}
+                    onClick={() => navigate(`/edit-cashflow`, { state: cf })}
                   >
                     <FaEdit />
                   </button>
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => handleDelete(cf.id, cf.description)}
+                    onClick={() =>
+                      handleDelete(
+                        cf.id,
+                        cf.description,
+                        cf.vta_asoc,
+                        cf.mov_asoc
+                      )
+                    }
                   >
                     <FaTrashAlt />
                   </button>

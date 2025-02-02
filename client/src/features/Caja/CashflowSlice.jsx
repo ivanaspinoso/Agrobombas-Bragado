@@ -93,7 +93,9 @@ export const deleteCashflowById = (id) => async (dispatch) => {
   try {
     await axios.delete(delCashflowEndpoint + id);
     dispatch(deleteCashflow(id));
+    localStorage.setItem("cashflowDeleted", JSON.stringify(true));
   } catch (error) {
+      localStorage.setItem("cashflowDeleted", JSON.stringify(error?.response?.data?.message));
     console.error("Error al eliminar movimiento de caja:", error);
   }
 };
