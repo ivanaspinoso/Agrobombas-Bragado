@@ -237,6 +237,7 @@ export const logOut = () => async (dispatch) => {
     await dispatch({ type: "caccounts/logOutSaldo", payload: [] });
 
     await dispatch({ type: "sales/logoutSales", payload: [] });
+    await (localStorage.clear()) //vacio storagelocal de ABMs
     console.log("saliendo");
   } catch (err) {
     console.log(err);

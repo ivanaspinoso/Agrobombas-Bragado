@@ -27,6 +27,7 @@ import { getAllUsers } from '../../app/actions/users';
 // import { getAllProducts } from '../../app/actions/products';
 import { getAllProducts } from '../../app/actions/products';
 import { getAllCustomers } from '../../features/customers/CustomerSlice';
+import { fetchAllCashflows } from '../../features/Caja/CashflowSlice';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -91,15 +92,15 @@ const Main = () => {
         } else {
           console.error('No products available');
         }
-        // 👇 la desactivo, porque obtiene prooductos de messages ???
+        // 👇 la activo, para obtenes cashflows
 
-        /*         const productsResponse = await dispatch(getAllMessagess());
-                if (productsResponse && productsResponse.data.messages) {
-                  console.log('Empresa data:', productsResponse.data.messages);
+                 const cashflowResponse = await dispatch(fetchAllCashflows());
+                if (cashflowResponse && cashflowResponse.data.messages) {
+                  console.log('Empresa data:', cashflowResponse.data.messages);
                 } else {
                   console.error('No config family available');
                 }
-         */
+        
 
         // 👇 la desactivo, porque obtiene prooductos de messages ???
 

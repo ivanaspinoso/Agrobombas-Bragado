@@ -81,13 +81,13 @@ const CashflowView = () => {
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Ingresos:</strong>{" "}
               <span className="text-green-600">
-                $ {saldoscash?.ingresos === null ? "0,00" : saldoscash?.ingresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                $ {!saldoscash?.ingresos || saldoscash?.ingresos === null ? "0,00" : saldoscash?.ingresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Egresos:</strong>{" "}
               <span className="text-red-600">
-                $ {saldoscash?.egresos === null ? "0,00" : saldoscash?.egresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                $ {!saldoscash?.egresos || saldoscash?.egresos === null ? "0,00" : saldoscash?.egresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
@@ -99,7 +99,7 @@ const CashflowView = () => {
                     : "text-red-600"
                 }`}
               >
-                $ {saldoscash?.saldo === null ? "0,00" : saldoscash?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                $ {!saldoscash?.saldo || saldoscash?.saldo === null ? "0,00" : saldoscash?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
           </div>
