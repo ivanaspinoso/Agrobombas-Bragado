@@ -9,16 +9,16 @@ import { getAllCategories } from '../../app/actions/categories';
 // import { getAllUsers, getQRUser, userUpdateAdm } from '../../app/actions/users';
 // import { getUserReceipts } from '../../app/actions/receipts';
 // import Spinner from '../spinner';
-import contacto from '../../assets/images/empresa.jpg';
+import contacto from '../../assets/images/empresa_optimizada.webp';
 // import reloj from '../../assets/images/reloj.jpg';
-import receipts from '../../assets/images/usuarios12.jpg';
-import ventas from '../../assets/images/ventas.jpg'
-import rubros from '../../assets/images/rubros.jpg';
-import proveedores from '../../assets/images/proveedores1234.jpg';
-import clients from '../../assets/images/ventas12.jpg';
-import articulos from "../../assets/images/proveedores12.jpg";
-import registrodepagos from '../../assets/images/registrodepagos.jpg'
-import transacciones from '../../assets/images/transacciones.jpg'
+import receipts from '../../assets/images/usuarios12_optimizada.webp';
+import ventas from '../../assets/images/ventas_optimizada.webp'
+import rubros from '../../assets/images/rubros_optimizada.webp';
+import proveedores from '../../assets/images/proveedores1234_optimizada.webp';
+import clients from '../../assets/images/ventas12_optimizada.webp';
+import articulos from "../../assets/images/proveedores12_optimizada.webp";
+import registrodepagos from '../../assets/images/registrodepagos_optimizada.webp'
+import transacciones from '../../assets/images/transacciones_optimizada.webp'
 // import autoreplys from "../../assets/images/autoreply.jpg";
 // import bots from "../../assets/images/botswapp.webp";
 // import { ImCross } from "react-icons/im";
