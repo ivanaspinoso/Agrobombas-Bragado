@@ -1,6 +1,6 @@
 var express = require("express");
 
-const { Caccounts, Cashflow } = require("../models/index");
+const { Caccounts, Cashflow, Customer } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
 
@@ -13,6 +13,7 @@ router.get("/", /* validateToken, */ async (req, res) => {
     try {
         let getAllCaccounts = await Caccounts.findAll({
             order: [["date", "ASC"]],
+
         });
         console.log(getAllCaccounts)
         return res.send(getAllCaccounts);
@@ -61,27 +62,89 @@ router.get("/bycustomer/:customer", /* validateToken, */ async (req, res) => {
     }
 });
 
+
+// group: ['field']
+
+//Obtener todos las saldos de los clientes del sistema
+router.get("/allcaccounts", /* validateToken, */ async (req, res) => {
+    try {
+        let getAllCashflow = await Caccounts.findAll({
+
+            include: [
+                {
+                    model: Customer,
+                    required: true,
+                },
+            ],
+            attributes: [
+                [fn('SUM', col('income')), 'debe'],
+                [fn('SUM', col('outflow')), 'paga'],
+/*                 [fn('SUM', col('debe') - col('paga')), 'saldo'] */
+
+            ], group: ['customer.id', "client_asoc"],
+        });
+        alldeudor = []
+        getAllCashflow.map((custo,index) => {
+            let importe = Object.values(getAllCashflow[index].dataValues) // getAllCashflow.ingreso - getAllCashflow.egreso
+            let saldo = importe[0] - importe[1]
+            let namecusto = custo.customer.name
+            let salcus = {
+                name: namecusto,
+                saldo: saldo,
+                debe: importe[0],
+                paga: importe[1]
+            }
+            if (salcus.saldo > 0) alldeudor.push(salcus)
+            console.log(saldo,namecusto)
+        })
+/*         let objAllUsers = getAllCashflow.filter((custosal, index) => {
+            
+        })
+ */
+        alldeudor.sort( compare ); // del que más debe, al que menos
+        return res.send(alldeudor);
+
+    } catch (err) {
+        return res.send({
+            message: "No se pudieron obtener clientes" + err,
+        });
+    }
+});
+
+function compare( a, b ) {
+    if ( a.saldo > b.saldo ){
+      return -1;
+    }
+    if ( a.saldo < b.saldo ){
+      return 1;
+    }
+    return 0;
+  }
+  
+//  objs.sort( compare );
+
+
 //Obtener todos las movimientos de un cliente
 router.get("/saldobycusto/:customer", /* validateToken, */ async (req, res) => {
     const { customer } = req.params
 
     try {
         let getAllCashflow = await Caccounts.findAll({
-            where: {client_asoc: customer},
+            where: { client_asoc: customer },
             attributes: [
                 [fn('SUM', col('income')), 'ingreso'],
                 [fn('SUM', col('outflow')), 'egreso'],
                 //[fn('SUM', parseFloat(col('income')) - parseFloat(col('outflow'))), 'saldo']
-              ],        
-            });
+            ],
+        });
         let importe = Object.values(getAllCashflow[0].dataValues) // getAllCashflow.ingreso - getAllCashflow.egreso
         console.log(getAllCashflow)
         let saldo = importe[0] - importe[1]
 
-        let saldado 
+        let saldado
         if (saldo === 0) saldado = "saldado"
         else if (saldo >= 0) saldado = "deudor"
-        else  saldado = "acreedor"
+        else saldado = "acreedor"
         console.log("A ver:", importe, saldo)
         objCaja = {
             debe: importe[0],
@@ -91,15 +154,15 @@ router.get("/saldobycusto/:customer", /* validateToken, */ async (req, res) => {
         }
         return res.send(objCaja);
 
-/* 
-        let getAllCaccounts = await Caccounts.findAll({
-            order: [["date", "ASC"]],
-            where: {
-                client_asoc: customer
-            }
-        });
-        console.log(getAllCaccounts)
-        return res.send(getAllCaccounts); */
+        /* 
+                let getAllCaccounts = await Caccounts.findAll({
+                    order: [["date", "ASC"]],
+                    where: {
+                        client_asoc: customer
+                    }
+                });
+                console.log(getAllCaccounts)
+                return res.send(getAllCaccounts); */
     } catch (err) {
         return res.send({
             message: "No se pudieron obtener clientes" + err,
@@ -209,7 +272,7 @@ router.post("/add", async (req, res) => {
         // envio los datos al modelo sequelize para que los guarde en la database
         let newCaccounts = await Caccounts.create(objCaccounts);
         // si todo sale bien devuelvo el objeto agregado
-        await newCaccounts.setCustomer(client_asoc); 
+        await newCaccounts.setCustomer(client_asoc);
         console.log("Objeto de movimiento de caja guardado");
         if (parseFloat(objCaccounts.outflow) > 0) {
             let objCashflow = {
