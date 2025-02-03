@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { REACT_APP_API } from "../../app/consts/consts";
-import { deleteCaccount, deleteCaccountById, fetchAllCaccounts, obtenerSaldo } from "./CaccountsSlice";
+import { deleteCaccountById, fetchAllCaccounts, obtenerSaldo } from "./CaccountsSlice";
 
 const CaccountsView = () => {
   const dispatch = useDispatch();
@@ -15,23 +15,25 @@ const CaccountsView = () => {
   const customers = useSelector((state) => state.customersReducer.customers);
 
   const [customerId, setCustomerId] = useState(null);
-  const [showSaldo, setShowSaldo] = useState(false); // Nuevo estado para ocultar los saldos
+  const [showSaldo, setShowSaldo] = useState(false);
+  const [allCustomersBalance, setAllCustomersBalance] = useState([]); // Estado para saldos generales
 
   useEffect(() => {
-    // ⬇️ Rerefactorizar por su action
-    const fetchCustomers = async () => {
+    // Cargar el resumen de cuentas cuando no hay cliente seleccionado
+    const fetchAllCustomersBalance = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API}customers`);
-        setCustomerId(response.data);
+        const response = await axios.get(`${REACT_APP_API}caccounts/allcaccounts`);
+        setAllCustomersBalance(response.data);
       } catch (error) {
-        Swal.fire("Error", "No se pudo cargar la lista de clientes", "error");
+        Swal.fire("Error", "No se pudo obtener el resumen de cuentas", "error");
         console.error(error);
       }
     };
-    // 🔼 Rerefactorizar por su action
 
-    fetchCustomers();
-  }, []);
+    if (!customerId) {
+      fetchAllCustomersBalance();
+    }
+  }, [customerId]);
 
   useEffect(() => {
     if (customerId) {
@@ -39,54 +41,49 @@ const CaccountsView = () => {
       dispatch(obtenerSaldo(customerId));
       setShowSaldo(true);
     } else {
-      setShowSaldo(false); // Oculta los saldos si no hay cliente seleccionado
+      setShowSaldo(false);
     }
   }, [customerId, dispatch]);
 
   const handleCustomerChange = (event) => {
     const selectedId = event.target.value;
     setCustomerId(selectedId || null);
-    setShowSaldo(selectedId ? true : false); // Muestra los saldos solo si hay un cliente
+    setShowSaldo(!!selectedId);
   };
 
-   const handleDelete = (id, description, vta, client) => {
-      console.log(vta);
-      {
-        (vta === null || vta === undefined) ? Swal.fire({
-              title: `¿Desea eliminar el movimiento: ${description}?`,
-              showDenyButton: true,
-              confirmButtonText: "Sí",
-              denyButtonText: "No",
-              icon: "warning",
-            }).then(async (result) => {
-              if (result.isConfirmed) {
-                await dispatch(deleteCaccountById(id));
-  
-                const success = JSON.parse(
-                  localStorage.getItem("caccountDeleted")
-                );
-                if (success === true) {
-                  Swal.fire(
-                    "Eliminado",
-                    "El movimiento ha sido eliminado correctamente.",
-                    "success"
-                  );
-                  await dispatch(obtenerSaldo(client))
-                } else {
-                  Swal.fire("Error", success, "error");
-                }
-              }
-            })
-          : Swal.fire(
-              "Movimiento asociado",
-              "No se puede eliminar movimiento: " +
-                description +
-                ". Asociado a venta o movimiento de cuenta",
-              "error"
-            );
-      }
-    };
-  
+  const handleDelete = (id, description, vta, client) => {
+    console.log(vta);
+    (vta === null || vta === undefined) ? Swal.fire({
+          title: `¿Desea eliminar el movimiento: ${description}?`,
+          showDenyButton: true,
+          confirmButtonText: "Sí",
+          denyButtonText: "No",
+          icon: "warning",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            await dispatch(deleteCaccountById(id));
+
+            const success = JSON.parse(localStorage.getItem("caccountDeleted"));
+            if (success === true) {
+              Swal.fire(
+                "Eliminado",
+                "El movimiento ha sido eliminado correctamente.",
+                "success"
+              );
+              await dispatch(obtenerSaldo(client));
+            } else {
+              Swal.fire("Error", success, "error");
+            }
+          }
+        })
+      : Swal.fire(
+        "Movimiento asociado",
+        "No se puede eliminar movimiento: " +
+          description +
+          ". Asociado a venta o movimiento de cuenta",
+        "error"
+      );
+  };
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -100,13 +97,13 @@ const CaccountsView = () => {
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Debe:</strong>{" "}
               <span className="text-red-600">
-                ${!saldoscac?.debe || saldoscac?.debe === null ? "0,00" : saldoscac?.debe.toLocaleString(undefined,{minimumFractionDigits: 2})}
+              ${!saldoscac?.debe || saldoscac?.debe === null ? "0,00" : saldoscac?.debe.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Paga:</strong>{" "}
               <span className="text-green-600">
-                ${!saldoscac?.debe || saldoscac?.paga === null ? "0,00" : saldoscac?.paga.toLocaleString(undefined,{minimumFractionDigits: 2})}
+              ${!saldoscac?.debe || saldoscac?.paga === null ? "0,00" : saldoscac?.paga.toLocaleString(undefined,{minimumFractionDigits: 2})}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
@@ -139,7 +136,7 @@ const CaccountsView = () => {
         </div>
       </div>
 
-      {/* Botón de agregar movimiento, alineado a la derecha */}
+{/* Botón de agregar movimiento, alineado a la derecha */}
       {customerId && (
         <div className="mb-4 flex justify-end">
           <button
@@ -149,56 +146,73 @@ const CaccountsView = () => {
             Agregar Movimiento
           </button>
         </div>
-      )}
-
-      {/* Tabla de movimientos */}
-      <table className="w-full table-auto border border-gray-200">
+      )}     
+      
+     <table className="w-full table-auto border border-gray-200">
         <thead className="bg-[#0e6fa5] text-white">
           <tr>
-            <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
-            <th className="px-4 py-2 text-center border-r border-gray-300">Fecha</th>
-            <th className="px-4 py-2 text-center border-r border-gray-300">Descripción</th>
-            <th className="px-4 py-2 text-center border-r border-gray-300">Debe</th>
-            <th className="px-4 py-2 text-center border-r border-gray-300">Paga</th>
-            <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
+            {customerId ? (
+              <>
+                <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Fecha</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Descripción</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Debe</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Paga</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
+              </>
+            ) : (
+              <>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Cliente</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Debe</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Paga</th>
+                <th className="px-4 py-2 text-center border-r border-gray-300">Saldo</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
-          {customerId && caccounts?.length > 0 ? (
-            caccounts.map((caccount1) => (
-              <tr key={caccount1.id} className="border-b">
-                <td className="px-4 py-2 text-center">{caccount1.id}</td>
-                <td className="px-4 py-2">{new Date(caccount1.date).toLocaleDateString()}</td>
-                <td className="px-4 py-2">{caccount1.description}</td>
+          {customerId ? (
+            caccounts?.length > 0 ? (
+              caccounts.map((caccount) => (
+                <tr key={caccount.id} className="border-b">
+                  <td className="px-4 py-2 text-center">{caccount.id}</td>
+                  <td className="px-4 py-2">{new Date(caccount.date).toLocaleDateString()}</td>
+                  <td className="px-4 py-2">{caccount.description}</td>
+                  <td className="px-4 py-2 text-right">
+                  {!caccount.income || caccount.income === null ? "0,00" : caccount.income.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                </td>             
                 <td className="px-4 py-2 text-right">
-                  {!caccount1.income || caccount1.income === null ? "0,00" : caccount1.income.toLocaleString(undefined,{minimumFractionDigits: 2})}
-                </td>
-                <td className="px-4 py-2 text-right">
-                  {!caccount1.outflow || caccount1.outflow === null ? "0,00" : caccount1.outflow.toLocaleString(undefined,{minimumFractionDigits: 2})}
-                </td>
-                <td className="px-4 py-2 text-center">
+                  {!caccount.outflow || caccount.outflow === null ? "0,00" : caccount.outflow.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                </td>                 
+                 <td className="px-4 py-2 text-center">
                   <div className="flex justify-center space-x-2">
-                    <button
+
+                  <button
                       className="text-blue-500 hover:text-blue-700"
                       title="Editar"
-                      onClick={() => navigate(`/edit-caccount`, { state: caccount1 })} ///${caccount1.id}
+                      onClick={() => navigate(`/edit-caccount`, { state: caccount })} ///${caccount1.id}
                     >
                       <FaEdit />
                     </button>
                     <button className="text-red-500 hover:text-red-700" title="Eliminar"
-                    onClick={() => handleDelete(caccount1.id,caccount1.description,caccount1.vta_asoc,caccount1.client_asoc)}>
+                      onClick={() => handleDelete(caccount.id, caccount.description, caccount.vta_asoc, caccount.client_asoc)}>
                       <FaTrashAlt />
                     </button>
-                  </div>
-                </td>
+                    </div>
+
+                  </td>
+                </tr>
+              ))
+            ) : <tr><td colSpan="6" className="px-4 py-2 text-center text-gray-500 ">No hay movimientos.</td></tr>
+          ) : (
+            allCustomersBalance.map((customer, index) => (
+              <tr key={index}>
+                <td>{customer.name}</td>
+                <td className="text-red-600">${customer.debe}</td>
+                <td className="text-green-600">${customer.paga}</td>
+                <td>${customer.saldo}</td>
               </tr>
             ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="px-4 py-2 text-center text-gray-500">
-                {customerId ? "No hay movimientos disponibles para este cliente." : "Seleccione un cliente para ver los movimientos."}
-              </td>
-            </tr>
           )}
         </tbody>
       </table>
