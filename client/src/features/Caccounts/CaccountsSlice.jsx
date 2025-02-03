@@ -5,6 +5,7 @@ import axios from "axios";
 import {
   addCaccountEndpoint,
   cusCaccountEndpoint,
+  delCaccountEndpoint,
   salCaccountEndpoint,
   updCaccountEndpoint,
 } from "../../app/consts/consts";
@@ -96,5 +97,17 @@ export const editCaccounts = (move) => async (dispatch) => {
   } catch (error) {
       localStorage.setItem("caccountAdded", JSON.stringify(error?.response?.data?.message));
     console.error("Error al obtener las cuentas del cliente:", error.message);
+  }
+};
+
+
+export const deleteCaccountById = (id) => async (dispatch) => {
+  try {
+    await axios.delete(delCaccountEndpoint + id);
+    dispatch(deleteCaccount(id));
+    localStorage.setItem("caccountDeleted", JSON.stringify(true));
+  } catch (error) {
+      localStorage.setItem("caccountDeleted", JSON.stringify(error?.response?.data?.message));
+    console.error("Error al eliminar movimiento de cuenta:", error);
   }
 };

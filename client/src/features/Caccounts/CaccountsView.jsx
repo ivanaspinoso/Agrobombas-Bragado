@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { REACT_APP_API } from "../../app/consts/consts";
-import { fetchAllCaccounts, obtenerSaldo } from "./CaccountsSlice";
+import { deleteCaccount, deleteCaccountById, fetchAllCaccounts, obtenerSaldo } from "./CaccountsSlice";
 
 const CaccountsView = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,7 @@ const CaccountsView = () => {
   const [showSaldo, setShowSaldo] = useState(false); // Nuevo estado para ocultar los saldos
 
   useEffect(() => {
+    // ⬇️ Rerefactorizar por su action
     const fetchCustomers = async () => {
       try {
         const response = await axios.get(`${REACT_APP_API}customers`);
@@ -27,6 +28,7 @@ const CaccountsView = () => {
         console.error(error);
       }
     };
+    // 🔼 Rerefactorizar por su action
 
     fetchCustomers();
   }, []);
@@ -46,6 +48,45 @@ const CaccountsView = () => {
     setCustomerId(selectedId || null);
     setShowSaldo(selectedId ? true : false); // Muestra los saldos solo si hay un cliente
   };
+
+   const handleDelete = (id, description, vta, client) => {
+      console.log(vta);
+      {
+        (vta === null || vta === undefined) ? Swal.fire({
+              title: `¿Desea eliminar el movimiento: ${description}?`,
+              showDenyButton: true,
+              confirmButtonText: "Sí",
+              denyButtonText: "No",
+              icon: "warning",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                await dispatch(deleteCaccountById(id));
+  
+                const success = JSON.parse(
+                  localStorage.getItem("caccountDeleted")
+                );
+                if (success === true) {
+                  Swal.fire(
+                    "Eliminado",
+                    "El movimiento ha sido eliminado correctamente.",
+                    "success"
+                  );
+                  await dispatch(obtenerSaldo(client))
+                } else {
+                  Swal.fire("Error", success, "error");
+                }
+              }
+            })
+          : Swal.fire(
+              "Movimiento asociado",
+              "No se puede eliminar movimiento: " +
+                description +
+                ". Asociado a venta o movimiento de cuenta",
+              "error"
+            );
+      }
+    };
+  
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -140,11 +181,12 @@ const CaccountsView = () => {
                     <button
                       className="text-blue-500 hover:text-blue-700"
                       title="Editar"
-                      onClick={() => navigate(`/edit-caccount`)} ///${caccount1.id}
+                      onClick={() => navigate(`/edit-caccount`, { state: caccount1 })} ///${caccount1.id}
                     >
                       <FaEdit />
                     </button>
-                    <button className="text-red-500 hover:text-red-700" title="Eliminar">
+                    <button className="text-red-500 hover:text-red-700" title="Eliminar"
+                    onClick={() => handleDelete(caccount1.id,caccount1.description,caccount1.vta_asoc,caccount1.client_asoc)}>
                       <FaTrashAlt />
                     </button>
                   </div>

@@ -21,6 +21,7 @@ const EditCaccount = () => {
     income,
     outflow,
     note,
+    vta_asoc
   } = location.state || {};
 
   const initialValues = {
@@ -29,6 +30,7 @@ const EditCaccount = () => {
     income: income || "",
     outflow: outflow || "",
     note: note || "",
+    vta_asoc,
   };
 
   const schema = Yup.object().shape({
@@ -123,7 +125,7 @@ const EditCaccount = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
                 <label htmlFor="income" className="block text-gray-700 text-sm font-bold mb-2">
-                  Ingreso
+                  Debe
                 </label>
                 <Field
                   name="income"
@@ -134,7 +136,7 @@ const EditCaccount = () => {
               </div>
               <div>
                 <label htmlFor="outflow" className="block text-gray-700 text-sm font-bold mb-2">
-                  Egreso
+                  Paga
                 </label>
                 <Field
                   name="outflow"
@@ -157,13 +159,22 @@ const EditCaccount = () => {
                 className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
               />
             </div>
-
+            {!vta_asoc || vta_asoc === undefined ? (
+              <button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0b5a85] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Guardar Cambios
+              </button>
+            ) : (
+              <>No se puede editar venta asociada</>
+            )}{/* 
             <button
               type="submit"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0b5a85] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Guardar Cambios
-            </button>
+            </button> */}
           </Form>
         )}
       </Formik>

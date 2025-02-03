@@ -223,7 +223,7 @@ const Main = () => {
             className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white p-4 m-2 flex flex-col items-center border border-gray-200"
             style={{ minWidth: '400px' }}
           >
-            <img className="w-full h-48 object-cover mb-4 rounded-md" src={item.src} alt={item.title} />
+            <img className="w-full h-48 object-cover mb-4 rounded-md" src={item.src} alt={item.title} loading='lazy'/>
             <div className="w-full px-4 text-center">
               <h5 className="font-bold text-lg mb-1 text-[#0e6fa5]">{item.title}</h5>
               <p className="text-[gray-700] text-base mb-4">{item.text}</p>

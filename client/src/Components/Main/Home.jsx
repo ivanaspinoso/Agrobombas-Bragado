@@ -23,6 +23,7 @@ const Home = () => {
                 className="w-[300px] md:w-[400px] mx-auto"
                 src={logoagb}
                 alt="Agrobombas Bragado"
+                loading="lazy"
             />
             <br />
             <div className="my-6">
