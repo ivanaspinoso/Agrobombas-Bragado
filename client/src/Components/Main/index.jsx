@@ -9,14 +9,16 @@ import { getAllCategories } from '../../app/actions/categories';
 // import { getAllUsers, getQRUser, userUpdateAdm } from '../../app/actions/users';
 // import { getUserReceipts } from '../../app/actions/receipts';
 // import Spinner from '../spinner';
-import contacto from '../../assets/images/contactos.jpg';
-import mensaje from '../../assets/images/mensajes.jpg';
+import contacto from '../../assets/images/empresa.jpg';
 // import reloj from '../../assets/images/reloj.jpg';
-import receipts from '../../assets/images/recibidos.avif';
-import config from '../../assets/images/configuracion.webp';
-import proveedores from '../../assets/images/proveedores1.jpg';
-import clientes from '../../assets/images/clientes.jpg';
-import enviados from "../../assets/images/whatsapp-enviado.webp";
+import receipts from '../../assets/images/usuarios12.jpg';
+import ventas from '../../assets/images/ventas.jpg'
+import rubros from '../../assets/images/rubros.jpg';
+import proveedores from '../../assets/images/proveedores1234.jpg';
+import clients from '../../assets/images/ventas12.jpg';
+import articulos from "../../assets/images/proveedores12.jpg";
+import registrodepagos from '../../assets/images/registrodepagos.jpg'
+import transacciones from '../../assets/images/transacciones.jpg'
 // import autoreplys from "../../assets/images/autoreply.jpg";
 // import bots from "../../assets/images/botswapp.webp";
 // import { ImCross } from "react-icons/im";
@@ -172,14 +174,14 @@ const Main = () => {
 
   const menuItems = [
     { src: proveedores, title: t("main.contactGroup"), text: t("main.contactGroupDescription"), link: '/show-groups' },
-    { src: config, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
-    { src: mensaje, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
-    { src: clientes, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
-    { src: config, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
-    { src: enviados, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
-    { src: receipts, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
+    { src: rubros, title: t("main.families"), text: t("main.familiesDescription"), link: '/show-families?' },
+    { src: articulos, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
+    { src: clients, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
+    { src: ventas, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
+    { src: transacciones, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
+    { src: registrodepagos, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
     ...(login.isAdmin && login.username !== "mostrador" ? [
-      { src: config, title: t("main.users"), text: t("main.usersDescription"), link: '/show-users?' },
+      { src: receipts, title: t("main.users"), text: t("main.usersDescription"), link: '/show-users?' },
       { src: contacto, title: t("main.contact"), text: t("main.contactDescription"), link: '/show-companys' },
     ] : [])
   ];
