@@ -186,8 +186,9 @@ const EditCashflow = () => {
                 Guardar Cambios
               </button>
             ) : (
-              <>No se puede editar venta/mov cuenta asociado</>
-            )}
+               <div className="mt-2 p-3 text-red-700 bg-red-100  rounded-lg font-semibold text-center">
+              No se puede editar venta/mov cuenta asociado
+            </div>            )}
           </Form>
         )}
       </Formik>

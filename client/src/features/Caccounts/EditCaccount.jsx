@@ -160,14 +160,17 @@ const EditCaccount = () => {
               />
             </div>
             {!vta_asoc || vta_asoc === undefined ? (
+              
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0b5a85] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Guardar Cambios
               </button>
-            ) : (
-              <>No se puede editar venta asociada</>
+              ) : (
+              <div className="mt-2 p-3 text-red-700 bg-red-100  rounded-lg font-semibold text-center">
+              No se puede editar venta asociada
+            </div>
             )}{/* 
             <button
               type="submit"
