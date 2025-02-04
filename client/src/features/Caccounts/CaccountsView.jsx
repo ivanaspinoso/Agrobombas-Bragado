@@ -16,10 +16,9 @@ const CaccountsView = () => {
 
   const [customerId, setCustomerId] = useState(null);
   const [showSaldo, setShowSaldo] = useState(false);
-  const [allCustomersBalance, setAllCustomersBalance] = useState([]); // Estado para saldos generales
+  const [allCustomersBalance, setAllCustomersBalance] = useState([]);
 
   useEffect(() => {
-    // Cargar el resumen de cuentas cuando no hay cliente seleccionado
     const fetchAllCustomersBalance = async () => {
       try {
         const response = await axios.get(`${REACT_APP_API}caccounts/allcaccounts`);
@@ -84,29 +83,27 @@ const CaccountsView = () => {
         "error"
       );
   };
-//
+
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
-      {/* Encabezado: Título, Selector y Saldo alineado */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Movimientos por Cliente</h2>
 
-        {/* Contenedor de Saldos (Se oculta si no hay cliente seleccionado) */}
         {showSaldo && (
           <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8">
-            <div className="text-lg font-semibold text-gray-600 text-center">
+            <div className="text-lg font-semibold text-gray-600 text-right">
               <strong>Debe:</strong>{" "}
               <span className="text-red-600">
               ${!saldoscac?.debe || saldoscac?.debe === null ? "0,00" : saldoscac?.debe.toLocaleString(undefined,{minimumFractionDigits: 2})}
-              </span>
-            </div>
-            <div className="text-lg font-semibold text-gray-600 text-center">
+              </span>            
+              </div>
+            <div className="text-lg font-semibold text-gray-600 text-right">
               <strong>Paga:</strong>{" "}
               <span className="text-green-600">
               ${!saldoscac?.debe || saldoscac?.paga === null ? "0,00" : saldoscac?.paga.toLocaleString(undefined,{minimumFractionDigits: 2})}
-              </span>
-            </div>
-            <div className="text-lg font-semibold text-gray-600 text-center">
+              </span>            
+              </div>
+            <div className="text-lg font-semibold text-gray-600 text-right">
               <strong>Saldo:</strong>{" "}
               <span className={`${saldoscac?.saldado != "deudor" ? "text-green-600" : "text-red-600"}`}>
                 ${!saldoscac?.debe || saldoscac?.saldo === null ? "0,00" : saldoscac?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
@@ -115,7 +112,6 @@ const CaccountsView = () => {
           </div>
         )}
 
-        {/* Selector de Cliente */}
         <div className="flex items-center gap-4">
           <label htmlFor="customer-select" className="text-lg font-bold uppercase">
             Seleccionar Cliente:
@@ -136,7 +132,6 @@ const CaccountsView = () => {
         </div>
       </div>
 
-{/* Botón de agregar movimiento, alineado a la derecha */}
       {customerId && (
         <div className="mb-4 flex justify-end">
           <button
@@ -146,9 +141,9 @@ const CaccountsView = () => {
             Agregar Movimiento
           </button>
         </div>
-      )}     
-      
-     <table className="w-full table-auto border border-gray-200">
+      )}
+
+      <table className="w-full table-auto border border-gray-200">
         <thead className="bg-[#0e6fa5] text-white">
           <tr>
             {customerId ? (
@@ -156,16 +151,16 @@ const CaccountsView = () => {
                 <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
                 <th className="px-4 py-2 text-center border-r border-gray-300">Fecha</th>
                 <th className="px-4 py-2 text-center border-r border-gray-300">Descripción</th>
-                <th className="px-4 py-2 text-center border-r border-gray-300">Debe</th>
-                <th className="px-4 py-2 text-center border-r border-gray-300">Paga</th>
+                <th className="px-4 py-2 text-right border-r border-gray-300">Debe</th>
+                <th className="px-4 py-2 text-right border-r border-gray-300">Paga</th>
                 <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
               </>
             ) : (
               <>
                 <th className="px-4 py-2 text-center border-r border-gray-300">Cliente</th>
-                <th className="px-4 py-2 text-center border-r border-gray-300">Debe</th>
-                <th className="px-4 py-2 text-center border-r border-gray-300">Paga</th>
-                <th className="px-4 py-2 text-center border-r border-gray-300">Saldo</th>
+                <th className="px-4 py-2 text-right border-r border-gray-300">Debe</th>
+                <th className="px-4 py-2 text-right border-r border-gray-300">Paga</th>
+                <th className="px-4 py-2 text-right border-r border-gray-300">Saldo</th>
               </>
             )}
           </tr>
@@ -180,37 +175,41 @@ const CaccountsView = () => {
                   <td className="px-4 py-2">{caccount.description}</td>
                   <td className="px-4 py-2 text-right">
                   {!caccount.income || caccount.income === null ? "0,00" : caccount.income.toLocaleString(undefined,{minimumFractionDigits: 2})}
-                </td>             
+                </td>    
                 <td className="px-4 py-2 text-right">
                   {!caccount.outflow || caccount.outflow === null ? "0,00" : caccount.outflow.toLocaleString(undefined,{minimumFractionDigits: 2})}
-                </td>                 
+                </td>                    
                  <td className="px-4 py-2 text-center">
-                  <div className="flex justify-center space-x-2">
-
-                  <button
-                      className="text-blue-500 hover:text-blue-700"
-                      title="Editar"
-                      onClick={() => navigate(`/edit-caccount`, { state: caccount })} ///${caccount1.id}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button className="text-red-500 hover:text-red-700" title="Eliminar"
+                    <div className="flex justify-center space-x-2">
+                      <button
+                        className="text-blue-500 hover:text-blue-700"
+                        title="Editar"
+                        onClick={() => navigate(`/edit-caccount`, { state: caccount })} ///${caccount1.id}
+                        >
+                        <FaEdit />
+                      </button>
+                      <button className="text-red-500 hover:text-red-700" title="Eliminar"
                       onClick={() => handleDelete(caccount.id, caccount.description, caccount.vta_asoc, caccount.client_asoc)}>
-                      <FaTrashAlt />
-                    </button>
+                        <FaTrashAlt />
+                      </button>
                     </div>
-
                   </td>
                 </tr>
               ))
-            ) : <tr><td colSpan="6" className="px-4 py-2 text-center text-gray-500 ">No hay movimientos.</td></tr>
+            ) : (
+              <tr>
+                <td colSpan="6" className="px-4 py-2 text-center text-gray-500">
+                  No hay movimientos.
+                </td>
+              </tr>
+            )
           ) : (
             allCustomersBalance.map((customer, index) => (
               <tr key={index}>
                 <td>{customer.name}</td>
-                <td className="text-red-600">${customer.debe}</td>
-                <td className="text-green-600">${customer.paga}</td>
-                <td>${customer.saldo}</td>
+                <td className="text-right text-red-600">${customer.debe}</td>
+                <td className="text-right text-green-600">${customer.paga}</td>
+                <td className="text-right">${customer.saldo}</td>
               </tr>
             ))
           )}
