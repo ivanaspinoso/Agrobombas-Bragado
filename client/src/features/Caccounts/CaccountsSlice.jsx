@@ -91,11 +91,11 @@ export const addNewCaccounts = (move) => async (dispatch) => {
 
 export const editCaccounts = (move) => async (dispatch) => {
   try {
-    const { data } = await axios.put(`${updCaccountEndpoint},${move}`);
+    const { data } = await axios.put(updCaccountEndpoint,move);
     dispatch(addCaccount(data));
-    localStorage.setItem("caccountAdded", JSON.stringify(true));
+    localStorage.setItem("caccountUpdated", JSON.stringify(true));
   } catch (error) {
-      localStorage.setItem("caccountAdded", JSON.stringify(error?.response?.data?.message));
+      localStorage.setItem("caccountUpdated", JSON.stringify(error?.response?.data?.message));
     console.error("Error al obtener las cuentas del cliente:", error.message);
   }
 };
