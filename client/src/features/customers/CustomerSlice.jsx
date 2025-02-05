@@ -68,20 +68,22 @@ export const addNewCustomer = (customer) => async (dispatch) => {
   try {
     const { data } = await axios.post(addCustomerEndpoint, customer);
     dispatch(addCustomer(data));
-  } catch (error) {
-    console.error("Error adding customer:", error);
+    localStorage.setItem("customerAdded",JSON.stringify(true));
+  } catch (err) {
+    localStorage.setItem("customerAdded", JSON.stringify(err?.response?.data?.message));
+    console.error("Error adding customer:", err);
   }
 };
 
 // Función asíncrona para actualizar un cliente
 export const updateCustomerDetails = (customer) => async (dispatch) => {
   try {
-    const { data } = await axios.put(`${updateCustomerEndpoint}${customer.id}`, customer);
+    const { data } = await axios.put(`${updateCustomerEndpoint}`, customer);
     dispatch(updateCustomer(data));
-    return { success: true };
-  } catch (error) {
-    console.error("Error updating customer:", error);
-    return { success: false, error: error.message };
+    localStorage.setItem("customerUpdated",JSON.stringify(true));
+  } catch (err) {
+    localStorage.setItem("customerUpdated", JSON.stringify(err?.response?.data?.message));
+    console.error("Error updating customer:", err);
   }
 };
 
@@ -90,12 +92,10 @@ export const customersDelete = (id) => async (dispatch) => {
   try {
     await axios.delete(`${deleteCustomerEndpoint}${id}`);
     dispatch(deleteCustomer(id)); // Actualiza el estado de Redux
-    localStorage.setItem("customersDeleted", true);
+    localStorage.setItem("customerDeleted",JSON.stringify(true));
   } catch (err) {
-    localStorage.setItem("customersDeleted", false);
+    localStorage.setItem("customerDeleted", JSON.stringify(err?.response?.data?.message));
     console.error("Error al eliminar familia:", err?.response?.data?.message || err.message);
-    // Puedes mostrar una alerta con el error
-    swal.fire("Error!", err?.response?.data?.message || err.message, "error");
   }
 };
 
