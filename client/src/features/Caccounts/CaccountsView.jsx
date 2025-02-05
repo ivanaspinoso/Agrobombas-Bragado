@@ -207,9 +207,9 @@ const CaccountsView = () => {
             allCustomersBalance.map((customer, index) => (
               <tr key={index}>
                 <td>{customer.name}</td>
-                <td className="text-right text-red-600">${customer.debe}</td>
-                <td className="text-right text-green-600">${customer.paga}</td>
-                <td className="text-right">${customer.saldo}</td>
+                <td className="text-right text-red-600">${!customer.debe || customer.debe === null ? "0,00" : customer.debe.toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
+                <td className="text-right text-green-600">${!customer.paga || customer.paga === null ? "0,00" : customer.paga.toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
+                <td className="text-right">${!customer.saldo || customer.saldo === null ? "0,00" : customer.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
               </tr>
             ))
           )}

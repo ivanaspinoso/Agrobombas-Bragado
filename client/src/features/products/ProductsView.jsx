@@ -193,7 +193,8 @@ const ProductsView = () => {
                   />
                 </span>
               </th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">$</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">$ s/IVA</th>
+              <th className="px-4 py-2 text-center border-r border-gray-300">$ c/IVA</th>
               <th className=" py-2 text-center border-r border-gray-300">$ tarjeta</th>
               <th className="px-4 py-2 text-center border-r border-gray-300">Stock</th>
               <th className="px-4 py-2 text-center border-r border-gray-300">Modificado</th>
@@ -215,10 +216,13 @@ const ProductsView = () => {
       <td className="px-4 py-2">{product.article}</td>
       <td className="px-4 py-2">{product.description}</td>
       <td className="py-2 text-right">
-        {product.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
+        {!product.price3 || product.price3 === null ? "0,00" : product.price3.toLocaleString(undefined,{minimumFractionDigits: 2})}
+      </td>
+      <td className="py-2 text-right">
+        {!product.price || product.price === null ? "0,00" : product.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
       <td className="px-12 py-2 text-right">
-        {product.price2.toLocaleString(undefined,{minimumFractionDigits: 2})}
+        {!product.price2 || product.price2 === null ? "0,00" : product.price2.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
       <td className="py-2 text-center">{product.stock}</td>
       <td className="px-4 py-2">

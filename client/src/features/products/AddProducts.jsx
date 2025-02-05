@@ -21,6 +21,8 @@ const AddProducts = () => {
 
   const [price, setPrice] = useState(0)
   const [pricetarjeta, setPriceTarjeta] = useState(0)
+  const [price3, setPrice3] = useState(0)
+
   const [costoprod, setCostoProd] = useState(0)
   const [porcentaje, setPorcentaje] = useState(0)
   const [porcenTarje, setPorcenTarje] = useState(0)
@@ -58,7 +60,11 @@ const AddProducts = () => {
     var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
     var siniva = costo * (percent / 100) + costo 
     var precio = siniva * (iva21 / 100) + siniva
-    setPrice(precio)
+    setPrice(Math.round(precio * 100) / 100)
+    setPrice3(Math.round(siniva * 100) / 100)
+    var percenTarje = document.getElementsByName('price1')[0].value === null ? 0 : parseFloat(document.getElementsByName('price1')[0].value);
+    var precioTarje = price * (percenTarje / 100)  + parseFloat(price)
+    setPriceTarjeta(Math.round(precioTarje * 100) / 100)
  }
 
  const onChangePercentT = () => {
@@ -70,7 +76,7 @@ const AddProducts = () => {
   var precio = siniva * (iva21 / 100) + siniva */
   var precioTarje = price * (percenTarje / 100)  + parseFloat(price)
   console.log(price, percenTarje / 100)
-  setPriceTarjeta(precioTarje)
+  setPriceTarjeta(Math.round(precioTarje * 100) / 100)
 }
 
 
@@ -92,6 +98,7 @@ const AddProducts = () => {
             cost: values.cost,
             percent: values.percent,
             price: price,
+            price3: price3,
             iva21: values.iva21,
             iva10: values.iva10,
             price1: values.price1,
@@ -207,6 +214,11 @@ const AddProducts = () => {
               <div>
                 <label htmlFor="price2" className="block text-gray-700 text-sm font-bold mb-2">Precio Tarjeta 2</label>
                 <Field name="price2" type="number" value={pricetarjeta} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPriceTarjeta(e.target.value)}/>
+                {errors.price2 && <p className="text-red-500 text-xs italic">{errors.price2}</p>}
+              </div>
+              <div>
+                <label htmlFor="price3" className="block text-gray-700 text-sm font-bold mb-2">Precio s/Iva</label>
+                <Field name="price3" type="number" value={price3} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPrice3(e.target.value)}/>
                 {errors.price2 && <p className="text-red-500 text-xs italic">{errors.price2}</p>}
               </div>
             </div>

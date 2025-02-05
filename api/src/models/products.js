@@ -36,6 +36,9 @@ module.exports = function (sequelize) {
         price2: {
             type: DataTypes.FLOAT,
         },
+        price3: {
+            type: DataTypes.FLOAT,
+        },
         iva10: {
             type: DataTypes.FLOAT,
         },

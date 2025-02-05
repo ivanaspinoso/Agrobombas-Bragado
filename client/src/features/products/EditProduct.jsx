@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
@@ -28,12 +28,14 @@ const EditProduct = () => {
     iva21,
     price1,
     price2,
+    price3,
     prov_code,
     families,
   } = location.state || {};
 
-  const [price0, setPrice0] = useState(price)
-  const [pricetarjeta, setPriceTarjeta] = useState(price2)
+  const [price0, setPrice0] = useState(price);
+  const [pricetarjeta, setPriceTarjeta] = useState(price2);
+  const [pricesi, setPriceSI] = useState(price3);
 
   const login = useSelector((state) => state.usersReducer.login);
   const providers = useSelector((state) => state.groupsReducer.groups);
@@ -49,17 +51,19 @@ const EditProduct = () => {
     description: description || "",
     article: article || "",
     stock: stock || "",
-    cost: cost || "",
-    percent: percent || "",
-    price: price || "",
+    cost: cost || 0,
+    percent: percent || 0,
+    price: price || 0,
     iva21: iva21 || 21,
-    price1: price1 || "",
-    price2: price2 || "",
+    price1: price1 || 0,
+    price2: price2 || 0,
+    price3: price3 || 0,
     prov_code: prov_code || "",
-    families: families?.map((family) =>
-      typeof family === "object" ? family.id : family
-    ) || [],
-      };
+    families:
+      families?.map((family) =>
+        typeof family === "object" ? family.id : family
+      ) || [],
+  };
 
   const schema = Yup.object().shape({
     name: Yup.string().optional(),
@@ -83,30 +87,42 @@ const EditProduct = () => {
       setLoadingFamilies("families", validFamilies);
     }
   }, [setLoadingFamilies, familyOptions, initialValues.families]);
-  
-  
-  const onChangePercent = () => {
-    var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
-    var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value);
-    var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
-    var siniva = costo * (percent / 100) + costo 
-    var precio = siniva * (iva21 / 100) + siniva
-    setPrice0(precio)
- }
 
- const onChangePercentT = () => {
-/*   var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
+  const onChangePercent = () => {
+    var costo =
+      document.getElementsByName("cost")[0].value === null
+        ? 0
+        : parseFloat(document.getElementsByName("cost")[0].value);
+    var percent =
+      document.getElementsByName("percent")[0].value === null
+        ? 0
+        : parseFloat(document.getElementsByName("percent")[0].value);
+    var iva21 =
+      document.getElementsByName("iva21")[0].value === null
+        ? 0
+        : parseFloat(document.getElementsByName("iva21")[0].value);
+    var siniva = costo * (percent / 100) + costo;
+    var precio = siniva * (iva21 / 100) + siniva;
+    setPrice0(Math.round(precio * 100) / 100)
+    setPriceSI(Math.round(siniva * 100) / 100)
+    // setPrice0(precio);
+  };
+
+  const onChangePercentT = () => {
+    /*   var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
   var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value); */
-  var percenTarje = document.getElementsByName('price1')[0].value === null ? 0 : parseFloat(document.getElementsByName('price1')[0].value); //price1 se usa para porcentaje tarjeta
-  /* var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
+    var percenTarje =
+      document.getElementsByName("price1")[0].value === null
+        ? 0
+        : parseFloat(document.getElementsByName("price1")[0].value); //price1 se usa para porcentaje tarjeta
+    /* var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
   var siniva = costo * (percent / 100) + costo 
   var precio = siniva * (iva21 / 100) + siniva */
-  var precioTarje = price0 * (percenTarje / 100)  + parseFloat(price0)
-  console.log(price0, percenTarje / 100)
-  setPriceTarjeta(precioTarje)
-}
+    var precioTarje = price0 * (percenTarje / 100) + parseFloat(price0);
+    console.log(price0, percenTarje / 100);
+    setPriceTarjeta(Math.round(precioTarje * 100) / 100);
+  };
 
-  
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
@@ -122,20 +138,21 @@ const EditProduct = () => {
             description: values.description,
             article: values.article,
             stock: parseInt(values.stock, 10),
-            cost: parseFloat(values.cost), 
-            percent: parseFloat(values.percent), 
+            cost: parseFloat(values.cost),
+            percent: parseFloat(values.percent),
             price: parseFloat(price0),
-            price1: parseFloat(values.price1), 
-            price2: parseFloat(pricetarjeta), 
+            price1: parseFloat(values.price1),
+            price2: parseFloat(pricetarjeta),
+            price3: pricesi,
             iva21: parseFloat(values.iva21),
             prov_code: values.prov_code,
-            families: values.families.map((family) => parseInt(family, 10)), 
-            userid: login?.id, 
+            families: values.families.map((family) => parseInt(family, 10)),
+            userid: login?.id,
           };
           await dispatch(productUpdate(productData));
           const success = JSON.parse(localStorage.getItem("productUpdated"));
           console.log(success, productData);
-          
+
           if (success && success === true) {
             Swal.fire({
               title: "Genial!",
@@ -333,6 +350,24 @@ const EditProduct = () => {
                   onChange={(e) => setPriceTarjeta(e.target.value)}
                 />
               </div>
+              <div>
+                <label
+                  htmlFor="price3"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Precio s/Iva
+                </label>
+                <Field
+                  name="price3"
+                  type="number"
+                  value={pricesi}
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                  onChange={(e) => setPriceSI(e.target.value)}
+                />
+                {errors.price2 && (
+                  <p className="text-red-500 text-xs italic">{errors.price2}</p>
+                )}
+              </div>
             </div>
 
             <div className="mb-6">
@@ -364,77 +399,91 @@ const EditProduct = () => {
             </div>
 
             <div className="mb-6">
-  <label htmlFor="families" className="block text-gray-700 text-sm font-bold mb-2">
-    Rubro/Familia *
-  </label>
-  {/* Selector de familias */}
-  <div className="relative">
-    <select
-      name="families"
-      value=""
-      onChange={(e) => {
-        const selectedId = e.target.value;
-        if (selectedId && !values.families.includes(selectedId)) {
-          setFieldValue("families", [...values.families, selectedId]); 
-        }
-      }}
-      onBlur={handleBlur}
-      className="form-input mt-1 block w-full border border-gray-300 rounded px-1 bg-white"
-    >
-      <option value="" disabled>
-        Seleccionar rubro/familia
-      </option>
-      {familyOptions
-        .filter((family) => !values.families.includes(family.id.toString())) 
-        .map((family) => (
-          <option key={family.id} value={family.id}>
-            {family.name}
-          </option>
-        ))}
-    </select>
-  </div>
+              <label
+                htmlFor="families"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Rubro/Familia *
+              </label>
+              {/* Selector de familias */}
+              <div className="relative">
+                <select
+                  name="families"
+                  value=""
+                  onChange={(e) => {
+                    const selectedId = e.target.value;
+                    if (selectedId && !values.families.includes(selectedId)) {
+                      setFieldValue("families", [
+                        ...values.families,
+                        selectedId,
+                      ]);
+                    }
+                  }}
+                  onBlur={handleBlur}
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1 bg-white"
+                >
+                  <option value="" disabled>
+                    Seleccionar rubro/familia
+                  </option>
+                  {familyOptions
+                    .filter(
+                      (family) =>
+                        !values.families.includes(family.id.toString())
+                    )
+                    .map((family) => (
+                      <option key={family.id} value={family.id}>
+                        {family.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
 
-  {/* Mostrar familias seleccionadas */}
-  <div className="mt-2">
-    <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
-      Familias Seleccionadas:
-    </label>
-    <div className="flex flex-wrap gap-2 mt-2">
-    {values.families.map((familyId) => {
-      const family = familyOptions?.find((f) => f.id === parseInt(familyId, 10));
-  console.log(family,"family")
-  return (
-    <span
-      key={familyId}
-      className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
-    >
-          {family?.name || "Cargando..."} 
-          <button
-        type="button"
-        className="text-red-500 hover:text-red-700"
-        onClick={() => {
-          setFieldValue(
-            "families",
-            values.families.filter((id) => id !== familyId)
-          );
-        }}
-      >
-        &times;
-      </button>
-    </span>
-  );
+              {/* Mostrar familias seleccionadas */}
+              <div className="mt-2">
+                <label
+                  htmlFor="selectedFamilies"
+                  className="block text-gray-600 text-sm font-semibold"
+                >
+                  Familias Seleccionadas:
+                </label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {values.families.map((familyId) => {
+                    const family = familyOptions?.find(
+                      (f) => f.id === parseInt(familyId, 10)
+                    );
+                    console.log(family, "family");
+                    return (
+                      <span
+                        key={familyId}
+                        className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
+                      >
+                        {family?.name || "Cargando..."}
+                        <button
+                          type="button"
+                          className="text-red-500 hover:text-red-700"
+                          onClick={() => {
+                            setFieldValue(
+                              "families",
+                              values.families.filter((id) => id !== familyId)
+                            );
+                          }}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
 
-      })}
-    </div>
-  </div>
+              {errors.families && (
+                <p className="text-red-500 text-xs italic mt-2">
+                  {errors.families}
+                </p>
+              )}
+            </div>
 
-  {errors.families && (
-    <p className="text-red-500 text-xs italic mt-2">{errors.families}</p>
-  )}
-</div>
-
-
-  {/* Mostrar familias seleccionadas como una lista
+            {/* Mostrar familias seleccionadas como una lista
   <div className="mt-2">
     <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
       Familias Seleccionadas:
@@ -449,7 +498,6 @@ const EditProduct = () => {
     />
   </div>
 </div> */}
-
 
             <button
               type="submit"
