@@ -123,12 +123,12 @@ const ProductsView = () => {
       </div>
 
       <div className="overflow-x-scroll">
-        <table className="w-full table-auto">
-          <thead className="bg-[#0e6fa5] text-white">
+      <table className="w-full table-fixed border-collapse">
+      <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="px-4 py-2 text-center border-r border-gray-300">#</th>
+              <th className="w-[10%] px-4 py-2 text-center border-r border-gray-300">#</th>
               <th
-                className="px-4 py-2 text-center border-r border-gray-300 "
+                className="w-[25%] px-4 py-2 text-center border-r border-gray-300 "
                 onClick={() => handleSort("name")}
               >
                 Nombre{" "}
@@ -150,7 +150,7 @@ const ProductsView = () => {
                 </span>
               </th>
               <th
-                className="px-4 py-2 text-center border-r border-gray-300"
+                className="w-[25%] px-4 py-2 text-center border-r border-gray-300"
                 onClick={() => handleSort("article")}
               >
                 Artículo{" "}
@@ -172,7 +172,7 @@ const ProductsView = () => {
                 </span>
               </th>
               <th
-                className="px-4 py-2 text-center border-r border-gray-300"
+                className="w-[40%] px-4 py-2 text-center border-r border-gray-300"
                 onClick={() => handleSort("description")}
               >
                 Descripción{" "}
@@ -193,12 +193,12 @@ const ProductsView = () => {
                   />
                 </span>
               </th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">$ s/IVA</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">$ c/IVA</th>
-              <th className=" py-2 text-center border-r border-gray-300">$ tarjeta</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Stock</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Modificado</th>
-              <th className="px-4 py-2 text-center border-r border-gray-300">Acciones</th>
+              <th className="w-[20%] px-4 py-2 text-center border-r border-gray-300">$ s/IVA</th>
+              <th className="w-[20%] px-4 py-2 text-center border-r border-gray-300">$ c/IVA</th>
+              <th className="w-[20%]  py-2 text-center border-r border-gray-300">$ tarjeta</th>
+              <th className="w-[15%] px-4 py-2 text-center border-r border-gray-300">Stock</th>
+              <th className="w-[20%] px-4 py-2 text-center border-r border-gray-300">Modificado</th>
+              <th className="w-[25%] px-4 py-2 text-center border-r border-gray-300">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -209,26 +209,26 @@ const ProductsView = () => {
         product.stock === 0 ? "bg-red-100" : ""
       }`}
     >
-      <td className="px-4 py-2">
+      <td className="w-[10%] px-4 py-2">
         {currentPage * itemsPerPage - itemsPerPage + index + 1}
       </td>
-      <td className="px-4 py-2">{product.name}</td>
-      <td className="px-4 py-2">{product.article}</td>
-      <td className="px-4 py-2">{product.description}</td>
-      <td className="py-2 text-right">
+      <td className="w-[25%] px-4 py-2">{product.name}</td>
+      <td className="w-[25%] px-4 py-2">{product.article}</td>
+      <td className="w-[40%] px-4 py-2">{product.description}</td>
+      <td className="w-[20%] py-2 text-right">
         {!product.price3 || product.price3 === null ? "0,00" : product.price3.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
-      <td className="py-2 text-right">
+      <td className=" w-[20%] py-2 text-right">
         {!product.price || product.price === null ? "0,00" : product.price.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
-      <td className="px-12 py-2 text-right">
+      <td className="w-[20%] px-12 py-2 text-right">
         {!product.price2 || product.price2 === null ? "0,00" : product.price2.toLocaleString(undefined,{minimumFractionDigits: 2})}
       </td>
-      <td className="py-2 text-center">{product.stock}</td>
-      <td className="px-4 py-2">
+      <td className="w-[20%] py-2 text-center">{product.stock}</td>
+      <td className="w-[20%] px-4 py-2">
         {new Date(product.updatedAt).toLocaleDateString("es-AR")}
       </td>
-      <td className="px-4 py-2 flex gap-2">
+      <td className="w-[25%] px-4 py-2 flex gap-2">
         <Link to={`/edit-product`} state={product}>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
             <FaEdit />
