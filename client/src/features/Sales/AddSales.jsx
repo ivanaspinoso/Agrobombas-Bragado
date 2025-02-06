@@ -52,7 +52,7 @@ const AddSales = () => {
       cost: product.cost,
       price: product.price,
       price2:product.price2,
-      price3:product.price3,
+/*       price3:product.price3, */
       quantity: 1,
       subtotal: product.price,
     };
@@ -199,7 +199,7 @@ const AddSales = () => {
               updateOrderline(index, "name", product.name);
               updateOrderline(index, "price", product.price);
               updateOrderline(index, "price2", product.price2); 
-              updateOrderline(index, "price3", product.price3); 
+/*               updateOrderline(index, "price3", product.price3);  */
             }
           }}
         >
@@ -221,7 +221,7 @@ const AddSales = () => {
             >
               <Option value={record.price}>{`Precio: ${record.price?.toFixed(2) }`}</Option>
               <Option value={record.price2}>{`Tarjeta: ${record.price2?.toFixed(2) }`}</Option>
-              <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option>
+{/*               <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option> */}
             </Select>
     
             <Input
