@@ -52,7 +52,7 @@ const AddSales = () => {
       cost: product.cost,
       price: product.price,
       price2:product.price2,
-      price3:product.price3,
+/*       price3:product.price3, */
       quantity: 1,
       subtotal: product.price,
     };
@@ -69,6 +69,7 @@ const AddSales = () => {
     setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
     setResto(subtotal - pago);
   };
+  
   
   const removeOrderline = (index) => {
     const newOrderlines = orderlines.filter((_, i) => i !== index);
@@ -199,7 +200,7 @@ const AddSales = () => {
               updateOrderline(index, "name", product.name);
               updateOrderline(index, "price", product.price);
               updateOrderline(index, "price2", product.price2); 
-              updateOrderline(index, "price3", product.price3); 
+              // updateOrderline(index, "price3", product.price3); 
             }
           }}
         >
@@ -215,13 +216,14 @@ const AddSales = () => {
       render: (text, record, index) => (
           <div className="flex gap-2">
             <Select
+          
             value={record.price} 
             style={{ width: "250px" }}
             onChange={(value) => updateOrderline(index, "price", Number(value))}
             >
               <Option value={record.price}>{`Precio: ${record.price?.toFixed(2) }`}</Option>
               <Option value={record.price2}>{`Tarjeta: ${record.price2?.toFixed(2) }`}</Option>
-              <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option>
+{/*               <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option> */}
             </Select>
     
             <Input
