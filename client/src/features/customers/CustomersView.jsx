@@ -2,13 +2,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "./CustomerSlice";
 import { customersDelete } from "./CustomerSlice";
-import { Tooltip } from 'react-tooltip';
+import { Tooltip } from "react-tooltip";
 import { FcAddRow } from "react-icons/fc";
-import { Link,useNavigate } from "react-router-dom";
-import { FaEdit,FaTrashAlt } from "react-icons/fa";
-import swal from 'sweetalert2';
-
-
+import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 const CustomersView = () => {
   const dispatch = useDispatch();
@@ -17,8 +16,6 @@ const CustomersView = () => {
   useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
-
-  
 
   const handleDelete = (id, name) => {
     swal
@@ -29,21 +26,27 @@ const CustomersView = () => {
         denyButtonText: `No`,
         icon: "warning",
       })
-      .then((result) => {
+      .then(async (result) => {
         if (result.isConfirmed) {
-          dispatch(customersDelete(id)); 
+          await dispatch(customersDelete(id));
+          const success = JSON.parse(localStorage.getItem("customerDeleted"));
+          if (success === true) {
+            Swal.fire(
+              "Eliminado",
+              "El cliente ha sido eliminado correctamente.",
+              "success"
+            );
+          } else {
+            Swal.fire("Error", success, "error");
+          }
         }
       });
   };
-  
-  
 
   return (
-    <div className ="container mx-auto px-4 py-5 flex flex-col flex-grow">
-        <div className="flex justify-between items-center ">
-        <h2 className="text-xl font-semibold">
-          Datos de clientes
-        </h2>
+    <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
+      <div className="flex justify-between items-center ">
+        <h2 className="text-xl font-semibold">Datos de clientes</h2>
 
         <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-10">
           <button
@@ -54,62 +57,88 @@ const CustomersView = () => {
             Agregar clientes
           </button>
         </h2>
-        </div>
-        <table className="table-auto w-full mb-10">
+      </div>
+      <table className="table-auto w-full mb-10">
         <thead className="bg-[#0e6fa5] text-white">
-        <tr>
-          <th className="px-4 py-2 text-center border-r border-gray-300">ID</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">Nombre</th>
-          {/* <th className="px-4 py-2 text-center border-r border-gray-300">cuit</th> */}
-          <th className="px-4 py-2 text-center border-r border-gray-300">Dirección</th>
-          <th className="px-4 py-2 text-center border-r border-gray-300">Ciudad</th>
-          {/* <th className="px-4 py-2 text-center border-r border-gray-300">Codigo Postal</th> */}
-          {/* <th className="px-4 py-2 text-center border-r border-gray-300">Teléfono</th> */}
-          {/* <th className="px-4 py-2 text-center border-r border-gray-300">Provincia</th> */}
-          <th className="px-4 py-2 text-center border-r border-gray-300">Email</th>
-          {/* <th className="px-4 py-2 text-center border-r border-gray-300">web</th> */}
-          <th className="px-4 py-2 text-center border-r border-gray-300">Cumpleaños</th>
+          <tr>
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              #
+            </th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              Nombre
+            </th>
+            {/* <th className="px-4 py-2 text-center border-r border-gray-300">cuit</th> */}
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              Dirección
+            </th>
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              Ciudad
+            </th>
+            {/* <th className="px-4 py-2 text-center border-r border-gray-300">Codigo Postal</th> */}
+            {/* <th className="px-4 py-2 text-center border-r border-gray-300">Teléfono</th> */}
+            {/* <th className="px-4 py-2 text-center border-r border-gray-300">Provincia</th> */}
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              Email
+            </th>
+            {/* <th className="px-4 py-2 text-center border-r border-gray-300">web</th> */}
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              Cumpleaños
+            </th>
 
-          <th className="px-4 py-2 text-center border-r border-gray-300">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {customers?.map(customer => (
-            
-          <tr key={customer.id} className="border-b" >
-            <td className="px-4 py-2">{customer.id}</td>
-            <td className="px-4 py-2">{customer.name}</td>
-            {/* <td className="px-4 py-2">{customer.cuit}</td> */}
-            <td className="px-4 py-2">{customer.address}</td>
-            <td className="px-4 py-2">{customer.city}</td>
-            {/* <td className="px-4 py-2">{customer.postal_code}</td> */}
-            {/* <td className="px-4 py-2">{customer.phone}</td> */}
-            {/* <td className="px-4 py-2">{customer.province}</td> */}
-            <td className="px-4 py-2">{customer.email}</td>
-            {/* <td className="px-4 py-2">{customer.web}</td> */}
-            <td className="px-4 py-2">{customer.birthday || 'N/A'}</td> 
-
-            
-            <td className="px-4 py-2 flex gap-2">
-            <Link to="/edit-customers" state={{ id: customer.id, name: customer.name, cuit:customer.cuit,address:customer.address ,city: customer.city,postal_code: customer.postal_code,phone: customer.phone,province:customer.province,email: customer.email,web: customer.web,  birthday: customer.birthday,}}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
-                  <FaEdit />
-                </button>
-              </Link>
-              <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => handleDelete(customer.id, customer.name)} 
-            >
-                        <FaTrashAlt />
-                      </button>
-            </td>
+            <th className="px-4 py-2 text-center border-r border-gray-300">
+              Action
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-    <Tooltip id="my-tooltip" />
+        </thead>
+        <tbody>
+          {customers?.map((customer,index) => (
+            <tr key={customer.id} className="border-b">
+              <td className="px-4 py-2">{index + 1}</td>
+              <td className="px-4 py-2">{customer.name}</td>
+              {/* <td className="px-4 py-2">{customer.cuit}</td> */}
+              <td className="px-4 py-2">{customer.address}</td>
+              <td className="px-4 py-2">{customer.city}</td>
+              {/* <td className="px-4 py-2">{customer.postal_code}</td> */}
+              {/* <td className="px-4 py-2">{customer.phone}</td> */}
+              {/* <td className="px-4 py-2">{customer.province}</td> */}
+              <td className="px-4 py-2">{customer.email}</td>
+              {/* <td className="px-4 py-2">{customer.web}</td> */}
+              <td className="px-4 py-2">{customer.birthday || "N/A"}</td>
 
-    </div>     
+              <td className="px-4 py-2 flex gap-2">
+                <Link
+                  to="/edit-customers"
+                  state={{
+                    id: customer.id,
+                    name: customer.name,
+                    cuit: customer.cuit,
+                    address: customer.address,
+                    city: customer.city,
+                    postal_code: customer.postal_code,
+                    phone: customer.phone,
+                    province: customer.province,
+                    email: customer.email,
+                    web: customer.web,
+                    birthday: customer.birthday,
+                  }}
+                >
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <FaEdit />
+                  </button>
+                </Link>
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleDelete(customer.id, customer.name)}
+                >
+                  <FaTrashAlt />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Tooltip id="my-tooltip" />
+    </div>
   );
 };
 

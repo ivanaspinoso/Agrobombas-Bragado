@@ -52,6 +52,7 @@ const AddSales = () => {
       cost: product.cost,
       price: product.price,
       price2:product.price2,
+      price3:product.price3,
       quantity: 1,
       subtotal: product.price,
     };
@@ -68,7 +69,7 @@ const AddSales = () => {
     setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
     setResto(subtotal - pago);
   };
-
+  
   const removeOrderline = (index) => {
     const newOrderlines = orderlines.filter((_, i) => i !== index);
     setOrderlines(newOrderlines);
@@ -198,6 +199,7 @@ const AddSales = () => {
               updateOrderline(index, "name", product.name);
               updateOrderline(index, "price", product.price);
               updateOrderline(index, "price2", product.price2); 
+              updateOrderline(index, "price3", product.price3); 
             }
           }}
         >
@@ -211,24 +213,24 @@ const AddSales = () => {
       title: "Precio",
       dataIndex: "price",
       render: (text, record, index) => (
-        <div className="flex gap-2">
-          <Select
+          <div className="flex gap-2">
+            <Select
             value={record.price} 
-            style={{ width: "150px" }}
+            style={{ width: "250px" }}
             onChange={(value) => updateOrderline(index, "price", Number(value))}
-          >
-            <Option value={record.price}>{`Precio 1: ${record.price}`}</Option>
-            <Option value={record.price2}>{`Precio 2: ${record.price2}`}</Option>
-            console.log(recor.price2)
-          </Select>
-
-          <Input
-            type="number"
-            value={record.price}
-            onChange={(e) => updateOrderline(index, "price", Number(e.target.value))}
-            style={{ width: "100px" }}
-          />
-        </div>
+            >
+              <Option value={record.price}>{`Precio: ${record.price?.toFixed(2) }`}</Option>
+              <Option value={record.price2}>{`Tarjeta: ${record.price2?.toFixed(2) }`}</Option>
+              <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option>
+            </Select>
+    
+            <Input
+              type="number"
+              value={record.price}
+              onChange={(e) => updateOrderline(index, "price", Number(e.target.value))}
+              style={{ width: "100px" }}
+            />
+          </div>
       ),
     },
     {

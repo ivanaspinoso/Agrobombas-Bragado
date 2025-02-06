@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Importa los estilos para el DatePicker
 import { customersUpdate } from "../../app/actions/customers";
+import { updateCustomerDetails } from "./CustomerSlice";
 
 const EditCustomers = () => {
   const location = useLocation();
@@ -19,8 +20,6 @@ const EditCustomers = () => {
 
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre del cliente es requerido"),
-    postal_code: Yup.string().required("El código postal es requerido"),
-    birthday: Yup.date().required("La fecha de nacimiento es requerida"),
   });
 
   return (
@@ -34,9 +33,9 @@ const EditCustomers = () => {
             id,
             ...values, // Incluye todos los valores del formulario
           };
-          const { success, error } = await dispatch(customersUpdate(customer));
-
-          if (success) {
+          await dispatch(updateCustomerDetails(customer));
+          const success = JSON.parse(localStorage.getItem("customerUpdated"));
+          if (success===true) {
             Swal.fire({
               title: "Genial!",
               text: "Cliente modificado exitosamente!",
@@ -49,7 +48,7 @@ const EditCustomers = () => {
           } else {
             Swal.fire({
               title: "Error",
-              text: error,
+              text: success,
               icon: "error",
             });
           }
