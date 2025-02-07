@@ -76,7 +76,6 @@ const Index = () => {
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/edit-product" element={<EditProduct />} />
 
-
           {/* Rutas para mensajes ? */}
           <Route path="/add-message" element={<AddCustomers />} />
           <Route path="/queue-messages" element={<CustomersView />} />
