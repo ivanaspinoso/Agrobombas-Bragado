@@ -126,7 +126,7 @@ const ProductsView = () => {
       <table className="w-full table-fixed border-collapse">
       <thead className="bg-[#0e6fa5] text-white">
             <tr>
-              <th className="w-[6%] px-4 py-2 text-center border-r border-gray-300">#</th>
+              <th className="w-[8%] px-4 py-2 text-center border-r border-gray-300">#</th>
               <th
                 className="w-[35%] px-4 py-2 text-center border-r border-gray-300 "
                 onClick={() => handleSort("name")}
@@ -209,7 +209,7 @@ const ProductsView = () => {
         product.stock === 0 ? "bg-red-100" : ""
       }`}
     >
-      <td className="w-[10%] px-4 py-2">
+      <td className="w-[6%] px-4 py-2">
         {currentPage * itemsPerPage - itemsPerPage + index + 1}
       </td>
       <td className="w-[25%] px-4 py-2">{product.name}</td>
