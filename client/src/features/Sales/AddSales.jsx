@@ -70,6 +70,7 @@ const AddSales = () => {
     setResto(subtotal - pago);
   };
   
+  
   const removeOrderline = (index) => {
     const newOrderlines = orderlines.filter((_, i) => i !== index);
     setOrderlines(newOrderlines);
@@ -199,7 +200,7 @@ const AddSales = () => {
               updateOrderline(index, "name", product.name);
               updateOrderline(index, "price", product.price);
               updateOrderline(index, "price2", product.price2); 
-/*               updateOrderline(index, "price3", product.price3);  */
+              // updateOrderline(index, "price3", product.price3); 
             }
           }}
         >
@@ -215,6 +216,7 @@ const AddSales = () => {
       render: (text, record, index) => (
           <div className="flex gap-2">
             <Select
+          
             value={record.price} 
             style={{ width: "250px" }}
             onChange={(value) => updateOrderline(index, "price", Number(value))}
