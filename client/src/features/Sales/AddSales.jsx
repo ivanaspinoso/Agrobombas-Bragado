@@ -46,17 +46,18 @@ const AddSales = () => {
 
   const addOrderline = (product) => {
     const newOrderline = {
+      key: `${product.id}-${Date.now()}`,
       id: product.id,
       article: product.article,
       name: product.name,
       cost: product.cost,
       price: product.price,
-      price2:product.price2,
-/*       price3:product.price3, */
+      price2: product.price2,
+      price3: product.price3,
       quantity: 1,
       subtotal: product.price,
     };
-    setOrderlines([...orderlines, newOrderline]);
+    setOrderlines((prevOrderlines) => [...prevOrderlines, newOrderline]);
   };
 
   const updateOrderline = (index, field, value) => {
@@ -71,12 +72,25 @@ const AddSales = () => {
   };
   
   
-  const removeOrderline = (index) => {
-    const newOrderlines = orderlines.filter((_, i) => i !== index);
-    setOrderlines(newOrderlines);
-    setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
-    setResto(subtotal - pago);
+  const removeOrderline = (key) => {
+    setOrderlines((prevOrderlines) => {
+      const newOrderlines = prevOrderlines.filter((item) => item.key !== key); // 🔹 Ahora usa `key` en lugar de `index`
+      
+      const newSubtotal = newOrderlines.reduce((sum, item) => sum + item.subtotal, 0);
+      setSubtotal(newSubtotal);
+      setResto(newSubtotal - pago);
+  
+      return newOrderlines;
+    });
   };
+  
+  
+  useEffect(() => {
+    const newSubtotal = orderlines.reduce((sum, item) => sum + item.subtotal, 0);
+    setSubtotal(newSubtotal);
+    setResto(newSubtotal - pago);
+  }, [orderlines, pago]); 
+  
 
   return (
     <Formik
@@ -185,6 +199,7 @@ const AddSales = () => {
 
           <Table
   dataSource={orderlines}
+  rowKey="key"
   columns={[
     {
       title: "Producto",
@@ -200,7 +215,7 @@ const AddSales = () => {
               updateOrderline(index, "name", product.name);
               updateOrderline(index, "price", product.price);
               updateOrderline(index, "price2", product.price2); 
-              // updateOrderline(index, "price3", product.price3); 
+              updateOrderline(index, "price3", product.price3); 
             }
           }}
         >
@@ -223,7 +238,7 @@ const AddSales = () => {
             >
               <Option value={record.price}>{`Precio: ${record.price?.toFixed(2) }`}</Option>
               <Option value={record.price2}>{`Tarjeta: ${record.price2?.toFixed(2) }`}</Option>
-{/*               <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option> */}
+               <Option value={record.price3}>{`s/IVA: ${record.price3?.toFixed(2) }`}</Option> 
             </Select>
     
             <Input
@@ -256,8 +271,8 @@ const AddSales = () => {
     {
       title: "Acciones",
       dataIndex: "actions",
-      render: (_, __, index) => (
-        <Button danger onClick={() => removeOrderline(index)}>
+      render: (_, record) => ( 
+        <Button danger onClick={() => removeOrderline(record.key)}>
           <FaTrashAlt />
         </Button>
       ),
