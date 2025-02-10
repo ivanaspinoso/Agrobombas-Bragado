@@ -80,30 +80,42 @@ const AddSales = () => {
   //   setResto(subtotal - pago);
   // };
   const updateOrderline = (index, field, value) => {
-    const newOrderlines = [...orderlines];
-    if (field === "customPrice") {
-      newOrderlines[index].customPrice = value;
+    setOrderlines((prevOrderlines) => {
+      const newOrderlines = [...prevOrderlines];
   
-      if (
-        value === newOrderlines[index].price ||
-        value === newOrderlines[index].price2 ||
-        value === newOrderlines[index].price3
-      ) {
+      if (field === "customPrice") {
+        newOrderlines[index].customPrice = value;
+  
+        if (
+          value === newOrderlines[index].price ||
+          value === newOrderlines[index].price2 ||
+          value === newOrderlines[index].price3
+        ) {
+          newOrderlines[index].selectedPrice = value;
+        } else {
+          newOrderlines[index].selectedPrice = undefined; 
+        }
+      } else if (field === "price") {
         newOrderlines[index].selectedPrice = value;
-      } else {
-        newOrderlines[index].selectedPrice = undefined; 
+        newOrderlines[index].customPrice = value;
+      } else if (field === "quantity") {
+        newOrderlines[index].quantity = value; 
       }
-    } else if (field === "price") {
-      newOrderlines[index].selectedPrice = value;
-      newOrderlines[index].customPrice = value;
-    }
   
-    newOrderlines[index].subtotal = newOrderlines[index].quantity * newOrderlines[index].customPrice;
+      newOrderlines[index].subtotal = newOrderlines[index].quantity * newOrderlines[index].customPrice;
   
-    setOrderlines(newOrderlines);
-    setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
-    setResto(subtotal - pago);
+      const newSubtotal = newOrderlines.reduce((sum, item) => sum + item.subtotal, 0);
+      
+      setSubtotal(newSubtotal);
+      setResto(newSubtotal - pago);
+  
+      return newOrderlines;
+    });
   };
+  
+  
+   
+  
     
   const removeOrderline = (key) => {
     setOrderlines((prevOrderlines) => {
