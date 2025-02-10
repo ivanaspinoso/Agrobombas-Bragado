@@ -57,22 +57,54 @@ const AddSales = () => {
       price3: product.price3,
       quantity: 1,
       subtotal: product.price,
+      customPrice: product.price,
     };
     setOrderlines((prevOrderlines) => [...prevOrderlines, newOrderline]);
   };
 
+  // const updateOrderline = (index, field, value) => {
+  //   const newOrderlines = [...orderlines];
+  
+  //   if (field === "price") {
+  //     newOrderlines[index].customPrice = value; // Solo afecta el input
+  //   } else {
+  //     newOrderlines[index][field] = value;
+  //   }
+  
+  //   if (field === "quantity" || field === "price") {
+  //     newOrderlines[index].subtotal = newOrderlines[index].quantity * newOrderlines[index].customPrice;
+  //   }
+  
+  //   setOrderlines(newOrderlines);
+  //   setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
+  //   setResto(subtotal - pago);
+  // };
   const updateOrderline = (index, field, value) => {
     const newOrderlines = [...orderlines];
-    newOrderlines[index][field] = value;
-    console.log(field)
-    if (field === "quantity" || field === "price") {
-      newOrderlines[index].subtotal = newOrderlines[index].quantity * selPrice /* newOrderlines[index].price */;
+    if (field === "customPrice") {
+      newOrderlines[index].customPrice = value;
+  
+      if (
+        value === newOrderlines[index].price ||
+        value === newOrderlines[index].price2 ||
+        value === newOrderlines[index].price3
+      ) {
+        newOrderlines[index].selectedPrice = value;
+      } else {
+        newOrderlines[index].selectedPrice = undefined; 
+      }
+    } else if (field === "price") {
+      newOrderlines[index].selectedPrice = value;
+      newOrderlines[index].customPrice = value;
     }
+  
+    newOrderlines[index].subtotal = newOrderlines[index].quantity * newOrderlines[index].customPrice;
+  
     setOrderlines(newOrderlines);
     setSubtotal(newOrderlines.reduce((sum, item) => sum + item.subtotal, 0));
     setResto(subtotal - pago);
   };
-
+    
   const removeOrderline = (key) => {
     setOrderlines((prevOrderlines) => {
       const newOrderlines = prevOrderlines.filter((item) => item.key !== key); // 🔹 Ahora usa `key` en lugar de `index`
@@ -244,37 +276,27 @@ const AddSales = () => {
                 render: (text, record, index) => (
                   <div className="flex gap-2">
                     <Select
-                      /* value={record.price} */
+                      value={record.selectedPrice} 
                       style={{ width: "250px" }}
-                       onChange={(e) =>
-                        handleChange(e.value)
-                      } 
-/*                        onChange={(value) =>
-                        updateOrderline(index, "price", Number(value))
-                      } */
-                    > 
-                      <Option
-                        value={record.price} 
-                      >{`Precio: ${record.price?.toLocaleString(undefined,{minimumFractionDigits: 2})}`} </Option> {/*  // ${objPrices[index].priceone.toLocaleString(undefined,{minimumFractionDigits: 2})} `} */}
-                      <Option
-                        value={record.price2}
-                      >{`Tarjeta: ${record.price2?.toLocaleString(undefined,{minimumFractionDigits: 2})}`}</Option>
-                      <Option
-                        value={record.price3}
-                      >{`s/IVA: ${record.price3?.toLocaleString(undefined,{minimumFractionDigits: 2})}`}</Option>
+                      onChange={(value) => {
+                        updateOrderline(index, "price", value);
+                      }}
+                    >
+                      <Option value={record.price}>Precio: ${record.price?.toLocaleString(undefined,{minimumFractionDigits: 2})}</Option>
+                      <Option value={record.price2}>Tarjeta: ${record.price2?.toLocaleString(undefined,{minimumFractionDigits: 2})}</Option>
+                      <Option value={record.price3}>s/IVA: ${record.price3?.toLocaleString(undefined,{minimumFractionDigits: 2})}</Option>
                     </Select>
-
+              
                     <Input
                       type="number"
-                      value={selPrice} //{record.price}
-                      onChange={(e) =>
-                        updateOrderline(index, "price", Number(e.target.value))
-                      }
+                      value={record.customPrice} // Se actualiza independientemente
+                      onChange={(e) => updateOrderline(index, "customPrice", Number(e.target.value))}
                       style={{ width: "100px" }}
                     />
                   </div>
                 ),
               },
+              
               {
                 title: "Cantidad",
                 dataIndex: "quantity",
