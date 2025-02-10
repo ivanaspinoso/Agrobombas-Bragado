@@ -89,6 +89,12 @@ module.exports = function (sequelize) {
         },
         stock:{
             type: DataTypes.FLOAT,
+        },
+        showprice: {
+            type: DataTypes.BOOLEAN,
+        },
+        webprice:{
+            type: DataTypes.FLOAT,
         }
     })
 }

@@ -3,7 +3,15 @@ const { Op } = require("sequelize");
 // Defino el modelo user para utilizarlo en las rutas correspondientes
 const { Product, Family, OrderLine, Prod_Cat,/* Conn */ } = require("../models/index");
 // cloudinary subir imagen al momento de guardar producto
-const cloudinary = require('../utils/cloudinary');
+const cloudinary = require('cloudinary').v2;
+
+// datos de cuenta cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_KEY_SECRET
+});
+
 
 const router = express.Router();
 
@@ -19,7 +27,7 @@ router.get("/", (req, res, next) => {
         model: Brand,
         required: true,
       } */],
-      order: [["name", "ASC"]],
+    order: [["name", "ASC"]],
   })
     .then((products) => {
       res.send(products);
@@ -293,7 +301,7 @@ router.post("/add", async (req, res) => {
               required: true,
             }]
         },
-)
+      )
 
       return res.send(productAdded);
     } catch (err) {
@@ -320,9 +328,8 @@ router.put("/update", async (req, res) => {
     price1,
     price2,
     price3,
-    image,
     percent,
-    // isOfert,
+    isOfert,
     families,
     // brands,
     // units,
@@ -332,8 +339,13 @@ router.put("/update", async (req, res) => {
     prov_code,
     minunit,
     stepunit,
+    stock,
     show,
-    stock
+    image,
+    imagepid,
+    imageurl,
+    showprice,
+    webprice
   } = req.body;
   console.log(req.body);
   /*   const { id } = req.params;
@@ -364,32 +376,33 @@ router.put("/update", async (req, res) => {
 
     // tomar producto previo a modificar, por si modifico la imagen   
     const currentProduct = await Product.findByPk(id);
-    /* let objimage = {
+    let objimage = {
       public_id: imageurl,
       url: imagepid
     }
-    console.log("image",image) */
+    console.log("image", imageurl)
     console.log("Producto encontrado", currentProduct)
     //modify image conditionnally
-    /*         if (image !== '') {
-              const ImgId = currentProduct.imagepid;
-              if (ImgId) {
-                  await cloudinary.uploader.destroy(ImgId);
-              }
-    
-              const newImage = await cloudinary.uploader.upload(image, {
-                  folder: "products",
-                  width: 1000,
-                  crop: "scale"
-              });
-    
-              objimage = {
-                  public_id: newImage.public_id,
-                  url: newImage.secure_url
-              }
-          }
-     
-          console.log("objImage",objimage) */
+    console.log("id",imagepid)
+    if (imageurl !== "") {
+      const ImgId = currentProduct.imagepid;
+      if (ImgId) {
+        await cloudinary.uploader.destroy(ImgId);
+      }
+
+      const newImage = await cloudinary.uploader.upload(image, {
+        folder: "products",
+        width: 1000,
+        crop: "scale"
+      });
+
+      objimage = {
+        public_id: newImage.public_id,
+        url: newImage.secure_url
+      }
+    }
+
+    console.log("objImage", objimage)
 
     let objProdUpd = {
       name,
@@ -401,9 +414,9 @@ router.put("/update", async (req, res) => {
       price1,
       price2,
       price3,
-      image,
+      // image,
       percent,
-      // isOfert,
+      isOfert,
       families,
       // brands,
       // units,
@@ -415,6 +428,10 @@ router.put("/update", async (req, res) => {
       stepunit,
       show,
       stock,
+      imagepid: objimage.public_id,
+      imageurl: objimage.url,
+      showprice,
+      webprice
     };
 
 
@@ -440,10 +457,11 @@ router.put("/update", async (req, res) => {
       }
       await Prod_Cat.create(relacion);
     });
-    objProdUpd = { 
+    objProdUpd = {
       id: id,
       ...objProdUpd,
-    updatedAt: new Date }
+      updatedAt: new Date
+    }
 
 
     // seteo la relacion

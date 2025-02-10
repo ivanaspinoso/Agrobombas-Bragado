@@ -31,6 +31,12 @@ const EditProduct = () => {
     price3,
     prov_code,
     families,
+    isOfert,
+    imageurl,
+    imagepid,
+    show,
+    showprice,
+    webprice,
   } = location.state || {};
 
   const [price0, setPrice0] = useState(price);
@@ -40,6 +46,8 @@ const EditProduct = () => {
   const login = useSelector((state) => state.usersReducer.login);
   const providers = useSelector((state) => state.groupsReducer.groups);
   const familyOptions = useSelector((state) => state.familiesReducer.families);
+
+  const [image, setImage] = useState(imageurl);
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -63,12 +71,18 @@ const EditProduct = () => {
       families?.map((family) =>
         typeof family === "object" ? family.id : family
       ) || [],
+    isOfert,
+    imageurl,
+    imagepid,
+    show,
+    showprice,
+    webprice,
   };
 
   const schema = Yup.object().shape({
     name: Yup.string().optional(),
     article: Yup.string().optional(),
-    stock: Yup.number().optional().integer("Debe ser un número entero"),
+    stock: Yup.number().required().integer("Debe ser un número entero"),
     cost: Yup.number().positive("Debe ser un número positivo").optional(),
     percent: Yup.number().positive("Debe ser un número positivo").optional(),
     price: Yup.number().positive("Debe ser un número positivo").optional(),
@@ -103,8 +117,8 @@ const EditProduct = () => {
         : parseFloat(document.getElementsByName("iva21")[0].value);
     var siniva = costo * (percent / 100) + costo;
     var precio = siniva * (iva21 / 100) + siniva;
-    setPrice0(Math.round(precio * 100) / 100)
-    setPriceSI(Math.round(siniva * 100) / 100)
+    setPrice0(Math.round(precio * 100) / 100);
+    setPriceSI(Math.round(siniva * 100) / 100);
     // setPrice0(precio);
   };
 
@@ -121,6 +135,21 @@ const EditProduct = () => {
     var precioTarje = price0 * (percenTarje / 100) + parseFloat(price0);
     console.log(price0, percenTarje / 100);
     setPriceTarjeta(Math.round(precioTarje * 100) / 100);
+  };
+
+  // handle and convert it in base 64 para mostrar la foto seleccionada
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setFileToBase(file);
+    console.log(file);
+  };
+
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
   };
 
   return (
@@ -148,6 +177,13 @@ const EditProduct = () => {
             prov_code: values.prov_code,
             families: values.families.map((family) => parseInt(family, 10)),
             userid: login?.id,
+            isOfert,
+            imageurl,
+            imagepid,
+            show,
+            showprice,
+            webprice,
+            image: image,
           };
           await dispatch(productUpdate(productData));
           const success = JSON.parse(localStorage.getItem("productUpdated"));
@@ -482,7 +518,78 @@ const EditProduct = () => {
                 </p>
               )}
             </div>
-
+            <div class="mb-3">
+              <label class="form-check-label">Mostrar producto en la web</label>
+              <input
+                id="show"
+                class="form-check-input"
+                type="checkbox"
+                name="show"
+                // onChange={handleInputChange}
+                value={show}
+              ></input>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Imagen del producto a mostrar</label>
+              <img
+                /* class="form-control" */
+                src={image}
+                alt={name}
+                width="400px"
+                height="auto"
+              />
+              <div className="form-outline mb-4">
+                <label className="form-label" htmlFor="form4Example2">
+                  Cambiar Image
+                </label>
+                <Field
+                  onChange={handleImage}
+                  type="file"
+                  id="formupload"
+                  name="image"
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-check-label">
+                Desea destacarlo como oferta?
+              </label>
+              <input
+                id="isOfert"
+                class="form-check-input"
+                type="checkbox"
+                name="isOfert"
+                // onChange={handleInputChange}
+                value={isOfert}
+              ></input>
+            </div>
+            <div class="mb-3">
+              <label class="form-check-label">
+                Desea Mostrar precio para web?
+              </label>
+              <input
+                id="showprice"
+                class="form-check-input"
+                type="checkbox"
+                name="showprice"
+                // onChange={handleInputChange}
+                value={showprice}
+              ></input>
+            </div>
+            <div class="mb-3">
+              <label class="form-check-label">
+                Precio para la web
+              </label>
+              <input
+                id="webprice"
+                class="form-check-input"
+                type="number"
+                name="webprice"
+                // onChange={handleInputChange}
+                value={webprice}
+              ></input>
+            </div>
             {/* Mostrar familias seleccionadas como una lista
   <div className="mt-2">
     <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
