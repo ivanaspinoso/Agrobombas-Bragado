@@ -165,7 +165,7 @@ router.post("/add", async (req, res) => {
     price3,
     image,
     percent,
-    // isOfert,
+    isOfert,
     prov_code,
     families,
     // brands,
@@ -177,7 +177,9 @@ router.post("/add", async (req, res) => {
     stepunit,
     show,
     stock,
-    iva21
+    iva21,
+    showprice,
+    webprice
   } = req.body;
   const cero = 0
   console.log(req.body);
@@ -249,12 +251,13 @@ router.post("/add", async (req, res) => {
 
   if (!existProd) {
     try {
-      /*       const result = await cloudinary.uploader.upload(image, {
-              folder: "products",
-              // width: 300,
-              // crop: "scale"
-          }) 
-         console.log(result)  */
+
+      const result = await cloudinary.uploader.upload(image, {
+        folder: "products",
+        // width: 300,
+        // crop: "scale"
+      })
+      console.log(result)
       const objProdAdd = {
         article,
         name,
@@ -267,7 +270,7 @@ router.post("/add", async (req, res) => {
         price3,
         image,
         percent,
-        // isOfert,
+        isOfert,
         families,
         // brands,
         // units,
@@ -279,9 +282,11 @@ router.post("/add", async (req, res) => {
         show,
         stock,
         prov_code,
-        iva21
-        // imageurl: result.secure_url,
-        // imagepid: result.public_id
+        iva21,
+        imageurl: result.secure_url,
+        imagepid: result.public_id,
+        showprice,
+        webprice
       };
 
       let newProduct = await Product.create(objProdAdd); // envio los datos al modelo sequelize para que los guarde en la database
@@ -383,7 +388,7 @@ router.put("/update", async (req, res) => {
     console.log("image", imageurl)
     console.log("Producto encontrado", currentProduct)
     //modify image conditionnally
-    console.log("id",imagepid)
+    console.log("id", imagepid)
     if (imageurl !== "") {
       const ImgId = currentProduct.imagepid;
       if (ImgId) {
