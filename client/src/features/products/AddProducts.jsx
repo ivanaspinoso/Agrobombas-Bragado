@@ -29,7 +29,11 @@ const AddProducts = () => {
   const [eliva21, setElIVA21] = useState(21)
   const [changePrice, setChangePrice] = useState(false)
   const [changePriceT, setChangePriceT] = useState(false)
-  
+  const [image, setImage] = useState(null);
+  const [showProduct, setShowProduct] = useState(false);
+
+  const familyOptions = useSelector((state) => state.familiesReducer.families);
+
 
   /* 👇 ya fueron obtenidos en main y por eso los tomo en las 2 lineas anteriores 👆
     useEffect(() => {
@@ -79,6 +83,18 @@ const AddProducts = () => {
   setPriceTarjeta(Math.round(precioTarje * 100) / 100)
 }
 
+const handleImage = (e) => {
+  const file = e.target.files[0];
+  setFileToBase(file);
+};
+
+const setFileToBase = (file) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = () => {
+    setImage(reader.result);
+  };
+};
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -274,25 +290,31 @@ const AddProducts = () => {
 
               {/* Familias seleccionadas */}
               <div className="mt-2">
-                <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
+                <label
+                  htmlFor="selectedFamilies"
+                  className="block text-gray-600 text-sm font-semibold"
+                >
                   Familias Seleccionadas:
                 </label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {values.families.map((familyId) => {
-                    const family = families.find((f) => f.id === parseInt(familyId, 10));
+                    const family = familyOptions?.find(
+                      (f) => f.id === parseInt(familyId, 10)
+                    );
+                    console.log(family, "family");
                     return (
                       <span
                         key={familyId}
                         className="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded flex items-center gap-1"
                       >
-                        {family?.name || "Familia desconocida"}
+                        {family?.name || "Cargando..."}
                         <button
                           type="button"
                           className="text-red-500 hover:text-red-700"
                           onClick={() => {
                             setFieldValue(
                               "families",
-                              values.families.filter((id) => id !== familyId) // Eliminar familia seleccionada
+                              values.families.filter((id) => id !== familyId)
                             );
                           }}
                         >
@@ -305,6 +327,43 @@ const AddProducts = () => {
               </div>
               {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
             </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Imagen del Producto
+              </label>
+
+              <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-4 rounded-lg w-64 mx-auto">
+                {image ? (
+                  <>
+                    <img src={image} alt="Previsualización" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                    <button
+                      onClick={() => setImage(null)}
+                      className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
+                    >
+                      Eliminar Imagen
+                    </button>
+                  </>
+                ) : (
+                  <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>
+                )}
+              </div>
+
+              <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                Seleccionar Imagen
+                <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
+              </label>
+            </div>
+
+             {showProduct && (
+              <>
+                <div className="mb-6">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">Imagen del Producto</label>
+                  <input type="file" accept="image/*" onChange={handleImage} className="mt-2" />
+                  {image && <img src={image} alt="Previsualización" className="mt-2 w-32 h-auto" />}
+                </div>
+              </>
+            )}
+
 
             <button
               type="submit"
