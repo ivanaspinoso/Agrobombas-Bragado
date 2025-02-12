@@ -34,6 +34,8 @@ const AddProducts = () => {
 
   const familyOptions = useSelector((state) => state.familiesReducer.families);
 
+  const [viewWeb, setViewWeb] = useState(false)
+
 
   /* 👇 ya fueron obtenidos en main y por eso los tomo en las 2 lineas anteriores 👆
     useEffect(() => {
@@ -62,39 +64,39 @@ const AddProducts = () => {
     var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
     var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value);
     var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
-    var siniva = costo * (percent / 100) + costo 
+    var siniva = costo * (percent / 100) + costo
     var precio = siniva * (iva21 / 100) + siniva
     setPrice(Math.round(precio * 100) / 100)
     setPrice3(Math.round(siniva * 100) / 100)
     var percenTarje = document.getElementsByName('price1')[0].value === null ? 0 : parseFloat(document.getElementsByName('price1')[0].value);
-    var precioTarje = price * (percenTarje / 100)  + parseFloat(price)
+    var precioTarje = price * (percenTarje / 100) + parseFloat(price)
     setPriceTarjeta(Math.round(precioTarje * 100) / 100)
- }
+  }
 
- const onChangePercentT = () => {
-/*   var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
-  var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value); */
-  var percenTarje = document.getElementsByName('price1')[0].value === null ? 0 : parseFloat(document.getElementsByName('price1')[0].value); //price1 se usa para porcentaje tarjeta
-  /* var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
-  var siniva = costo * (percent / 100) + costo 
-  var precio = siniva * (iva21 / 100) + siniva */
-  var precioTarje = price * (percenTarje / 100)  + parseFloat(price)
-  console.log(price, percenTarje / 100)
-  setPriceTarjeta(Math.round(precioTarje * 100) / 100)
-}
+  const onChangePercentT = () => {
+    /*   var costo = document.getElementsByName('cost')[0].value === null ? 0 : parseFloat(document.getElementsByName('cost')[0].value);
+      var percent = document.getElementsByName('percent')[0].value === null ? 0 : parseFloat(document.getElementsByName('percent')[0].value); */
+    var percenTarje = document.getElementsByName('price1')[0].value === null ? 0 : parseFloat(document.getElementsByName('price1')[0].value); //price1 se usa para porcentaje tarjeta
+    /* var iva21 = document.getElementsByName('iva21')[0].value === null ? 0 : parseFloat(document.getElementsByName('iva21')[0].value);
+    var siniva = costo * (percent / 100) + costo 
+    var precio = siniva * (iva21 / 100) + siniva */
+    var precioTarje = price * (percenTarje / 100) + parseFloat(price)
+    console.log(price, percenTarje / 100)
+    setPriceTarjeta(Math.round(precioTarje * 100) / 100)
+  }
 
-const handleImage = (e) => {
-  const file = e.target.files[0];
-  setFileToBase(file);
-};
-
-const setFileToBase = (file) => {
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = () => {
-    setImage(reader.result);
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setFileToBase(file);
   };
-};
+
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+  };
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -104,7 +106,13 @@ const setFileToBase = (file) => {
       <Formik
         validationSchema={schema}
         initialValues={{
-          name: "", description: "", stock: 0, cost: 0, percent: 0, price: 0, iva21: 21, iva10: "", price1: 0, price2: 0, prov_code: "", families: [], article: ""
+          name: "", description: "", stock: 0, cost: 0, percent: 0, price: 0, iva21: 21, iva10: "", price1: 0, price2: 0, prov_code: "", families: [], article: "",
+          isOfert: false,
+          imageurl: "",
+          imagepid: "",
+          show: false,
+          showprice: false,
+          webprice: 0,
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           const productData = {
@@ -121,11 +129,15 @@ const setFileToBase = (file) => {
             price2: pricetarjeta,
             prov_code: values.prov_code,
             families: values.families,
-            exist: true,
-            isOfert: false,
-            show: true,
             userid: login?.id,
-            article: values.article
+            article: values.article,
+            isOfert: values.isOfert,
+            imageurl: values.imageurl,
+            imagepid: values.imagepid,
+            show: values.show,
+            showprice: values.showprice,
+            webprice: values.webprice,
+            image: image,
           };
           console.table(productData)
 
@@ -209,13 +221,13 @@ const setFileToBase = (file) => {
               </div>
               <div>
                 <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio *</label>
-                <Field name="price" type="number" value={price} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPrice(e.target.value)}/>
+                <Field name="price" type="number" value={price} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPrice(e.target.value)} />
                 {errors.price && <p className="text-red-500 text-xs italic">{errors.price}</p>}
               </div>
 
               <div>
                 <label htmlFor="price1" className="block text-gray-700 text-sm font-bold mb-2">% Tarjeta</label>
-                <Field name="price1" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1"  onBlur={(e) => onChangePercentT(e)}/>
+                <Field name="price1" type="number" className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onBlur={(e) => onChangePercentT(e)} />
                 {errors.price1 && <p className="text-red-500 text-xs italic">{errors.price1}</p>}
               </div>
 
@@ -229,12 +241,12 @@ const setFileToBase = (file) => {
 
               <div>
                 <label htmlFor="price2" className="block text-gray-700 text-sm font-bold mb-2">Precio Tarjeta 2</label>
-                <Field name="price2" type="number" value={pricetarjeta} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPriceTarjeta(e.target.value)}/>
+                <Field name="price2" type="number" value={pricetarjeta} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPriceTarjeta(e.target.value)} />
                 {errors.price2 && <p className="text-red-500 text-xs italic">{errors.price2}</p>}
               </div>
               <div>
                 <label htmlFor="price3" className="block text-gray-700 text-sm font-bold mb-2">Precio s/Iva</label>
-                <Field name="price3" type="number" value={price3} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPrice3(e.target.value)}/>
+                <Field name="price3" type="number" value={price3} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPrice3(e.target.value)} />
                 {errors.price2 && <p className="text-red-500 text-xs italic">{errors.price2}</p>}
               </div>
             </div>
@@ -327,7 +339,83 @@ const setFileToBase = (file) => {
               </div>
               {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
             </div>
-            <div className="mb-6">
+            <div class="mb-3">
+              <label class="form-check-label">Mostrar producto en la web</label>
+              <input
+                id="show"
+                class="form-check-input"
+                type="checkbox"
+                name="show"
+                // onChange={handleInputChange}
+                value={values.show}
+                checked={viewWeb}
+                onChange={() => setViewWeb(!viewWeb)}
+              ></input>
+            </div>
+            {viewWeb === true ? <>
+              <div class="mb-3">
+                <label class="form-label">Imagen del producto a mostrar</label>
+                {image ?
+                  <img
+                    /* class="form-control" */
+                    src={image}
+                    alt={values.name}
+                    width="400px"
+                    height="auto"
+                  /> : <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>}
+                <div className="form-outline mb-4">
+                  <label className="form-label" htmlFor="form4Example2">
+                    Cambiar Image
+                  </label>
+                  <Field
+                    onChange={handleImage}
+                    type="file"
+                    id="formupload"
+                    name="image"
+                    className="form-control"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label">
+                  Desea destacarlo como oferta?
+                </label>
+                <input
+                  id="isOfert"
+                  class="form-check-input"
+                  type="checkbox"
+                  name="isOfert"
+                  // onChange={handleInputChange}
+                  value={values.isOfert}
+                ></input>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label">
+                  Desea Mostrar precio para web?
+                </label>
+                <input
+                  id="showprice"
+                  class="form-check-input"
+                  type="checkbox"
+                  name="showprice"
+                  // onChange={handleInputChange}
+                  value={values.showprice}
+                ></input>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label">
+                  Precio para la web
+                </label>
+                <input
+                  id="webprice"
+                  class="form-check-input"
+                  type="number"
+                  name="webprice"
+                  // onChange={handleInputChange}
+                  value={values.webprice}
+                ></input>
+              </div></> : ""}
+            {/*             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Imagen del Producto
               </label>
@@ -364,7 +452,7 @@ const setFileToBase = (file) => {
               </>
             )}
 
-
+ */}
             <button
               type="submit"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

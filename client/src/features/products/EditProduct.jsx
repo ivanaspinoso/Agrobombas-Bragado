@@ -16,6 +16,7 @@ const EditProduct = () => {
   console.log("location.state:", location.state);
   const [loadingFamilies, setLoadingFamilies] = useState(true);
 
+
   const {
     id,
     name,
@@ -42,6 +43,7 @@ const EditProduct = () => {
   const [price0, setPrice0] = useState(price);
   const [pricetarjeta, setPriceTarjeta] = useState(price2);
   const [pricesi, setPriceSI] = useState(price3);
+  const [viewWeb, setViewWeb] = useState(show)
 
   const login = useSelector((state) => state.usersReducer.login);
   const providers = useSelector((state) => state.groupsReducer.groups);
@@ -58,7 +60,7 @@ const EditProduct = () => {
     name: name || "",
     description: description || "",
     article: article || "",
-    stock: stock || "",
+    stock: stock || 0,
     cost: cost || 0,
     percent: percent || 0,
     price: price || 0,
@@ -527,17 +529,21 @@ const EditProduct = () => {
                 name="show"
                 // onChange={handleInputChange}
                 value={show}
+                checked = {viewWeb}
+                onChange={() => setViewWeb(!viewWeb)}
               ></input>
             </div>
+            { viewWeb === true ? <>
             <div class="mb-3">
               <label class="form-label">Imagen del producto a mostrar</label>
-              <img
+              { image ? 
+              <img 
                 /* class="form-control" */
                 src={image}
                 alt={name}
                 width="400px"
                 height="auto"
-              />
+              /> : <p className="text-gray-400 text-sm">No hay imagen seleccionada</p> }
               <div className="form-outline mb-4">
                 <label className="form-label" htmlFor="form4Example2">
                   Cambiar Image
@@ -589,7 +595,7 @@ const EditProduct = () => {
                 // onChange={handleInputChange}
                 value={webprice}
               ></input>
-            </div>
+            </div></> : ""}
             {/* Mostrar familias seleccionadas como una lista
   <div className="mt-2">
     <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
