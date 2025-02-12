@@ -251,13 +251,20 @@ router.post("/add", async (req, res) => {
 
   if (!existProd) {
     try {
-
-      const result = await cloudinary.uploader.upload(image, {
+      let result
+      if (image && image !== "") {
+      result = await cloudinary.uploader.upload(image, {
         folder: "products",
         // width: 300,
         // crop: "scale"
       })
-      console.log(result)
+    } else {
+      result = {
+      secure_url: "",
+      public_id: ""
+      }
+    }
+      // console.log("REsultado",result)
       const objProdAdd = {
         article,
         name,
