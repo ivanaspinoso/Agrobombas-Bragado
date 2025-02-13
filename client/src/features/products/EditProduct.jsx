@@ -37,13 +37,16 @@ const EditProduct = () => {
     imagepid,
     show,
     showprice,
-    webprice,
+    webprice: initialWebPrice,
   } = location.state || {};
 
   const [price0, setPrice0] = useState(price);
   const [pricetarjeta, setPriceTarjeta] = useState(price2);
   const [pricesi, setPriceSI] = useState(price3);
   const [viewWeb, setViewWeb] = useState(show)
+  const [showPriceOnWeb, setShowPriceOnWeb] = useState(showprice);
+  const [webPrice, setWebPrice] = useState(initialWebPrice || price0);
+  const [customPrice, setCustomPrice] = useState("");
 
   const login = useSelector((state) => state.usersReducer.login);
   const providers = useSelector((state) => state.groupsReducer.groups);
@@ -76,9 +79,9 @@ const EditProduct = () => {
     isOfert,
     imageurl,
     imagepid,
-    show,
-    showprice,
-    webprice,
+    show: viewWeb,
+            showprice: showPriceOnWeb,
+    webprice: parseFloat(webPrice) || 0,
   };
 
   const schema = Yup.object().shape({
@@ -154,6 +157,16 @@ const EditProduct = () => {
     };
   };
 
+  const handlePriceChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "custom") {
+      setWebPrice(customPrice);
+    } else {
+      setWebPrice(selectedValue);
+      setCustomPrice("");
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
@@ -182,9 +195,9 @@ const EditProduct = () => {
             isOfert,
             imageurl,
             imagepid,
-            show,
-            showprice,
-            webprice,
+            show: viewWeb,
+            showprice: showPriceOnWeb,
+            webprice: parseFloat(webPrice) || 0,
             image: image,
           };
           await dispatch(productUpdate(productData));
@@ -520,82 +533,106 @@ const EditProduct = () => {
                 </p>
               )}
             </div>
-            <div class="mb-3">
-              <label class="form-check-label">Mostrar producto en la web</label>
+            <div className="mb-6 flex items-center gap-3">
               <input
-                id="show"
-                class="form-check-input"
                 type="checkbox"
+                id="show"
                 name="show"
-                // onChange={handleInputChange}
+                className="w-5 h-5 accent-blue-500"
                 value={show}
-                checked = {viewWeb}
+                checked={viewWeb}
                 onChange={() => setViewWeb(!viewWeb)}
-              ></input>
-            </div>
-            { viewWeb === true ? <>
-            <div class="mb-3">
-              <label class="form-label">Imagen del producto a mostrar</label>
-              { image ? 
-              <img 
-                /* class="form-control" */
-                src={image}
-                alt={name}
-                width="400px"
-                height="auto"
-              /> : <p className="text-gray-400 text-sm">No hay imagen seleccionada</p> }
-              <div className="form-outline mb-4">
-                <label className="form-label" htmlFor="form4Example2">
-                  Cambiar Image
-                </label>
-                <Field
-                  onChange={handleImage}
-                  type="file"
-                  id="formupload"
-                  name="image"
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-check-label">
-                Desea destacarlo como oferta?
+              />
+              <label htmlFor="show" className="text-gray-700 font-medium">
+                Mostrar producto en la web
               </label>
-              <input
+            </div>
+            {/* Sección de opciones si se muestra en la web */}
+            {viewWeb && (
+              <div className="space-y-6">
+
+                {/* Imagen del producto */}
+                <div className="flex flex-col items-center">
+                  <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
+                    {image ? (
+                      <>
+                        <img src={image} alt="Previsualización" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                        <button
+                          onClick={() => setImage(null)}
+                          className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
+                        >
+                          Eliminar Imagen
+                        </button>
+                      </>
+                    ) : (
+                      <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>
+                    )}
+                   
+                  </div>
+                  <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                    Seleccionar Imagen
+                    <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
+                  </label>
+                </div>
+                <div class="flex items-center gap-2">
+                <input
                 id="isOfert"
-                class="form-check-input"
+                class="w-5 h-5 accent-green-500"
                 type="checkbox"
                 name="isOfert"
                 // onChange={handleInputChange}
                 value={isOfert}
               ></input>
-            </div>
-            <div class="mb-3">
-              <label class="form-check-label">
-                Desea Mostrar precio para web?
+              <label className="text-gray-700">
+                Desea destacarlo como oferta?
               </label>
-              <input
-                id="showprice"
-                class="form-check-input"
-                type="checkbox"
-                name="showprice"
-                // onChange={handleInputChange}
-                value={showprice}
-              ></input>
+              
             </div>
-            <div class="mb-3">
-              <label class="form-check-label">
-                Precio para la web
-              </label>
-              <input
-                id="webprice"
-                class="form-check-input"
-                type="number"
-                name="webprice"
-                // onChange={handleInputChange}
-                value={webprice}
-              ></input>
-            </div></> : ""}
+
+
+                {/* Mostrar precio en la web */}
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="showprice"
+                    className="w-5 h-5 accent-green-500"
+                    checked={showPriceOnWeb}
+                    onChange={() => setShowPriceOnWeb(!showPriceOnWeb)}
+                  />
+                  <label htmlFor="showprice" className="text-gray-700">
+                    Mostrar precio en la web
+                  </label>
+                </div>
+
+                {showPriceOnWeb && (
+                  <div className="grid grid-cols-3 gap-4 items-center">
+                    <label className="text-gray-700 font-medium">
+                      Seleccionar precio a mostrar:
+                    </label>
+                    
+                    <select
+                      value={webPrice === "custom" ? "custom" : webPrice}
+                      onChange={handlePriceChange}
+                      className="border border-gray-300 rounded px-2 py-1"
+                    >
+                      <option value={price0}>Precio: ${price0}</option>
+                      <option value={pricetarjeta}>Precio Tarjeta: ${pricetarjeta}</option>
+                      <option value={pricesi}>Precio sin IVA: ${pricesi}</option>
+                    </select>
+
+                    {webPrice === "custom" && (
+                      <input
+                        type="number"
+                        placeholder="Ingresar precio"
+                        value={customPrice}
+                        onChange={(e) => setCustomPrice(e.target.value)}
+                        className="border border-gray-300 rounded px-2 py-1"
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
             {/* Mostrar familias seleccionadas como una lista
   <div className="mt-2">
     <label htmlFor="selectedFamilies" className="block text-gray-600 text-sm font-semibold">
@@ -612,9 +649,10 @@ const EditProduct = () => {
   </div>
 </div> */}
 
+
             <button
               type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Editar Producto
             </button>

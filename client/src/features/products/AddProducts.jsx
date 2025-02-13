@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
@@ -15,7 +15,12 @@ const AddProducts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const login = useSelector((state) => state.usersReducer.login);
-
+  const location = useLocation();
+  const {  
+    isOfert,   
+    showprice,
+    webprice: initialWebPrice,
+  } = location.state || {};
   const providers = useSelector((state) => state.groupsReducer.groups);
   const families = useSelector((state) => state.familiesReducer.families);
 
@@ -23,19 +28,21 @@ const AddProducts = () => {
   const [pricetarjeta, setPriceTarjeta] = useState(0)
   const [price3, setPrice3] = useState(0)
 
-  const [costoprod, setCostoProd] = useState(0)
-  const [porcentaje, setPorcentaje] = useState(0)
-  const [porcenTarje, setPorcenTarje] = useState(0)
-  const [eliva21, setElIVA21] = useState(21)
-  const [changePrice, setChangePrice] = useState(false)
-  const [changePriceT, setChangePriceT] = useState(false)
+  // const [costoprod, setCostoProd] = useState(0)
+  // const [porcentaje, setPorcentaje] = useState(0)
+  // const [porcenTarje, setPorcenTarje] = useState(0)
+  // const [eliva21, setElIVA21] = useState(21)
+  // const [changePrice, setChangePrice] = useState(false)
+  // const [changePriceT, setChangePriceT] = useState(false)
   const [image, setImage] = useState(null);
-  const [showProduct, setShowProduct] = useState(false);
+  // const [showProduct, setShowProduct] = useState(false);
 
   const familyOptions = useSelector((state) => state.familiesReducer.families);
 
   const [viewWeb, setViewWeb] = useState(false)
-
+  const [showPriceOnWeb, setShowPriceOnWeb] = useState(showprice);
+  const [webPrice, setWebPrice] = useState(initialWebPrice || price);
+  const [customPrice, setCustomPrice] = useState("");
 
   /* 👇 ya fueron obtenidos en main y por eso los tomo en las 2 lineas anteriores 👆
     useEffect(() => {
@@ -43,7 +50,7 @@ const AddProducts = () => {
       dispatch(getAllFamilies());
     }, [dispatch]); 
   */
-
+  
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre del producto es requerido"),
     description: Yup.string().optional(),
@@ -96,6 +103,16 @@ const AddProducts = () => {
     reader.onloadend = () => {
       setImage(reader.result);
     };
+  };
+
+  const handlePriceChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "custom") {
+      setWebPrice(customPrice);
+    } else {
+      setWebPrice(selectedValue);
+      setCustomPrice("");
+    }
   };
 
   return (
@@ -339,82 +356,106 @@ const AddProducts = () => {
               </div>
               {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
             </div>
-            <div class="mb-3">
-              <label class="form-check-label">Mostrar producto en la web</label>
-              <input
+            <div class="mb-6 flex items-center gap-3">
+                <input
                 id="show"
-                class="form-check-input"
+                className="w-5 h-5 accent-blue-500"
                 type="checkbox"
                 name="show"
-                // onChange={handleInputChange}
-                value={values.show}
                 checked={viewWeb}
                 onChange={() => setViewWeb(!viewWeb)}
-              ></input>
+              />
+                            <label class="text-gray-700 font-medium">Mostrar producto en la web</label>
+
+
+
             </div>
-            {viewWeb === true ? <>
-              <div class="mb-3">
-                <label class="form-label">Imagen del producto a mostrar</label>
-                {image ?
-                  <img
-                    /* class="form-control" */
-                    src={image}
-                    alt={values.name}
-                    width="400px"
-                    height="auto"
-                  /> : <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>}
-                <div className="form-outline mb-4">
-                  <label className="form-label" htmlFor="form4Example2">
-                    Cambiar Image
+            {viewWeb && (
+              <div className="space-y-6">
+
+                {/* Imagen del producto */}
+                <div className="flex flex-col items-center">
+                  <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
+                    {image ? (
+                      <>
+                        <img src={image} alt="Previsualización" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                        <button
+                          onClick={() => setImage(null)}
+                          className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
+                        >
+                          Eliminar Imagen
+                        </button>
+                      </>
+                    ) : (
+                      <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>
+                    )}
+                   
+                  </div>
+                  <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                    Seleccionar Imagen
+                    <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
                   </label>
-                  <Field
-                    onChange={handleImage}
-                    type="file"
-                    id="formupload"
-                    name="image"
-                    className="form-control"
-                  />
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-check-label">
-                  Desea destacarlo como oferta?
-                </label>
+                <div class="flex items-center gap-2">
                 <input
                   id="isOfert"
-                  class="form-check-input"
+                  className="w-5 h-5 accent-green-500"
                   type="checkbox"
                   name="isOfert"
-                  // onChange={handleInputChange}
-                  value={values.isOfert}
-                ></input>
+                  checked={isOfert}
+                  onChange={() => setFieldValue("isOfert", !isOfert)}
+                />
+
+              <label className="text-gray-700">
+                Desea destacarlo como oferta?
+              </label>
+              
+            </div>
+
+
+                {/* Mostrar precio en la web */}
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="showprice"
+                    className="w-5 h-5 accent-green-500"
+                    checked={showPriceOnWeb}
+                    onChange={() => setShowPriceOnWeb(!showPriceOnWeb)}
+                  />
+                  <label htmlFor="showprice" className="text-gray-700">
+                    Mostrar precio en la web
+                  </label>
+                </div>
+
+                {showPriceOnWeb && (
+                  <div className="grid grid-cols-3 gap-4 items-center">
+                    <label className="text-gray-700 font-medium">
+                      Seleccionar precio a mostrar:
+                    </label>
+                    
+                    <select
+                      value={webPrice === "custom" ? "custom" : webPrice}
+                      onChange={handlePriceChange}
+                      className="border border-gray-300 rounded px-2 py-1"
+                    >
+                      <option value={price}>Precio: ${price}</option>
+                      <option value={pricetarjeta}>Precio Tarjeta: ${pricetarjeta}</option>
+                      <option value={price3}>Precio sin IVA: ${price3}</option>
+                    </select>
+
+                    {webPrice === "custom" && (
+                      <input
+                        type="number"
+                        placeholder="Ingresar precio"
+                        value={customPrice}
+                        onChange={(e) => setCustomPrice(e.target.value)}
+                        className="border border-gray-300 rounded px-2 py-1"
+                      />
+                    )}
+                  </div>
+                )}
               </div>
-              <div class="mb-3">
-                <label class="form-check-label">
-                  Desea Mostrar precio para web?
-                </label>
-                <input
-                  id="showprice"
-                  class="form-check-input"
-                  type="checkbox"
-                  name="showprice"
-                  // onChange={handleInputChange}
-                  value={values.showprice}
-                ></input>
-              </div>
-              <div class="mb-3">
-                <label class="form-check-label">
-                  Precio para la web
-                </label>
-                <input
-                  id="webprice"
-                  class="form-check-input"
-                  type="number"
-                  name="webprice"
-                  // onChange={handleInputChange}
-                  value={values.webprice}
-                ></input>
-              </div></> : ""}
+            )}
             {/*             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Imagen del Producto
@@ -455,7 +496,7 @@ const AddProducts = () => {
  */}
             <button
               type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Agregar Producto
             </button>
