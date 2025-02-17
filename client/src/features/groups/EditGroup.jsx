@@ -192,6 +192,7 @@ const EditGroup = () => {
                   <p className="mt-2 text-red-600">{errors.web}</p>
                 )}
               </div>
+              <div className="flex gap-4 mt-4">
 
               <button
                 type="submit"
@@ -200,6 +201,14 @@ const EditGroup = () => {
               >
                 Editar Proveedor
               </button>
+              <button 
+              type="button"
+              onClick={() => navigate("/show-groups")}
+              className="inline-flex items-center px-4 py-2 border border-transparent font-bold rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Cancelar
+            </button>
+            </div>
             </Form>
           );
         }}

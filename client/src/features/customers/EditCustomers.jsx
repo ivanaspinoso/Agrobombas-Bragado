@@ -246,6 +246,7 @@ const EditCustomers = () => {
                 <p className="mt-2 text-red-600">{errors.birthday}</p>
               )}
             </div>
+            <div className="flex gap-4 mt-4">
 
             <button
               type="submit"
@@ -253,6 +254,14 @@ const EditCustomers = () => {
             >
               Editar Cliente
             </button>
+            <button 
+              type="button"
+              onClick={() => navigate("/queue-messages")}
+              className="inline-flex items-center px-4 py-2 border border-transparent font-bold rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Cancelar
+            </button>
+            </div>
           </Form>
         )}
       </Formik>
