@@ -30,6 +30,7 @@ export const productAdd = (product) => async (dispatch) => {
 
 export const productUpdate = (product) => async (dispatch) => {
     try {
+        console.log("entrando a productudate")
         const { data } = await axios.put(`${updateProductsEndpoint}`, product);
         dispatch(updateProduct(data));
         localStorage.setItem("productUpdated", JSON.stringify(true));

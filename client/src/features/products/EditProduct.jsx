@@ -60,6 +60,7 @@ const EditProduct = () => {
   }, [dispatch]);
 
   const initialValues = {
+    id: id,
     name: name || "",
     description: description || "",
     article: article || "",
@@ -177,7 +178,7 @@ const EditProduct = () => {
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
           const productData = {
-            id,
+            id: values.id,
             name: values.name,
             description: values.description,
             article: values.article,
@@ -192,19 +193,20 @@ const EditProduct = () => {
             prov_code: values.prov_code,
             families: values.families.map((family) => parseInt(family, 10)),
             userid: login?.id,
-            isOfert,
-            imageurl,
-            imagepid,
+            isOfert: values.isOfert,
+            imageurl: values.imageurl,
+            imagepid: values.imagepid,
             show: viewWeb,
             showprice: showPriceOnWeb,
             webprice: parseFloat(webPrice) || 0,
             image: image,
           };
+          try {
           await dispatch(productUpdate(productData));
           const success = JSON.parse(localStorage.getItem("productUpdated"));
-          console.log(success, productData);
+          console.log(success, "producto a enviar", productData);
 
-          if (success && success === true) {
+          if (success === true) {
             Swal.fire({
               title: "Genial!",
               text: "Producto modificada exitosamente!",
@@ -222,17 +224,10 @@ const EditProduct = () => {
               icon: "error",
             });
           }
-          /*           Swal.fire({
-            title: "Genial!",
-            text: "Producto modificado exitosamente!",
-            icon: "success",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate("/show-messages", { replace: true });
-            }
-          }); */
-
           setSubmitting(false);
+           } catch(error) {
+            console.log(error)
+           }
         }}
       >
         {({
@@ -519,7 +514,7 @@ const EditProduct = () => {
                             );
                           }}
                         >
-                          &times;
+                          {/* &times; */}
                         </button>
                       </span>
                     );

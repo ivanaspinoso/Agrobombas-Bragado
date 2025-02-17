@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
@@ -16,8 +16,8 @@ const AddProducts = () => {
   const navigate = useNavigate();
   const login = useSelector((state) => state.usersReducer.login);
   const location = useLocation();
-  const {  
-    isOfert,   
+  const {
+    isOfert,
     showprice,
     webprice: initialWebPrice,
   } = location.state || {};
@@ -50,7 +50,7 @@ const AddProducts = () => {
       dispatch(getAllFamilies());
     }, [dispatch]); 
   */
-  
+
   const schema = Yup.object().shape({
     name: Yup.string().required("El nombre del producto es requerido"),
     description: Yup.string().optional(),
@@ -158,9 +158,7 @@ const AddProducts = () => {
           };
           console.table(productData)
 
-          //  👉 por ahora no desactivada ya que me manejo con el resultado de la action:        try {
           await dispatch(productAdd(productData));
-          // 👉 por ahora no desactivada: await dispatch(fetchProducts());
 
           const success = JSON.parse(localStorage.getItem("productAdded"));
           console.log("Objeto", success);
@@ -179,15 +177,14 @@ const AddProducts = () => {
                 navigate("/show-messages");
               }
             });
-          } /* /  👉 por ahora no desactivada ya que me manejo con el resultado de la action: catch (error) */ else {
+          } else {
             Swal.fire({
               title: "Error",
               text: localStorage.getItem("productAdded"), // "Hubo un problema al agregar el producto.",
               icon: "error",
             });
-          }/* /  👉 por ahora no desactivada ya que me manejo con el resultado de la action: finally { */
+          }
           setSubmitting(false);
-          /* } */
         }}
 
 
@@ -357,7 +354,7 @@ const AddProducts = () => {
               {errors.families && <p className="text-red-500 text-xs italic">{errors.families}</p>}
             </div>
             <div class="mb-6 flex items-center gap-3">
-                <input
+              <input
                 id="show"
                 className="w-5 h-5 accent-blue-500"
                 type="checkbox"
@@ -365,7 +362,7 @@ const AddProducts = () => {
                 checked={viewWeb}
                 onChange={() => setViewWeb(!viewWeb)}
               />
-                            <label class="text-gray-700 font-medium">Mostrar producto en la web</label>
+              <label class="text-gray-700 font-medium">Mostrar producto en la web</label>
 
 
 
@@ -389,7 +386,7 @@ const AddProducts = () => {
                     ) : (
                       <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>
                     )}
-                   
+
                   </div>
                   <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
                     Seleccionar Imagen
@@ -397,22 +394,20 @@ const AddProducts = () => {
                   </label>
                 </div>
                 <div class="flex items-center gap-2">
-                <input
-                  id="isOfert"
-                  className="w-5 h-5 accent-green-500"
-                  type="checkbox"
-                  name="isOfert"
-                  checked={isOfert}
-                  onChange={() => setFieldValue("isOfert", !isOfert)}
-                />
+                  <input
+                    id="isOfert"
+                    className="w-5 h-5 accent-green-500"
+                    type="checkbox"
+                    name="isOfert"
+                    checked={isOfert}
+                    onChange={() => setFieldValue("isOfert", !isOfert)}
+                  />
 
-              <label className="text-gray-700">
-                Desea destacarlo como oferta?
-              </label>
-              
-            </div>
+                  <label className="text-gray-700">
+                    Desea destacarlo como oferta?
+                  </label>
 
-
+                </div>
                 {/* Mostrar precio en la web */}
                 <div className="flex items-center gap-2">
                   <input
@@ -432,7 +427,7 @@ const AddProducts = () => {
                     <label className="text-gray-700 font-medium">
                       Seleccionar precio a mostrar:
                     </label>
-                    
+
                     <select
                       value={webPrice === "custom" ? "custom" : webPrice}
                       onChange={handlePriceChange}

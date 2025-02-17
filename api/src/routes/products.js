@@ -426,7 +426,7 @@ router.put("/update", async (req, res) => {
     console.log("ImgProd", objImgProduct.public_id, "imgedit", objimage.public_id)
 
     if ((image && image !== "")) {
-      if (imageurl !== "") {
+      /* if (imageurl !== "") { */
         const ImgId = currentProduct.imagepid;
         if (ImgId) {
           await cloudinary.uploader.destroy(ImgId);
@@ -442,13 +442,13 @@ router.put("/update", async (req, res) => {
           public_id: newImage.public_id,
           url: newImage.secure_url
         }
-      } else {
+    /*   } else {
         objimage = {
           public_id: objImgProduct.public_id,
           url: objImgProduct.public_id
         }
-      }
-    } else if (objImgProduct.public_id === public_id) {
+      } */
+    } else {
       objimage = {
         public_id: objImgProduct.public_id,
         url: objImgProduct.public_id
