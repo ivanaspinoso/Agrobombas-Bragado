@@ -192,6 +192,7 @@ const AddCaccount = () => {
                 className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
               />
             </div>
+            <div className="flex gap-4 mt-4">
 
             <button
               type="submit"
@@ -199,6 +200,14 @@ const AddCaccount = () => {
             >
               Agregar Movimiento
             </button>
+            <button 
+              type="button"
+              onClick={() => navigate("/show-caccounts")}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Cancelar
+            </button>
+            </div>
           </Form>
         )}
       </Formik>

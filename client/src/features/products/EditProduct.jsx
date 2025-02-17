@@ -649,13 +649,21 @@ const EditProduct = () => {
   </div>
 </div> */}
 
-
+<div className=" flex gap-4 mt-4">
             <button
               type="submit"
               className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Editar Producto
             </button>
+            <button
+              type="submit"
+              onClick={() => navigate("/show-messages")}
+              className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Cancelar 
+            </button>
+            </div>
           </Form>
         )}
       </Formik>

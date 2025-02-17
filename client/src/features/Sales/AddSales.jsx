@@ -366,10 +366,18 @@ const AddSales = () => {
 
           <label>Resto:</label>
           <Field name="resta" as={Input} type="number" value={resto} readOnly />
-
+         <div className=" flex gap-4 mt-4">
           <Button type="primary" htmlType="submit">
             Registrar Venta
           </Button>
+          <Button 
+              type="button"
+              onClick={() => navigate("/show-configs")}
+              style={{ backgroundColor: '#ff4d4f', color: 'white' }}
+            >
+              Cancelar
+            </Button>
+            </div>
         </Form>
       )}
     </Formik>
