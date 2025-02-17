@@ -16,6 +16,28 @@ cloudinary.config({
 const router = express.Router();
 
 //todos los productos
+router.get("/web", (req, res, next) => {
+  Product.findAll({
+    where: { show: true },
+    include: [
+      {
+        model: Family,
+        required: true,
+      },
+/*       {
+        model: Brand,
+        required: true,
+      } */],
+    order: [["name", "ASC"]],
+
+  })
+    .then((products) => {
+      res.send(products);
+    })
+    .catch(next);
+});
+
+//todos los productos
 router.get("/", (req, res, next) => {
   Product.findAll({
     include: [
@@ -253,17 +275,17 @@ router.post("/add", async (req, res) => {
     try {
       let result
       if (image && image !== "") {
-      result = await cloudinary.uploader.upload(image, {
-        folder: "products",
-        // width: 300,
-        // crop: "scale"
-      })
-    } else {
-      result = {
-      secure_url: "",
-      public_id: ""
+        result = await cloudinary.uploader.upload(image, {
+          folder: "products",
+          // width: 300,
+          // crop: "scale"
+        })
+      } else {
+        result = {
+          secure_url: "",
+          public_id: ""
+        }
       }
-    }
       // console.log("REsultado",result)
       const objProdAdd = {
         article,
@@ -314,7 +336,7 @@ router.post("/add", async (req, res) => {
             }]
         },
       )
-
+      console.log("imagen", image)
       return res.send(productAdded);
     } catch (err) {
       // en caso de error lo devuelvo al frontend
@@ -388,33 +410,52 @@ router.put("/update", async (req, res) => {
 
     // tomar producto previo a modificar, por si modifico la imagen   
     const currentProduct = await Product.findByPk(id);
+    let objImgProduct = {
+      public_id: currentProduct.imagepid,
+      url: currentProduct.imageurl
+    }
     let objimage = {
-      public_id: imageurl,
-      url: imagepid
+      public_id: imagepid,
+      url: imageurl
     }
     console.log("image", imageurl)
     console.log("Producto encontrado", currentProduct)
     //modify image conditionnally
     console.log("id", imagepid)
-    if (imageurl !== "") {
-      const ImgId = currentProduct.imagepid;
-      if (ImgId) {
-        await cloudinary.uploader.destroy(ImgId);
+    console.log("Image", image, "url", imageurl)
+    console.log("ImgProd", objImgProduct.public_id, "imgedit", objimage.public_id)
+
+    if ((image && image !== "")) {
+      if (imageurl !== "") {
+        const ImgId = currentProduct.imagepid;
+        if (ImgId) {
+          await cloudinary.uploader.destroy(ImgId);
+        }
+
+        const newImage = await cloudinary.uploader.upload(image, {
+          folder: "products",
+          width: 1000,
+          crop: "scale"
+        });
+
+        objimage = {
+          public_id: newImage.public_id,
+          url: newImage.secure_url
+        }
+      } else {
+        objimage = {
+          public_id: objImgProduct.public_id,
+          url: objImgProduct.public_id
+        }
       }
-
-      const newImage = await cloudinary.uploader.upload(image, {
-        folder: "products",
-        width: 1000,
-        crop: "scale"
-      });
-
+    } else if (objImgProduct.public_id === public_id) {
       objimage = {
-        public_id: newImage.public_id,
-        url: newImage.secure_url
+        public_id: objImgProduct.public_id,
+        url: objImgProduct.public_id
       }
     }
 
-    console.log("objImage", objimage)
+    console.log("objImage", objimage.public_id)
 
     let objProdUpd = {
       name,

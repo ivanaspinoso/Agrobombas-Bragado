@@ -151,7 +151,7 @@ const AddProducts = () => {
             isOfert: values.isOfert,
             imageurl: values.imageurl,
             imagepid: values.imagepid,
-            show: values.show,
+            show: viewWeb,
             showprice: values.showprice,
             webprice: values.webprice,
             image: image,
@@ -378,7 +378,7 @@ const AddProducts = () => {
                   <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
                     {image ? (
                       <>
-                        <img src={image} alt="Previsualización" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                        <img src={image} alt="" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
                         <button
                           onClick={() => setImage(null)}
                           className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
