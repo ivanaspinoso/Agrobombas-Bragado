@@ -51,6 +51,7 @@ export const allProductsEndpoint = REACT_APP_API + 'products';
 export const addProductsEndpoint = REACT_APP_API + 'products/add';
 export const updateProductsEndpoint = REACT_APP_API + 'products/update/';
 export const deleteProductsEndpoint = REACT_APP_API + 'products/delete/';
+export const allProductsWebEndpoint = REACT_APP_API + 'products/web/';
 
 
 //messages

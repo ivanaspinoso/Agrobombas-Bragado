@@ -1,6 +1,7 @@
 import logoagb from "../../assets/images/newlogo.png";
 import { FaInstagram } from "react-icons/fa";
 import Helmet from "react-helmet"
+import ProductsWeb from "./ProductsWeb";
 
 
 const Home = () => {
@@ -25,7 +26,7 @@ const Home = () => {
                 alt="Agrobombas Bragado"
                 loading="lazy"
             />
-            <br />
+            <ProductsWeb />
             <div className="my-6">
                 <h1 className="text-2xl md:text-3xl font-semibold text-gray-800">
                     Rivadavia 2902,{" "}

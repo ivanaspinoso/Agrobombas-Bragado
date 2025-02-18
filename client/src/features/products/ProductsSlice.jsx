@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialProductsState = {
   loading: 'idle',
   products: [],
+  productsweb: []
 };
 
 const productsSlice = createSlice({
@@ -11,6 +12,9 @@ const productsSlice = createSlice({
   reducers: {
     allProducts: (state, action) => {
       state.products = action.payload;
+    },
+    allProductsWeb: (state, action) => {
+      state.productsweb = action.payload;
     },
     // 👇 no se que hace set products, pero por las dudas no lo borro
     setProducts: (state, action) => {
@@ -60,6 +64,6 @@ const productsSlice = createSlice({
   },
 });
 
-export const { updateProduct, deleteProduct, addProduct, logoutProducts } = productsSlice.actions;
+export const { updateProduct, deleteProduct, addProduct, logoutProducts, allProductsWeb } = productsSlice.actions;
  
 export default productsSlice.reducer;

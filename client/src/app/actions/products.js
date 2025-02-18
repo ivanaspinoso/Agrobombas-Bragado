@@ -1,5 +1,5 @@
 import axios from "axios";
-import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint } from "../../app/consts/consts";
+import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint, allProductsWebEndpoint } from "../../app/consts/consts";
 import { deleteProduct, addProduct, updateProduct } from "../../features/products/ProductsSlice";
 
 export const getAllProducts = () => async (dispatch) => {
@@ -14,6 +14,20 @@ export const getAllProducts = () => async (dispatch) => {
         console.error("Error al obtener productos:", err?.response?.data?.message || err.message);
     }
 };
+
+export const getAllProductsWeb = () => async (dispatch) => {
+    try {
+        console.log("action get productos", allProductsWebEndpoint)
+        const { data } = await axios.get(`${allProductsWebEndpoint}`);
+        dispatch({ type: "products/allProductsWeb", payload: data });
+        console.table(data)
+        localStorage.setItem("gettingProductsWeb", true);
+    } catch (err) {
+        localStorage.setItem("gettingProductsWeb", false);
+        console.error("Error al obtener productos:", err?.response?.data?.message || err.message);
+    }
+};
+
 
 export const productAdd = (product) => async (dispatch) => {
     try {
