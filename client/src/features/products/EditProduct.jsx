@@ -9,6 +9,18 @@ import { getAllCategories } from "../../app/actions/categories";
 import { getAllFamilies } from "../../app/actions/families";
 import { productUpdate } from "../../app/actions/products";
 import Spinner from "../../Components/spinner";
+import { REACT_APP_CLOUDINARY_NAME } from "../../app/consts/consts"
+import {Cloudinary} from "@cloudinary/url-gen"
+import {scale} from "@cloudinary/url-gen/actions/resize";
+import { auto } from "@cloudinary/url-gen/qualifiers/quality";
+import {quality, format} from "@cloudinary/url-gen/actions/delivery";
+// import {autoBest} from "@cloudinary/url-gen/actions/"; */
+
+const cld = new Cloudinary({
+  cloud: {
+    cloudName: REACT_APP_CLOUDINARY_NAME
+  }
+});
 
 const EditProduct = () => {
   const location = useLocation();
@@ -16,7 +28,6 @@ const EditProduct = () => {
   const navigate = useNavigate();
   console.log("location.state:", location.state);
   const [loadingFamilies, setLoadingFamilies] = useState(true);
-
 
   const {
     id,
@@ -57,7 +68,22 @@ const EditProduct = () => {
   const [prevImage, setPrevImage] = useState(imageurl)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
+  let imgSrc 
+if (prevImage) {
+  // let imagen = "products/" + result[8]
+  imgSrc = cld.image(imagepid) // new CloudinaryImage(imagepid) 
+  .resize(scale().width(500))
+  .delivery(quality(auto()))
+  .delivery(format(auto()))
+  .toURL();
+/*  .resize(scale().width(500))
+  .delivery(quality(auto()))
+   .format(auto())
+  .toURL()
+ */}
+
+
+ useEffect(() => {
     dispatch(getAllCategories());
     dispatch(getAllFamilies());
   }, [dispatch]);
@@ -171,14 +197,7 @@ const EditProduct = () => {
     }
   };
 
-  /* if (loading) {
-    return (
-      <><Spinner /></>
-    )
-  } */
-
   return (<>
-    { loading ? <Spinner/> :"" }
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
         Editar Producto
@@ -332,20 +351,6 @@ const EditProduct = () => {
 
               <div>
                 <label
-                  htmlFor="iva21"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  IVA 21%
-                </label>
-                <Field
-                  name="iva21"
-                  type="number"
-                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
-                />
-              </div>
-
-              <div>
-                <label
                   htmlFor="percent"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
@@ -360,6 +365,21 @@ const EditProduct = () => {
               </div>
 
               <div>
+                <label
+                  htmlFor="iva21"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  IVA 21%
+                </label>
+                <Field
+                  name="iva21"
+                  type="number"
+                  className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
+                />
+              </div>
+
+
+               <div>
                 <label
                   htmlFor="price"
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -563,11 +583,11 @@ const EditProduct = () => {
                   <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
                     {image ? (
                       <>
-                        <img src={image} alt="image" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                        <img src={image} alt={values.name} className="mb-3 w-60 h-auto rounded-md shadow-sm" />
                       </>
                     ) : prevImage && prevImage !== "" ? (
                       <>
-                        <img src={prevImage} alt="previmage" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                        <img src={imgSrc} alt={values.name} /* className="mb-3 w-60 h-auto rounded-md shadow-sm" */ />
                       </>
                     ) : (
                       <>

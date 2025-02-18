@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@cloudinary/url-gen": "^1.21.0",
     "react-phone-input-2": "^2.15.1"
   }
 }

@@ -211,21 +211,22 @@ router.post("/add", async (req, res) => {
       .send({ message: "Por favor, ingrese nombre de producto" });
   }
   console.log(parseFloat(cost))
-  if (!cost) {
+/*   if (!cost) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese costo de producto" });
-  } else if (parseFloat(cost) < parseFloat(cero)) {
+  } 
+ */  if (typeof(cost) !== "number") {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese costo 0 o mayor" });
   }
-  if (!percent || percent < 0) {
+  if ((typeof(percent) !== "number") ) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese porcentaje de ganancia de producto" });
   }
-  if (!price || price < 0) {
+  if ((typeof(price) !== "number") ) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese precio de producto" });
