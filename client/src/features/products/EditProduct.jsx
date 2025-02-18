@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { getAllCategories } from "../../app/actions/categories";
 import { getAllFamilies } from "../../app/actions/families";
 import { productUpdate } from "../../app/actions/products";
+import Spinner from "../../Components/spinner";
 
 const EditProduct = () => {
   const location = useLocation();
@@ -52,7 +53,9 @@ const EditProduct = () => {
   const providers = useSelector((state) => state.groupsReducer.groups);
   const familyOptions = useSelector((state) => state.familiesReducer.families);
 
-  const [image, setImage] = useState(imageurl);
+  const [image, setImage] = useState("");
+  const [prevImage, setPrevImage] = useState(imageurl)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -81,7 +84,7 @@ const EditProduct = () => {
     imageurl,
     imagepid,
     show: viewWeb,
-            showprice: showPriceOnWeb,
+    showprice: showPriceOnWeb,
     webprice: parseFloat(webPrice) || 0,
   };
 
@@ -168,7 +171,14 @@ const EditProduct = () => {
     }
   };
 
-  return (
+  /* if (loading) {
+    return (
+      <><Spinner /></>
+    )
+  } */
+
+  return (<>
+    { loading ? <Spinner/> :"" }
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
         Editar Producto
@@ -188,7 +198,7 @@ const EditProduct = () => {
             price: parseFloat(price0),
             price1: parseFloat(values.price1),
             price2: parseFloat(pricetarjeta),
-            price3: pricesi,
+            price3: parseFloat(pricesi),
             iva21: parseFloat(values.iva21),
             prov_code: values.prov_code,
             families: values.families.map((family) => parseInt(family, 10)),
@@ -202,32 +212,34 @@ const EditProduct = () => {
             image: image,
           };
           try {
-          await dispatch(productUpdate(productData));
-          const success = JSON.parse(localStorage.getItem("productUpdated"));
-          console.log(success, "producto a enviar", productData);
+            { setLoading(true) }
+            await dispatch(productUpdate(productData));
+            { setLoading(false) }
+            const success = JSON.parse(localStorage.getItem("productUpdated"));
+            console.log(success, "producto a enviar", productData);
 
-          if (success === true) {
-            Swal.fire({
-              title: "Genial!",
-              text: "Producto modificada exitosamente!",
-              icon: "success",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // resetForm({ name: "", description: "" });
-                navigate("/show-messages", { replace: true });
-              }
-            });
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: localStorage.getItem("productUpdated"),
-              icon: "error",
-            });
-          }
-          setSubmitting(false);
-           } catch(error) {
+            if (success === true) {
+              Swal.fire({
+                title: "Genial!",
+                text: "Producto modificada exitosamente!",
+                icon: "success",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // resetForm({ name: "", description: "" });
+                  navigate("/show-messages", { replace: true });
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: localStorage.getItem("productUpdated"),
+                icon: "error",
+              });
+            }
+            setSubmitting(false);
+          } catch (error) {
             console.log(error)
-           }
+          }
         }}
       >
         {({
@@ -410,9 +422,9 @@ const EditProduct = () => {
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
                   onChange={(e) => setPriceSI(e.target.value)}
                 />
-                {errors.price2 && (
-                  <p className="text-red-500 text-xs italic">{errors.price2}</p>
-                )}
+                {/*                 {errors.price3 && (
+                  <p className="text-red-500 text-xs italic">{errors.price3}</p>
+                )} */}
               </div>
             </div>
 
@@ -551,18 +563,24 @@ const EditProduct = () => {
                   <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
                     {image ? (
                       <>
-                        <img src={image} alt="Previsualización" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
-                        <button
+                        <img src={image} alt="image" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                      </>
+                    ) : prevImage && prevImage !== "" ? (
+                      <>
+                        <img src={prevImage} alt="previmage" className="mb-3 w-40 h-auto rounded-md shadow-sm" />
+                      </>
+                    ) : (
+                      <>
+                        {image && image !== "" ? <button
                           onClick={() => setImage(null)}
                           className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
                         >
                           Eliminar Imagen
-                        </button>
-                      </>
-                    ) : (
-                      <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>
+                        </button> : ""}
+
+                        <p className="text-gray-400 text-sm">No hay imagen seleccionada</p></>
                     )}
-                   
+
                   </div>
                   <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
                     Seleccionar Imagen
@@ -570,19 +588,19 @@ const EditProduct = () => {
                   </label>
                 </div>
                 <div class="flex items-center gap-2">
-                <input
-                id="isOfert"
-                class="w-5 h-5 accent-green-500"
-                type="checkbox"
-                name="isOfert"
-                // onChange={handleInputChange}
-                value={isOfert}
-              ></input>
-              <label className="text-gray-700">
-                Desea destacarlo como oferta?
-              </label>
-              
-            </div>
+                  <input
+                    id="isOfert"
+                    class="w-5 h-5 accent-green-500"
+                    type="checkbox"
+                    name="isOfert"
+                    // onChange={handleInputChange}
+                    value={isOfert}
+                  ></input>
+                  <label className="text-gray-700">
+                    Desea destacarlo como oferta?
+                  </label>
+
+                </div>
 
 
                 {/* Mostrar precio en la web */}
@@ -604,7 +622,7 @@ const EditProduct = () => {
                     <label className="text-gray-700 font-medium">
                       Seleccionar precio a mostrar:
                     </label>
-                    
+
                     <select
                       value={webPrice === "custom" ? "custom" : webPrice}
                       onChange={handlePriceChange}
@@ -644,26 +662,27 @@ const EditProduct = () => {
   </div>
 </div> */}
 
-<div className=" flex gap-4 mt-4">
-            <button
-              type="submit"
-              className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              Editar Producto
-            </button>
-            <button
-              type="submit"
-              onClick={() => navigate("/show-messages")}
-              className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              Cancelar 
-            </button>
+            <div className=" flex gap-4 mt-4">
+              <button
+                type="submit"
+                className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0e6fa5] hover:bg-[#0e6fa5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Editar Producto
+              </button>
+              <button
+                type="submit"
+                onClick={() => navigate("/show-messages")}
+                className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Cancelar
+              </button>
+              { loading ? <Spinner/> :"" }
             </div>
           </Form>
         )}
       </Formik>
     </div>
-  );
+</>  );
 };
 
 export default EditProduct;

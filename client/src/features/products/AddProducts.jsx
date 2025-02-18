@@ -10,6 +10,7 @@ import { getAllFamilies } from "../../app/actions/families";
 // 👉 por ahora no desactivada: import { fetchProducts } from "./ProductsSlice";
 import "../../App.css";
 import { productAdd } from "../../app/actions/products";
+import Spinner from "../../Components/spinner";
 
 const AddProducts = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const AddProducts = () => {
   const [showPriceOnWeb, setShowPriceOnWeb] = useState(showprice);
   const [webPrice, setWebPrice] = useState(initialWebPrice || price);
   const [customPrice, setCustomPrice] = useState("");
+   const [loading, setLoading] = useState(false)
 
   /* 👇 ya fueron obtenidos en main y por eso los tomo en las 2 lineas anteriores 👆
     useEffect(() => {
@@ -157,9 +159,9 @@ const AddProducts = () => {
             image: image,
           };
           console.table(productData)
-
+          { setLoading(true) }
           await dispatch(productAdd(productData));
-
+          { setLoading(false) }
           const success = JSON.parse(localStorage.getItem("productAdded"));
           console.log("Objeto", success);
           if (success && success === true) {
@@ -261,7 +263,7 @@ const AddProducts = () => {
               <div>
                 <label htmlFor="price3" className="block text-gray-700 text-sm font-bold mb-2">Precio s/Iva</label>
                 <Field name="price3" type="number" value={price3} className="form-input mt-1 block w-full border border-gray-300 rounded px-1" onChange={(e) => setPrice3(e.target.value)} />
-                {errors.price2 && <p className="text-red-500 text-xs italic">{errors.price2}</p>}
+                {/* {errors.price3 && <p className="text-red-500 text-xs italic">{errors.price3}</p>} */}
               </div>
             </div>
 
@@ -504,6 +506,7 @@ const AddProducts = () => {
             >
               Cancelar
             </button>
+            { loading ? <Spinner/> :"" }
             </div>
           </Form>
         )}

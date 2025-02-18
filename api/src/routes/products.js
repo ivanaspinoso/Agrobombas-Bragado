@@ -451,7 +451,7 @@ router.put("/update", async (req, res) => {
     } else {
       objimage = {
         public_id: objImgProduct.public_id,
-        url: objImgProduct.public_id
+        url: objImgProduct.url
       }
     }
 
