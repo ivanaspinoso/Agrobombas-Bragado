@@ -70,7 +70,7 @@ const EditProduct = () => {
     let imgSrc 
 if (prevImage) {
   // let imagen = "products/" + result[8]
-  imgSrc = cld.image(imagepid) // new CloudinaryImage(imagepid) 
+  imgSrc = cld.image(product.imagepid) // new CloudinaryImage(imagepid) 
   .resize(scale().width(500))
   .delivery(quality(auto()))
   .delivery(format(auto()))

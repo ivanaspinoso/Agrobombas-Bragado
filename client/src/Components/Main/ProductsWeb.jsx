@@ -1,29 +1,39 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsWeb } from "../../app/actions/products";
-import { Card, Row, Col, Tag ,Typography,Pagination,Input} from "antd";
+import { Card, Row, Col, Tag, Typography, Pagination, Input } from "antd";
 import {
-    ShoppingCartOutlined,
-    FireOutlined,
-    QuestionCircleOutlined,
-    SearchOutlined,
-  } from "@ant-design/icons";
+  ShoppingCartOutlined,
+  FireOutlined,
+  QuestionCircleOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { scale } from "@cloudinary/url-gen/actions/resize";
+import { auto } from "@cloudinary/url-gen/qualifiers/quality";
+import { quality, format } from "@cloudinary/url-gen/actions/delivery";
+import { REACT_APP_CLOUDINARY_NAME } from "../../app/consts/consts";
 
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
- const ProductsWeb = () => {
-    const dispatch = useDispatch();
-    const webproducts = useSelector((state) => 
-        state.productsReducer.productsweb?.filter(product => product.show)
-      );
-      const [currentPage, setCurrentPage] = useState(1);
-      const [searchTerm, setSearchTerm] = useState("");
+const cld = new Cloudinary({
+  cloud: { cloudName: REACT_APP_CLOUDINARY_NAME },
+});
 
-      const productsPerPage = 32;
+const ProductsWeb = () => {
+  const dispatch = useDispatch();
+  const webproducts = useSelector((state) =>
+    state.productsReducer.productsweb?.filter((product) => product.show)
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const productsPerPage = 32;
   const filteredProducts = webproducts?.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   useEffect(() => {
     dispatch(getAllProductsWeb());
   }, [dispatch]);
@@ -34,6 +44,16 @@ const { Title, Text } = Typography;
     indexOfFirstProduct,
     indexOfLastProduct
   );
+
+  const getOptimizedImage = (imagepid) => {
+    return cld
+      .image(imagepid)
+      .resize(scale().width(500))
+      .delivery(quality(auto()))
+      .delivery(format(auto()))
+      .toURL();
+  };
+
   const getPlaceholderImage = (product) => {
     if (product.isofert) {
       return "data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23666'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='24' fill='white' text-anchor='middle' dy='.3em'%3E%F0%9F%94%A5 PROMO %F0%9F%94%A5%3C/text%3E%3C/svg%3E";
@@ -42,18 +62,12 @@ const { Title, Text } = Typography;
   };
 
   return (
-        <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
-        <Title 
-          className="text-4xl md:text-5xl font-bold mb-4"
-          style={{ color: "#0e6fa5" }}
-        >
+        <Title className="text-4xl md:text-5xl font-bold mb-4" style={{ color: "#0e6fa5" }}>
           Productos AgroBombas
         </Title>
-        <Text 
-          className="text-lg md:text-xl text-gray-600"
-          style={{ color: "#666" }}
-        >
+        <Text className="text-lg md:text-xl text-gray-600" style={{ color: "#666" }}>
           Descubre nuestra selección de productos de calidad
         </Text>
       </div>
@@ -75,16 +89,10 @@ const { Title, Text } = Typography;
               cover={
                 <img
                   alt={product.name}
-                  src={product.image || getPlaceholderImage(product)}
-                  
-                  style={{height: "100px", 
-                    objectFit: "cover",
-                    width: "100%",
-                    background: "#f0f2f5" }}
+                  src={product.imagepid ? getOptimizedImage(product.imagepid) : getPlaceholderImage(product)}
+                  style={{ height: "100px", objectFit: "cover", width: "100%", background: "#f0f2f5" }}
                 />
-                
               }
-              
               actions={[
                 product.showprice ? (
                   <div style={{ color: "#52c41a", fontWeight: "bold" }}>
@@ -125,4 +133,3 @@ const { Title, Text } = Typography;
 };
 
 export default ProductsWeb;
-
