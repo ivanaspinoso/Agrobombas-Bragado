@@ -135,6 +135,8 @@ const AddProducts = () => {
           webprice: 0,
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
+          setLoading(true);
+
           const productData = {
             name: values.name,
             description: values.description,
@@ -507,7 +509,7 @@ const AddProducts = () => {
             >
               Cancelar
             </button>
-            { loading ? <Spinner/> :"" }
+            <Spinner visible={loading} />
             </div>
           </Form>
         )}

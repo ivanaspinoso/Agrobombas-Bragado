@@ -67,8 +67,7 @@ const EditProduct = () => {
   const [image, setImage] = useState("");
   const [prevImage, setPrevImage] = useState(imageurl)
   const [loading, setLoading] = useState(false)
-
-  let imgSrc 
+    let imgSrc 
 if (prevImage) {
   // let imagen = "products/" + result[8]
   imgSrc = cld.image(imagepid) // new CloudinaryImage(imagepid) 
@@ -171,7 +170,7 @@ if (prevImage) {
     console.log(price0, percenTarje / 100);
     setPriceTarjeta(Math.round(precioTarje * 100) / 100);
   };
-
+  
   // handle and convert it in base 64 para mostrar la foto seleccionada
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -206,6 +205,8 @@ if (prevImage) {
         initialValues={initialValues}
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
+          setLoading(true);
+        
           const productData = {
             id: values.id,
             name: values.name,
@@ -259,7 +260,7 @@ if (prevImage) {
           } catch (error) {
             console.log(error)
           }
-        }}
+        }}        
       >
         {({
           values,
@@ -700,8 +701,8 @@ if (prevImage) {
               >
                 Cancelar
               </button>
-              { loading ? <Spinner/> :"" }
-            </div>
+              <Spinner visible={loading} />
+              </div>
           </Form>
         )}
       </Formik>
