@@ -579,34 +579,38 @@ if (prevImage) {
               <div className="space-y-6">
 
                 {/* Imagen del producto */}
-                <div className="flex flex-col items-center">
-                  <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
-                    {image ? (
-                      <>
-                        <img src={image} alt={values.name} className="mb-3 w-60 h-auto rounded-md shadow-sm" />
-                      </>
-                    ) : prevImage && prevImage !== "" ? (
-                      <>
-                        <img src={imgSrc} alt={values.name} /* className="mb-3 w-60 h-auto rounded-md shadow-sm" */ />
-                      </>
-                    ) : (
-                      <>
-                        {image && image !== "" ? <button
-                          onClick={() => setImage(null)}
-                          className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
-                        >
-                          Eliminar Imagen
-                        </button> : ""}
+<div className="flex flex-col items-center">
+  <div className="mt-2 flex flex-col items-center border border-gray-300 p-4 rounded-lg w-64">
+    {image ? (
+      <>
+        <img src={image} alt={values.name} className="mb-3 w-60 h-auto rounded-md shadow-sm" />
+        <button
+          onClick={() => setImage("")}
+          className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
+        >
+          Eliminar Imagen
+        </button>
+      </>
+    ) : prevImage && prevImage !== "" ? (
+      <>
+        <img src={imgSrc} alt={values.name} className="mb-3 w-60 h-auto rounded-md shadow-sm" />
+        <button
+          onClick={() => setPrevImage("")}
+          className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
+        >
+          Eliminar Imagen
+        </button>
+      </>
+    ) : (
+      <p className="text-gray-400 text-sm">No hay imagen seleccionada</p>
+    )}
+  </div>
+  <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+    Seleccionar Imagen
+    <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
+  </label>
+</div>
 
-                        <p className="text-gray-400 text-sm">No hay imagen seleccionada</p></>
-                    )}
-
-                  </div>
-                  <label className="mt-3 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                    Seleccionar Imagen
-                    <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
-                  </label>
-                </div>
                 <div class="flex items-center gap-2">
                   <input
                     id="isOfert"

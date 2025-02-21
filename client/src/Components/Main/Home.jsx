@@ -1,7 +1,7 @@
 import logoagb from "../../assets/images/newlogo.png";
 import { FaInstagram } from "react-icons/fa";
 import Helmet from "react-helmet"
-import ProductsWeb from "./ProductsWeb";
+import ProductsWeb  from "./ProductsWeb";
 
 
 const Home = () => {
@@ -21,7 +21,7 @@ const Home = () => {
         </Helmet>
         <div className="container mx-auto px-4 md:px-12 my-12 text-center" >
             <img
-                className="w-[300px] md:w-[400px] mx-auto"
+                className="w-[300px] md:w-[400px] mx-auto mb-6"
                 src={logoagb}
                 alt="Agrobombas Bragado"
                 loading="lazy"
