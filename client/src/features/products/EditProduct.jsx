@@ -59,6 +59,7 @@ const EditProduct = () => {
   const [showPriceOnWeb, setShowPriceOnWeb] = useState(showprice);
   const [webPrice, setWebPrice] = useState(initialWebPrice || price0);
   const [customPrice, setCustomPrice] = useState("");
+  const [urlimagen, setUrlimagen] = useState(imageurl)
 
   const login = useSelector((state) => state.usersReducer.login);
   const providers = useSelector((state) => state.groupsReducer.groups);
@@ -70,7 +71,7 @@ const EditProduct = () => {
     let imgSrc 
 if (prevImage) {
   // let imagen = "products/" + result[8]
-  imgSrc = cld.image(product.imagepid) // new CloudinaryImage(imagepid) 
+  imgSrc = cld.image(imagepid) // new CloudinaryImage(imagepid) 
   .resize(scale().width(500))
   .delivery(quality(auto()))
   .delivery(format(auto()))
@@ -196,6 +197,12 @@ if (prevImage) {
     }
   };
 
+  const handeldelimage = () => {
+    setImage("")
+    setPrevImage("")
+    setUrlimagen("")
+  }
+
   return (<>
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <h2 className="text-center text-xl uppercase m-5 font-semibold">
@@ -224,7 +231,7 @@ if (prevImage) {
             families: values.families.map((family) => parseInt(family, 10)),
             userid: login?.id,
             isOfert: values.isOfert,
-            imageurl: values.imageurl,
+            imageurl: urlimagen,
             imagepid: values.imagepid,
             show: viewWeb,
             showprice: showPriceOnWeb,
@@ -586,7 +593,7 @@ if (prevImage) {
       <>
         <img src={image} alt={values.name} className="mb-3 w-60 h-auto rounded-md shadow-sm" />
         <button
-          onClick={() => setImage("")}
+          onClick={() => handeldelimage()}
           className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
         >
           Eliminar Imagen
@@ -596,7 +603,7 @@ if (prevImage) {
       <>
         <img src={imgSrc} alt={values.name} className="mb-3 w-60 h-auto rounded-md shadow-sm" />
         <button
-          onClick={() => setPrevImage("")}
+          onClick={() => handeldelimage()}
           className="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition"
         >
           Eliminar Imagen

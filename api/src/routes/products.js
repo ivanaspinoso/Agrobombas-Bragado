@@ -216,17 +216,17 @@ router.post("/add", async (req, res) => {
       .status(400)
       .send({ message: "Por favor, ingrese costo de producto" });
   } 
- */  if (typeof(cost) !== "number") {
+ */  if (typeof (cost) !== "number") {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese costo 0 o mayor" });
   }
-  if ((typeof(percent) !== "number") ) {
+  if ((typeof (percent) !== "number")) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese porcentaje de ganancia de producto" });
   }
-  if ((typeof(price) !== "number") ) {
+  if ((typeof (price) !== "number")) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese precio de producto" });
@@ -428,31 +428,44 @@ router.put("/update", async (req, res) => {
 
     if ((image && image !== "")) {
       /* if (imageurl !== "") { */
+      const ImgId = currentProduct.imagepid;
+      if (ImgId) {
+        await cloudinary.uploader.destroy(ImgId);
+      }
+
+      const newImage = await cloudinary.uploader.upload(image, {
+        folder: "products",
+        width: 1000,
+        crop: "scale"
+      });
+
+      objimage = {
+        public_id: newImage.public_id,
+        url: newImage.secure_url
+      }
+      /*   } else {
+          objimage = {
+            public_id: objImgProduct.public_id,
+            url: objImgProduct.public_id
+          }
+        } */
+    } else {
+      if (imageurl === "") {
         const ImgId = currentProduct.imagepid;
         if (ImgId) {
           await cloudinary.uploader.destroy(ImgId);
         }
-
-        const newImage = await cloudinary.uploader.upload(image, {
-          folder: "products",
-          width: 1000,
-          crop: "scale"
-        });
-
         objimage = {
-          public_id: newImage.public_id,
-          url: newImage.secure_url
+          /* public_id: objImgProduct.public_id,
+          url: objImgProduct.url */
+          public_id: "",
+          url: ""
         }
-    /*   } else {
+      } else {
         objimage = {
           public_id: objImgProduct.public_id,
-          url: objImgProduct.public_id
+          url: objImgProduct.url
         }
-      } */
-    } else {
-      objimage = {
-        public_id: objImgProduct.public_id,
-        url: objImgProduct.url
       }
     }
 

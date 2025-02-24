@@ -17,6 +17,8 @@ const supplierModel = require("./suppliers")
 const cashflowModel = require("./cashflows")
 const salesModel  = require("./sales")
 const caccountsModel = require("./caccounts.js")
+const buysModel = require("./buys.js")
+const buylinesModel = require("./buylines.js")
 
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
@@ -60,6 +62,8 @@ const Supplier = supplierModel(sequelize)
 const Cashflow = cashflowModel(sequelize)
 const Sales = salesModel(sequelize)
 const Caccounts = caccountsModel(sequelize)
+const Buys = buysModel(sequelize)
+const BuyLine = buylinesModel(sequelize)
 
 // const IP = ipmodels(sequelize) */
 const Prod_Cat = (sequelize.models.prod_cat)
@@ -78,11 +82,10 @@ Product.belongsTo(Supplier);    // Un producto puede tener una sola marca (fabri
 Customer.hasMany(Sales)         // A un cliente le podemos hacer varias ventas
 Sales.belongsTo(Customer)       // A una venta solo le podemos asignar un cliente
 
-User.hasMany(Sales)             // Un usuario puede hacer varias ventas
-Sales.belongsTo(User)           // a Una venta solo le popodemos asignar un usuario
-
 User.hasMany(Cashflow)          // Un usuario puede hacer varias movimientos de caja
 Cashflow.belongsTo(User)        // a Un movimiento de caja solo le popodemos asignar un usuario
+
+// relaciones para ventas
 
 Product.hasMany(OrderLine);      // Un producto puede tener varias lineas de venta
 OrderLine.belongsTo(Product);    // Una linea de venta solo puede tener un producto
@@ -92,6 +95,24 @@ OrderLine.belongsTo(Sales);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(Sales)             // Un usuario puede hacer varias ventas
+Sales.belongsTo(User)           // a Una venta solo le popodemos asignar un usuario
+
+// relaciones para compras
+
+Product.hasMany(BuyLine);      // Un producto puede tener varias lineas de compra
+BuyLine.belongsTo(Product);    // Una linea de compra solo puede tener un producto
+
+Buys.hasMany(BuyLine);
+BuyLine.belongsTo(Buys);
+
+Supplier.hasMany(Buys);
+Buys.belongsTo(User);
+
+User.hasMany(Buys)             // Un usuario puede hacer varias compras
+Buys.belongsTo(User)           // a Una compra solo le popodemos asignar un usuario
+
 
 User.hasMany(Caccounts)          // Un usuario puede hacer varias movimientos de cuentas corrientes
 Caccounts.belongsTo(User)        // a Un movimiento de cuenta corriente solo le popodemos asignar un usuario
@@ -122,6 +143,8 @@ module.exports = {
   Cashflow,
   Sales,
   Caccounts,
+  Buys,
+  BuyLine,
   // IP,
   Prod_Cat: sequelize.models.prod_cat,
   Sequelize: sequelize
