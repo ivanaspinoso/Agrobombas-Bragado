@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsWeb } from "../../app/actions/products";
-import { Card, Row, Col, Tag, Typography, Pagination, Input } from "antd";
+import { Card, Row, Col, Tag, Typography, Pagination, Input, Modal,Empty } from "antd";
 import {
-  ShoppingCartOutlined,
+  // ShoppingCartOutlined,
   FireOutlined,
   QuestionCircleOutlined,
   SearchOutlined,
@@ -28,11 +28,21 @@ const ProductsWeb = () => {
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
 
   const productsPerPage = 32;
   const filteredProducts = webproducts?.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [filteredProducts, currentPage, productsPerPage]);
 
   useEffect(() => {
     dispatch(getAllProductsWeb());
@@ -61,6 +71,11 @@ const ProductsWeb = () => {
     return "data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23f0f2f5'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='16' fill='%23666' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3C/svg%3E";
   };
 
+  const handleCardClick = (product) => {
+    setSelectedProduct(product);
+    setIsModalVisible(true);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
@@ -77,15 +92,25 @@ const ProductsWeb = () => {
           prefix={<SearchOutlined className="text-gray-500" />}
           className="w-full md:w-1/2 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0e6fa5]"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1); 
+          }}          
         />
       </div>
+      {filteredProducts.length === 0 ? (
+        <div className="flex justify-center mt-8">
+          <Empty description="No se encontró el producto" />
+        </div>
+      ) : (
+        <>
 
       <Row gutter={[16, 16]} justify="center">
         {currentProducts?.map((product) => (
           <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
+              onClick={() => handleCardClick(product)}
               cover={
                 <img
                   alt={product.name}
@@ -96,7 +121,7 @@ const ProductsWeb = () => {
               actions={[
                 product.showprice ? (
                   <div style={{ color: "#52c41a", fontWeight: "bold" }}>
-                    <ShoppingCartOutlined /> ${product.webprice}
+                     ${product.webprice}
                   </div>
                 ) : (
                   <div style={{ color: "#1890ff", fontWeight: "bold" }}>
@@ -120,16 +145,46 @@ const ProductsWeb = () => {
         ))}
       </Row>
       <div className="flex justify-center mt-8">
-        <Pagination
+      <Pagination
           current={currentPage}
-          total={webproducts?.length || 0}
+          total={filteredProducts.length}
           pageSize={productsPerPage}
-          onChange={(page) => setCurrentPage(page)}
+          onChange={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}         
           showSizeChanger={false}
+          hideOnSinglePage={true}
+          showLessItems={true}
         />
       </div>
-    </div>
-  );
-};
+       
+      <Modal
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+        centered
+      >
+        {selectedProduct && (
+          <div>
+            <img
+              src={
+                selectedProduct.imagepid
+                  ? getOptimizedImage(selectedProduct.imagepid)
+                  : getPlaceholderImage(selectedProduct)
+              }
+              alt={selectedProduct.name}
+              style={{ width: "100%", height: "auto", marginBottom: "16px" }}
+            />
+            <Title level={4}>{selectedProduct.name}</Title>
+            <p>{selectedProduct.description}</p>
+          </div>
+        )}
+      </Modal>
+      </>
+     )}
+     </div>
+   );
+ };
 
 export default ProductsWeb;
