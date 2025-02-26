@@ -29,7 +29,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-[#0e6fa5] p-4 shadow-lg">
+    <nav className="bg-[#0e6fa5] p-4 shadow-lg no-print">
       <div className="container mx-auto flex items-center justify-between">
         {/* 🔹 LOGO */}
         <div className="flex flex-row items-center space-x-4">
@@ -64,6 +64,29 @@ const Navbar = () => {
               <Link className="text-white hover:text-gray-300 transition duration-300" to="/show-companys">{t("navbar.contacts")}</Link>
             </>
           )}
+          <button
+            className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full flex items-center"
+            onClick={() => {
+              dispatch(logOut());
+              navigate("/login");
+            }}
+          >
+            {t("navbar.logout")}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="ml-2 h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7"
+              />
+            </svg>
+          </button>
         </div>
 
       </div>

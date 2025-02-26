@@ -48,3 +48,31 @@
     transform: rotate(360deg);
   }
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    background: white;
+  }
+
+  /* 🔹 Ocultar Navbar, Sidebar, Botones y Elementos Extras */
+  .navbar, .menu-icon, .print-button, .no-print, footer, .ant-layout-footer, .powered-by {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* 🔹 Ajustar la Factura al 100% */
+  .container {
+    width: 100%;
+    margin-top: 10px;
+    /* margin: auto; */
+    padding: auto;
+  }
+}

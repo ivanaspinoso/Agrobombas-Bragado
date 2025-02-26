@@ -48,6 +48,7 @@ import SalePrint from "../features/Sales/SalePrint.jsx";
 import SaleEdit from "../features/Sales/EditSale.jsx";
 import AddCaccount from "../features/Caccounts/AddCaccount.jsx";
 import EditCaccount from "../features/Caccounts/EditCaccount.jsx";
+import PrintSale from "../features/Sales/PrintSales.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -103,11 +104,14 @@ const Index = () => {
           <Route path="/edit-contact" element={<EditContact />} />
 
           {/* Rutas para ventas */}
+          <Route path="/print-sale" element={<PrintSale />} />
           <Route path="/show-configs" element={<SalesView />} />
+
+          
           <Route path="/edit-config" element={<EditConfig />} />
           <Route path="/add-sale" element={<AddSales />} />
           <Route path="/edit-sale" element={<SaleEdit />} />
-          <Route path="/print-sale" element={<SalePrint />} />
+          {/* <Route path="/print-sale" element={<SalePrint />} /> */}
           
           {/* Rutas para empresa propietaria */}
           <Route path="/show-companys" element={<CompanysView />} />

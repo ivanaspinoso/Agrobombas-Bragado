@@ -68,6 +68,13 @@ const ProductsWeb = () => {
     setSelectedProduct(product);
     setIsModalVisible(true);
   };
+
+  const getWhatsAppLink = (productName) => {
+    const phone = "542342403462"; // Número de WhatsApp
+    const message = `Hola, me pasas info sobre ${productName}?`;
+    return `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+  };
+
   // 📌 Si no hay productos en absoluto, no renderiza la sección.
   if (webproducts.length === 0) return null;
 
@@ -109,12 +116,13 @@ const ProductsWeb = () => {
               <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
                 <Card
                   hoverable
-                  onClick={() => handleCardClick(product)}
                   cover={
                     <img
                       alt={product.name}
                       src={product.imagepid ? getOptimizedImage(product.imagepid) : getPlaceholderImage(product)}
                       style={{ height: "100px", objectFit: "cover", width: "100%", background: "#f0f2f5" }}
+                      onClick={() => handleCardClick(product)}
+
                     />
                   }                  
                   actions={[
@@ -124,7 +132,14 @@ const ProductsWeb = () => {
                   </div>
                 ) : (
                       <div style={{ color: "#1890ff", fontWeight: "bold" }}>
+                        <a
+                      href={getWhatsAppLink(product.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition"
+                    >
                         <QuestionCircleOutlined /> Consultar
+                        </a>
                       </div>
                     ),
                   ]}
@@ -166,16 +181,16 @@ const ProductsWeb = () => {
       <Modal visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null} centered>
         {selectedProduct && (
           <div>
-<img
+            <img
               src={
                 selectedProduct.imagepid
-                  ? getOptimizedImage(selectedProduct.imagepid)
-                  : getPlaceholderImage(selectedProduct)
+                ? getOptimizedImage(selectedProduct.imagepid)
+                : getPlaceholderImage(selectedProduct)
               }
               alt={selectedProduct.name}
               style={{ width: "100%", height: "auto", marginBottom: "16px" }}
-            />           
-             <Title level={4}>{selectedProduct.name}</Title>
+            />
+            <Title level={4}>{selectedProduct.name}</Title>
             <p>{selectedProduct.description}</p>
           </div>
         )}

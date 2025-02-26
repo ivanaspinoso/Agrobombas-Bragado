@@ -6,6 +6,60 @@ import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt, FaPrint, FaEye, FaBoxOpen, FaDollarSign } from "react-icons/fa";
 import { getAllProducts } from "../../app/actions/products";
 import { fetchAllCashflows } from "../Caja/CashflowSlice";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
+
+const generatePDF = (sale) => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(12);
+  doc.text("Agro Bombas Bragado", 14, 10);
+  doc.text("Rivadavia 2902, (6640) Bragado, Bs. As.", 14, 16);
+  doc.text("Tel: 2342-403462", 14, 22);
+
+  doc.text(`Número de Venta: ${sale.id}`, 140, 10);
+  doc.text(`Fecha: ${new Date(sale.fecha).toLocaleDateString()}`, 140, 16);
+
+  doc.setFontSize(16);
+  doc.text("Detalles de Venta", 14, 35);
+
+  doc.setFontSize(12);
+  doc.text(`Cliente: ${sale.customer?.name || "MOSTRADOR"}`, 14, 45);
+  doc.text(`Dirección: ${sale.customer?.address || "N/A"}`, 14, 52);
+
+  // Encabezados corregidos
+  const tableColumn = ["Producto", "Cant.", "PU", "Importe"];
+  const tableRows = sale.orderlines.map((item) => [
+    item.name,
+    item.quantity,
+    `$${item.price.toFixed(2)}`,
+    `$${item.subtotal.toFixed(2)}`,
+  ]);
+
+  doc.autoTable({
+    startY: 60,
+    head: [tableColumn],
+    body: tableRows,
+    theme: "grid",
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [30, 144, 255] },
+    columnStyles: {
+      1: { halign: "right" },
+      2: { halign: "right" },
+      3: { halign: "right" },
+    },
+  });
+
+  doc.setFontSize(12);
+  doc.setFont("bold");
+  doc.text(`Total: $${sale.total.toFixed(2)}`, 140, doc.lastAutoTable.finalY + 10);
+
+  // Abrir el PDF en una nueva pestaña
+  const pdfBlob = doc.output("blob");
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+  window.open(pdfUrl, "_blank");
+};
 
 const SalesView = () => {
   const dispatch = useDispatch();
@@ -92,8 +146,8 @@ const SalesView = () => {
                       </button>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded"
-                        onClick={() => navigate(`/print-sale`, { state: sale })}
-                      >
+                        onClick={() => navigate("/print-sale", { state: sale })}
+                        >
                         <FaPrint />
                       </button>
                       <button

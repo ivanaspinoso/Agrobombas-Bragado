@@ -2,9 +2,15 @@ import logoagb from "../../assets/images/newlogo.png";
 import { FaInstagram } from "react-icons/fa";
 import Helmet from "react-helmet"
 import ProductsWeb  from "./ProductsWeb";
+import { useSelector } from "react-redux";
+
 
 
 const Home = () => {
+    const webproducts = useSelector((state) => 
+        state.productsReducer.productsweb?.filter((product) => product.show) || []
+      );
+     
     return (<>
         <Helmet>
             <title>AgroBombas Bragado</title>
@@ -20,12 +26,14 @@ const Home = () => {
 
         </Helmet>
         <div className="container mx-auto px-4 md:px-12 my-12 text-center" >
-            <img
-                className="w-[300px] md:w-[400px] mx-auto mb-6"
-                src={logoagb}
-                alt="Agrobombas Bragado"
-                loading="lazy"
-            />
+        {webproducts.length === 0 && (
+          <img
+            className="w-[300px] md:w-[400px] mx-auto mb-6"
+            src={logoagb}
+            alt="Agrobombas Bragado"
+            loading="lazy"
+          />
+        )}
             <ProductsWeb />
             <div className="my-6">
                 <h1 className="text-2xl md:text-3xl font-semibold text-gray-800">
