@@ -58,9 +58,9 @@ const ProductsWeb = () => {
   };
 
   const getPlaceholderImage = (product) => {
-    if (product.isofert) {
-      return "data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23666'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='24' fill='white' text-anchor='middle' dy='.3em'%3E%F0%9F%94%A5 PROMO %F0%9F%94%A5%3C/text%3E%3C/svg%3E";
-    }
+    // if (product.isOfert) {
+    //   return "data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23666'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='24' fill='white' text-anchor='middle' dy='.3em'%3E%F0%9F%94%A5 PROMO %F0%9F%94%A5%3C/text%3E%3C/svg%3E";
+    // }
     return "data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23f0f2f5'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='16' fill='%23666' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3C/svg%3E";
   };
 
@@ -116,27 +116,33 @@ const ProductsWeb = () => {
               <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
                 <Card
                   hoverable
+                  className="flex flex-col justify-between h-[330px]" // 🔹 Forzamos que todas las cards midan lo mismo
+
                   cover={
+                    <div className="h-[180px] flex items-center justify-center">
+
                     <img
                       alt={product.name}
                       src={product.imagepid ? getOptimizedImage(product.imagepid) : getPlaceholderImage(product)}
-                      style={{ height: "100px", objectFit: "cover", width: "100%", background: "#f0f2f5" }}
+                      style={{ height: "180px", objectFit: "cover", width: "100%", background: "#f0f2f5" }}
                       onClick={() => handleCardClick(product)}
 
                     />
+                     </div>
                   }                  
                   actions={[
                     product.showprice ? (
-                      <div style={{ color: "#52c41a", fontWeight: "bold" }}>
-                     ${product.webprice}
-                  </div>
+                      <div style={{ color: "#52c41a", fontWeight: "bold",height:"20px" }}>
+${product.webprice}                  
+</div>
                 ) : (
-                      <div style={{ color: "#1890ff", fontWeight: "bold" }}>
+                      <div style={{ color: "#1890ff", fontWeight: "bold",height:"20px" }}>
+
                         <a
                       href={getWhatsAppLink(product.name)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition"
+                      className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition "
                     >
                         <QuestionCircleOutlined /> Consultar
                         </a>
@@ -144,11 +150,17 @@ const ProductsWeb = () => {
                     ),
                   ]}
                 >
- <Meta
-                title={product.name}
-                description={
-                  product.isofert && (
-                    <Tag icon={<FireOutlined />} color="red">
+                <Meta
+                title={
+                  <div className="h-[20px] flex items-center justify-center mt-0 mb-0">
+        <span className="text-sm font-semibold text-gray-800 text-center break-words line-clamp-2">
+          {product.name}
+        </span>
+      </div>
+                }                
+                  description={
+                  product.isOfert && (
+                    <Tag icon={<FireOutlined />} color="red" className="h-[20px]">
                       PROMO
                     </Tag>
                   )
