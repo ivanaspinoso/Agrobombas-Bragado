@@ -57,6 +57,7 @@ const EditProduct = () => {
   const [pricesi, setPriceSI] = useState(price3);
   const [viewWeb, setViewWeb] = useState(show)
   const [showPriceOnWeb, setShowPriceOnWeb] = useState(showprice);
+  const [ispromo, setIsPromo] = useState(isOfert);
   const [webPrice, setWebPrice] = useState(initialWebPrice || price0);
   const [customPrice, setCustomPrice] = useState("");
   const [urlimagen, setUrlimagen] = useState(imageurl)
@@ -230,7 +231,7 @@ if (prevImage) {
             prov_code: values.prov_code,
             families: values.families.map((family) => parseInt(family, 10)),
             userid: login?.id,
-            isOfert: values.isOfert,
+            isOfert: ispromo,
             imageurl: urlimagen,
             imagepid: values.imagepid,
             show: viewWeb,
@@ -238,6 +239,7 @@ if (prevImage) {
             webprice: parseFloat(webPrice) || 0,
             image: image,
           };
+          console.log("Es oferta?", productData.isOfert)
           try {
             { setLoading(true) }
             await dispatch(productUpdate(productData));
@@ -626,7 +628,8 @@ if (prevImage) {
                     type="checkbox"
                     name="isOfert"
                     // onChange={handleInputChange}
-                    value={isOfert}
+                    checked={ispromo}
+                    onChange={() => setIsPromo(!ispromo)}
                   ></input>
                   <label className="text-gray-700">
                     Desea destacarlo como oferta?
