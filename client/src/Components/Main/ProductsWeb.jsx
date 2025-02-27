@@ -116,16 +116,23 @@ const ProductsWeb = () => {
               <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
                 <Card
                   hoverable
-                  className="flex flex-col justify-between h-[330px]" // 🔹 Forzamos que todas las cards midan lo mismo
-
+                  className={`relative flex flex-col justify-between h-[330px] 
+                    ${product.isOfert ? "border  shadow-lg shadow-red-400/50" : ""}`}
                   cover={
                     <div className="h-[180px] flex items-center justify-center">
-
+{product.isOfert && (
+        <div className="absolute top-0 left-0 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+          🔥 OFERTA
+        </div>
+      )}
                     <img
                       alt={product.name}
                       src={product.imagepid ? getOptimizedImage(product.imagepid) : getPlaceholderImage(product)}
                       style={{ height: "180px", objectFit: "cover", width: "100%", background: "#f0f2f5" }}
                       onClick={() => handleCardClick(product)}
+                      // className={`
+                      //   ${product.isOfert ? "border border-red-500 " : ""}`}
+                      className="rounded-t-lg border-t-red-500" // Eliminamos el borde rojo y agregamos un redondeado sutil arriba
 
                     />
                      </div>
@@ -158,13 +165,17 @@ ${product.webprice}
         </span>
       </div>
                 }                
-                  description={
-                  product.isOfert && (
-                    <Tag icon={<FireOutlined />} color="red" className="h-[20px]">
-                      PROMO
-                    </Tag>
-                  )
-                }
+                // description={
+                //   product.isOfert && (
+                //     <Tag
+                //       color="red"
+                //       className="bg-red-500 text-white font-bold text-sm px-8 py-1 rounded-lg shadow-md animate-pulse"
+                //     >
+                //       🔥  PROMO  🔥
+                //     </Tag>
+                //   )
+                // }
+                
               />              
               </Card>
               </Col>

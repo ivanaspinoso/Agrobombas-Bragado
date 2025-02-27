@@ -16,7 +16,7 @@ const PrintSale = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="factura border p-6 rounded-md shadow-md bg-white">
-        <h2 className="text-2xl font-bold text-center">Detalles de Venta</h2>
+        <h2 className="text-2xl font-bold text-center no-print">Detalles de Venta</h2>
 
         <div className="flex justify-between">
           {/* 📌 Datos de la empresa (Izquierda) */}
@@ -34,11 +34,11 @@ const PrintSale = () => {
         </div>
 
         {/* 🔹 Datos del cliente (Ocupa todo el ancho) */}
-        <div className="border border-gray-300 p-4 mt-4">
+        <div className="border border-gray-300 p-4 ">
           <p><strong>Cliente:</strong> {sale.customer?.name || "MOSTRADOR"}</p>
           <p><strong>Dirección:</strong> {sale.customer?.address || "N/A"}</p>
         </div>
-        <h3 className="text-lg font-semibold mt-4">Productos Vendidos</h3>
+        <h3 className="text-lg font-semibold mt-4 no-print">Productos Vendidos</h3>
         <table className="w-full border mt-2">
           <thead className="bg-gray-100">
             <tr>
