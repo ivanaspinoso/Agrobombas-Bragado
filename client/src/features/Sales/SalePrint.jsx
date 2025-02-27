@@ -1,51 +1,20 @@
-// import {
-//   Page,
-//   Text,
-//   View,
-//   Document,
-//   StyleSheet,
-//   PDFViewer,
-//   PDFDownloadLink,
-// } from "@react-pdf/renderer";
+import { jsPDF } from "jspdf";
 
-// // Create styles
-// /* const styles = StyleSheet.create({
-//   page: {
-//     flexDirection: "row",
-//     backgroundColor: "#E4E4E4",
-//   },
-//   section: {
-//     margin: 10,
-//     padding: 10,
-//     flexGrow: 1,
-//   },
-// });
-//  */
-// export default function SalePrint() {
-//   const VentaPDF = () => {
-//     <Document>
-//       <Page>
+const SalePrint = () => {
 
-//           ~ Created with react-pdf ~
-//       </Page> 
-//     </Document>;
-//     /*     <Document>
-//       <Page size="A4" style={styles.page}>
-//         <View style={styles.section}>
-//           <Text>Section #1</Text>
-//         </View>
-//         <View style={styles.section}>
-//           <Text>Section #2</Text>
-//         </View>
-//       </Page>
-//     </Document>; */
-//   };
-//   return (
-//     <div>
-//       <PDFViewer>        <VentaPDF /></PDFViewer>
 
-//     </div>
-//   );
-// }
+    const generatePDF = () => {
+        // Default export is a4 paper, portrait, using millimeters for units
+        const doc = new jsPDF();
 
-// // export default SalePrint;
+        doc.text("Hello world!", 10, 10);
+        doc.save("a4.pdf");
+
+    }
+
+    return (<>Hola world<button onClick={()=>generatePDF()}>Imprimir</button></>)
+
+
+}
+
+export default SalePrint

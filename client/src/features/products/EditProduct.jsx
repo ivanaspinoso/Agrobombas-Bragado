@@ -123,7 +123,7 @@ if (prevImage) {
     percent: Yup.number().positive("Debe ser un número positivo").optional(),
     price: Yup.number().positive("Debe ser un número positivo").optional(),
     iva21: Yup.number().positive("Debe ser un número positivo"),
-    price1: Yup.number().positive("Debe ser un número positivo").optional(),
+    price1: Yup.number("Debe ser un número positivo").optional(),
     price2: Yup.number().positive("Debe ser un número positivo").optional(),
     prov_code: Yup.number().optional(),
     families: Yup.array().optional(),
@@ -399,11 +399,11 @@ if (prevImage) {
                 <Field
                   name="price"
                   type="number"
-                  value={price0}
+                  value= {price0}
                   className="form-input mt-1 block w-full border border-gray-300 rounded px-1"
                   onChange={(e) => setPrice0(e.target.value)}
                 />
-                {errors.price && touched.price && (
+                {errors.price && touched.price && !price0 && (
                   <p className="text-red-500 text-xs italic">{errors.price}</p>
                 )}
               </div>

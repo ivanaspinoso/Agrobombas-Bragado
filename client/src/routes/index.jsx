@@ -44,11 +44,11 @@ import EditCashflow from "../features/Caja/EditCashflow.jsx";
 import SalesView from "../features/Sales/SalesView.jsx";
 import AddSales from "../features/Sales/AddSales.jsx";
 import CaccountsView from "../features/Caccounts/CaccountsView.jsx";
-import SalePrint from "../features/Sales/SalePrint.jsx";
 import SaleEdit from "../features/Sales/EditSale.jsx";
 import AddCaccount from "../features/Caccounts/AddCaccount.jsx";
 import EditCaccount from "../features/Caccounts/EditCaccount.jsx";
 import PrintSale from "../features/Sales/PrintSales.jsx";
+import SalePrint from "../features/Sales/SalePrint.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -111,7 +111,7 @@ const Index = () => {
           <Route path="/edit-config" element={<EditConfig />} />
           <Route path="/add-sale" element={<AddSales />} />
           <Route path="/edit-sale" element={<SaleEdit />} />
-          {/* <Route path="/print-sale" element={<SalePrint />} /> */}
+{/*           <Route path="/print-sale" element={<SalePrint />} /> */}
           
           {/* Rutas para empresa propietaria */}
           <Route path="/show-companys" element={<CompanysView />} />
