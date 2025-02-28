@@ -19,6 +19,10 @@ const PrintSale = () => {
     // Default export is a4 paper, portrait, using millimeters for units
     const doc = new jsPDF();
 
+    doc.setLineWidth(1);
+    doc.rect(8, 3, 192, 35);
+    doc.line(100, 3, 100, 38);
+
     doc.setFontSize(12);
     // doc.text("Agro Bombas Bragado", 10, 10);
     doc.addImage("https://res.cloudinary.com/dns0f6nb2/image/upload/v1740690525/l4mdde0epg8si9qth6e8.png", 'JPEG', 14, 5, 64, 20);
@@ -31,9 +35,15 @@ const PrintSale = () => {
     // doc.setFontSize(16);
     // doc.text("Detalles de Venta", 14, 35);
 
+    doc.setLineWidth(.5);
+    doc.rect(8, 40, 192, 18);
+
     doc.setFontSize(12);
     doc.text(`Cliente: ${sale.customer?.name}`, 14, 45);
-    doc.text(`Dirección: ${sale.customer?.address}`, 14, 52);
+    doc.text(`Dirección: ${sale.customer?.address}`, 114, 45);
+    doc.text(`Telefono: ${sale.customer?.cellphone}`, 14, 55);
+    doc.text(`Mail: ${sale.customer?.email}`, 114, 55);
+
 
     // Encabezados corregidos
     const tableColumn = ["Cant.", "Producto", "PU", "Importe"];
