@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { jsPDF } from "jspdf";
 // import "jspdf-autotable";
-import { autoTable } from 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import {imagen} from "../../assets/images/agrobombas.logo.jpg"
 
 
@@ -18,47 +18,49 @@ const PrintSale = () => {
   const generatePDF = () => {
     // Default export is a4 paper, portrait, using millimeters for units
     const doc = new jsPDF();
+    const marginTop = 15;
 
-    doc.setLineWidth(1);
-    doc.rect(8, 3, 192, 35);
-    doc.line(100, 3, 100, 38);
+    doc.setLineWidth(.5);
+    doc.rect(14, marginTop + 3, 182, 35);
+    doc.line(100, marginTop + 3, 100, marginTop + 38);
 
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     // doc.text("Agro Bombas Bragado", 10, 10);
-    doc.addImage("https://res.cloudinary.com/dns0f6nb2/image/upload/v1740690525/l4mdde0epg8si9qth6e8.png", 'JPEG', 14, 5, 64, 20);
-    doc.text("Rivadavia 2902, (6640) Bragado, Bs. As.", 14, 30);
-    doc.text("Tel: 2342-403462", 14, 35);
+    doc.addImage("https://res.cloudinary.com/dns0f6nb2/image/upload/v1740690525/l4mdde0epg8si9qth6e8.png", 'JPEG', 16, marginTop + 5, 64, 20);
+    doc.text("Rivadavia 2902, (6640) Bragado, Bs. As.", 16, marginTop + 35);
+    doc.text("Tel: 2342-403462", 16,  marginTop + 30);
 
-    doc.text(`Número de Venta: ${sale.id}`, 140, 10);
-    doc.text(`Fecha: ${new Date(sale.fecha).toLocaleDateString()}`, 140, 16);
+    doc.text(`Número de Venta: ${sale.id}`, 114,  marginTop + 10);
+    doc.text(`Fecha: ${new Date(sale.fecha).toLocaleDateString()}`, 114, marginTop + 16);
 
     // doc.setFontSize(16);
     // doc.text("Detalles de Venta", 14, 35);
 
     doc.setLineWidth(.5);
-    doc.rect(8, 40, 192, 18);
+    doc.rect(14, marginTop + 40, 182, 13);
 
-    doc.setFontSize(12);
-    doc.text(`Cliente: ${sale.customer?.name}`, 14, 45);
-    doc.text(`Dirección: ${sale.customer?.address}`, 114, 45);
-    doc.text(`Telefono: ${sale.customer?.cellphone}`, 14, 55);
-    doc.text(`Mail: ${sale.customer?.email}`, 114, 55);
+    doc.setFontSize(10);
+    doc.text(`Cliente: ${sale.customer?.name || ""}`, 16, marginTop + 45);
+    doc.text(`Dirección: ${sale.customer?.address || ""}`, 114, marginTop + 45);
+    doc.text(`Telefono: ${sale.customer?.cellphone || ""}`, 16, marginTop + 50);
+    doc.text(`Mail: ${sale.customer?.email || ""}`, 114, marginTop + 50);
 
 
     // Encabezados corregidos
     const tableColumn = ["Cant.", "Producto", "PU", "Importe"];
     const tableRows = sale.orderlines.map((item) => [
-      item.quantity,
-      item.name,
-      `$${item.price.toFixed(2)}`,
-      `$${item.subtotal.toFixed(2)}`,
+      item.quantity || "",
+      item.name || "",
+      `$${(item.price || 0).toFixed(2)}`,
+      `$${(item.subtotal || 0).toFixed(2)}`,
     ]);
 
     autoTable(doc,{
-      startY: 60,
+      startY: marginTop + 55,
       head: [tableColumn],
       body: tableRows,
       theme: "grid",
+      tableWidth: "auto",
       styles: { fontSize: 10 },
       headStyles: { fillColor: [30, 144, 255], halign: "center" },
       columnStyles: {
@@ -71,7 +73,7 @@ const PrintSale = () => {
 
     doc.setFontSize(12);
     doc.setFont("bold");
-    doc.text(`Total: $${sale.total.toFixed(2)}`, 140, doc.lastAutoTable.finalY + 10);
+    doc.text(`Total: $${sale.total.toFixed(2)}`, 160, doc.lastAutoTable.finalY + 10);
 
     // Descargar el documento
 
