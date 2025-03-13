@@ -157,7 +157,7 @@ const AddSales = () => {
       }}
       onSubmit={async (values) => {
         const saleData = {
-          fecha: values.fecha,
+          fecha: new Date(values.fecha).toISOString(), 
           client: values.client,
           client_asoc: values.client_asoc,
           address: values.address || "",
@@ -170,7 +170,7 @@ const AddSales = () => {
           orderlines,
           user_asoc: login.id,
         };
-        console.log(saleData);
+       
         await dispatch(submitSale(saleData));
 
         const success = JSON.parse(localStorage.getItem("saleAdded"));

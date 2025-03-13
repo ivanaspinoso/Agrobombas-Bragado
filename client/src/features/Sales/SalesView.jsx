@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt, FaPrint, FaEye, FaBoxOpen, FaDollarSign } from "react-icons/fa";
 import { getAllProducts } from "../../app/actions/products";
 import { fetchAllCashflows } from "../Caja/CashflowSlice";
+import { parseISO, format, addHours } from "date-fns";
 
 const SalesView = () => {
   const dispatch = useDispatch();
@@ -75,7 +76,11 @@ const SalesView = () => {
                 {/* Fila de la Venta */}
                 <tr className="border-b border-gray-300">
                   <td className="px-2 py-2 text-center">{index + 1}</td>
-                  <td className="px-4 py-2 text-center">{new Date(sale.fecha).toLocaleDateString()}</td>
+                  <td className="px-4 py-2 text-center">
+                    {sale.fecha 
+                      ? format(addHours(parseISO(sale.fecha), 24), "dd/MM/yyyy") 
+                      : "Fecha inválida"}
+                  </td>
                   <td className="px-4 py-2 text-left">{sale.customer?.name || ""}</td>
                   <td className="px-4 py-2 text-left">{sale.customer?.address || ""}</td>
                   <td className="px-4 py-2 text-right">{sale.subtotal.toLocaleString(undefined,{minimumFractionDigits: 2})}</td>
