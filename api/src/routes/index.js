@@ -9,6 +9,7 @@ const cashflowsRoutes = require("./cashflows")
 const salesRoutes = require("./sales")
 const caccountsRoutes = require("./caccounts")
 const orderlinesRoutes = require("./orderlines")
+const buysRoutes = require("./buys")
 /* 
 const brandsRoutes = require("./brands")
 const ordersRoutes = require('./orders')
@@ -29,6 +30,7 @@ router.use('/agb/cashflows', cashflowsRoutes)
 router.use('/agb/sales', salesRoutes)
 router.use('/agb/caccounts', caccountsRoutes)
 router.use('/agb/orderlines', orderlinesRoutes)
+router.use('/agb/buys', buysRoutes)
 
 
 /* 

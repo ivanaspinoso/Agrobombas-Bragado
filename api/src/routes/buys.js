@@ -1,6 +1,6 @@
 var express = require("express");
 
-const { Buys, Cashflow, Caccounts, User, Customer, OrderLine, Product } = require("../models/index");
+const { Buys, Supplier, User } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
 const { where } = require("sequelize");
@@ -8,7 +8,7 @@ const cashflows = require("../models/cashflows");
 
 var router = express.Router();
 
-//Obtener todos las ventas
+//Obtener todos las compras
 router.get("/", /* validateToken, */ async (req, res) => {
     try {
         let getAllBuys = await Buys.findAll({
@@ -19,118 +19,78 @@ router.get("/", /* validateToken, */ async (req, res) => {
                     required: true,
                 },
                 {
-                    model: Customer,
+                    model: Supplier,
                     required: true,
-                },
-                {
-                    model: OrderLine,
-                    required: true,
-                }, 
-            ]
+                }]
         });
         console.log(getAllBuys)
         return res.send(getAllBuys);
     } catch (err) {
         return res.send({
-            message: "No se pudieron obtener ventas" + err,
+            message: "No se pudieron obtener compras" + err,
         });
     }
 });
 
-//Obtener una venta por id
+//Obtener una compra por id
 router.get("/byid/:id", /* validateToken, */ async (req, res) => {
-    const {id} = req.params
+    const { id } = req.params
     try {
-        let getAllBuys = await Buys.findAll({
-            order: [["fecha", "ASC"]],
-            where: {id},
-            include: [
-                {
-                    model: User,
-                    required: true,
-                },
-                {
-                    model: Customer,
-                    required: true,
-                },
-                {
-                    model: OrderLine,
-                    required: true,
-                }, 
-            ]
-        });
-         let getAllCaccountsXSale = await Caccounts.findAll({
-            where: {vta_asoc: id}
-        })
-        let getAllCashflowXSale= await Cashflow.findAll({
-            where: {vta_asoc: id}
-        })
-        let ventaObj = {
-            venta: getAllBuys
-        }
-        let addCaccounts = {...ventaObj, caccounts: getAllCaccountsXSale}
-        let addCashflows = {...addCaccounts, cashflow: getAllCashflowXSale} 
-        let objVentaTotal = addCashflows
+        let getAllBuys = await Buys.findByPk(id);
         // console.log(getBuysbyId)
-        return res.send(objVentaTotal);
+        return res.send(getAllBuys);
     } catch (err) {
         return res.send({
-            message: "No se pudieron obtener ventas" + err,
+            message: "No se pudieron obtener compras" + err,
         });
     }
 });
 
-//Agregando venta
+//Agregando compra
 router.post("/add", async (req, res) => {
     // tomo todos los campos del form de registro de usuario
     const {
         fecha,
-        client,
+        provider,
         address,
         cellphone,
         noteclient,
         subtotal,
         total,
         noteadmin,
-        paga,
-        notapaga,
-        resta,
-        notaresta,
         user_asoc,
-        orderlines,
-        client_asoc
+        supp_asoc,
+        invoice
     } = req.body;
     // chequeo que estén completos los 3 campos requeridos
     if (!fecha || fecha === "") {
         return res
             .status(400)
-            .json({ message: "Falta ingresar fecha para la venta" });
+            .json({ message: "Falta ingresar fecha para la compra" });
     }
-    if (!client || client === "") {
+    if (typeof (supp_asoc) !== "number" || supp_asoc < 0) {
         return res
             .status(400)
-            .json({ message: "Falta ingresar cliente para la venta" });
+            .json({ message: "Falta ingresar proveedor para la compra" });
     }
-    if (!orderlines || orderlines.length <= 0) {
+    if (typeof (user_asoc) !== "number" || user_asoc < 0) {
         return res
             .status(400)
-            .json({ message: "Falta ingresar, al menos, un producto a la venta" });
+            .json({ message: "Falta ingresar usuario que carga la compra" });
     }
-    /*     if (!subtotal || parseFloat(subtotal) < parseFloat(0) ) {
-            return res
-                .status(400)
-                .json({ message: "Falta ingresar subtotal para la venta " + parseFloat(subtotal)});
-        } 
-    
-        if (!total || total < 0) {
-            return res
-                .status(400)
-                .json({ message: "Falta ingresar total para la venta" });
-        }
-     */
-    const objSale = {
+    if (!provider || provider === "") {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar nombre de proveedor para la compra" });
+    }
+    if (typeof (total) !== "number") {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar total para la compra" });
+    }
+    const objBuy = {
         fecha,
-        client,
+        provider,
         address,
         cellphone,
         noteclient,
@@ -138,134 +98,119 @@ router.post("/add", async (req, res) => {
         total,
         noteadmin,
         userId: user_asoc,
-        customerId: client_asoc
+        supplierId: supp_asoc,
+        invoice
     };
     try {
         // envio los datos al modelo sequelize para que los guarde en la database
-        let newSale = await Buys.create(objSale);
+        let newBuy = await Buys.create(objBuy);
         // si todo sale bien devuelvo el objeto agregado
-        console.log("Objeto de venta guardado");
-        if (paga > 0) {
-            console.log("generar movimiento de caja " + newSale.id)
-            const objCashflow = {
-                date: fecha,
-                description: "Movimiento Automatico de caja por venta " + newSale.id,
-                income: paga,
-                note: notapaga,
-                vta_asoc: newSale.id,
-                user_asoc: user_asoc,
-                userId: user_asoc,
-                saleId: newSale.id
-            };
-            try {
-                // envio los datos al modelo sequelize para que los guarde en la database
-                let newCashflow = await Cashflow.create(objCashflow);
-                // si todo sale bien devuelvo el objeto agregado
-                console.log("Objeto de movimiento de caja guardado", newCashflow);
-                /* res
-                    .status(200)
-                    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow }); */
-            } catch (error) {
-                // en caso de error lo devuelvo al frontend
-                console.log(error);
-                res.status(500).json({ message: "No se pudo crear el movimiento" + error });
-            }
-        }
-        if (resta > 0) {
-            console.log("generar movimiento de cta cte " + newSale.id)
-            const objCaccount = {
-                date: fecha,
-                description: "Movimiento Automatico de cuenta por venta " + newSale.id,
-                income: resta,
-                vta_asoc: newSale.id,
-                user_asoc: user_asoc,
-                client_asoc,
-                userId: user_asoc,
-                customerId: client_asoc,
-                saleId: newSale.id
-            };
-            try {
-                // envio los datos al modelo sequelize para que los guarde en la database
-                let newCaccount = await Caccounts.create(objCaccount);
-                // si todo sale bien devuelvo el objeto agregado
-                console.log("Objeto de movimiento de cuenta guardado", newCaccount);
-                /* res
-                    .status(200)
-                    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow }); */
-            } catch (error) {
-                // en caso de error lo devuelvo al frontend
-                console.log(error);
-                res.status(500).json({ message: "No se pudo crear el movimiento" + error });
-            }
-
-        }
-        if (orderlines.length > 0) {
-            orderlines.map(async (linea) => {
-                const objOrderline = {
-                    productId: linea.id,
-                    article: linea.article,
-                    name: linea.name,
-                    cost: linea.cost,
-                    price: linea.price,
-                    quantity: linea.quantity,
-                    subtotal: linea.subtotal,
-                    saleId: newSale.id
-                };
-                console.log(objOrderline)
-                try {
-                    // envio los datos al modelo sequelize para que los guarde en la database
-                    let newOrderline = await OrderLine.create(objOrderline);
-                    // si todo sale bien devuelvo el objeto agregado
-                    console.log("Objeto de linea de venta", newOrderline);
-                    /* res
-                        .status(200)
-                        .json({ message: "Movimiento generado correctamente", cashflow: newCashflow }); */
-                } catch (error) {
-                    // en caso de error lo devuelvo al frontend
-                    console.log(error);
-                    res.status(500).json({ message: "No se pudo crear el movimiento" + error });
-                }
-                console.log("id de producto", linea.id)
-                let newProdToStock = await Product.findOne(
-                    { where: { id: linea.id } },
-                )
-                try {
-                    let newStock = await Product.update({ stock: newProdToStock.stock - linea.quantity },
-                        { where: { id: linea.id } },
-                    )
-                    // envio los datos al modelo sequelize para que los guarde en la database
-                    // let newStock = await OrderLine.findOne(objOrderline);
-                    // si todo sale bien devuelvo el objeto agregado
-                    console.log("Cambio de stock generado coreectamente", newStock);
-                    // res
-                    //    .status(200)
-                    //    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow });
-                } catch (error) {
-                    // en caso de error lo devuelvo al frontend
-                    // console.log(error);
-                    res.status(500).json({ message: "No se pudo cambiar el stock" + error });
-                }
-            })
-            // Generar linea de producto vendido y descontarlo del stock
-
-        }
+        console.log("Objeto de compra guardado");
         res
             .status(200)
-            .json({ message: "Venta generado correctamente", sale: newSale });
+            .json({ message: "Compra generado correctamente", buy: newBuy });
     } catch (error) {
         // en caso de error lo devuelvo al frontend
         console.log(error);
-        res.status(500).json({ message: "No se pudo crear el venta" + error });
+        res.status(500).json({ message: "No se pudo crear la compra" + error });
     }
 }
 )
 
+//Agregando compra
+router.put("/update", async (req, res) => {
+    // tomo todos los campos del form de registro de usuario
+    const {
+        id,
+        fecha,
+        provider,
+        address,
+        cellphone,
+        noteclient,
+        subtotal,
+        total,
+        noteadmin,
+        user_asoc,
+        supp_asoc,
+        invoice
+    } = req.body;
+    // chequeo que estén completos los 3 campos requeridos
+    if (typeof (id) !== "number" || id < 0) {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar id para la compra" });
+    }
+    if (!fecha || fecha === "") {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar fecha para la compra" });
+    }
+    if (typeof (supp_asoc) !== "number" || supp_asoc < 0) {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar proveedor para la compra" });
+    }
+    if (typeof (user_asoc) !== "number" || user_asoc < 0) {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar usuario que carga la compra" });
+    }
+    if (!provider || provider === "") {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar nombre de proveedor para la compra" });
+    }
+    if (typeof (total) !== "number") {
+        return res
+            .status(400)
+            .json({ message: "Falta ingresar total para la compra" });
+    }
+    const objBuyUpd = {
+        fecha,
+        provider,
+        address,
+        cellphone,
+        noteclient,
+        subtotal,
+        total,
+        noteadmin,
+        userId: user_asoc,
+        supplierId: supp_asoc,
+        invoice
+    };
+    try {
+        // envio los datos al modelo sequelize para que los guarde en la database
+        let updBuy = await Buys.update(objBuyUpd, {
+            where: {
+                id,
+            },
+        });
+
+        if (updBuy[0] === 0) {
+            // en caso de error lo devuelvo al frontend
+            res.status(500).json({ message: "No se pudo encontrar la compra" });
+        } else {
+            const objBuyUpdated = await Buys.findByPk(id)
+            // si todo sale bien devuelvo el objeto agregado
+            console.log("Objeto de compra editado");
+            res
+                .status(200)
+                .json({ message: "Compra editada correctamente", buy: objBuyUpdated });
+
+        }
+    } catch (error) {
+        // en caso de error lo devuelvo al frontend
+        console.log(error);
+        res.status(500).json({ message: "No se pudo editar la compra" + error });
+    }
+}
+)
 
 // Eliminar proveedor
 router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
     const { id } = req.params;
-    console.log("venta a borrar", id);
-    if (!id) return res.status(400).send({ message: "Debe ingresar venta a eliminar" });
+    console.log("compra a borrar", id);
+    if (!id) return res.status(400).send({ message: "Debe ingresar compra a eliminar" });
 
     /*     let producSocios = await Supplier.findAll({
             where: { id: id },
@@ -288,93 +233,28 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
      */
     if (existSale) {
         try {
-            let lineasventa = await OrderLine.findAll({
-                where: {
-                    saleId: id,
-                },
-            })
-            console.log("lineas de venta",lineasventa.length);
-            lineasventa.map(async (linea) => {
-                console.log("id de producto", linea.productId)
-                let newProdToStock = await Product.findOne(
-                    { where: { id: linea.productId } },
-                )
-                console.log("productos obtenidos", newProdToStock.length);
-                try {
-                    let newStock = await Product.update({ stock: newProdToStock.stock + linea.quantity },
-                        { where: { id: linea.productId } },
-                    )
-                    // envio los datos al modelo sequelize para que los guarde en la database
-                    // let newStock = await OrderLine.findOne(objOrderline);
-                    // si todo sale bien devuelvo el objeto agregado
-                    console.log("Cambio de stock generado coreectamente", newStock);
-                    // res
-                    //    .status(200)
-                    //    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow });
-                } catch (error) {
-                    // en caso de error lo devuelvo al frontend
-                    // console.log(error);
-                    res.status(500).json({ message: "No se pudo cambiar el stock" + error });
-                }
-            })
-            try {
-                // envio los datos al modelo sequelize para que los guarde en la database
-                let delCaccount = await Caccounts.destroy({
-                    where: {
-                        vta_asoc: id,
-                    },
-                });
-                // si todo sale bien devuelvo el objeto agregado
-                console.log("Objeto de movimiento de cuenta guardado", delCaccount);
-                /* res
-                    .status(200)
-                    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow }); */
-            } catch (error) {
-                // en caso de error lo devuelvo al frontend
-                console.log(error);
-                res.status(500).json({ message: "No se pudo crear el movimiento" + error });
-            }
-            try {
-                // envio los datos al modelo sequelize para que los guarde en la database
-                let delCashflow = await Cashflow.destroy({
-                    where: {
-                        vta_asoc: id,
-                    },
-                });
-                // si todo sale bien devuelvo el objeto agregado
-                console.log("Objeto de movimiento de cuenta guardado", delCashflow);
-                /* res
-                    .status(200)
-                    .json({ message: "Movimiento generado correctamente", cashflow: newCashflow }); */
-            } catch (error) {
-                // en caso de error lo devuelvo al frontend
-                console.log(error);
-                res.status(500).json({ message: "No se pudo crear el movimiento" + error });
-            }
-            let dellines = await OrderLine.destroy({
-                where: {
-                    saleId: id,
-                },
-            });
-             let delSale = await Buys.destroy({
+
+           let delBuy = await Buys.destroy({
                 where: {
                     id,
                 },
             });
-               console.log(lineasventa);
             return res
                 .status(200)
-                .json({ message: "Venta eliminada correctamente" });
+                .json({ message: "compra eliminada correctamente" });
         } catch (err) {
             return res
                 .status(500)
                 .json({ message: "No se pudo eliminar el proveedor" + err });
         }
-/*         } else {
-            return res.status(400).json({ message: "Proveedor inexistente" });
-        }
- */    }
-});
+    } else {
+        return res
+        .status(500)
+        .json({ message: "No se pudo encontrar la compra" });
+
+    }
+
+ });
 
 
 

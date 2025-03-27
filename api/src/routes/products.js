@@ -389,7 +389,7 @@ router.put("/update", async (req, res) => {
       .status(400)
       .send({ message: "Por favor, ingrese nombre de producto" });
   }
-  if (!price || price < 0) {
+  if ((typeof (price) !== "number")) {
     return res
       .status(400)
       .send({ message: "Por favor, ingrese precio de producto" });

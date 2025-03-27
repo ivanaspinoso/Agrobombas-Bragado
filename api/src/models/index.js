@@ -18,7 +18,7 @@ const cashflowModel = require("./cashflows")
 const salesModel  = require("./sales")
 const caccountsModel = require("./caccounts.js")
 const buysModel = require("./buys.js")
-const buylinesModel = require("./buylines.js")
+// const buylinesModel = require("./buylines.js")
 
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
@@ -63,7 +63,7 @@ const Cashflow = cashflowModel(sequelize)
 const Sales = salesModel(sequelize)
 const Caccounts = caccountsModel(sequelize)
 const Buys = buysModel(sequelize)
-const BuyLine = buylinesModel(sequelize)
+// const BuyLine = buylinesModel(sequelize)
 
 // const IP = ipmodels(sequelize) */
 const Prod_Cat = (sequelize.models.prod_cat)
@@ -101,18 +101,20 @@ Sales.belongsTo(User)           // a Una venta solo le popodemos asignar un usua
 
 // relaciones para compras
 
-Product.hasMany(BuyLine);      // Un producto puede tener varias lineas de compra
-BuyLine.belongsTo(Product);    // Una linea de compra solo puede tener un producto
+// Product.hasMany(BuyLine);      // Un producto puede tener varias lineas de compra
+// BuyLine.belongsTo(Product);    // Una linea de compra solo puede tener un producto
 
-Buys.hasMany(BuyLine);
-BuyLine.belongsTo(Buys);
+// Buys.hasMany(BuyLine);
+// BuyLine.belongsTo(Buys);
 
-Supplier.hasMany(Buys);
-Buys.belongsTo(User);
+// Supplier.hasMany(Buys);
+// Buys.belongsTo(User);
+
+Supplier.hasMany(Buys);        // Un proveedor puede tener varias compras
+Buys.belongsTo(Supplier);      // a una compra solo se le asigna un proveedor
 
 User.hasMany(Buys)             // Un usuario puede hacer varias compras
 Buys.belongsTo(User)           // a Una compra solo le popodemos asignar un usuario
-
 
 User.hasMany(Caccounts)          // Un usuario puede hacer varias movimientos de cuentas corrientes
 Caccounts.belongsTo(User)        // a Un movimiento de cuenta corriente solo le popodemos asignar un usuario
@@ -144,7 +146,6 @@ module.exports = {
   Sales,
   Caccounts,
   Buys,
-  BuyLine,
   // IP,
   Prod_Cat: sequelize.models.prod_cat,
   Sequelize: sequelize

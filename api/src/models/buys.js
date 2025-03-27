@@ -6,7 +6,7 @@ module.exports = function (sequelize) {
             type: DataTypes.DATEONLY,
             allowNull: false
         },
-        supplier: {
+        provider: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -24,7 +24,7 @@ module.exports = function (sequelize) {
         },
         subtotal: {
             type: DataTypes.FLOAT,
-            allowNull: false
+            allowNull: true
         },
         total: {
             type: DataTypes.FLOAT,
@@ -51,6 +51,10 @@ module.exports = function (sequelize) {
         },
         resta: {
             type: DataTypes.FLOAT,
+        },
+        invoice: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     })
 }

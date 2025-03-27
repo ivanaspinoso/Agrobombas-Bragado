@@ -59,7 +59,7 @@ const forzar = true
 // false // true
 
 conn
-   .sync({ alter: true }) // Alterar tabla ya creada comentar promesas de carga y fuerce de regeneracion
+  .sync({ alter: true }) // Alterar tabla ya creada comentar promesas de carga y fuerce de regeneracion
   // .sync({ force: forzar }) // Generar tabla desde 0
   .then(() => {
     console.log("Connect");

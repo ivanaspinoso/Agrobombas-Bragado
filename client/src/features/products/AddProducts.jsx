@@ -126,7 +126,7 @@ const AddProducts = () => {
       <Formik
         validationSchema={schema}
         initialValues={{
-          name: "", description: "", stock: 0, cost: 0, percent: 0, price: 0, iva21: 21, iva10: "", price1: 0, price2: 0, prov_code: "", families: [], article: "",
+          name: "", description: "", stock: 0, cost: 0, percent: 0, price: 0, iva21: 21, iva10: "", price1: 0, price2: 0, price3: 0, prov_code: "", families: [], article: "",
           isOfert: false,
           imageurl: "",
           imagepid: "",
