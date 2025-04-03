@@ -15,6 +15,7 @@ import productsReducer from '../features/products/ProductsSlice'
 import cashflowReducer from '../features/Caja/CashflowSlice'
 import salesReducer from '../features/Sales/salesSlice'
 import caccountsReducer from '../features/Caccounts/CaccountsSlice'
+import buysReducer from '../features/Buys/BuysSlice'
 
 const devornot = process.env.REACT_APP_NODE_ENV
 
@@ -22,7 +23,7 @@ const persistConfig = {
   key: "root",
   storage,
   whitelist: ["contactsReducer", "configsReducer", "groupsReducer", "messagesReducer", "usersReducer", "receiptsReducer", "familiesReducer", "companysReducer","customersReducer"
-    ,"productsReducer","cashflowReducer","salesReducer","caccountsReducer"],
+    ,"productsReducer","cashflowReducer","salesReducer","caccountsReducer","buysReducer"],
 }
 
 const rootReducer = combineReducers({
@@ -39,7 +40,7 @@ const rootReducer = combineReducers({
   cashflowReducer: cashflowReducer,
   salesReducer: salesReducer,
   caccountsReducer: caccountsReducer,
-
+  buysReducer: buysReducer,
   // Nombre que usaremos en useSelector
 })
 

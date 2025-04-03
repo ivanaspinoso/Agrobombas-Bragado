@@ -36,6 +36,7 @@ const resources = {
         sent: "Sent",
         received: "Received",
         settings: "Settings",
+        buys: "Buys",
         logout: "Logout",
       },
       main: {
@@ -186,6 +187,7 @@ const resources = {
         sent: "Caja",
         received: "Cuentas",
         settings: "Ventas",
+        buys: "Compras", 
         logout: "Salir",
       },
       main: {

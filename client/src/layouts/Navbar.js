@@ -11,21 +11,23 @@ const Navbar = () => {
   const navigate = useNavigate();
   const login = useSelector((state) => state.usersReducer.login);
   // ✅ Función para cerrar menú y navegar en Mobile
-  const handleMenuClick = (route: string) => {
+  const handleMenuClick = (route) => {
     navigate(route); // 🚀 Navega primero
-    document.getElementById("navbarMobileMenu")?.classList.add("hidden"); 
+    document.getElementById("navbarMobileMenu")?.classList.add("hidden");
   };
 
   // ✅ Lista de opciones del menú (mismo en Desktop y Mobile)
   const menuOptions = [
-    { label: t("navbar.home"), route: "/gestion" },
-    { label: t("navbar.groups"), route: "/show-groups" },
-    { label: t("navbar.families"), route: "/show-families" },
-    { label: t("navbar.messages"), route: "/show-messages" },
-    { label: t("navbar.stack"), route: "/queue-messages" },
-    { label: t("navbar.settings"), route: "/show-configs" },
-    { label: t("navbar.sent"), route: "/show-cashflows" },
-    { label: t("navbar.received"), route: "/show-caccounts" },
+    { label: t("navbar.home"), route: "/gestion" }, // home
+    { label: t("navbar.groups"), route: "/show-groups" }, // proveedores
+    { label: t("navbar.families"), route: "/show-families" }, // rubros
+    { label: t("navbar.messages"), route: "/show-messages" }, // productos
+    { label: t("navbar.stack"), route: "/queue-messages" }, // clientes
+    { label: t("navbar.settings"), route: "/show-configs" }, // ventas
+    { label: t("navbar.buys"), route: "/show-buys" }, // compras
+    { label: t("navbar.sent"), route: "/show-cashflows" }, // caja
+    { label: t("navbar.received"), route: "/show-caccounts" }, // cuentas
+
   ];
 
   return (
@@ -38,7 +40,7 @@ const Navbar = () => {
             Agro Bombas Bragado
           </Link>
         </div>
-        {/* 🔹 Botón Menú Mobile */}
+        {/* 🔹 Botón Menú Mobile icono 3 rayitas */}
         <div className="lg:hidden">
           <button
             className="text-white focus:outline-none"
@@ -64,7 +66,8 @@ const Navbar = () => {
               <Link className="text-white hover:text-gray-300 transition duration-300" to="/show-companys">{t("navbar.contacts")}</Link>
             </>
           )}
-          <button
+          {/* 🔹 Botón Logout desktop */}
+          { login.hasOwnProperty("id") ? <button
             className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full flex items-center"
             onClick={() => {
               dispatch(logOut());
@@ -86,11 +89,11 @@ const Navbar = () => {
                 d="M17 16l4-4m0 0l-4-4m4 4H7"
               />
             </svg>
-          </button>
+          </button> : "" }
         </div>
 
       </div>
-
+ {/* 👇 menu duplicado para mobile ? // refactorizar y hacer uno solo que cambie el style segun pantalla */}
       {/* 🔹 Menú Mobile */}
       <div id="navbarMobileMenu" className="lg:hidden hidden">
         <div className="px-6 pt-4 pb-6 space-y-4">
@@ -114,9 +117,8 @@ const Navbar = () => {
               </button>
             </>
           )}
-
           {/* 🔹 Botón Logout */}
-          <button
+          { login.hasOwnProperty("id") ? <button
             className="w-full text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-full flex items-center justify-center"
             onClick={() => {
               dispatch(logOut());
@@ -127,7 +129,7 @@ const Navbar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="ml-2 h-5 w-5">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" />
             </svg>
-          </button>
+          </button> : "" }
         </div>
       </div>
     </nav>

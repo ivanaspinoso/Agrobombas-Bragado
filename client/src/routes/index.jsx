@@ -49,6 +49,7 @@ import AddCaccount from "../features/Caccounts/AddCaccount.jsx";
 import EditCaccount from "../features/Caccounts/EditCaccount.jsx";
 import PrintSale from "../features/Sales/PrintSales.jsx";
 import SalePrint from "../features/Sales/SalePrint.jsx";
+import BuysView from "../features/Buys/BuysView.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -128,7 +129,10 @@ const Index = () => {
 
           <Route path="/show-receipts" element={<Next />} />
 
-          {/* <Route path="*" element={<Error />} /> */}
+          {/* Rutas para ventas */}
+          <Route path="/show-buys" element={<BuysView />} />
+
+          <Route path="*" element={<Error />} />
         </Routes>
       </Layout>
     </BrowserRouter >
