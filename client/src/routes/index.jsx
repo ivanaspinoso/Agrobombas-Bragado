@@ -50,6 +50,7 @@ import EditCaccount from "../features/Caccounts/EditCaccount.jsx";
 import PrintSale from "../features/Sales/PrintSales.jsx";
 import SalePrint from "../features/Sales/SalePrint.jsx";
 import BuysView from "../features/Buys/BuysView.jsx";
+import AddBuy from "../features/Buys/AddBuy.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -131,6 +132,7 @@ const Index = () => {
 
           {/* Rutas para ventas */}
           <Route path="/show-buys" element={<BuysView />} />
+          <Route path="/add-buy" element={<AddBuy />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
