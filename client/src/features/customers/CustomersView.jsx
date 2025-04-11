@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 const CustomersView = () => {
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customersReducer.customers);
+  console.log(customers,"customers")
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchCustomers());

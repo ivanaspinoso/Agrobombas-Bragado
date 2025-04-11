@@ -181,10 +181,15 @@ const saleData = {
   subtotal,
   total: subtotal,
   orderlines,
-  user_asoc: login.id,
+  user_asoc: login.id, 
   invoice: values.invoice,
   noteadmin: values.modopago, 
 };
+
+
+console.log("🚀 saleData:", saleData);
+console.log("typeof supp_asoc:", typeof saleData.supp_asoc);
+
 
 
 
@@ -220,7 +225,7 @@ const saleData = {
             style={{ width: "100%" }}
             value={values.supplier_id}
             onChange={(value) => {
-              const selectedSupplier = suppliers.find((c) => c.id === value);
+              const selectedSupplier = suppliers.find((c) => c.id === Number(value));
               if (selectedSupplier) {
                 setFieldValue("supplier_name", selectedSupplier.name);
                 setFieldValue("supplier_id", selectedSupplier.id);
