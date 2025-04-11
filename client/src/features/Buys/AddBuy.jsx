@@ -17,7 +17,7 @@ const { Option } = Select;
 const AddBuy = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const suppliers = useSelector((state) => state.customersReducer.customers);
+  const suppliers = useSelector((state) => state.groupsReducer.groups);
  
   const products = useSelector((state) => state.productsReducer.products);
   const login = useSelector((state) => state.usersReducer.login);

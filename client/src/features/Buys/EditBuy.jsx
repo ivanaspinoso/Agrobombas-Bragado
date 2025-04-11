@@ -14,7 +14,7 @@ const EditBuy = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state: buyToEdit } = useLocation();
-  const suppliers = useSelector((state) => state.customersReducer.customers);
+  const suppliers = useSelector((state) => state.groupsReducer.groups);
   const login = useSelector((state) => state.usersReducer.login);
 
   const [subtotal, setSubtotal] = useState(buyToEdit?.total || 0);
