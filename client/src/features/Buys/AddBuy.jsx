@@ -150,62 +150,45 @@ const AddBuy = () => {
         fecha: format(new Date(), "yyyy-MM-dd"),
         supplier_name: "",
         supplier_id: "",
-        address: "",
-        celphone: "",
-        modopago: "",
-        paga: 0,
-        resta: 0,
-        provider: "", 
         invoice: "",
       }}
+      
       onSubmit={async (values) => {
         if (!values.supplier_id) {
           Swal.fire("Error", "Falta ingresar proveedor para la compra", "error");
           return;
         }
+      
         const proveedorValido = suppliers.find((s) => s.id === values.supplier_id);
-if (!proveedorValido) {
-  Swal.fire("Error", "El proveedor seleccionado no existe en la base de datos", "error");
-  return;
-}
-
-        
-const saleData = {
-  fecha: new Date(values.fecha).toISOString(), 
-  provider: values.supplier_name,
-  supp_asoc: values.supplier_id,
-  address: values.address || "",
-  cellphone: values.celphone || "",
-  paga: pago,
-  resta: resto,
-  subtotal,
-  total: subtotal,
-  orderlines,
-  user_asoc: login.id, 
-  invoice: values.invoice,
-  noteadmin: values.modopago, 
-};
-
-
-console.log("🚀 saleData:", saleData);
-console.log("typeof supp_asoc:", typeof saleData.supp_asoc);
-
-
-
-
+        if (!proveedorValido) {
+          Swal.fire("Error", "El proveedor seleccionado no existe en la base de datos", "error");
+          return;
+        }
+      
+        const saleData = {
+          fecha: new Date(values.fecha).toISOString(),
+          supp_asoc: values.supplier_id, 
+          user_asoc: login.id,
+          provider: values.supplier_name,
+          total: subtotal,
+          invoice: values.invoice,
+        };
+      
+        console.log("🧾 SaleData que se envía:", saleData);
+      
         await dispatch(addNewbuy(saleData));
-
+      
         const success = JSON.parse(localStorage.getItem("buyAdded"));
-        // console.log("Objeto", success);
-        if (success && success === true) {
-          Swal.fire("Éxito", "Venta registrada", "success");
+        if (success === true) {
+          Swal.fire("Éxito", "Compra registrada correctamente", "success");
           await dispatch(getAllProducts());
           await dispatch(fetchAllCashflows());
-          navigate("/show-configs");
+          navigate("/show-buys");
         } else {
-          Swal.fire("Error", success, "error");
+          Swal.fire("Error", success || "No se pudo registrar la compra", "error");
         }
       }}
+      
     >
       {({ setFieldValue, values, errors, touched }) => (
         <Form className="p-6 bg-white rounded shadow-md">
@@ -248,151 +231,19 @@ console.log("typeof supp_asoc:", typeof saleData.supp_asoc);
             <div className="text-red-500 text-sm">{errors.supplier_id}</div>
           )}
 
-          <label>Dirección:</label>
-          <Field name="address" as={Input} readOnly />
+<label>Total:</label>
+<Input value={subtotal} readOnly />
 
+
+
+{/*
           <label>Celular:</label>
-          <Field name="celphone" as={Input} readOnly />
+          <Field name="celphone" as={Input} readOnly />*/}
 
           {/* 📌 SECCIÓN 2 - SELECCIÓN DE PRODUCTOS */}
-          <label>Productos:</label>
-          <div className="flex gap-2">
-            <Select
-              showSearch
-              placeholder="Agregar Producto"
-              style={{ width: "100%" }}
-              onChange={(value) => {
-                const product = products.find((p) => p.id === value);
-                if (product) addOrderline(product);
-              }}
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().includes(input.toLowerCase())
-              }
-              options={products.map((p) => ({
-                value: p.id,
-                label: `${p.name} - ${p.article}`,
-              }))}
-            />
+         
 
-            {/*             <Button type="primary" onClick={() => addOrderline({ id: "", name: "Nuevo Producto", price1: 0, quantity: 1 })}>
-              +
-            </Button> */}
-          </div>
-
-          <Table
-            dataSource={orderlines}
-            rowKey="key"
-            columns={[
-              {
-                title: "Producto",
-                dataIndex: "name",
-                render: (text, record, index) => (
-                  <Select
-                    showSearch
-                    defaultValue={text}
-                    onChange={(value) => {
-                      const product = products.find((p) => p.id === value);
-                      if (product) {
-                        updateOrderline(index, "id", product.id);
-                        updateOrderline(index, "name", product.name);
-                        updateOrderline(index, "price", product.price);
-                        updateOrderline(index, "price2", product.price2);
-                        updateOrderline(index, "price3", product.price3);
-                      }
-                    }}
-                  >
-                    {products.map((p) => (
-                      <Option key={p.id} value={p.id}>
-                        {p.name}
-                      </Option>
-                    ))}
-                  </Select>
-                ),
-              },
-              {
-                title: "Precio",
-                dataIndex: "price",
-                render: (text, record, index) => (
-                  <div className="flex gap-2">
-                    <Select
-                      value={record.selectedPrice} 
-                      style={{ width: "250px" }}
-                      onChange={(value) => {
-                        updateOrderline(index, "price", value);
-                      }}
-                    >
-                      <Option value={record.price}>Precio: ${record.price?.toLocaleString(undefined,{minimumFractionDigits: 2})}</Option>
-                      <Option value={record.price2}>Tarjeta: ${record.price2?.toLocaleString(undefined,{minimumFractionDigits: 2})}</Option>
-                      <Option value={record.price3}>s/IVA: ${record.price3?.toLocaleString(undefined,{minimumFractionDigits: 2})}</Option>
-                    </Select>
-              
-                    <Input
-                      type="number"
-                      value={record.customPrice} // Se actualiza independientemente
-                      onChange={(e) => updateOrderline(index, "customPrice", Number(e.target.value))}
-                      style={{ width: "100px" }}
-                    />
-                  </div>
-                ),
-              },
-              
-              {
-                title: "Cantidad",
-                dataIndex: "quantity",
-                render: (text, record, index) => (
-                  <Input
-                    type="number"
-                    value={text}
-                    onChange={(e) =>
-                      updateOrderline(index, "quantity", Number(e.target.value))
-                    }
-                  />
-                ),
-              },
-              {
-                title: "Subtotal",
-                dataIndex: "subtotal",
-                render: (text, record, index) => (
-                  <Input type="number" value={text} readOnly />
-                ),
-              },
-              {
-                title: "Acciones",
-                dataIndex: "actions",
-                render: (_, record) => (
-                  <Button danger onClick={() => removeOrderline(record.key)}>
-                    <FaTrashAlt />
-                  </Button>
-                ),
-              },
-            ]}
-          />
-
-          {/* 📌 SECCIÓN 3 - TOTALES Y MEDIOS DE PAGO */}
-          <label>Subtotal:</label>
-          <Field
-            name="subtotal"
-            as={Input}
-            type="number"
-            value={subtotal}
-            readOnly
-          />
-
-          <label>Paga:</label>
-          <Field
-            name="paga"
-            as={Input}
-            value={pago}
-            type="number"
-            onChange={(e) => setPago(e.target.value)}
-            onBlur={() => setResto(/* "resta", */ subtotal - pago)}
-          />
-
-          <label>Modo de Pago:</label>
-          <Field name="modopago" as={Input} />
-
-          <label>Resto:</label>
-          <Field name="resta" as={Input} type="number" value={resto} readOnly />
+         
           <label>N° Factura/Remito:</label>
 <Field name="invoice" as={Input} />
 
@@ -402,7 +253,7 @@ console.log("typeof supp_asoc:", typeof saleData.supp_asoc);
           </Button>
           <Button 
               type="button"
-              onClick={() => navigate("/show-configs")}
+              onClick={() => navigate("/show-buys")}
               style={{ backgroundColor: '#ff4d4f', color: 'white' }}
             >
               Cancelar
