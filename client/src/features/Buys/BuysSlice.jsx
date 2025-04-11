@@ -2,7 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { allBuysEndpoint, addBuysEndpoint, updBuysEndpoint, delBuysEndpoint, salBuysEndpoint, } from "../../app/consts/consts";
+import { allBuysEndpoint, addBuysEndpoint, updBuysEndpoint, delBuysEndpoint, salBuysEndpoint,byidBuyEndpoint } from "../../app/consts/consts";
 
 const initialbuyState = {
   loading: 'idle',
@@ -90,5 +90,15 @@ export const deletebuyById = (id) => async (dispatch) => {
   } catch (error) {
       localStorage.setItem("buyDeleted", JSON.stringify(error?.response?.data?.message));
     console.error("Error al eliminar movimiento de caja:", error);
+  }
+};
+
+export const getBuyById = (id) => async () => {
+  try {
+    const { data } = await axios.get(byidBuyEndpoint + id);
+    return data;
+  } catch (error) {
+    console.error("Error al obtener compra por ID:", error);
+    throw error;
   }
 };

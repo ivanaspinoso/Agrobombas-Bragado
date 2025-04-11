@@ -51,6 +51,7 @@ import PrintSale from "../features/Sales/PrintSales.jsx";
 import SalePrint from "../features/Sales/SalePrint.jsx";
 import BuysView from "../features/Buys/BuysView.jsx";
 import AddBuy from "../features/Buys/AddBuy.jsx";
+import EditBuy from "../features/Buys/EditBuy.jsx";
 
 const Layout = ({ children }) => {
   return (
@@ -133,6 +134,7 @@ const Index = () => {
           {/* Rutas para ventas */}
           <Route path="/show-buys" element={<BuysView />} />
           <Route path="/add-buy" element={<AddBuy />} />
+          <Route path="/edit-buy" element={<EditBuy />} />
 
           <Route path="*" element={<Error />} />
         </Routes>

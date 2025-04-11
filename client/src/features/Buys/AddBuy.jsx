@@ -18,6 +18,7 @@ const AddBuy = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const suppliers = useSelector((state) => state.customersReducer.customers);
+ 
   const products = useSelector((state) => state.productsReducer.products);
   const login = useSelector((state) => state.usersReducer.login);
 
@@ -39,7 +40,7 @@ const AddBuy = () => {
 
   const schema = Yup.object().shape({
     fecha: Yup.string().required("La fecha es obligatoria"),
-    supplier: Yup.string().required("El proveedor es obligatorio"),
+    supplier_name: Yup.string().required("El proveedor es obligatorio"),
     // modopago: Yup.string().required("Modo de pago requerido"),
     // paga: Yup.number().min(0, "Debe ser positivo"),
   });
@@ -147,30 +148,46 @@ const AddBuy = () => {
       validationSchema={schema}
       initialValues={{
         fecha: format(new Date(), "yyyy-MM-dd"),
-        supplier: "",
-        supp_asoc: "",
+        supplier_name: "",
+        supplier_id: "",
         address: "",
         celphone: "",
         modopago: "",
         paga: 0,
         resta: 0,
+        provider: "", 
+        invoice: "",
       }}
       onSubmit={async (values) => {
-        const saleData = {
-          fecha: new Date(values.fecha).toISOString(), 
-          supplier: values.supplier,
-          supp_asoc: values.supp_asoc,
-          address: values.address || "",
-          cellphone: values.celphone || "",
-          notapaga: values.modopago,
-          paga: pago,
-          resta: resto,
-          subtotal,
-          total: subtotal,
-          orderlines,
-          user_asoc: login.id,
-        };
-       
+        if (!values.supplier_id) {
+          Swal.fire("Error", "Falta ingresar proveedor para la compra", "error");
+          return;
+        }
+        const proveedorValido = suppliers.find((s) => s.id === values.supplier_id);
+if (!proveedorValido) {
+  Swal.fire("Error", "El proveedor seleccionado no existe en la base de datos", "error");
+  return;
+}
+
+        
+const saleData = {
+  fecha: new Date(values.fecha).toISOString(), 
+  provider: values.supplier_name,
+  supp_asoc: values.supplier_id,
+  address: values.address || "",
+  cellphone: values.celphone || "",
+  paga: pago,
+  resta: resto,
+  subtotal,
+  total: subtotal,
+  orderlines,
+  user_asoc: login.id,
+  invoice: values.invoice,
+  noteadmin: values.modopago, 
+};
+
+
+
         await dispatch(addNewbuy(saleData));
 
         const success = JSON.parse(localStorage.getItem("buyAdded"));
@@ -185,7 +202,7 @@ const AddBuy = () => {
         }
       }}
     >
-      {({ setFieldValue, values }) => (
+      {({ setFieldValue, values, errors, touched }) => (
         <Form className="p-6 bg-white rounded shadow-md">
           {/* 📌 SECCIÓN 1 - INFORMACIÓN DEL CLIENTE */}
           <label>Fecha:</label>
@@ -201,25 +218,30 @@ const AddBuy = () => {
             showSearch
             placeholder="Seleccionar Proveedor"
             style={{ width: "100%" }}
+            value={values.supplier_id}
             onChange={(value) => {
-              const selectedSupplier = customers.find((c) => c.id === value);
-              if (selectedCustomer) {
-                setFieldValue("client", selectedCustomer.name);
-                setFieldValue("client_asoc", selectedCustomer.id);
-                setFieldValue("address", selectedCustomer.address);
-                setFieldValue("celphone", selectedCustomer.phone);
+              const selectedSupplier = suppliers.find((c) => c.id === value);
+              if (selectedSupplier) {
+                setFieldValue("supplier_name", selectedSupplier.name);
+                setFieldValue("supplier_id", selectedSupplier.id);
+                setFieldValue("address", selectedSupplier.address);
+                setFieldValue("celphone", selectedSupplier.phone);
               }
             }}
+            status={errors.supplier_id && touched.supplier_id ? "error" : ""}
             filterOption={(input, option) =>
               option?.children?.toLowerCase().includes(input.toLowerCase())
             }
           >
-            {customers.map((c) => (
+            {suppliers.map((c) => (
               <Option key={c.id} value={c.id}>
                 {c.name}
               </Option>
             ))}
           </Select>
+          {errors.supplier_id && touched.supplier_id && (
+            <div className="text-red-500 text-sm">{errors.supplier_id}</div>
+          )}
 
           <label>Dirección:</label>
           <Field name="address" as={Input} readOnly />
@@ -366,9 +388,12 @@ const AddBuy = () => {
 
           <label>Resto:</label>
           <Field name="resta" as={Input} type="number" value={resto} readOnly />
+          <label>N° Factura/Remito:</label>
+<Field name="invoice" as={Input} />
+
          <div className=" flex gap-4 mt-4">
           <Button type="primary" htmlType="submit">
-            Registrar Venta
+            Registrar Compra
           </Button>
           <Button 
               type="button"

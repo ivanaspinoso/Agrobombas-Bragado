@@ -108,7 +108,7 @@ export const addBuysEndpoint = REACT_APP_API + 'buys/add';
 export const updBuysEndpoint = REACT_APP_API + 'buys/update/';
 export const delBuysEndpoint = REACT_APP_API + 'buys/delete/';
 export const salBuysEndpoint = REACT_APP_API + 'buys/saldo';
-
+export const byidBuyEndpoint = REACT_APP_API + 'buys/byid/';
 // receipts
 
 export const userReceiptsEndpoint = REACT_APP_API + 'receipts/byuser/'
