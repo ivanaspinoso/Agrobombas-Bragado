@@ -72,36 +72,6 @@ const BuysView = () => {
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-2xl font-semibold">Compras anotadas</h2>
 
-        <div>
-          {/* Contenedor de Saldos Mejorado */}
-{/*           <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8 mt-2">
-            <div className="text-lg font-semibold text-gray-600 text-center">
-              <strong>Ingresos:</strong>{" "}
-              <span className="text-green-600">
-                $ {!saldoscash?.ingresos || saldoscash?.ingresos === null ? "0,00" : saldoscash?.ingresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
-              </span>
-            </div>
-            <div className="text-lg font-semibold text-gray-600 text-center">
-              <strong>Egresos:</strong>{" "}
-              <span className="text-red-600">
-                $ {!saldoscash?.egresos || saldoscash?.egresos === null ? "0,00" : saldoscash?.egresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
-              </span>
-            </div>
-            <div className="text-lg font-semibold text-gray-600 text-center">
-              <strong>Saldo:</strong>{" "}
-              <span
-                className={`${
-                  saldoscash?.balance === "positivo"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
-                $ {!saldoscash?.saldo || saldoscash?.saldo === null ? "0,00" : saldoscash?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
-              </span>
-            </div>
-          </div>
- */}        </div>
-
         {/* Mantiene el botón en su lugar original */}
         <button
           className="ml-2 px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

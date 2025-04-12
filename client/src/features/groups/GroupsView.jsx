@@ -21,7 +21,7 @@ const GroupsView = () => {
   
   // Filtrar grupos por nombre
   const filteredGroups = groups.filter((group) =>
-    group.name.toLowerCase().includes(searchName.toLowerCase())
+    group.name?.toLowerCase().includes(searchName.toLowerCase())
   );
   
   // Lógica de paginación
