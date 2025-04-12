@@ -64,7 +64,7 @@ const BuysView = () => {
   };
 
   const filteredCashflows = buys?.filter((cf) =>
-    cf.provider.toLowerCase().includes(searchDescription.toLowerCase())
+    cf.provider?.toLowerCase().includes(searchDescription.toLowerCase())
   );
  
   return (
