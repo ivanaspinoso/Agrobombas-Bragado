@@ -178,6 +178,12 @@ const Main = () => {
     { src: articulos, title: t("main.message"), text: t("main.messageDescription"), link: '/show-messages' },
     { src: clients, title: t("main.queue"), text: t("main.queueDescription"), link: '/queue-messages' },
     { src: ventas, title: t("main.settings"), text: t("main.settingsDescription"), link: '/show-configs?' },
+    { 
+      src: transacciones,
+      title: "Compras", 
+      text: "Gestión de compras y registro de facturas de proveedores", 
+      link: '/show-buys' 
+    },
     { src: transacciones, title: t("main.sentMessages"), text: t("main.sentMessagesDescription"), link: '/sended-messages' },
     { src: registrodepagos, title: t("main.receivedMessages"), text: t("main.receivedMessagesDescription"), link: '/show-receipts' },
     ...(login.isAdmin && login.username !== "mostrador" ? [

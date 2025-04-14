@@ -15,14 +15,119 @@ const BuysView = () => {
   // const saldoscash = useSelector((state) => state.cashflowReducer?.saldo);
 
   const [searchDescription, setSearchDescription] = useState("");
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
 
   useEffect(() => {
     const fetchData = async () => {
+      
       await dispatch(fetchAllbuys());
     };
 
     fetchData();
   }, [dispatch]);
+
+  const handleSelect = (id) => {
+    setSelectedItems(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedItems.length === buys?.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(buys?.map(cf => cf.id) || []);
+    }
+  };
+
+  const handleBulkDelete = () => {
+    if (selectedItems.length === 0) return;
+
+    const itemsToDelete = buys?.filter(cf => 
+      selectedItems.includes(cf.id) && 
+      (cf.vta_asoc === null || cf.vta_asoc === undefined) && 
+      (cf.mov_asoc === null || cf.mov_asoc === undefined)
+    );
+
+    if (itemsToDelete.length === 0) {
+      Swal.fire(
+        "Error",
+        "Los items seleccionados están asociados a ventas o movimientos",
+        "error"
+      );
+      return;
+    }
+
+    Swal.fire({
+      title: `¿Desea eliminar ${itemsToDelete.length} compras seleccionadas?`,
+      showDenyButton: true,
+      confirmButtonText: "Sí",
+      denyButtonText: "No",
+      icon: "warning",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Mostrar loading mientras se procesan las eliminaciones
+          Swal.fire({
+            title: 'Eliminando compras...',
+            didOpen: () => {
+              Swal.showLoading();
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
+          });
+
+          let errores = [];
+          // Procesar las eliminaciones una por una
+          for (const item of itemsToDelete) {
+            try {
+              await dispatch(deletebuyById(item.id));
+              const success = JSON.parse(localStorage.getItem("buyDeleted"));
+              if (success !== true) {
+                errores.push(`Compra ${item.id}: ${success}`);
+              }
+            } catch (error) {
+              errores.push(`Compra ${item.id}: Error al eliminar`);
+            }
+          }
+
+          setSelectedItems([]); // Limpiar selección
+
+          // Mostrar resultado
+          if (errores.length > 0) {
+            Swal.fire({
+              title: "Completado con errores",
+              html: `Se completó la operación pero hubo los siguientes errores:<br/>${errores.join('<br/>')}`,
+              icon: "warning"
+            });
+          } else {
+            Swal.fire(
+              "Eliminados",
+              "Los movimientos han sido eliminados correctamente.",
+              "success"
+            );
+          }
+
+          // Actualizar la lista
+          dispatch(fetchAllbuys());
+
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            "Hubo un problema al procesar las eliminaciones.",
+            "error"
+          );
+        }
+      }
+    });
+  };
 
   const handleDelete = (id, description, vta, mov, invoice) => {
     console.log(vta, mov);
@@ -67,24 +172,47 @@ const BuysView = () => {
     cf.provider?.toLowerCase().includes(searchDescription.toLowerCase())
   );
  
+  // Calculo la paginación
+  const totalPages = Math.ceil(filteredCashflows?.length / itemsPerPage);
+  const paginatedBuys = filteredCashflows?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-2xl font-semibold">Compras anotadas</h2>
-
-        {/* Mantiene el botón en su lugar original */}
-        <button
-          className="ml-2 px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={() => navigate("/add-buy")}
-        >
-          Anotar compra
-        </button>
+        <div className="flex gap-2">
+          {selectedItems.length > 0 && (
+            <button
+              className="px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              onClick={handleBulkDelete}
+            >
+              Eliminar Seleccionados ({selectedItems.length})
+            </button>
+          )}
+          <button
+            className="ml-2 px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            onClick={() => navigate("/add-buy")}
+          >
+            Anotar compra
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-scroll">
         <table className="w-full table-auto">
           <thead className="bg-[#0e6fa5] text-white">
             <tr>
+              <th className="px-4 py-2 text-center border-r border-gray-300">
+                <input
+                  type="checkbox"
+                  checked={selectedItems.length === buys?.length}
+                  onChange={handleSelectAll}
+                  className="h-4 w-4"
+                />
+              </th>
               <th className="px-4 py-2 text-center border-r border-gray-300">
                 #
               </th>
@@ -109,11 +237,21 @@ const BuysView = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredCashflows?.map((cf) => (
+            {paginatedBuys?.map((cf, index) => (
               <tr key={cf.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 text-center">{cf.id}</td>
+                <td className="px-4 py-2 text-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(cf.id)}
+                    onChange={() => handleSelect(cf.id)}
+                    className="h-4 w-4"
+                  />
+                </td>
+                <td className="px-4 py-2 text-center">
+                  {(currentPage - 1) * itemsPerPage + index + 1}
+                </td>
                 <td className="px-4 py-2">
-                  {new Date(cf.fecha).toLocaleDateString()}
+                  {cf.fecha.split('T')[0].split('-').reverse().join('/')}
                 </td>
                 <td className="px-4 py-2">{cf.provider}</td>
                 <td className="px-4 py-2 text-right">{cf.invoice}</td>
@@ -147,6 +285,20 @@ const BuysView = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="mt-4 flex justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === index + 1 ? "bg-[#0e6fa5] text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

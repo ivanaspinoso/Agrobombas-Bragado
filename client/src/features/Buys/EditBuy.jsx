@@ -29,7 +29,7 @@ const EditBuy = () => {
     <Formik
       validationSchema={schema}
       initialValues={{
-        fecha: format(new Date(buyToEdit?.fecha), "yyyy-MM-dd"),
+        fecha: buyToEdit?.fecha.split('T')[0],
         supp_asoc: buyToEdit?.supplierId || "",
         provider: buyToEdit?.provider || "",
         invoice: buyToEdit?.invoice || "",
@@ -38,7 +38,7 @@ const EditBuy = () => {
       onSubmit={async (values) => {
         const updatedBuy = {
           id: buyToEdit.id,
-          fecha: new Date(values.fecha).toISOString().split("T")[0],
+          fecha: values.fecha,
           supp_asoc: values.supp_asoc,
           user_asoc: login.id,
           provider: values.provider,

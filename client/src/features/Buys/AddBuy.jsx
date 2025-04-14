@@ -166,7 +166,7 @@ const AddBuy = () => {
         }
 
         const saleData = {
-          fecha: new Date(values.fecha).toISOString(),
+          fecha: values.fecha,
           supp_asoc: values.supplier_id,
           user_asoc: login.id,
           provider: values.supplier_name,
