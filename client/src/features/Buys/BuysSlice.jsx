@@ -97,17 +97,36 @@ export const deletebuyById = (id) => async (dispatch) => {
 
 export const deletebuyFews = (ids) => async (dispatch) => {
   try {
-    await axios.delete(fewsBuyEndpoint, ids);
+    console.log("Intentando borrar IDs:", ids);
 
-    console.log("BIEN IDS a borrar", ids)
-/*     dispatch(deletebuys(ids));
-    dispatch(fetchAllbuys()); */
-    localStorage.setItem("buysDeleted", JSON.stringify(true));
+    const response = await axios.delete(fewsBuyEndpoint, {
+      data: ids
+    });
+
+    console.log("Respuesta del servidor:", response.data);
+
+    if (response.status === 200) {
+      await dispatch(fetchAllbuys());
+      
+      const updatedBuys = await axios.get(allBuysEndpoint);
+      const deletedIdsStillPresent = ids.ids.filter(id => 
+        updatedBuys.data.some(buy => buy.id === id)
+      );
+
+      if (deletedIdsStillPresent.length > 0) {
+        console.error("Algunos IDs no fueron borrados:", deletedIdsStillPresent);
+        localStorage.setItem("buysDeleted", JSON.stringify(false));
+        return false;
+      }
+
+      localStorage.setItem("buysDeleted", JSON.stringify(true));
+      console.log("Borrado masivo completado exitosamente");
+      return true;
+    }
   } catch (error) {
-    
-    console.log("ERROR IDS a borrar", ids)
-      localStorage.setItem("buysDeleted", JSON.stringify(error?.response?.data?.message));
-    console.error("Error al eliminar movimiento de caja:", error);
+    console.error("Error en deletebuyFews:", error.response?.data || error);
+    localStorage.setItem("buysDeleted", JSON.stringify(error?.response?.data?.message));
+    return false;
   }
 };
 
