@@ -2,7 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { allBuysEndpoint, addBuysEndpoint, updBuysEndpoint, delBuysEndpoint, salBuysEndpoint,byidBuyEndpoint } from "../../app/consts/consts";
+import { allBuysEndpoint, addBuysEndpoint, updBuysEndpoint, delBuysEndpoint, salBuysEndpoint,byidBuyEndpoint, fewsBuyEndpoint } from "../../app/consts/consts";
 
 const initialbuyState = {
   loading: 'idle',
@@ -18,7 +18,6 @@ const buySlice = createSlice({
     },
     addbuy: (state, action) => {
       console.log("Nuevo movimiento:", action.payload);
-
       state.buys.push(action.payload);
     },
     updatebuy: (state, action) => {
@@ -28,6 +27,9 @@ const buySlice = createSlice({
     },
     deletebuy: (state, action) => {
       state.buys = state.buys.filter(cf => cf.id !== action.payload);
+    },
+    deletebuys: (state, action) => {
+      state.buys = action.payload // state.buys.filter(cf => cf.id !== action.payload);
     },
     logoutbuys: (state, action) => {
       state.buys = action.payload
@@ -41,7 +43,7 @@ const buySlice = createSlice({
   },
 });
 
-export const { allbuys, addbuy, updatebuy, deletebuy, getSaldo, logOutSaldo } = buySlice.actions;
+export const { allbuys, addbuy, updatebuy, deletebuy, getSaldo, logOutSaldo, deletebuys } = buySlice.actions;
 export default buySlice.reducer;
 
 export const fetchAllbuys = () => async (dispatch) => {
@@ -92,6 +94,23 @@ export const deletebuyById = (id) => async (dispatch) => {
     console.error("Error al eliminar movimiento de caja:", error);
   }
 };
+
+export const deletebuyFews = (ids) => async (dispatch) => {
+  try {
+    await axios.delete(fewsBuyEndpoint, ids);
+
+    console.log("BIEN IDS a borrar", ids)
+/*     dispatch(deletebuys(ids));
+    dispatch(fetchAllbuys()); */
+    localStorage.setItem("buysDeleted", JSON.stringify(true));
+  } catch (error) {
+    
+    console.log("ERROR IDS a borrar", ids)
+      localStorage.setItem("buysDeleted", JSON.stringify(error?.response?.data?.message));
+    console.error("Error al eliminar movimiento de caja:", error);
+  }
+};
+
 
 export const getBuyById = (id) => async () => {
   try {

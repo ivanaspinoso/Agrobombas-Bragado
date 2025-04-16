@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllbuys,
-  deletebuyById
+  deletebuyById,
+  deletebuyFews
 } from "./BuysSlice";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -83,10 +84,14 @@ const BuysView = () => {
             allowEscapeKey: false,
             allowEnterKey: false
           });
-
+          var idstodel = []
+          for (const item of itemsToDelete) {
+            idstodel.push(item.id)
+          }
           let errores = [];
           // Procesar las eliminaciones una por una
-          for (const item of itemsToDelete) {
+          await dispatch(deletebuyFews({"ids": idstodel}))
+/*           for (const item of itemsToDelete) {
             try {
               await dispatch(deletebuyById(item.id));
               const success = JSON.parse(localStorage.getItem("buyDeleted"));
@@ -96,7 +101,7 @@ const BuysView = () => {
             } catch (error) {
               errores.push(`Compra ${item.id}: Error al eliminar`);
             }
-          }
+          } */
 
           setSelectedItems([]); // Limpiar selección
 

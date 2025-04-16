@@ -206,20 +206,11 @@ router.put("/update", async (req, res) => {
 }
 )
 
-// Eliminar proveedor
+// Eliminar compra
 router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
     const { id } = req.params;
     console.log("compra a borrar", id);
     if (!id) return res.status(400).send({ message: "Debe ingresar compra a eliminar" });
-
-    /*     let producSocios = await Supplier.findAll({
-            where: { id: id },
-            include: { model: Product },
-        }).then((s) => {
-            if (s[0] && s[0].products.length > 0) {
-                return s[0].products.length
-            } else return 0
-        }); */
 
     const existSale = await Buys.findOne({
         where: {
@@ -227,10 +218,6 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
         },
     });
 
-    /*     if (producSocios > 0) {
-            return res.status(400).json({ message: "No se puede eliminar, productos asociados" })
-        } else {
-     */
     if (existSale) {
         try {
 
@@ -256,6 +243,23 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
 
  });
 
+// Eliminar varias compras
+router.delete("/deletefew", /* validateToken, */ async (req, res) => {
+    const { ids } = req.body;
+    console.log("compras a borrar", req.body);
+    if (!ids) return res.status(400).send({ message: "Debe ingresar compras a eliminar" });
+    try {
+        let delBuys = await Buys.destroy({ where: { id: ids }})
+        return res
+        .status(200)
+        .json({ message: "compra eliminada correctamente" });
+    } catch (err) {
+        return res
+        .status(500)
+        .json({ message: "No se pudo eliminar las compras" + err });
+    }
+
+ });
 
 
 module.exports = router;
