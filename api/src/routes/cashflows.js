@@ -22,7 +22,11 @@ router.get("/", /* validateToken, */ async (req, res) => {
         });
     }
 });
-
+// Utilidad para traducir número de mes a nombre
+const monthNames = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
 //Obtener todos las movimientos
 router.get("/year/:year", /* validateToken, */ async (req, res) => {
     const { year } = req.params
@@ -48,9 +52,9 @@ router.get("/year/:year", /* validateToken, */ async (req, res) => {
           const registro = results.find(r => parseInt(r.get('mes')) === mes);
     
           return {
-            mes,
-            ingresos: registro ? parseFloat(registro.get('ingresos')) : 0,
-            egresos: registro ? parseFloat(registro.get('egresos')) : 0
+            mes: monthNames[mes - 1],
+            ingresos: registro ? parseFloat(registro.get('ingresos')).toFixed(2) : 0,
+            egresos: registro ? parseFloat(registro.get('egresos')).toFixed(2) : 0
           };
         });
     
