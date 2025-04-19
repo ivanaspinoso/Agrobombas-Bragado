@@ -48,10 +48,13 @@ import SaleEdit from "../features/Sales/EditSale.jsx";
 import AddCaccount from "../features/Caccounts/AddCaccount.jsx";
 import EditCaccount from "../features/Caccounts/EditCaccount.jsx";
 import PrintSale from "../features/Sales/PrintSales.jsx";
-import SalePrint from "../features/Sales/SalePrint.jsx";
+// import SalePrint from "../features/Sales/SalePrint.jsx";
 import BuysView from "../features/Buys/BuysView.jsx";
 import AddBuy from "../features/Buys/AddBuy.jsx";
 import EditBuy from "../features/Buys/EditBuy.jsx";
+import RptCaja from "../Components/Reports/RptCaja.jsx";
+// import rptCaja from "../Components/Reports/rptCaja.jsx";
+
 
 const Layout = ({ children }) => {
   return (
@@ -136,6 +139,11 @@ const Index = () => {
           <Route path="/add-buy" element={<AddBuy />} />
           <Route path="/edit-buy" element={<EditBuy />} />
 
+          {/* Rutas experimental para informes */}
+                     {/* Rutas para caja */}
+          <Route path="/reportCaja" element={<RptCaja /> } />
+
+          {/* Ruta equivocada muestra Error/en desarrollo */}
           <Route path="*" element={<Error />} />
         </Routes>
       </Layout>

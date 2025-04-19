@@ -6,7 +6,7 @@ const { validateToken } = require("../utils/token");
 
 var router = express.Router();
 
-const { Op, where, fn, col } = require("sequelize")
+const { Op, where, fn, col, literal } = require("sequelize");
 
 //Obtener todos las movimientos
 router.get("/", /* validateToken, */ async (req, res) => {
@@ -21,6 +21,44 @@ router.get("/", /* validateToken, */ async (req, res) => {
             message: "No se pudieron obtener clientes" + err,
         });
     }
+});
+
+//Obtener todos las movimientos
+router.get("/year/:year", /* validateToken, */ async (req, res) => {
+    const { year } = req.params
+    if (isNaN(year)) {
+        return res.status(400).json({ error: 'Año inválido' });
+      }
+    
+      try {
+        const results = await Cashflow.findAll({
+          attributes: [
+            [fn('EXTRACT', literal('MONTH FROM "date"')), 'mes'],
+            [fn('COALESCE', fn('SUM', col('income')), 0), 'ingresos'],
+            [fn('COALESCE', fn('SUM', col('outflow')), 0), 'egresos']
+          ],
+          where: where(fn('EXTRACT', literal('YEAR FROM "date"')), year),
+          group: [literal('EXTRACT(MONTH FROM "date")')],
+          order: [literal('EXTRACT(MONTH FROM "date")')]
+        });
+    
+        // Formatear para retornar como array de meses
+        const formatted = Array.from({ length: 12 }, (_, i) => {
+          const mes = i + 1;
+          const registro = results.find(r => parseInt(r.get('mes')) === mes);
+    
+          return {
+            mes,
+            ingresos: registro ? parseFloat(registro.get('ingresos')) : 0,
+            egresos: registro ? parseFloat(registro.get('egresos')) : 0
+          };
+        });
+    
+        res.json(formatted);
+      } catch (error) {
+        console.error('Error al obtener cashflow:', error);
+        res.status(500).json({ error: 'Error al obtener cashflow' });
+      }
 });
 
 //Obtener todos las movimientos de un usuario
