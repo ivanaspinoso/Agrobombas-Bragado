@@ -1,8 +1,29 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { yearCashflowEndpoint } from '../../app/consts/consts';
+
 
 const RptCaja = () => {
-    const data = [
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(yearCashflowEndpoint + '/2025'); // Cambia la URL según tu API
+                setData(response.data);
+                console.log('Datos obtenidos:', response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+/* 
+    // Datos de ejemplo (puedes eliminar esto si obtienes datos de una API)
+    const datanot = [
         { mes: 'Enero', ingresos: 5000, egresos: 3000 },
         { mes: 'Febrero', ingresos: 7000, egresos: 4000 },
         { mes: 'Marzo', ingresos: 8000, egresos: 5000 },
@@ -15,7 +36,7 @@ const RptCaja = () => {
         { mes: 'Octubre', ingresos: 12000, egresos: 8000 },
         { mes: 'Noviembre', ingresos: 13000, egresos: 9000 },
         { mes: 'Diciembre', ingresos: 14000, egresos: 10000 },
-    ];
+    ]; */
 
     return (
         <div>
