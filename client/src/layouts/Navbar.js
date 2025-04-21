@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { logOut } from "../app/actions/users";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,13 @@ const Navbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const login = useSelector((state) => state.usersReducer.login);
+
+  const isActiveRoute = (route) => {
+    return location.pathname === route;
+  };
+
   // ✅ Función para cerrar menú y navegar en Mobile
   const handleMenuClick = (route) => {
     navigate(route); // 🚀 Navega primero
@@ -56,14 +62,40 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center space-x-4 ml-auto">
           {login.id &&
             menuOptions.map((option) => (
-              <Link key={option.route} className="text-white hover:text-gray-300 transition duration-300" to={option.route}>
+              <Link
+                key={option.route}
+                className={`text-white hover:text-gray-300 transition duration-300 relative ${
+                  isActiveRoute(option.route) 
+                    ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
+                    : ''
+                }`}
+                to={option.route}
+              >
                 {option.label}
               </Link>
             ))}
           {login.isAdmin && login.username !== "mostrador" && (
             <>
-              <Link className="text-white hover:text-gray-300 transition duration-300" to="/show-users">{t("Usuarios")}</Link>
-              <Link className="text-white hover:text-gray-300 transition duration-300" to="/show-companys">{t("navbar.contacts")}</Link>
+              <Link 
+                className={`text-white hover:text-gray-300 transition duration-300 relative ${
+                  isActiveRoute("/show-users") 
+                    ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
+                    : ''
+                }`} 
+                to="/show-users"
+              >
+                {t("Usuarios")}
+              </Link>
+              <Link 
+                className={`text-white hover:text-gray-300 transition duration-300 relative ${
+                  isActiveRoute("/show-companys") 
+                    ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
+                    : ''
+                }`} 
+                to="/show-companys"
+              >
+                {t("navbar.contacts")}
+              </Link>
             </>
           )}
           {/* 🔹 Botón Logout desktop */}
@@ -101,7 +133,11 @@ const Navbar = () => {
             menuOptions.map((option) => (
               <button
                 key={option.route}
-                className="block text-white hover:text-gray-300 text-lg font-semibold w-full text-left"
+                className={`block text-white hover:text-gray-300 text-lg font-semibold w-full text-left relative pb-2 ${
+                  isActiveRoute(option.route)
+                    ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
+                    : ''
+                }`}
                 onClick={() => handleMenuClick(option.route)}
               >
                 {option.label}
@@ -109,10 +145,24 @@ const Navbar = () => {
             ))}
           {login.isAdmin && login.username !== "mostrador" && (
             <>
-              <button className="block text-white hover:text-gray-300 text-lg font-semibold w-full text-left" onClick={() => handleMenuClick("/show-users")}>
+              <button 
+                className={`block text-white hover:text-gray-300 text-lg font-semibold w-full text-left relative pb-2 ${
+                  isActiveRoute("/show-users")
+                    ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
+                    : ''
+                }`} 
+                onClick={() => handleMenuClick("/show-users")}
+              >
                 {t("Usuarios")}
               </button>
-              <button className="block text-white hover:text-gray-300 text-lg font-semibold w-full text-left" onClick={() => handleMenuClick("/show-companys")}>
+              <button 
+                className={`block text-white hover:text-gray-300 text-lg font-semibold w-full text-left relative pb-2 ${
+                  isActiveRoute("/show-companys")
+                    ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
+                    : ''
+                }`} 
+                onClick={() => handleMenuClick("/show-companys")}
+              >
                 {t("navbar.contacts")}
               </button>
             </>
