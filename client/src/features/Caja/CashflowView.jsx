@@ -82,20 +82,38 @@ const CashflowView = () => {
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-2xl font-semibold">Movimientos de Caja</h2>
-
+        <button
+            className="px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center gap-2"
+            onClick={() => navigate("/reportCaja")}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+            </svg>
+            Informes
+          </button>
         <div>
           {/* Contenedor de Saldos Mejorado */}
           <div className="bg-gray-100 px-6 py-3 rounded-lg shadow-md flex justify-center items-center gap-8 mt-2">
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Ingresos:</strong>{" "}
               <span className="text-green-600">
-                $ {!saldoscash?.ingresos || saldoscash?.ingresos === null ? "0,00" : saldoscash?.ingresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                $ {!saldoscash?.ingresos || saldoscash?.ingresos === null 
+                    ? "0.00" 
+                    : saldoscash?.ingresos.toLocaleString('es-AR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
               <strong>Egresos:</strong>{" "}
               <span className="text-red-600">
-                $ {!saldoscash?.egresos || saldoscash?.egresos === null ? "0,00" : saldoscash?.egresos.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                $ {!saldoscash?.egresos || saldoscash?.egresos === null 
+                    ? "0.00" 
+                    : saldoscash?.egresos.toLocaleString('es-AR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })}
               </span>
             </div>
             <div className="text-lg font-semibold text-gray-600 text-center">
@@ -107,12 +125,17 @@ const CashflowView = () => {
                     : "text-red-600"
                 }`}
               >
-                $ {!saldoscash?.saldo || saldoscash?.saldo === null ? "0,00" : saldoscash?.saldo.toLocaleString(undefined,{minimumFractionDigits: 2})}
+                $ {!saldoscash?.saldo || saldoscash?.saldo === null 
+                    ? "0.00" 
+                    : saldoscash?.saldo.toLocaleString('es-AR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })}
               </span>
             </div>
           </div>
         </div>
-
+       
         {/* Mantiene el botón en su lugar original */}
         <button
           className="ml-2 px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
