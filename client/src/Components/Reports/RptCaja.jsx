@@ -122,14 +122,14 @@ const RptCaja = () => {
                                             </td>
                                             <td className="px-6 py-3 text-sm text-right font-medium text-green-600">
                                                 <span className="font-normal">$</span>{' '}
-                                                {item.ingresos.toLocaleString('es-AR', {
+                                                {parseFloat(item.ingresos).toLocaleString('es-AR', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
                                                 })}
                                             </td>
                                             <td className="px-6 py-3 text-sm text-right font-medium text-red-600">
                                                 <span className="font-normal">$</span>{' '}
-                                                {item.egresos.toLocaleString('es-AR', {
+                                                {parseFloat(item.egresos).toLocaleString('es-AR', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
                                                 })}
@@ -154,7 +154,7 @@ const RptCaja = () => {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-right font-bold text-green-600">
                                             <span className="font-normal">$</span>{' '}
-                                            {data.reduce((sum, item) => sum + item.ingresos, 0)
+                                            {data.reduce((sum, item) => sum + parseFloat(item.ingresos), 0)
                                                 .toLocaleString('es-AR', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
@@ -162,7 +162,7 @@ const RptCaja = () => {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-right font-bold text-red-600">
                                             <span className="font-normal">$</span>{' '}
-                                            {data.reduce((sum, item) => sum + item.egresos, 0)
+                                            {data.reduce((sum, item) => sum + parseFloat(item.egresos), 0)
                                                 .toLocaleString('es-AR', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
