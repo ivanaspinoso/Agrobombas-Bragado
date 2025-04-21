@@ -17,7 +17,7 @@ const GroupsView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchName, setSearchName] = useState("");
   
-  const itemsPerPage = 10;
+  const itemsPerPage = 30;
   
   // Filtrar grupos por nombre
   const filteredGroups = groups.filter((group) =>

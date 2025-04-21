@@ -14,6 +14,8 @@ const SalesView = () => {
   const navigate = useNavigate();
   const [searchClient, setSearchClient] = useState("");
   const [saleid, setSaleId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
 
   useEffect(() => {
     dispatch(fetchAllSales());
@@ -41,6 +43,13 @@ const SalesView = () => {
 
   const filteredSales = sales?.filter((sale) =>
     sale.client?.toLowerCase().includes(searchClient.toLowerCase())
+  );
+
+  //  paginación
+  const totalPages = Math.ceil(filteredSales?.length / itemsPerPage);
+  const paginatedSales = filteredSales?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -71,11 +80,13 @@ const SalesView = () => {
           </thead>
 
           <tbody>
-            {filteredSales?.map((sale, index) => (
+            {paginatedSales?.map((sale, index) => (
               <React.Fragment key={sale.id}>
                 {/* Fila de la Venta */}
                 <tr className="border-b border-gray-300">
-                  <td className="px-2 py-2 text-center">{index + 1}</td>
+                  <td className="px-2 py-2 text-center">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </td>
                   <td className="px-4 py-2 text-center">
                     {sale.fecha 
                       ? format(addHours(parseISO(sale.fecha), 24), "dd/MM/yyyy") 
@@ -148,6 +159,21 @@ const SalesView = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      
+      <div className="mt-4 flex justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === index + 1 ? "bg-[#0e6fa5] text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

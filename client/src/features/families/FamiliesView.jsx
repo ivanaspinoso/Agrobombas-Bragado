@@ -15,7 +15,7 @@ const FamiliesView = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchName, setSearchName] = useState("");
-  const itemsPerPage = 10;
+  const itemsPerPage = 30;
 
   const handleDelete = (id, name) => {
     swal

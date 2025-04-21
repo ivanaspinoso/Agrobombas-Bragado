@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "./CustomerSlice";
 import { customersDelete } from "./CustomerSlice";
@@ -14,6 +14,9 @@ const CustomersView = () => {
   const customers = useSelector((state) => state.customersReducer.customers);
   console.log(customers,"customers")
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
+
   useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
@@ -43,6 +46,13 @@ const CustomersView = () => {
         }
       });
   };
+
+  //  paginación
+  const totalPages = Math.ceil(customers?.length / itemsPerPage);
+  const paginatedCustomers = customers?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
@@ -92,9 +102,11 @@ const CustomersView = () => {
           </tr>
         </thead>
         <tbody>
-          {customers?.map((customer,index) => (
+          {paginatedCustomers?.map((customer, index) => (
             <tr key={customer.id} className="border-b">
-              <td className="px-4 py-2">{index + 1}</td>
+              <td className="px-4 py-2">
+                {(currentPage - 1) * itemsPerPage + index + 1}
+              </td>
               <td className="px-4 py-2">{customer.name}</td>
               {/* <td className="px-4 py-2">{customer.cuit}</td> */}
               <td className="px-4 py-2">{customer.address}</td>
@@ -138,6 +150,21 @@ const CustomersView = () => {
           ))}
         </tbody>
       </table>
+
+      {/*  botones de paginación */}
+      <div className="mt-4 flex justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === index + 1 ? "bg-[#0e6fa5] text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
       <Tooltip id="my-tooltip" />
     </div>
   );

@@ -17,6 +17,8 @@ const CashflowView = () => {
   const saldoscash = useSelector((state) => state.cashflowReducer?.saldo);
 
   const [searchDescription, setSearchDescription] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +70,12 @@ const CashflowView = () => {
 
   const filteredCashflows = cashflows?.filter((cf) =>
     cf.description.toLowerCase().includes(searchDescription.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredCashflows?.length / itemsPerPage);
+  const paginatedCashflows = filteredCashflows?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -142,9 +150,11 @@ const CashflowView = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredCashflows?.map((cf) => (
+            {paginatedCashflows?.map((cf, index) => (
               <tr key={cf.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 text-center">{cf.id}</td>
+                <td className="px-4 py-2 text-center">
+                  {(currentPage - 1) * itemsPerPage + index + 1}
+                </td>
                 <td className="px-4 py-2">
                   {new Date(cf.date).toLocaleDateString()}
                 </td>
@@ -181,6 +191,20 @@ const CashflowView = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="mt-4 flex justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`px-3 py-1 rounded-md ${
+              currentPage === index + 1 ? "bg-[#0e6fa5] text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
