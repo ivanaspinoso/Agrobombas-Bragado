@@ -649,4 +649,47 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.put('/update-costs', async (req, res) => {
+  const { percent, prov_code/* , familyId */ } = req.body;
+
+  if (typeof percent !== 'number') {
+    return res.status(400).json({ error: 'El porcentaje es requerido y debe ser un número' });
+  }
+
+  if (!prov_code) {
+    return res.status(400).json({ error: 'Se requiere al menos un código de proveedor' });
+  }
+
+  // Construir filtro dinámico
+  let where = {};
+  if (prov_code) where.prov_code = prov_code;
+//  if (families && Array.isArray(familyId)) where.familyId = { [Op.overlap]: families };
+
+  try {
+    // Obtener productos a actualizar
+    const products = await Product.findAll({ where });
+    const modifieds = []
+    const updates = await Promise.all(products.map(async (product) => {
+      const newCost = product.cost + (product.cost * percent / 100);
+      const price3 = newCost + (newCost * product.percent / 100);
+      const price = newCost + (newCost * product.percent / 100) + (price3 * product.iva21 / 100);
+      const price2 = price + (price * product.price1 / 100);
+      console.log("Producto: ", product.name, "Costo: ", newCost, "Precio3: ", price3, "Precio: ", price, "Precio2: ", price2)
+      // Actualizar el producto con los nuevos precios
+      /* return */ product.update({
+        cost: newCost,
+        price3,
+        price,
+        price2
+      });
+      modifieds.push(product)
+    }));
+
+    res.json({ message: 'Productos actualizados con éxito', updated: updates.length, "modificados" : modifieds });
+  } catch (error) {
+    console.error('Error al actualizar productos:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 module.exports = router;
