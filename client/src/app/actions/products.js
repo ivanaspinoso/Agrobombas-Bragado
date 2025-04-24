@@ -1,5 +1,5 @@
 import axios from "axios";
-import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint, allProductsWebEndpoint } from "../../app/consts/consts";
+import { allProductsEndpoint, updateProductsEndpoint, deleteProductsEndpoint, addProductsEndpoint, allProductsWebEndpoint, updateCostsEndpoint } from "../../app/consts/consts";
 import { deleteProduct, addProduct, updateProduct } from "../../features/products/ProductsSlice";
 
 export const getAllProducts = () => async (dispatch) => {
@@ -63,6 +63,21 @@ export const deleteProductById = (id) => async (dispatch) => {
         localStorage.setItem("productDeleted", JSON.stringify(error?.response?.data?.message /* false */));
         console.error("Error al eliminar el producto:", error.message);
     }
+};
+
+export const updateProductsCosts = (data) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.put(updateCostsEndpoint, data);
+            if (response.data.updated) {
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Error updating costs:', error);
+            return false;
+        }
+    };
 };
 
 

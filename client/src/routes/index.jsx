@@ -54,6 +54,7 @@ import AddBuy from "../features/Buys/AddBuy.jsx";
 import EditBuy from "../features/Buys/EditBuy.jsx";
 import RptCaja from "../Components/Reports/RptCaja.jsx";
 // import rptCaja from "../Components/Reports/rptCaja.jsx";
+import BulkPriceUpdate from "../features/products/BulkPriceUpdate";
 
 
 const Layout = ({ children }) => {
@@ -82,6 +83,7 @@ const Index = () => {
           <Route path="/show-messages" element={<ProductsView />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/edit-product" element={<EditProduct />} />
+          <Route path="/bulk-price-update" element={<BulkPriceUpdate />} />
 
           {/* Rutas para mensajes ? */}
           <Route path="/add-message" element={<AddCustomers />} />
