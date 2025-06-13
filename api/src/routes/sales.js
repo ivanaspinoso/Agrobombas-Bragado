@@ -3,7 +3,7 @@ var express = require("express");
 const { Sales, Cashflow, Caccounts, User, Customer, OrderLine, Product } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
-const { where } = require("sequelize");
+const { where, fn, col, Op, literal } = require("sequelize");
 const cashflows = require("../models/cashflows");
 
 var router = express.Router();
@@ -376,6 +376,78 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
  */    }
 });
 
+router.get('/products-summary', async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: 'startDate y endDate son requeridos en la query' });
+    }
+
+    const productSummary = await OrderLine.findAll({
+      attributes: [
+        'name',
+        [fn('SUM', col('quantity')), 'vendidos'],
+        [fn('SUM', col('orderline.subtotal')), 'venta'],
+                [fn('SUM', col('cost')), 'costo'],
+                        [literal('SUM(orderline.subtotal) - SUM(cost)'), 'ganancia'],
+      ],
+      include: [{
+        model: Sales,
+        attributes: [],
+        where: {
+          fecha: {
+            [Op.between]: [startDate, endDate]
+          }
+        }
+      }],
+      group: ['name'],
+      raw: true
+    });
+
+   // 2. Obtener cantidad de ventas en el rango
+    const totalSales = await Sales.count({
+      where: {
+        fecha: {
+          [Op.between]: [startDate, endDate]
+        }
+      }
+    });
+
+    // 3. Calcular totales generales
+    const totalProducts = productSummary.length;
+    let sumSubtotal = 0;
+    let sumCost = 0;
+    let sumProfit = 0;
+
+    productSummary.forEach(p => {
+      sumSubtotal += parseFloat(p.venta);
+      sumCost += parseFloat(p.costo);
+      sumProfit += parseFloat(p.ganancia);
+    });
+
+    const response = {
+      summary: {
+        requestDate: new Date().toISOString().split('T')[0],
+        startDate,
+        endDate,
+        totalSales,
+        totalProducts,
+        sumSubtotal: sumSubtotal.toFixed(2),
+        sumCost: sumCost.toFixed(2),
+        sumProfit: sumProfit.toFixed(2)
+      },
+      products: productSummary
+    };
+
+    res.json(response);
+
+    // res.json(results);
+  } catch (error) {
+    console.error('Error en /products-summary:', error);
+    res.status(500).json({ error: 'Error al generar el resumen de productos' });
+  }
+});
 
 
 module.exports = router;
