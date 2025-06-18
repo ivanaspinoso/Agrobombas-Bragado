@@ -55,6 +55,7 @@ import EditBuy from "../features/Buys/EditBuy.jsx";
 import RptCaja from "../Components/Reports/RptCaja.jsx";
 // import rptCaja from "../Components/Reports/rptCaja.jsx";
 import BulkPriceUpdate from "../features/products/BulkPriceUpdate";
+import SalesReport from "../features/Sales/SalesReport.jsx";
 
 
 const Layout = ({ children }) => {
@@ -114,6 +115,8 @@ const Index = () => {
           {/* Rutas para ventas */}
           <Route path="/print-sale" element={<PrintSale />} />
           <Route path="/show-configs" element={<SalesView />} />
+          <Route path="/sales-report" element={<SalesReport />} />
+
 
           
           <Route path="/edit-config" element={<EditConfig />} />
