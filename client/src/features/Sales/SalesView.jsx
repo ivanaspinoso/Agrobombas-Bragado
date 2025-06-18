@@ -56,12 +56,21 @@ const SalesView = () => {
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-xl font-semibold">Ventas</h2>
+        <div className="flex justify-end">
+        <button
+  className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+  onClick={() => navigate("/sales-report")}
+>
+  Informe
+</button>
+
         <button
           className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           onClick={() => navigate("/add-sale")}
         >
           Agregar Venta
         </button>
+        </div>
       </div>
 
       <div className="overflow-x-scroll">
