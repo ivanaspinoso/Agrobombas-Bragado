@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
+import { REACT_APP_API } from "../../app/consts/consts";
 
 const SalesReport = () => {
   const [startDate, setStartDate] = useState("");
@@ -14,7 +15,7 @@ const [sortDirection, setSortDirection] = useState("desc"); // o "asc"
 
   const fetchReport = async () => {
     try {
-      const url = `https://backend.sib-2000.com.ar/agb/sales/products-summary?startDate=${startDate}&endDate=${endDate}`;
+      const url = `${REACT_APP_API}sales/products-summary?startDate=${startDate}&endDate=${endDate}`;
       const response = await axios.get(url);
       setReport(response.data);
     } catch (error) {
