@@ -6,6 +6,11 @@ const SalesReport = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [report, setReport] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("vendidos");
+const [sortDirection, setSortDirection] = useState("desc"); // o "asc"
+
+
 
   const fetchReport = async () => {
     try {
@@ -16,6 +21,15 @@ const SalesReport = () => {
       console.error("Error al obtener el informe:", error);
     }
   };
+  const filteredProducts = report?.products
+  .filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+  .sort((a, b) => {
+    const aVal = a[sortBy];
+    const bVal = b[sortBy];
+    return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
+  });
 
   return (
     <div className="p-6 bg-white rounded shadow-md max-w-5xl mx-auto mt-6 mb-6">
@@ -60,19 +74,41 @@ const SalesReport = () => {
           </div>
 
           <div>
+            <div className="flex justify-between">
             <h3 className="text-lg font-semibold mb-2">Productos Vendidos</h3>
+            <input
+  type="text"
+  placeholder="Buscar producto..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  className="border px-2 py-1 rounded mb-4 w-auto"
+/>
+</div>
             <table className="w-full border">
               <thead className="bg-blue-100">
                 <tr>
                   <th className="p-2 border">Producto</th>
-                  <th className="p-2 border">Vendidos</th>
+                  <th
+  className="p-2 border cursor-pointer"
+  onClick={() => {
+    if (sortBy === "vendidos") {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy("vendidos");
+      setSortDirection("desc");
+    }
+  }}
+>
+  Vendidos {sortBy === "vendidos" && (sortDirection === "asc" ? "↑" : "↓")}
+</th>
+
                   <th className="p-2 border">Venta Total</th>
                   <th className="p-2 border">Costo</th>
                   <th className="p-2 border">Ganancia</th>
                 </tr>
               </thead>
               <tbody>
-                {report.products.map((item, index) => (
+                {filteredProducts.map((item, index) => (
                   <tr key={index} className="border-t">
                     <td className="p-2 border">{item.name}</td>
                     <td className="p-2 border text-center">{item.vendidos}</td>
