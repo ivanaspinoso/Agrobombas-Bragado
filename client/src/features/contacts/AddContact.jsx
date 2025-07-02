@@ -30,7 +30,7 @@ const AddContact = () => {
       const userid = login.id;
       const contact = { name, cellphone, country, groups, userid };
       dispatch(contactAdd(contact));
-      navigate("/show-contacts", { replace: true });
+      navigate("/gestion/show-contacts", { replace: true });
     }
   };
 

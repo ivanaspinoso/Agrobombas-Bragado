@@ -188,6 +188,8 @@ const BuysView = () => {
     <div className="container mx-auto px-4 py-5 flex flex-col flex-grow">
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-2xl font-semibold">Compras anotadas</h2>
+        
+
         <div className="flex gap-2">
           {selectedItems.length > 0 && (
             <button
@@ -198,8 +200,14 @@ const BuysView = () => {
             </button>
           )}
           <button
+  className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+  onClick={() => navigate("/gestion/buys-report")}
+>
+  Informe
+</button>
+          <button
             className="ml-2 px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            onClick={() => navigate("/add-buy")}
+            onClick={() => navigate("/gestion/add-buy")}
           >
             Anotar compra
           </button>
@@ -267,7 +275,7 @@ const BuysView = () => {
                 <td className="px-4 py-2 flex gap-2 flex justify-end">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => navigate(`/edit-buy`, { state: cf })}
+                    onClick={() => navigate(`/gestion/edit-buy`, { state: cf })}
                   >
                     <FaEdit />
                   </button>

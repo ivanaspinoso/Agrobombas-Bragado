@@ -60,7 +60,7 @@ const EditGroup = () => {
               icon: "success",
             }).then(() => {
               resetForm({ name: "", code: "",email:"",address:"",city:"",phone:"",web:"" });
-              navigate("/show-groups", { replace: true });
+              navigate("/gestion/show-groups", { replace: true });
             });
           } else {
             Swal.fire({
@@ -203,7 +203,7 @@ const EditGroup = () => {
               </button>
               <button 
               type="button"
-              onClick={() => navigate("/show-groups")}
+              onClick={() => navigate("/gestion/show-groups")}
               className="inline-flex items-center px-4 py-2 border border-transparent font-bold rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar

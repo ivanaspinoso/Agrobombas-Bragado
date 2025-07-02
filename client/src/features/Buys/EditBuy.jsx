@@ -52,7 +52,7 @@ const EditBuy = () => {
         const success = JSON.parse(localStorage.getItem("buyUpdated"));
         if (success === true) {
           Swal.fire("Actualizado", "Compra actualizada correctamente", "success");
-          navigate("/show-buys");
+          navigate("/gestion/show-buys");
         } else {
           Swal.fire("Error", success, "error");
         }
@@ -108,7 +108,7 @@ const EditBuy = () => {
             </Button>
             <Button
               type="button"
-              onClick={() => navigate("/show-buys")}
+              onClick={() => navigate("/gestion/show-buys")}
               style={{ backgroundColor: "#ff4d4f", color: "white" }}
             >
               Cancelar

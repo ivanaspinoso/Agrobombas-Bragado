@@ -257,7 +257,7 @@ if (prevImage) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   // resetForm({ name: "", description: "" });
-                  navigate("/show-messages", { replace: true });
+                  navigate("/gestion/show-messages", { replace: true });
                 }
               });
             } else {
@@ -708,7 +708,7 @@ if (prevImage) {
               </button>
               <button
                 type="submit"
-                onClick={() => navigate("/show-messages")}
+                onClick={() => navigate("/gestion/show-messages")}
                 className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 Cancelar

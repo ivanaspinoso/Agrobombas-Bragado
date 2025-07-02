@@ -61,7 +61,7 @@ const AddGroup = () => {
               if (result.isConfirmed) {
                 resetForm({ name:"", code:"", email:"",address:"",city:"",phone:"",web:"" });
               } else {
-                navigate("/show-groups");
+                navigate("/gestion/show-groups");
               }
             });
           } else {
@@ -216,7 +216,7 @@ const AddGroup = () => {
               </button>
               <button 
               type="button"
-              onClick={() => navigate("/show-groups")}
+              onClick={() => navigate("/gestion/show-groups")}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar

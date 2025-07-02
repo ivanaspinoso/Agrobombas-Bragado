@@ -82,7 +82,7 @@ const BulkPriceUpdate = () => {
             'Los precios han sido actualizados correctamente',
             'success'
           ).then(() => {
-            navigate('/show-messages');
+            navigate('/gestion/show-messages');
           });
         } else {
           throw new Error('Error al actualizar precios');
@@ -140,7 +140,7 @@ const BulkPriceUpdate = () => {
 
           <div className="flex justify-end gap-4 mt-6">
             <button
-              onClick={() => navigate('/show-messages')}
+              onClick={() => navigate('/gestion/show-messages')}
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
               Cancelar

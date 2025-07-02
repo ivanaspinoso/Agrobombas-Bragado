@@ -64,7 +64,7 @@ const ContactsView = () => {
         style={{ letterSpacing: "5px", fontWeight: "ligher" }}
       >
         Listado de contactos
-        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Contacto" onClick={() => { navigate("/add-contact") }}><FcAddRow /></button>
+        <button data-tooltip-id="my-tooltip" data-tooltip-content="Agregar Contacto" onClick={() => { navigate("/gestion/add-contact") }}><FcAddRow /></button>
       </h2>
       <table
         className="table mb-5"

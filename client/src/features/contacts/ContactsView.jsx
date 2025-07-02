@@ -94,7 +94,7 @@ const ContactsView = () => {
         <h2 className="text-center flex flex-row text-start text-2xl font-semibold">
           {t('contactsView.contactList')}
         </h2>
-        <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/add-contact") }}>
+        <button className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => { navigate("/gestion/add-contact") }}>
           <FcAddRow className="mr-2 h-5 w-5" />
           {t('contactsView.addContact')}
         </button>

@@ -245,7 +245,7 @@ const AddMessage = () => {
 
     }
 
-    navigate("/show-messages", { replace: true });
+    navigate("/gestion/show-messages", { replace: true });
   };
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -307,7 +307,7 @@ const AddMessage = () => {
       denyButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/add-contact")
+        navigate("/gestion/add-contact")
       } else if (result.isDenied) {
         navigate("/")
       }

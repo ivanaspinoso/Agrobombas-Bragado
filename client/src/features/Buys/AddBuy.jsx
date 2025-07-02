@@ -184,7 +184,7 @@ const AddBuy = () => {
           Swal.fire("Éxito", "Compra registrada correctamente", "success");
           // await dispatch(getAllProducts());
           // await dispatch(fetchAllCashflows());
-          navigate("/show-buys");
+          navigate("/gestion/show-buys");
         } else {
           Swal.fire("Error", success || "No se pudo registrar la compra", "error");
         }
@@ -259,7 +259,7 @@ const AddBuy = () => {
             </Button>
             <Button
               type="button"
-              onClick={() => navigate("/show-buys")}
+              onClick={() => navigate("/gestion/show-buys")}
               style={{ backgroundColor: '#ff4d4f', color: 'white' }}
             >
               Cancelar
