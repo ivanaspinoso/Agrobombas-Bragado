@@ -93,7 +93,7 @@ const ContactsView = () => {
                   <td>{name}</td>
                   <td>{cellphone}</td>
                   <td className="d-flex gap-2">
-                    <Link to="/edit-contact" state={{ id, name, cellphone, country }}>
+                    <Link to="/gestion/edit-contact" state={{ id, name, cellphone, country }}>
                       <button data-tooltip-id="my-tooltip" data-tooltip-content="Editar Contacto">
                         <FaEdit />
                       </button>

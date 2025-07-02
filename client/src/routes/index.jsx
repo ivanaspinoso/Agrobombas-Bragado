@@ -65,8 +65,8 @@ const Index = () => {
       <Layout>
         <Routes>
           {/* Públicas */}
-          <Route path="/" element={<Home />} />
-          <Route path="/gestion" element={<Main />} />
+          <Route path="/gestion" element={<Home />} />
+          <Route path="/" element={<Main />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/building" element={<Next />} />

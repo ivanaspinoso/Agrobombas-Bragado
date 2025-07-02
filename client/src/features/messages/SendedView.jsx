@@ -68,7 +68,7 @@ const SendedView = () => {
                   <td className="border px-4 py-2">{sendeddate} - {sendedtime}</td>
                   <td className="border px-4 py-2">{result}</td>
                   <td className="border px-4 py-2 flex space-x-2">
-                    <Link to="/edit-group" state={{ id, text }}>
+                    <Link to="/gestion/edit-group" state={{ id, text }}>
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         <FaEdit />
                       </button>
