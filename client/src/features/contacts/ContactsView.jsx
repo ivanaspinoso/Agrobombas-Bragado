@@ -172,7 +172,7 @@ const ContactsView = () => {
                   <td className="px-4 py-2">{categories ? categories.map(user => user.category) : ""} </td>
                   <td className="px-4 py-2">{cellphone}</td>
                   <td className="px-4 py-2 flex space-x-2">
-                    <Link to={`/edit-contact`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" state={{ id, name, cellphone, categories }}>
+                    <Link to={`/gestion/edit-contact`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" state={{ id, name, cellphone, categories }}>
                       <FaEdit />
                     </Link>
                     <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(id, name)}>

@@ -78,7 +78,7 @@ const UsersView = () => {
                     <td className=" px-4 py-2">{username}</td>
                     {/* <td className=" px-4 py-2">{isAdmin === true ? "si" : "no"}</td> */}
                     <td className=" px-4 py-2 flex space-x-4 justify-center">
-                      <Link to="/edit-user" state={{ id, name, country, username, backwa,  vinculated, qrcode }}>
+                      <Link to="/gestion/edit-user" state={{ id, name, country, username, backwa,  vinculated, qrcode }}>
                         <button className="text-blue-500 hover:text-blue-700" data-tooltip-id="my-tooltip" data-tooltip-content="Editar Usuario">
                           <FaEdit />
                         </button>

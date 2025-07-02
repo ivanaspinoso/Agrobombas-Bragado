@@ -102,7 +102,7 @@ const MessagesView = () => {
                   {/* <td className="px-4 py-2">{senddate}</td>
                   <td className="px-4 py-2">{sendtime}</td> */}
                   <td className="px-4 py-2 flex gap-2">
-                    <Link to={`/view-message/${id}`} state={{ id, text }}>
+                    <Link to={`/gestion/view-message/${id}`} state={{ id, text }}>
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><FaEye /></button>
                     </Link>
                     <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(id, text)}><FaTrashAlt /></button>

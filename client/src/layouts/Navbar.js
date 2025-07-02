@@ -41,7 +41,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between">
         {/* 🔹 LOGO */}
         <div className="flex flex-row items-center space-x-4">
-          <Link to="/" className="text-white text-xl font-semibold hover:text-gray-200 flex items-center gap-4">
+          <Link to="/gestion" className="text-white text-xl font-semibold hover:text-gray-200 flex items-center gap-4">
             <img src={Agrobombas} alt="Logo" className="w-18 h-10 rounded-md" />
             Agro Bombas Bragado
           </Link>

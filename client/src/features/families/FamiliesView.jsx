@@ -95,7 +95,7 @@ const FamiliesView = () => {
                   <td className="px-4 py-2">{family.description}</td>
                   <td className="px-4 py-2 flex gap-2 flex justify-end">
                     <Link
-                      to={`/edit-families`}
+                      to={`/gestion/edit-families`}
                       state={{
                         id: family.id,
                         name: family.name,

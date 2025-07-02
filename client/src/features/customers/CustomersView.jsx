@@ -106,7 +106,7 @@ const CustomersView = () => {
                   <td className="px-4 py-2">{customer.birthday || "N/A"}</td>
                   <td className="px-4 py-2 flex gap-2 justify-end">
                     <Link
-                      to="/edit-customers"
+                      to="/gestion/edit-customers"
                       state={{ ...customer }}
                     >
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
