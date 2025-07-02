@@ -56,6 +56,7 @@ import RptCaja from "../Components/Reports/RptCaja.jsx";
 // import rptCaja from "../Components/Reports/rptCaja.jsx";
 import BulkPriceUpdate from "../features/products/BulkPriceUpdate";
 import SalesReport from "../features/Sales/SalesReport.jsx";
+import BuysReport from "../features/Buys/BuysReport";
 
 
 const Layout = ({ children }) => {
@@ -143,6 +144,9 @@ const Index = () => {
           <Route path="/show-buys" element={<BuysView />} />
           <Route path="/add-buy" element={<AddBuy />} />
           <Route path="/edit-buy" element={<EditBuy />} />
+          <Route path="/buys-report" element={<BuysReport />} />
+
+          
 
           {/* Rutas experimental para informes */}
                      {/* Rutas para caja */}
