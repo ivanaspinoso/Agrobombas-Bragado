@@ -42,7 +42,7 @@ const EditCustomers = () => {
               icon: "success",
             }).then((result) => {
               if (result.isConfirmed) {
-                navigate("/queue-messages", { replace: true });
+                navigate("/gestion/queue-messages", { replace: true });
               }
             });
           } else {
@@ -256,7 +256,7 @@ const EditCustomers = () => {
             </button>
             <button 
               type="button"
-              onClick={() => navigate("/queue-messages")}
+              onClick={() => navigate("/gestion/queue-messages")}
               className="inline-flex items-center px-4 py-2 border border-transparent font-bold rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar

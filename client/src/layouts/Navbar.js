@@ -24,15 +24,15 @@ const Navbar = () => {
 
   // ✅ Lista de opciones del menú (mismo en Desktop y Mobile)
   const menuOptions = [
-    { label: t("navbar.home"), route: "/gestion" }, // home
-    { label: t("navbar.groups"), route: "/show-groups" }, // proveedores
-    { label: t("navbar.families"), route: "/show-families" }, // rubros
-    { label: t("navbar.messages"), route: "/show-messages" }, // productos
-    { label: t("navbar.stack"), route: "/queue-messages" }, // clientes
-    { label: t("navbar.settings"), route: "/show-configs" }, // ventas
-    { label: t("navbar.buys"), route: "/show-buys" }, // compras
-    { label: t("navbar.sent"), route: "/show-cashflows" }, // caja
-    { label: t("navbar.received"), route: "/show-caccounts" }, // cuentas
+    { label: t("navbar.home"), route: "/" }, // home
+    { label: t("navbar.groups"), route: "gestion/show-groups" }, // proveedores
+    { label: t("navbar.families"), route: "gestion/show-families" }, // rubros
+    { label: t("navbar.messages"), route: "gestion/show-messages" }, // productos
+    { label: t("navbar.stack"), route: "gestion/queue-messages" }, // clientes
+    { label: t("navbar.settings"), route: "gestion/show-configs" }, // ventas
+    { label: t("navbar.buys"), route: "gestion/show-buys" }, // compras
+    { label: t("navbar.sent"), route: "gestion/show-cashflows" }, // caja
+    { label: t("navbar.received"), route: "gestion/show-caccounts" }, // cuentas
 
   ];
 
@@ -78,21 +78,21 @@ const Navbar = () => {
             <>
               <Link 
                 className={`text-white hover:text-gray-300 transition duration-300 relative ${
-                  isActiveRoute("/show-users") 
+                  isActiveRoute("gestion/show-users") 
                     ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
                     : ''
                 }`} 
-                to="/show-users"
+                to="gestion/show-users"
               >
                 {t("Usuarios")}
               </Link>
               <Link 
                 className={`text-white hover:text-gray-300 transition duration-300 relative ${
-                  isActiveRoute("/show-companys") 
+                  isActiveRoute("gestion/show-companys") 
                     ? 'after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white'
                     : ''
                 }`} 
-                to="/show-companys"
+                to="gestion/show-companys"
               >
                 {t("navbar.contacts")}
               </Link>

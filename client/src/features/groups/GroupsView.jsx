@@ -63,7 +63,7 @@ const GroupsView = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-center flex flex-row justify-between text-xl font-semibold my-10">
           {t('groupView.listGroup')}
-          <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/add-group")}>
+          <button className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={() => navigate("/gestion/add-group")}>
             <FcAddRow className="mr-2 h-5 w-5" />
             {t('groupView.addGroup')}
           </button>
@@ -89,7 +89,7 @@ const GroupsView = () => {
                     <td className="px-4 py-2  ">{name}</td>
                     <td className="px-4 py-2">{code}</td>
                     <td className="px-4 py-2 flex gap-2 flex justify-end">
-                      <Link to={`/edit-group`} state={{ id,name, code }}>
+                      <Link to={`/gestion/edit-group`} state={{ id,name, code }}>
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " >
                           <FaEdit />
                         </button>

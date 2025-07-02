@@ -70,7 +70,7 @@ const AddCashflow = () => {
                 if (result.isConfirmed) {
                   resetForm();
                 } else {
-                  navigate("/show-cashflows");
+                  navigate("/gestion/show-cashflows");
                 }
               })} else {Swal.fire("Error",success,"error")}
               setSubmitting(false);
@@ -155,7 +155,7 @@ const AddCashflow = () => {
               </button>
               <button 
               type="button"
-              onClick={() => navigate("/show-cashflows")}
+              onClick={() => navigate("/gestion/show-cashflows")}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar

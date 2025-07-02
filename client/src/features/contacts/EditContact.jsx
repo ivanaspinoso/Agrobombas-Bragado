@@ -73,7 +73,7 @@ const EditContact = () => {
     dispatch(
       contactUpdate({ id, name, cellphone: numphone, groups: input.categories })
     );
-    navigate("/show-contacts", { replace: true });
+    navigate("/gestion/show-contacts", { replace: true });
   };
 
   return (

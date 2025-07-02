@@ -81,7 +81,7 @@ const EditCaccount = () => {
               text: "Movimiento modificado exitosamente!",
               icon: "success",
             }).then(() => {
-              navigate("/show-caccounts", { replace: true });
+              navigate("/gestion/show-caccounts", { replace: true });
             });
           } else {
             Swal.fire({
@@ -192,7 +192,7 @@ const EditCaccount = () => {
       </button>
       <button
         type="button"
-        onClick={() => navigate("/show-caccounts")} 
+        onClick={() => navigate("/gestion/show-caccounts")} 
         className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-white bg-[#ff4d4f] hover:bg-[#ff7875] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
       >
         Cancelar

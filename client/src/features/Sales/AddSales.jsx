@@ -179,7 +179,7 @@ const AddSales = () => {
           Swal.fire("Éxito", "Venta registrada", "success");
           await dispatch(getAllProducts());
           await dispatch(fetchAllCashflows());
-          navigate("/show-configs");
+          navigate("/gestion/show-configs");
         } else {
           Swal.fire("Error", success, "error");
         }
@@ -372,7 +372,7 @@ const AddSales = () => {
           </Button>
           <Button 
               type="button"
-              onClick={() => navigate("/show-configs")}
+              onClick={() => navigate("/gestion/show-configs")}
               style={{ backgroundColor: '#ff4d4f', color: 'white' }}
             >
               Cancelar

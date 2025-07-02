@@ -59,14 +59,14 @@ const SalesView = () => {
         <div className="flex justify-end">
         <button
   className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-  onClick={() => navigate("/sales-report")}
+  onClick={() => navigate("/gestion/sales-report")}
 >
   Informe
 </button>
 
         <button
           className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={() => navigate("/add-sale")}
+          onClick={() => navigate("/gestion/add-sale")}
         >
           Agregar Venta
         </button>
@@ -117,13 +117,13 @@ const SalesView = () => {
                       </button>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded"
-                        onClick={() => navigate("/print-sale", { state: sale })}
+                        onClick={() => navigate("/gestion/print-sale", { state: sale })}
                         >
                         <FaPrint />
                       </button>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded"
-                        onClick={() => navigate(`/edit-sale`, { state: sale })}
+                        onClick={() => navigate(`/gestion/edit-sale`, { state: sale })}
                       >
                         <FaEdit />
                       </button>

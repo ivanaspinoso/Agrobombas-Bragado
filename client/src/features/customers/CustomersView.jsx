@@ -60,7 +60,7 @@ const CustomersView = () => {
           Datos de clientes
           <button
             className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#0e6fa5] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            onClick={() => navigate("/add-message")}
+            onClick={() => navigate("/gestion/add-message")}
           >
             <FcAddRow className="mr-2 h-5 w-5" />
             Agregar clientes

@@ -58,7 +58,7 @@ const AddCustomers = () => {
               if (result.isConfirmed) {
                 resetForm({ name: "", postal_code: "" });
               } else if (result.isDenied) {
-                navigate("/queue-messages");
+                navigate("/gestion/queue-messages");
               }
             });
           } else {
@@ -248,7 +248,7 @@ const AddCustomers = () => {
               </button>
               <button 
               type="button"
-              onClick={() => navigate("/queue-messages")}
+              onClick={() => navigate("/gestion/queue-messages")}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar

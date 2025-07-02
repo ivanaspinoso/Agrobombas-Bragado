@@ -82,7 +82,7 @@ const AddCaccount = () => {
                 if (result.isConfirmed) {
                   resetForm();
                 } else {
-                  navigate("/sended-messages");
+                  navigate("/gestion/sended-messages");
                 }
               });
             } else { // y si me devuelvew que no se pudo hacer
@@ -202,7 +202,7 @@ const AddCaccount = () => {
             </button>
             <button 
               type="button"
-              onClick={() => navigate("/show-caccounts")}
+              onClick={() => navigate("/gestion/show-caccounts")}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ff4d4f]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar
