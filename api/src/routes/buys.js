@@ -3,7 +3,7 @@ var express = require("express");
 const { Buys, Supplier, User } = require("../models/index");
 
 const { validateToken } = require("../utils/token");
-const { where } = require("sequelize");
+const { where, fn, col, Op, literal } = require("sequelize");
 const cashflows = require("../models/cashflows");
 
 var router = express.Router();
@@ -240,8 +240,68 @@ router.delete("/delete/:id", /* validateToken, */ async (req, res) => {
         .json({ message: "No se pudo encontrar la compra" });
 
     }
-
  });
+
+/* // GET /api/buys/total?supplierid=1&from=2024-01-01&to=2024-12-31
+router.get('/total', async (req, res) => {
+  try {
+    const { supplierid, from, to } = req.query;
+
+    if (!supplierid || !from || !to) {
+      return res.status(400).json({ error: 'Faltan parámetros: supplierid, from o to' });
+    }
+
+    const filtro = {
+      supplierId: supplierid,
+      fecha: {
+        [Op.between]: [new Date(from), new Date(to)]
+      }
+    };
+
+    const totalCompras = await Buys.sum('total', { where: filtro });
+    const cantidad = await Buys.count({ where: filtro });
+
+    res.json({
+      total: totalCompras || 0,
+      cantidad
+    });
+  } catch (error) {
+    console.error('Error al obtener datos de compras:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+}); */
+
+router.get('/total', async (req, res) => {
+  try {
+    const { supplierid, from, to } = req.query;
+
+    if (!supplierid || !from || !to) {
+      return res.status(400).json({ error: 'Faltan parámetros' });
+    }
+
+    const where = {
+      supplierId: supplierid,
+      fecha: {
+        [Op.between]: [new Date(from), new Date(to)]
+      }
+    };
+
+    const [total, cantidad, compras] = await Promise.all([
+      Buys.sum('total', { where }),
+      Buys.count({ where }),
+      Buys.findAll({ where, order: [['fecha', 'ASC']] })
+    ]);
+
+    res.json({
+      total: total || 0,
+      cantidad,
+      compras
+    });
+  } catch (error) {
+    console.error('Error al obtener datos de compras:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
 
 // Eliminar varias compras
 router.delete("/deletefew", /* validateToken, */ async (req, res) => {
