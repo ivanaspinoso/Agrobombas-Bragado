@@ -4,6 +4,7 @@ import { logOut } from "../app/actions/users";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Agrobombas from "../assets/images/logonuevo.jpeg";
+import AvisoPago from "./AvisoPago";
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -36,6 +37,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#0e6fa5] p-4 shadow-lg no-print">
+      <div><AvisoPago /></div>
       <div className="container mx-auto flex items-center justify-between">
         {/* 🔹 LOGO */}
         <div className="flex flex-row items-center space-x-4">
