@@ -15,13 +15,11 @@ const Navbar = () => {
 
   const isActiveRoute = (route) => location.pathname === route;
 
-  // ✅ Función para cerrar menú y navegar en Mobile
   const handleMenuClick = (route) => {
-    navigate(route); // 🚀 Navega primero
+    navigate(route);
     document.getElementById("navbarMobileMenu")?.classList.add("hidden");
   };
 
-  // ✅ Lista de opciones del menú (mismo en Desktop y Mobile)
   const menuOptions = [
     { label: t("navbar.home"), route: "/gestion" },
     { label: t("navbar.groups"), route: "gestion/show-groups" },
@@ -32,21 +30,23 @@ const Navbar = () => {
     { label: t("navbar.buys"), route: "gestion/show-buys" },
     { label: t("navbar.sent"), route: "gestion/show-cashflows" },
     { label: t("navbar.received"), route: "gestion/show-caccounts" },
-  
   ];
 
   return (
     <nav className="bg-[#0e6fa5] p-4 shadow-lg no-print">
-      <div><AvisoPago /></div>
+      
+      {/* ✅ Mostrar AvisoPago solo si está logueado */}
+      {login?.id && <AvisoPago />}
+      
       <div className="container mx-auto flex items-center justify-between">
-        {/* 🔹 LOGO */}
+
         <div className="flex flex-row items-center space-x-4">
           <Link to="/" className="text-white text-xl font-semibold hover:text-gray-200 flex items-center gap-4">
             <img src={Agrobombas} alt="Logo" className="w-18 h-10 rounded-md" />
             Agro Bombas Bragado
           </Link>
         </div>
-        {/* 🔹 Botón Menú Mobile icono 3 rayitas */}
+
         <div className="lg:hidden">
           {login?.id && (
             <button
@@ -60,7 +60,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* 🔹 Menú Desktop */}
         <div className="hidden lg:flex items-center space-x-4 ml-auto">
           {login?.id && (
             <>
@@ -80,21 +79,15 @@ const Navbar = () => {
 
               {login.isAdmin && login.username !== "mostrador" && (
                 <>
-                  <Link
-                    to="gestion/show-users"
-                    className={`text-white hover:text-gray-300 relative ${isActiveRoute("gestion/show-users") ? "after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white" : ""}`}
-                  >
+                  <Link to="gestion/show-users" className="text-white hover:text-gray-300 relative">
                     {t("Usuarios")}
                   </Link>
-                  <Link
-                    to="gestion/show-companys"
-                    className={`text-white hover:text-gray-300 relative ${isActiveRoute("gestion/show-companys") ? "after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-white" : ""}`}
-                  >
+                  <Link to="gestion/show-companys" className="text-white hover:text-gray-300 relative">
                     {t("navbar.contacts")}
                   </Link>
                 </>
               )}
-          {/* 🔹 Botón Logout desktop */}
+
               <button
                 onClick={() => {
                   dispatch(logOut());
@@ -110,11 +103,8 @@ const Navbar = () => {
             </>
           )}
         </div>
-
       </div>
- {/* 👇 menu duplicado para mobile ? // refactorizar y hacer uno solo que cambie el style segun pantalla */}
 
-      {/* 🔹 Menú Mobile */}
       {login?.id && (
         <div id="navbarMobileMenu" className="lg:hidden hidden">
           <div className="px-6 pt-4 pb-6 space-y-4">
