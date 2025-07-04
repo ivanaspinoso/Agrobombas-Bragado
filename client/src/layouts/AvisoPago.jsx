@@ -9,9 +9,9 @@ const AvisoPago = () => {
   useEffect(() => {
     const verificarPago = async () => {
       // Verifica si la ruta actual incluye 'gestion' corregirlo
-      const rutaIncluyeGestion = window.location.href.includes('gestion');
+/*       const rutaIncluyeGestion = window.location.href.includes('gestion');
 
-      if (!rutaIncluyeGestion) return;
+      if (!rutaIncluyeGestion) return; */
 
       try {
         const response = await axios.get(REACT_APP_AVISO_URL + "/agrobombas.txt")
